@@ -22,6 +22,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "google*.html",
+                "input": "src",
+                "output": "/"
               }
             ],
             "styles": [

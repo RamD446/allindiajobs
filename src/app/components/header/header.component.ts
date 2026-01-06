@@ -15,6 +15,10 @@ export class HeaderComponent {
     this.isNavActive = !this.isNavActive;
   }
 
+  closeNav() {
+    this.isNavActive = false;
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     if (window.innerWidth > 768) {

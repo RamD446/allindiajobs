@@ -1,12 +1,14 @@
 <header>
   <nav>
-    <ul>
-      <li><a routerLink="/">Home</a></li>
-      <li><a routerLink="/all-latest-jobs">All Latest Jobs</a></li>
-      <li><a routerLink="/government-jobs">Government Jobs</a></li>
-      <li><a routerLink="/it-software-jobs">IT/Software Jobs</a></li>
-      <li><a routerLink="/banking-finance-jobs">Banking/Finance Jobs</a></li>
-      <li><a routerLink="/walk-in-drive-jobs">Walk-in Drive Jobs</a></li>
-    </ul>
+    <a routerLink="/" class="logo">allindianjobs</a>
+    <div class="nav-links">
+      <a routerLink="/all-latest-jobs">All Latest Jobs</a>
+      <a routerLink="/government-jobs">Government Jobs</a>
+      <a routerLink="/it-software-jobs">IT/Software Jobs</a>
+      <a routerLink="/banking-finance-jobs">Banking/Finance Jobs</a>
+      <a routerLink="/walk-in-drive-jobs">Walk-in Drive Jobs</a>
+      <a routerLink="/login">Login</a>
+    </div>
+    <button class="hamburger" (click)="toggleNav()">&#9776;</button>
   </nav>
 </header>

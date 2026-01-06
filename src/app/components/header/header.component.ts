@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -9,5 +9,16 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  isNavActive = false;
 
+  toggleNav() {
+    this.isNavActive = !this.isNavActive;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    if (window.innerWidth > 768) {
+      this.isNavActive = false;
+    }
+  }
 }

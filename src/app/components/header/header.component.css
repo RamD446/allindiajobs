@@ -1,18 +1,86 @@
 header {
-  background-color: #333;
-  color: white;
-  padding: 1rem;
-}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+  background-color: #222; /* Dark background */
+  color: #fff; /* White text */
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 70px;
   display: flex;
-  justify-content: space-around;
+  align-items: center;
 }
 
-nav ul li a {
-  color: white;
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff; /* White logo */
   text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: #fff; /* White links */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #007bff; /* Blue hover */
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff; /* White hamburger icon */
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: fixed; /* Changed to fixed for off-canvas effect */
+    top: 0;
+    right: -250px; /* Hidden off-screen */
+    width: 250px;
+    height: 100%;
+    background-color: #333; /* Darker background for menu */
+    padding: 2rem 0;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease-in-out;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .nav-links.active {
+    right: 0; /* Slide in */
+  }
+
+  .nav-links a {
+    padding: 1rem 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .hamburger {
+    display: block;
+  }
 }

@@ -5,6 +5,7 @@ import { GovernmentJobsComponent } from './components/government-jobs/government
 import { ItSoftwareJobsComponent } from './components/it-software-jobs/it-software-jobs.component';
 import { BankingFinanceJobsComponent } from './components/banking-finance-jobs/banking-finance-jobs.component';
 import { WalkInDriveJobsComponent } from './components/walk-in-drive-jobs/walk-in-drive-jobs.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,4 +14,5 @@ export const routes: Routes = [
   { path: 'it-software-jobs', component: ItSoftwareJobsComponent },
   { path: 'banking-finance-jobs', component: BankingFinanceJobsComponent },
   { path: 'walk-in-drive-jobs', component: WalkInDriveJobsComponent },
+  { path: 'login', component: LoginComponent },
 ];

@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     }
 
     // Check if user is already logged in and redirect to admin
-    onAuthStateChanged(this.auth, (user) => {
+    onAuthStateChanged(this.auth, (user: any) => {
       if (user) {
         console.log('User already authenticated, storing in session and navigating to admin...');
         this.storeUserSession(user);

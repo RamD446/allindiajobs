@@ -204,28 +204,20 @@
             </div>
           </div>
           
-          <!-- Job Content with Quill Editor -->
+          <!-- Job Content with Textarea -->
           <div class="mb-3">
             <label for="content" class="form-label"><i class="bi bi-file-text me-1"></i>Job Description & Requirements *</label>
-            <quill-editor 
+            <textarea 
+              class="form-control"
               formControlName="content"
-              [style]="{height: '300px'}"
-              [modules]="{
-                toolbar: [
-                  ['bold', 'italic', 'underline'],
-                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                  [{ 'header': [1, 2, 3, false] }],
-                  ['link'],
-                  ['clean']
-                ]
-              }"
+              rows="8"
               placeholder="Enter detailed job description, requirements, salary, benefits, etc."
               [class.is-invalid]="createJobForm.get('content')?.invalid && createJobForm.get('content')?.touched">
-            </quill-editor>
+            </textarea>
             <div class="invalid-feedback d-block" *ngIf="createJobForm.get('content')?.invalid && createJobForm.get('content')?.touched">
               Job description is required
             </div>
-            <small class="text-muted">Use the rich text editor to format your job posting with headings, lists, and styling.</small>
+            <small class="text-muted">Enter job details including requirements, qualifications, and benefits.</small>
           </div>
         </div>
         <div class="modal-footer bg-light">
@@ -285,7 +277,8 @@
         </div>
         <div class="mb-3">
           <strong><i class="bi bi-file-text me-1"></i>Job Description & Requirements:</strong>
-          <div class="border p-3 mt-2 bg-light rounded" [innerHTML]="selectedJob.qualifications || selectedJob.content">
+          <div class="border p-3 mt-2 bg-light rounded">
+            <pre style="white-space: pre-wrap; font-family: inherit;">{{ selectedJob.qualifications || selectedJob.content }}</pre>
           </div>
         </div>
       </div>
@@ -296,19 +289,4 @@
       </div>
     </div>
   </div>
-</div>
-          <div class="col-md-6">
-            <strong>Contact:</strong> {{ selectedJob.contact }}
-          </div>
-          <div class="col-md-6">
-            <strong>Email:</strong> {{ selectedJob.email }}
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeViewJobModal()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 </div>

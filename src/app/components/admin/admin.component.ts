@@ -5,12 +5,11 @@ import { Router } from '@angular/router';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 import { ref, push, remove, onValue, off } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
-import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, QuillModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
@@ -71,7 +70,7 @@ export class AdminComponent implements OnInit {
     }, 100);
     
     // Also listen for auth state changes
-    onAuthStateChanged(this.auth, (user) => {
+    onAuthStateChanged(this.auth, (user: any) => {
       console.log('Auth state changed:', user);
       if (user && !this.currentUser) {
         console.log('User authenticated, loading admin dashboard...');
@@ -187,7 +186,7 @@ export class AdminComponent implements OnInit {
       this.todayJobs = 0;
       this.activeJobs = 0;
       
-      onValue(jobsRef, (snapshot) => {
+      onValue(jobsRef, (snapshot: any) => {
         console.log('Jobs data received from Firebase:', snapshot.exists());
         
         this.jobs = [];

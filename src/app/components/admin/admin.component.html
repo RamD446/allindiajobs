@@ -1,0 +1,314 @@
+<!-- Full Admin Page Wrapper -->
+<div class="admin-fullscreen">
+  <!-- Admin Custom Header -->
+  <header class="header-gradient py-2">
+    <div class="container-fluid px-4">
+      <div class="row align-items-center">
+        <div class="col">
+          <div class="brand-name small-header">
+            <i class="bi bi-house-door me-2"></i>Home
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="d-flex align-items-center">
+            <span class="me-3 user-info">
+              <i class="bi bi-person-circle me-1"></i> 
+              <small>{{ currentUser?.email }}</small>
+            </span>
+            <button class="btn btn-outline-light btn-sm logout-btn" (click)="logout()">
+              <i class="bi bi-box-arrow-right me-1"></i> 
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<!-- Admin Dashboard -->
+<div class="admin-panel">
+  <div class="container-fluid px-4">
+    <!-- Stats Cards - Only Total Jobs and Today's Jobs -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="card stats-card-small">
+          <div class="card-body text-center py-2">
+            <i class="bi bi-briefcase-fill text-primary" style="font-size: 1.5rem;"></i>
+            <h5 class="mt-2 mb-1">{{ totalJobs || 0 }}</h5>
+            <p class="text-muted small">Total Jobs</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card stats-card-small">
+          <div class="card-body text-center py-2">
+            <i class="bi bi-calendar-plus text-success" style="font-size: 1.5rem;"></i>
+            <h5 class="mt-2 mb-1">{{ todayJobs || 0 }}</h5>
+            <p class="text-muted small">Today's Jobs Posted</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Job Notifications -->
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-bell"></i> All Job Notifications</h5>
+        <button class="btn btn-success btn-sm" (click)="openCreateJobModal()">
+          <i class="bi bi-plus-circle me-1"></i> Create Job
+        </button>
+      </div>
+      <div class="card-body">
+        <!-- Loading state -->
+        <div *ngIf="!jobs || jobs.length === 0" class="text-center py-4">
+          <div *ngIf="currentUser; else notAuthenticated">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading jobs...</p>
+          </div>
+          <ng-template #notAuthenticated>
+            <p class="text-muted">Please authenticate to view jobs.</p>
+          </ng-template>
+        </div>
+        
+        <!-- Jobs table -->
+        <div *ngIf="jobs && jobs.length > 0" class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Job Title</th>
+                <th>Job Type</th>
+                <th>Posted Date</th>
+                <th>Last Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let job of jobs; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <div>
+                    <strong>{{ job.jobTitle || job.title || 'N/A' }}</strong>
+                    <div class="text-muted small" *ngIf="job.company">{{ job.company }}</div>
+                    <div class="text-muted small" *ngIf="job.subtitle">{{ job.subtitle }}</div>
+                  </div>
+                </td>
+                <td><span class="badge bg-primary">{{ job.jobType || job.type || 'General' }}</span></td>
+                <td>{{ formatDate(job.createdDate || job.createdAt || job.postedAt) }}</td>
+                <td>{{ formatDate(job.applyLastDate || job.lastDate) }}</td>
+                <td class="job-actions">
+                  <button class="btn btn-info btn-sm me-1" (click)="viewJob(job)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteJob(job.id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- No jobs message -->
+        <div *ngIf="currentUser && jobs && jobs.length === 0" class="text-center py-4">
+          <i class="bi bi-inbox display-4 text-muted"></i>
+          <h5 class="mt-3 text-muted">No Jobs Found</h5>
+          <p class="text-muted">No job postings available at the moment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Job Modal -->
+<div class="modal fade show" [class.d-block]="showCreateModal" [style.background]="showCreateModal ? 'rgba(0,0,0,0.5)' : 'none'" tabindex="-1" *ngIf="showCreateModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i> Create New Job Posting</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeCreateJobModal()"></button>
+      </div>
+      <form [formGroup]="createJobForm" (ngSubmit)="onCreateJob()">
+        <div class="modal-body">
+          <div class="row">
+            <!-- Job Title -->
+            <div class="col-md-6 mb-3">
+              <label for="jobTitle" class="form-label"><i class="bi bi-briefcase me-1"></i>Job Title *</label>
+              <input type="text" class="form-control" formControlName="title" placeholder="Enter job title"
+                     [class.is-invalid]="createJobForm.get('title')?.invalid && createJobForm.get('title')?.touched">
+              <div class="invalid-feedback" *ngIf="createJobForm.get('title')?.invalid && createJobForm.get('title')?.touched">
+                Job title is required
+              </div>
+            </div>
+            
+            <!-- Company Name -->
+            <div class="col-md-6 mb-3">
+              <label for="company" class="form-label"><i class="bi bi-building me-1"></i>Company Name *</label>
+              <input type="text" class="form-control" formControlName="company" placeholder="Enter company name"
+                     [class.is-invalid]="createJobForm.get('company')?.invalid && createJobForm.get('company')?.touched">
+              <div class="invalid-feedback" *ngIf="createJobForm.get('company')?.invalid && createJobForm.get('company')?.touched">
+                Company name is required
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <!-- Subtitle -->
+            <div class="col-md-6 mb-3">
+              <label for="subtitle" class="form-label"><i class="bi bi-card-text me-1"></i>Subtitle</label>
+              <input type="text" class="form-control" formControlName="subtitle" placeholder="Enter job subtitle (optional)">
+            </div>
+            
+            <!-- Job Type -->
+            <div class="col-md-6 mb-3">
+              <label for="jobType" class="form-label"><i class="bi bi-tags me-1"></i>Job Type *</label>
+              <select class="form-select" formControlName="jobType"
+                      [class.is-invalid]="createJobForm.get('jobType')?.invalid && createJobForm.get('jobType')?.touched">
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Internship">Internship</option>
+                <option value="Government">Government</option>
+                <option value="Banking">Banking</option>
+                <option value="IT/Software">IT/Software</option>
+                <option value="Walk-in">Walk-in</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="createJobForm.get('jobType')?.invalid && createJobForm.get('jobType')?.touched">
+                Job type is required
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <!-- Created Date -->
+            <div class="col-md-6 mb-3">
+              <label for="createdDate" class="form-label"><i class="bi bi-calendar-plus me-1"></i>Created Date *</label>
+              <input type="date" class="form-control" formControlName="createdDate"
+                     [class.is-invalid]="createJobForm.get('createdDate')?.invalid && createJobForm.get('createdDate')?.touched">
+              <div class="invalid-feedback" *ngIf="createJobForm.get('createdDate')?.invalid && createJobForm.get('createdDate')?.touched">
+                Created date is required
+              </div>
+            </div>
+            
+            <!-- Last Date to Apply -->
+            <div class="col-md-6 mb-3">
+              <label for="lastDate" class="form-label"><i class="bi bi-calendar-x me-1"></i>Last Date to Apply *</label>
+              <input type="date" class="form-control" formControlName="lastDate"
+                     [class.is-invalid]="createJobForm.get('lastDate')?.invalid && createJobForm.get('lastDate')?.touched">
+              <div class="invalid-feedback" *ngIf="createJobForm.get('lastDate')?.invalid && createJobForm.get('lastDate')?.touched">
+                Last date to apply is required
+              </div>
+            </div>
+          </div>
+          
+          <!-- Job Content with Quill Editor -->
+          <div class="mb-3">
+            <label for="content" class="form-label"><i class="bi bi-file-text me-1"></i>Job Description & Requirements *</label>
+            <quill-editor 
+              formControlName="content"
+              [style]="{height: '300px'}"
+              [modules]="{
+                toolbar: [
+                  ['bold', 'italic', 'underline'],
+                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  [{ 'header': [1, 2, 3, false] }],
+                  ['link'],
+                  ['clean']
+                ]
+              }"
+              placeholder="Enter detailed job description, requirements, salary, benefits, etc."
+              [class.is-invalid]="createJobForm.get('content')?.invalid && createJobForm.get('content')?.touched">
+            </quill-editor>
+            <div class="invalid-feedback d-block" *ngIf="createJobForm.get('content')?.invalid && createJobForm.get('content')?.touched">
+              Job description is required
+            </div>
+            <small class="text-muted">Use the rich text editor to format your job posting with headings, lists, and styling.</small>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" (click)="closeCreateJobModal()">
+            <i class="bi bi-x-circle me-1"></i> Cancel
+          </button>
+          <button type="submit" class="btn btn-success" [disabled]="createJobForm.invalid || isCreatingJob">
+            <span class="spinner-border spinner-border-sm me-2" *ngIf="isCreatingJob"></span>
+            <i class="bi bi-check-circle me-1" *ngIf="!isCreatingJob"></i>
+            {{ isCreatingJob ? 'Creating Job...' : 'Create Job Posting' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- View Job Modal -->
+<div class="modal fade show" [class.d-block]="showViewModal" [style.background]="showViewModal ? 'rgba(0,0,0,0.5)' : 'none'" tabindex="-1" *ngIf="showViewModal && selectedJob">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title">
+          <i class="bi bi-briefcase me-2"></i>
+          {{ selectedJob.jobTitle || selectedJob.title }}
+          <span class="badge bg-light text-dark ms-2" *ngIf="selectedJob.company">{{ selectedJob.company }}</span>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeViewJobModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3" *ngIf="selectedJob.subtitle">
+          <div class="col-12">
+            <h6 class="text-muted">{{ selectedJob.subtitle }}</h6>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <strong><i class="bi bi-tags me-1"></i>Job Type:</strong><br>
+            <span class="badge bg-primary">{{ selectedJob.jobType || selectedJob.type }}</span>
+          </div>
+          <div class="col-md-4">
+            <strong><i class="bi bi-calendar-plus me-1"></i>Created Date:</strong><br>
+            {{ formatDate(selectedJob.createdDate || selectedJob.createdAt || selectedJob.postedAt) }}
+          </div>
+          <div class="col-md-4">
+            <strong><i class="bi bi-calendar-x me-1"></i>Last Date:</strong><br>
+            {{ formatDate(selectedJob.applyLastDate || selectedJob.lastDate) }}
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <strong><i class="bi bi-person me-1"></i>Created By:</strong> {{ selectedJob.createdBy }}
+          </div>
+          <div class="col-md-6" *ngIf="selectedJob.contact">
+            <strong><i class="bi bi-envelope me-1"></i>Contact:</strong> {{ selectedJob.contact }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <strong><i class="bi bi-file-text me-1"></i>Job Description & Requirements:</strong>
+          <div class="border p-3 mt-2 bg-light rounded" [innerHTML]="selectedJob.qualifications || selectedJob.content">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeViewJobModal()">
+          <i class="bi bi-x-circle me-1"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+          <div class="col-md-6">
+            <strong>Contact:</strong> {{ selectedJob.contact }}
+          </div>
+          <div class="col-md-6">
+            <strong>Email:</strong> {{ selectedJob.email }}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeViewJobModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

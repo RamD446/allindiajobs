@@ -1,1 +1,69 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="text-center mb-4">
+    <h2 class="brand-name text-dark mb-2">AllIndianJobs</h2>
+    <p class="text-muted">Admin Login</p>
+  </div>
+  
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input 
+        type="email" 
+        class="form-control" 
+        id="email"
+        formControlName="email"
+        [class.is-invalid]="f['email'].invalid && f['email'].touched"
+        placeholder="Enter your email">
+      <div class="invalid-feedback" *ngIf="f['email'].invalid && f['email'].touched">
+        <div *ngIf="f['email'].errors?.['required']">Email is required</div>
+        <div *ngIf="f['email'].errors?.['email']">Please enter a valid email</div>
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <div class="input-group">
+        <input 
+          [type]="showPassword ? 'text' : 'password'" 
+          class="form-control" 
+          id="password"
+          formControlName="password"
+          [class.is-invalid]="f['password'].invalid && f['password'].touched"
+          placeholder="Enter your password">
+        <span class="input-group-text toggle-password" (click)="togglePasswordVisibility()">
+          <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+        </span>
+      </div>
+      <div class="invalid-feedback" *ngIf="f['password'].invalid && f['password'].touched">
+        <div *ngIf="f['password'].errors?.['required']">Password is required</div>
+        <div *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</div>
+      </div>
+    </div>
+    
+    <button 
+      type="submit" 
+      class="btn btn-primary w-100 btn-rounded"
+      [disabled]="loginForm.invalid || isLoading">
+      <span 
+        class="spinner-border spinner-border-sm me-2" 
+        role="status" 
+        *ngIf="isLoading">
+      </span>
+      {{ isLoading ? 'Logging in...' : 'Login' }}
+    </button>
+  </form>
+</div>
+
+<!-- Success Toast -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="successToast" class="toast" [class.show]="showSuccessToast" role="alert">
+    <div class="toast-header bg-success text-white">
+      <img src="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%23fff' d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.061L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z'/%3e%3c/svg%3e" class="rounded me-2" alt="Success" width="20" height="20">
+      <strong class="me-auto">Login Successful!</strong>
+      <button type="button" class="btn-close btn-close-white" (click)="hideSuccessToast()"></button>
+    </div>
+    <div class="toast-body">
+      🎉 Welcome to AllIndianJobs Admin Panel! Redirecting...
+    </div>
+  </div>
+</div>

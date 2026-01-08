@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read access to all documents
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Jobs collection specific rules
+    match /jobs/{jobId} {
+      allow read: if true;
+      allow write, update, delete: if request.auth != null;
+    }
+  }
+}

@@ -1,1 +1,93 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Quill Editor Styles */
+@import 'quill/dist/quill.snow.css';
+
+/* Custom Quill Editor Styling */
+.ql-toolbar {
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  background: #f8f9fa;
+}
+
+.ql-container {
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ql-editor {
+  min-height: 200px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ql-editor.ql-blank::before {
+  color: #999;
+  font-style: italic;
+}
+
+/* Modal Improvements */
+.modal-xl {
+  max-width: 1200px;
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Form Enhancements */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Button Enhancements */
+.btn-success {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  border: none;
+}
+
+.btn-success:hover {
+  background: linear-gradient(45deg, #218838, #1fa085);
+  transform: translateY(-1px);
+}
+
+/* Job Listing Improvements */
+.table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  border-top: none;
+}
+
+.job-actions .btn {
+  margin: 0 2px;
+}
+
+.badge {
+  font-size: 0.75em;
+  padding: 0.35em 0.65em;
+}
+
+/* Animation */
+.modal.show {
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

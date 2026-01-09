@@ -7,9 +7,11 @@ import { BankingFinanceJobsComponent } from './components/banking-finance-jobs/b
 import { WalkInDriveJobsComponent } from './components/walk-in-drive-jobs/walk-in-drive-jobs.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { JobDetailComponent } from './components/job-detail/job-detail.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'job/:id', component: JobDetailComponent },
   { path: 'all-latest-jobs', component: AllLatestJobsComponent },
   { path: 'government-jobs', component: GovernmentJobsComponent },
   { path: 'it-software-jobs', component: ItSoftwareJobsComponent },

@@ -54,7 +54,7 @@
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-bell"></i> All Job Notifications</h5>
-        <button class="btn btn-success btn-sm" (click)="openCreateJobModal()">
+        <button class="btn btn-success btn-sm" (click)="openCreateModal()">
           <i class="bi bi-plus-circle me-1"></i> Create Job
         </button>
       </div>
@@ -79,7 +79,8 @@
               <tr>
                 <th>S.No</th>
                 <th>Job Title</th>
-                <th>Job Type</th>
+                <th>Category</th>
+                <th>Type</th>
                 <th>Posted Date</th>
                 <th>Last Date</th>
                 <th>Actions</th>
@@ -95,11 +96,12 @@
                     <div class="text-muted small" *ngIf="job.subtitle">{{ job.subtitle }}</div>
                   </div>
                 </td>
-                <td><span class="badge bg-primary">{{ job.jobType || job.type || 'General' }}</span></td>
+                <td><span class="badge bg-info">{{ job.jobCategory || job.category || 'General' }}</span></td>
+                <td><span class="badge bg-primary">{{ job.jobType || job.type || 'Full-time' }}</span></td>
                 <td>{{ formatDate(job.createdDate || job.createdAt || job.postedAt) }}</td>
                 <td>{{ formatDate(job.applyLastDate || job.lastDate) }}</td>
                 <td class="job-actions">
-                  <button class="btn btn-info btn-sm me-1" (click)="viewJob(job)">
+                  <button class="btn btn-info btn-sm me-1" (click)="openViewModal(job)">
                     <i class="bi bi-eye"></i>
                   </button>
                   <button class="btn btn-danger btn-sm" (click)="deleteJob(job.id)">
@@ -128,7 +130,7 @@
     <div class="modal-content">
       <div class="modal-header bg-success text-white">
         <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i> Create New Job Posting</h5>
-        <button type="button" class="btn-close btn-close-white" (click)="closeCreateJobModal()"></button>
+        <button type="button" class="btn-close btn-close-white" (click)="closeCreateModal()"></button>
       </div>
       <form [formGroup]="createJobForm" (ngSubmit)="onCreateJob()">
         <div class="modal-body">
@@ -171,13 +173,33 @@
                 <option value="Contract">Contract</option>
                 <option value="Freelance">Freelance</option>
                 <option value="Internship">Internship</option>
-                <option value="Government">Government</option>
-                <option value="Banking">Banking</option>
-                <option value="IT/Software">IT/Software</option>
-                <option value="Walk-in">Walk-in</option>
+                <option value="Temporary">Temporary</option>
               </select>
               <div class="invalid-feedback" *ngIf="createJobForm.get('jobType')?.invalid && createJobForm.get('jobType')?.touched">
                 Job type is required
+              </div>
+            </div>
+            
+            <!-- Job Category -->
+            <div class="col-md-6 mb-3">
+              <label for="jobCategory" class="form-label"><i class="bi bi-briefcase me-1"></i>Job Category *</label>
+              <select class="form-select" formControlName="jobCategory"
+                      [class.is-invalid]="createJobForm.get('jobCategory')?.invalid && createJobForm.get('jobCategory')?.touched">
+                <option value="Government">Government Jobs</option>
+                <option value="Banking">Banking/Finance Jobs</option>
+                <option value="IT/Software">IT/Software Jobs</option>
+                <option value="Healthcare">Healthcare Jobs</option>
+                <option value="Education">Education Jobs</option>
+                <option value="Sales/Marketing">Sales/Marketing Jobs</option>
+                <option value="Engineering">Engineering Jobs</option>
+                <option value="Administrative">Administrative Jobs</option>
+                <option value="Customer Service">Customer Service Jobs</option>
+                <option value="Manufacturing">Manufacturing Jobs</option>
+                <option value="Walk-in">Walk-in Drive Jobs</option>
+                <option value="Other">Other Jobs</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="createJobForm.get('jobCategory')?.invalid && createJobForm.get('jobCategory')?.touched">
+                Job category is required
               </div>
             </div>
           </div>
@@ -221,7 +243,7 @@
           </div>
         </div>
         <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-secondary" (click)="closeCreateJobModal()">
+          <button type="button" class="btn btn-secondary" (click)="closeCreateModal()">
             <i class="bi bi-x-circle me-1"></i> Cancel
           </button>
           <button type="submit" class="btn btn-success" [disabled]="createJobForm.invalid || isCreatingJob">
@@ -245,7 +267,7 @@
           {{ selectedJob.jobTitle || selectedJob.title }}
           <span class="badge bg-light text-dark ms-2" *ngIf="selectedJob.company">{{ selectedJob.company }}</span>
         </h5>
-        <button type="button" class="btn-close btn-close-white" (click)="closeViewJobModal()"></button>
+        <button type="button" class="btn-close btn-close-white" (click)="closeViewModal()"></button>
       </div>
       <div class="modal-body">
         <div class="row mb-3" *ngIf="selectedJob.subtitle">
@@ -283,7 +305,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeViewJobModal()">
+        <button type="button" class="btn btn-secondary" (click)="closeViewModal()">
           <i class="bi bi-x-circle me-1"></i> Close
         </button>
       </div>

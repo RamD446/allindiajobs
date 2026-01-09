@@ -38,6 +38,7 @@ export class AdminComponent implements OnInit {
       subtitle: [''],
       company: ['', [Validators.required]],
       jobType: ['Full-time', [Validators.required]],
+      jobCategory: ['Government', [Validators.required]],
       createdDate: [this.getCurrentDate(), [Validators.required]],
       lastDate: ['', [Validators.required]],
       content: ['', [Validators.required]]
@@ -45,72 +46,96 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Admin component initialized');
-    
-    // Check session storage first for immediate user data
+    console.log('Admin component initialized - loading data immediately');
+    this.initializeAdminPanel();
+  }
+
+  private async initializeAdminPanel() {
+    // Check session storage first
     const sessionUser = this.getSessionUser();
     if (sessionUser) {
-      console.log('User found in session, loading data immediately...');
+      console.log('Session user found, setting up admin panel...');
       this.currentUser = {
         uid: sessionUser.uid,
         email: sessionUser.email,
         displayName: sessionUser.displayName
       };
-      this.loadJobs();
+      this.loadJobsImmediately();
+      return;
     }
     
-    // Wait for auth to initialize properly as backup
-    setTimeout(() => {
-      if (this.auth.currentUser && !this.currentUser) {
-        console.log('User authenticated via Firebase, loading data...');
-        this.currentUser = this.auth.currentUser;
-        this.storeUserSession(this.auth.currentUser);
-        this.loadJobs();
-      }
-    }, 100);
+    // Check Firebase auth as backup
+    if (this.auth.currentUser) {
+      console.log('Firebase user found, setting up admin panel...');
+      this.currentUser = this.auth.currentUser;
+      this.storeUserSession(this.auth.currentUser);
+      this.loadJobsImmediately();
+      return;
+    }
     
-    // Also listen for auth state changes
+    // Wait a moment for Firebase to initialize
     onAuthStateChanged(this.auth, (user: any) => {
-      console.log('Auth state changed:', user);
-      if (user && !this.currentUser) {
-        console.log('User authenticated, loading admin dashboard...');
+      if (user) {
+        console.log('Auth state changed - user found, loading panel...');
         this.currentUser = user;
         this.storeUserSession(user);
-        this.loadJobs();
-      } else if (!user && !this.getSessionUser()) {
-        console.log('User is not authenticated, redirecting to login...');
-        this.currentUser = null;
-        this.clearSession();
+        this.loadJobsImmediately();
+      } else if (!this.getSessionUser()) {
+        console.log('No authenticated user found, redirecting to login...');
         this.router.navigate(['/login']);
       }
     });
   }
 
-  onLoginSuccess(user: any) {
-    this.currentUser = user;
-    this.loadJobs();
-  }
-
-  async logout() {
-    try {
-      // Clear session storage first
-      this.clearSession();
+  private loadJobsImmediately() {
+    console.log('Loading jobs immediately from Firebase...');
+    const jobsRef = ref(this.db, 'jobs');
+    
+    onValue(jobsRef, (snapshot: any) => {
+      console.log('Jobs data received:', snapshot.exists());
       
-      // Then sign out from Firebase
-      await signOut(this.auth);
-      console.log('Logout successful, navigating to login page...');
-      this.router.navigate(['/login']);
-    } catch (error: any) {
-      console.error('Logout error:', error);
-      // Even if Firebase logout fails, clear session and redirect
-      this.clearSession();
-      this.router.navigate(['/login']);
-    }
-  }
-
-  private getCurrentDate(): string {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
+      // Reset data
+      this.jobs = [];
+      this.totalJobs = 0;
+      this.todayJobs = 0;
+      this.activeJobs = 0;
+      
+      if (snapshot.exists()) {
+        const jobsData = snapshot.val();
+        const today = new Date().toISOString().split('T')[0];
+        
+        // Process all jobs
+        Object.keys(jobsData).forEach((key) => {
+          const job = { id: key, ...jobsData[key] };
+          this.jobs.push(job);
+        });
+        
+        // Sort by creation date (newest first)
+        this.jobs.sort((a: any, b: any) => {
+          const dateA = new Date(a.createdDate || a.createdAt || a.postedAt).getTime();
+          const dateB = new Date(b.createdDate || b.createdAt || b.postedAt).getTime();
+          return dateB - dateA;
+        });
+        
+        // Calculate stats
+        this.totalJobs = this.jobs.length;
+        this.todayJobs = this.jobs.filter(job => {
+          const jobDate = (job.createdDate || job.createdAt || job.postedAt);
+          return jobDate && jobDate.startsWith(today);
+        }).length;
+        
+        this.activeJobs = this.jobs.filter(job => {
+          const lastDate = new Date(job.lastDate || job.applyLastDate);
+          return lastDate >= new Date();
+        }).length;
+        
+        console.log(`Loaded ${this.totalJobs} jobs, ${this.todayJobs} today, ${this.activeJobs} active`);
+      } else {
+        console.log('No jobs found in database');
+      }
+    }, (error) => {
+      console.error('Error loading jobs:', error);
+    });
   }
 
   // Session storage methods
@@ -153,125 +178,58 @@ export class AdminComponent implements OnInit {
     sessionStorage.removeItem('auth_status');
   }
 
-  loadJobs() {
-    console.log('Loading jobs from Firebase...');
-    
-    // Ensure user is authenticated (check both current user and session)
-    const sessionUser = this.getSessionUser();
-    if (!this.currentUser && !this.auth.currentUser && !sessionUser) {
-      console.log('No authenticated user, cannot load jobs');
-      this.router.navigate(['/login']);
-      return;
-    }
-    
-    // Set current user if not already set
-    if (!this.currentUser) {
-      if (this.auth.currentUser) {
-        this.currentUser = this.auth.currentUser;
-      } else if (sessionUser) {
-        this.currentUser = {
-          uid: sessionUser.uid,
-          email: sessionUser.email,
-          displayName: sessionUser.displayName
-        };
-      }
-    }
-    
+  private getCurrentDate(): string {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  }
+
+  async logout() {
     try {
-      const jobsRef = ref(this.db, 'jobs');
-      
-      // Clear existing data first
-      this.jobs = [];
-      this.totalJobs = 0;
-      this.todayJobs = 0;
-      this.activeJobs = 0;
-      
-      onValue(jobsRef, (snapshot: any) => {
-        console.log('Jobs data received from Firebase:', snapshot.exists());
-        
-        this.jobs = [];
-        let totalJobs = 0;
-        let todayJobs = 0;
-        let activeJobs = 0;
-        const today = new Date().toDateString();
-
-        if (snapshot.exists()) {
-          const jobsData = snapshot.val();
-          console.log('Processing jobs data:', Object.keys(jobsData).length, 'jobs found');
-          
-          Object.keys(jobsData).forEach((key) => {
-            const job = { id: key, ...jobsData[key] } as any;
-            this.jobs.push(job);
-            
-            const jobDate = new Date(job.createdAt || job.postedAt);
-            const lastDate = new Date(job.applyLastDate || job.lastDate);
-            const isActive = lastDate >= new Date();
-
-            totalJobs++;
-            if (jobDate.toDateString() === today) todayJobs++;
-            if (isActive) activeJobs++;
-          });
-          
-          // Sort jobs by creation date (newest first)
-          this.jobs.sort((a, b) => {
-            const dateA = new Date(a.createdAt || a.postedAt).getTime();
-            const dateB = new Date(b.createdAt || b.postedAt).getTime();
-            return dateB - dateA;
-          });
-        } else {
-          console.log('No jobs found in database');
-        }
-
-        // Update counts immediately
-        this.totalJobs = totalJobs;
-        this.todayJobs = todayJobs;
-        this.activeJobs = activeJobs;
-        
-        console.log('Jobs loaded successfully:', {
-          total: this.totalJobs,
-          today: this.todayJobs,
-          active: this.activeJobs,
-          jobs: this.jobs.length
-        });
-        
-        // Force change detection
-        setTimeout(() => {
-          console.log('Final job counts:', {
-            total: this.totalJobs,
-            today: this.todayJobs,
-            active: this.activeJobs
-          });
-        }, 100);
-        
-      }, (error: any) => {
-        console.error('Firebase onValue error:', error);
-        // Set default values on error
-        this.jobs = [];
-        this.totalJobs = 0;
-        this.todayJobs = 0;
-        this.activeJobs = 0;
-      });
-    } catch (error: any) {
-      console.error('Error setting up jobs listener:', error);
-      // Set default values on error
-      this.jobs = [];
-      this.totalJobs = 0;
-      this.todayJobs = 0;
-      this.activeJobs = 0;
+      await signOut(this.auth);
+      this.clearSession();
+      console.log('Logout successful');
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if Firebase logout fails, clear session and redirect
+      this.clearSession();
+      this.router.navigate(['/login']);
     }
   }
 
-  async deleteJob(jobId: string) {
-    if (confirm('Are you sure you want to delete this job?')) {
+  async deleteJob(jobId: string, jobTitle?: string) {
+    const title = jobTitle || 'this job';
+    if (confirm(`Are you sure you want to delete "${title}"?`)) {
       try {
         const jobRef = ref(this.db, `jobs/${jobId}`);
         await remove(jobRef);
+        
+        // Remove from local array immediately for instant UI update
+        this.jobs = this.jobs.filter(job => job.id !== jobId);
+        this.updateJobStats();
+        
+        console.log(`Job ${jobId} deleted successfully`);
         alert('Job deleted successfully!');
       } catch (error: any) {
         console.error('Error deleting job:', error);
         alert('Error deleting job: ' + error.message);
       }
     }
+  }
+  
+  private updateJobStats() {
+    const today = new Date().toISOString().split('T')[0];
+    
+    this.totalJobs = this.jobs.length;
+    this.todayJobs = this.jobs.filter(job => {
+      const jobDate = (job.createdDate || job.createdAt || job.postedAt);
+      return jobDate && jobDate.startsWith(today);
+    }).length;
+    
+    this.activeJobs = this.jobs.filter(job => {
+      const lastDate = new Date(job.lastDate || job.applyLastDate);
+      return lastDate >= new Date();
+    }).length;
   }
 
   formatDate(dateValue: string | number): string {
@@ -282,50 +240,67 @@ export class AdminComponent implements OnInit {
   }
 
   // Modal functions
-  openCreateJobModal() {
+  openCreateModal() {
     this.showCreateModal = true;
     this.createJobForm.reset();
+    this.createJobForm.patchValue({
+      jobType: 'Full-time',
+      jobCategory: 'Government',
+      createdDate: this.getCurrentDate()
+    });
   }
 
-  closeCreateJobModal() {
+  closeCreateModal() {
     this.showCreateModal = false;
     this.createJobForm.reset();
+    this.isCreatingJob = false;
   }
 
-  viewJob(job: any) {
+  openViewModal(job: any) {
     this.selectedJob = job;
     this.showViewModal = true;
   }
 
-  closeViewJobModal() {
+  closeViewModal() {
     this.showViewModal = false;
     this.selectedJob = null;
   }
 
   async onCreateJob() {
-    if (this.createJobForm.valid) {
+    if (this.createJobForm.valid && !this.isCreatingJob) {
       this.isCreatingJob = true;
       
       try {
         const formData = this.createJobForm.value;
         const jobData = {
-          jobTitle: formData.title,
+          title: formData.title,
           subtitle: formData.subtitle || '',
           company: formData.company,
           jobType: formData.jobType,
+          jobCategory: formData.jobCategory,
+          category: formData.jobCategory,
+          lastDate: formData.lastDate,
           applyLastDate: formData.lastDate,
           createdDate: formData.createdDate,
+          content: formData.content,
           qualifications: formData.content,
-          email: this.currentUser?.email || 'Unknown',
-          contact: this.currentUser?.email || 'Unknown',
-          createdBy: this.currentUser?.email || 'Unknown',
-          createdAt: Date.now()
+          email: this.currentUser?.email || 'admin@allindiajobs.com',
+          contact: this.currentUser?.email || 'admin@allindiajobs.com',
+          createdBy: this.currentUser?.email || 'Admin',
+          createdAt: new Date().toISOString(),
+          postedAt: formData.createdDate
         };
 
         const jobsRef = ref(this.db, 'jobs');
-        await push(jobsRef, jobData);
+        const newJobRef = await push(jobsRef, jobData);
         
-        this.closeCreateJobModal();
+        // Add to local array immediately for instant UI update
+        const newJob = { id: newJobRef.key, ...jobData };
+        this.jobs.unshift(newJob); // Add to beginning
+        this.updateJobStats();
+        
+        console.log('Job created successfully');
+        this.closeCreateModal();
         alert('Job created successfully!');
       } catch (error: any) {
         console.error('Error creating job:', error);

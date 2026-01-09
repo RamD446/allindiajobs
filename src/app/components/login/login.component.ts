@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../config/firebase.config';
 
 @Component({
@@ -29,62 +29,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Check session storage first
-    const sessionUser = this.getSessionUser();
-    if (sessionUser) {
-      console.log('User found in session, navigating to admin...');
-      this.router.navigate(['/admin']);
-      return;
-    }
-
-    // Check if user is already logged in and redirect to admin
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-        console.log('User already authenticated, storing in session and navigating to admin...');
-        this.storeUserSession(user);
-        this.router.navigate(['/admin']);
-      }
-    });
-  }
-
-  // Session storage methods
-  private storeUserSession(user: any) {
-    const userData = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      timestamp: Date.now()
-    };
-    sessionStorage.setItem('auth_user', JSON.stringify(userData));
-    sessionStorage.setItem('auth_status', 'authenticated');
-  }
-
-  private getSessionUser() {
-    try {
-      const userStr = sessionStorage.getItem('auth_user');
-      const authStatus = sessionStorage.getItem('auth_status');
-      
-      if (userStr && authStatus === 'authenticated') {
-        const userData = JSON.parse(userStr);
-        // Check if session is not too old (24 hours)
-        const sessionAge = Date.now() - userData.timestamp;
-        if (sessionAge < 24 * 60 * 60 * 1000) {
-          return userData;
-        } else {
-          // Session expired, clear it
-          this.clearSession();
-        }
-      }
-    } catch (error) {
-      console.error('Error reading session:', error);
-      this.clearSession();
-    }
-    return null;
-  }
-
-  private clearSession() {
-    sessionStorage.removeItem('auth_user');
-    sessionStorage.removeItem('auth_status');
+    // Component initialization - login form ready
   }
 
   togglePasswordVisibility() {
@@ -101,14 +46,16 @@ export class LoginComponent implements OnInit {
         const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
         console.log('Login successful:', userCredential.user);
         
-        // Store user in session
+        // Store user in session storage for persistence
         this.storeUserSession(userCredential.user);
         
         // Show success toast
         this.showSuccessToast = true;
         
-        // Navigate to admin page immediately
-        this.router.navigate(['/admin']);
+        // Navigate to admin panel
+        setTimeout(() => {
+          this.router.navigate(['/admin']);
+        }, 1500);
         
         // Hide toast after navigation
         setTimeout(() => {
@@ -149,6 +96,18 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
       }
     }
+  }
+
+  // Session storage methods
+  private storeUserSession(user: any) {
+    const userData = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      timestamp: Date.now()
+    };
+    sessionStorage.setItem('auth_user', JSON.stringify(userData));
+    sessionStorage.setItem('auth_status', 'authenticated');
   }
 
   // Getter for easy access to form controls in template

@@ -1,0 +1,212 @@
+<div class="login-container">
+  <!-- Initial Authentication Check Loading -->
+  <div *ngIf="isLoading" class="auth-check-loading">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+          <div class="loading-card">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3 mb-0 text-muted">{{ isLoggedIn ? 'Loading dashboard...' : 'Checking authentication status...' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Form -->
+  <div *ngIf="!isLoggedIn && !isLoading" class="login-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+          <div class="login-card position-relative">
+            <!-- Loading Overlay -->
+            <div *ngIf="isLoading" class="loading-overlay">
+              <div class="spinner-container">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 mb-0">Authenticating...</p>
+              </div>
+            </div>
+            
+            <div class="text-center mb-4">
+              <h2 class="text-primary">Admin Login</h2>
+              <p class="text-muted">Access Job Management System</p>
+            </div>
+            
+            <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email" 
+                  [(ngModel)]="email" 
+                  name="email" 
+                  required 
+                  placeholder="Enter your email">
+              </div>
+              
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="password" 
+                  [(ngModel)]="password" 
+                  name="password" 
+                  required 
+                  placeholder="Enter your password">
+              </div>
+              
+              <div class="alert alert-danger" *ngIf="loginError">
+                {{ loginError }}
+              </div>
+              
+              <button type="submit" class="btn btn-primary w-100" [disabled]="!loginForm.valid || isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span *ngIf="isLoading">Logging in...</span>
+                <span *ngIf="!isLoading">Login</span>
+              </button>
+            </form>
+            
+            <div class="mt-3 text-center">
+              <small class="text-muted">Use your registered email and password</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Job Management Dashboard -->
+  <div *ngIf="isLoggedIn" class="job-management-section">
+    <div class="container-fluid py-4">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="text-primary mb-0">Job Management System</h2>
+          <p class="text-muted mb-0">Welcome, {{ currentUser?.email || currentUser?.displayName }}</p>
+        </div>
+        <div>
+          <button class="btn btn-success me-2" (click)="showCreateForm()">
+            <i class="bi bi-plus-circle me-1"></i>Create New Job
+          </button>
+          <button class="btn btn-outline-danger" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-1"></i>Logout
+          </button>
+        </div>
+      </div>
+
+      <!-- Job Form Modal -->
+      <div *ngIf="showJobForm" class="job-form-modal">
+        <div class="job-form-content">
+          <div class="job-form-header">
+            <h4 class="mb-0">{{ editingJob ? 'Edit Job' : 'Create New Job' }}</h4>
+            <button class="btn-close" (click)="cancelJobForm()"></button>
+          </div>
+          
+          <form (ngSubmit)="saveJob()" #jobFormRef="ngForm" class="job-form-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Job Title *</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Company Name *</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" required>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Category *</label>
+                <select class="form-control" [(ngModel)]="jobForm.category" name="category" required>
+                  <option *ngFor="let category of jobCategories" [value]="category">{{ category }}</option>
+                </select>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Job Type *</label>
+                <select class="form-control" [(ngModel)]="jobForm.type" name="type" required>
+                  <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
+                </select>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Location *</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.location" name="location" required>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Last Date to Apply *</label>
+                <input type="date" class="form-control" [(ngModel)]="jobForm.lastDate" name="lastDate" required>
+              </div>
+              
+              <div class="col-12 mb-3">
+                <label class="form-label">Job Description *</label>
+                <textarea class="form-control" rows="4" [(ngModel)]="jobForm.description" name="description" required></textarea>
+              </div>
+            </div>
+            
+            <div class="job-form-footer">
+              <button type="button" class="btn btn-secondary me-2" (click)="cancelJobForm()" [disabled]="isSaving">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="!jobFormRef.valid || isSaving">
+                <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span *ngIf="isSaving">{{ editingJob ? 'Updating...' : 'Creating...' }}</span>
+                <span *ngIf="!isSaving">{{ editingJob ? 'Update Job' : 'Create Job' }}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Jobs List -->
+      <div class="jobs-section">
+        <div class="jobs-header mb-3 d-flex justify-content-between align-items-center">
+          <h4 class="text-primary mb-0">All Jobs ({{ jobs.length }})</h4>
+          <small class="text-muted">Compact View</small>
+        </div>
+        
+        <div class="row" *ngIf="jobs.length > 0">
+          <div class="col-12 mb-4" *ngFor="let job of jobs">
+            <div class="job-card-compact">
+              <div class="job-header-compact">
+                <div class="job-info">
+                  <h6 class="job-title-small">{{ job.title }}</h6>
+                  <small class="job-company-small">
+                    <i class="bi bi-building me-1"></i>{{ job.company }} • {{ job.location }}
+                  </small>
+                </div>
+                <div class="job-actions-small">
+                  <button class="btn btn-sm btn-outline-primary me-1" (click)="editJob(job)" title="Edit">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteJob(job.id)" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="job-body-compact">
+                <div class="job-badges-small">
+                  <span class="badge bg-primary me-1">{{ job.category }}</span>
+                  <span class="badge bg-success me-1">{{ job.type }}</span>
+                  <span class="badge bg-info">{{ job.lastDate }}</span>
+                </div>
+                <p class="job-desc-small">{{ job.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="jobs.length === 0" class="text-center py-4">
+          <i class="bi bi-inbox display-4 text-muted"></i>
+          <h5 class="mt-3 text-muted">No Jobs Available</h5>
+          <p class="text-muted">Create your first job posting to get started.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

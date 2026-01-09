@@ -1,0 +1,184 @@
+<div class="job-detail-container" *ngIf="job">
+  <div class="container-fluid">
+    <!-- Back Button -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <button class="btn btn-outline-secondary btn-back" (click)="goBack()">
+          <i class="fas fa-arrow-left me-2"></i>
+          Back to Jobs
+        </button>
+      </div>
+    </div>
+
+    <!-- Job Detail Header -->
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="job-detail-card">
+          <!-- Job Header -->
+          <div class="job-header">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <h1 class="job-title">{{ job.title }}</h1>
+                <h2 class="company-name">{{ job.company }}</h2>
+              </div>
+              <div class="job-actions-header">
+                <button class="btn btn-outline-primary btn-sm me-2" (click)="shareJob(job)">
+                  <i class="fas fa-share-alt me-1"></i>
+                  Share
+                </button>
+                <button class="btn btn-outline-success btn-sm" (click)="saveJob(job)">
+                  <i class="fas fa-bookmark me-1"></i>
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <!-- Job Meta Information -->
+            <div class="job-meta-info">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="meta-item">
+                    <i class="fas fa-briefcase me-2 text-primary"></i>
+                    <span class="meta-label">Job Type:</span>
+                    <span class="badge ms-2" [ngClass]="getJobTypeClass(job.type)">{{ job.type }}</span>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="meta-item">
+                    <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+                    <span class="meta-label">Location:</span>
+                    <span class="meta-value">{{ job.location }}</span>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="meta-item">
+                    <i class="fas fa-tag me-2 text-info"></i>
+                    <span class="meta-label">Category:</span>
+                    <span class="meta-value">{{ job.category }}</span>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="meta-item">
+                    <i class="fas fa-calendar-alt me-2 text-warning"></i>
+                    <span class="meta-label">Posted on:</span>
+                    <span class="meta-value">{{ formatDate(job.createdDate) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Job Description -->
+          <div class="job-content">
+            <h3 class="section-title">
+              <i class="fas fa-file-alt me-2"></i>
+              Job Description
+            </h3>
+            <div class="job-description">
+              {{ job.description }}
+            </div>
+          </div>
+
+          <!-- How to Apply Section -->
+          <div class="how-to-apply">
+            <h3 class="section-title">
+              <i class="fas fa-question-circle me-2"></i>
+              How to Apply
+            </h3>
+            <div class="apply-instructions">
+              <p>To apply for this position:</p>
+              <ul>
+                <li>Click the "Apply Now" button below</li>
+                <li>Prepare your updated resume</li>
+                <li>Write a compelling cover letter</li>
+                <li>Follow the application instructions carefully</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="job-sidebar">
+          <!-- Application Deadline -->
+          <div class="deadline-card">
+            <div class="deadline-header">
+              <i class="fas fa-clock me-2"></i>
+              Application Deadline
+            </div>
+            <div class="deadline-date">
+              {{ formatDate(job.lastDate) }}
+            </div>
+            <div class="deadline-status" [ngClass]="getStatusClass(getDaysLeft(job.lastDate))">
+              <i class="fas fa-exclamation-triangle me-1"></i>
+              {{ getStatusText(getDaysLeft(job.lastDate)) }}
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions-card">
+            <h4 class="card-title">
+              <i class="fas fa-bolt me-2"></i>
+              Quick Actions
+            </h4>
+            <div class="action-buttons">
+              <button class="btn btn-primary btn-lg w-100 mb-3" (click)="applyForJob(job)">
+                <i class="fas fa-paper-plane me-2"></i>
+                Apply Now
+              </button>
+              <button class="btn btn-outline-success w-100 mb-2" (click)="saveJob(job)">
+                <i class="fas fa-bookmark me-2"></i>
+                Save for Later
+              </button>
+              <button class="btn btn-outline-info w-100" (click)="shareJob(job)">
+                <i class="fas fa-share-alt me-2"></i>
+                Share with Friends
+              </button>
+            </div>
+          </div>
+
+          <!-- Company Info -->
+          <div class="company-info-card">
+            <h4 class="card-title">
+              <i class="fas fa-building me-2"></i>
+              About Company
+            </h4>
+            <div class="company-details">
+              <h5>{{ job.company }}</h5>
+              <p class="text-muted">
+                {{ job.company }} is a leading organization in the industry, 
+                committed to excellence and providing great career opportunities.
+              </p>
+              <div class="company-stats">
+                <div class="stat-item">
+                  <i class="fas fa-users me-2 text-primary"></i>
+                  <span>500+ Employees</span>
+                </div>
+                <div class="stat-item">
+                  <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+                  <span>{{ job.location }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Job Not Found State -->
+<div class="job-not-found" *ngIf="!job">
+  <div class="container text-center">
+    <div class="not-found-content">
+      <i class="fas fa-search fa-5x text-muted mb-4"></i>
+      <h2 class="mb-3">Job Not Found</h2>
+      <p class="text-muted mb-4">The job you're looking for doesn't exist or has been removed.</p>
+      <a routerLink="/all-latest-jobs" class="btn btn-primary">
+        <i class="fas fa-arrow-left me-2"></i>
+        Back to All Jobs
+      </a>
+    </div>
+  </div>
+</div>

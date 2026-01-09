@@ -1,0 +1,186 @@
+<div class="job-category-container">
+  <div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="category-header text-center mb-5">
+      <h1 class="display-4 text-primary mb-3">{{ categoryTitle }}</h1>
+      <p class="lead text-muted">Find the best job opportunities in {{ categoryTitle.toLowerCase() }}</p>
+      <div class="header-divider"></div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading jobs...</span>
+      </div>
+      <p class="mt-3 text-muted">Loading available positions...</p>
+    </div>
+
+    <!-- Jobs List -->
+    <div *ngIf="!isLoading && filteredJobs.length > 0" class="jobs-section">
+      <!-- New Jobs Section -->
+      <div class="new-jobs-section mb-5" *ngIf="getNewJobs().length > 0">
+        <div class="section-header mb-4">
+          <h3 class="text-success">
+            <i class="fas fa-star me-2"></i>New Job Openings
+            <span class="badge bg-success ms-2">{{ getNewJobs().length }}</span>
+          </h3>
+          <p class="text-muted">Latest job opportunities added recently</p>
+        </div>
+        
+        <div class="jobs-grid">
+          <div class="job-item" *ngFor="let job of getNewJobs()">
+            <div class="job-item-content">
+              <div class="job-header">
+                <div class="job-title-section">
+                  <h5 class="job-title">{{ job.title }}</h5>
+                  <span class="job-type-badge new" [ngClass]="getJobTypeClass(job.type)">
+                    {{ job.type }}
+                  </span>
+                  <span class="new-badge">NEW</span>
+                </div>
+                <div class="job-date">
+                  <i class="fas fa-calendar-alt me-1"></i>
+                  {{ formatDate(job.createdDate) }}
+                </div>
+              </div>
+              
+              <div class="job-details">
+                <div class="company-location">
+                  <div class="company">
+                    <i class="fas fa-building me-1"></i>
+                    <strong>{{ job.company }}</strong>
+                  </div>
+                  <div class="location">
+                    <i class="fas fa-map-marker-alt me-1"></i>
+                    {{ job.location }}
+                  </div>
+                </div>
+                
+                <p class="job-description">
+                  {{ job.description.length > 150 ? job.description.substring(0, 150) + '...' : job.description }}
+                </p>
+                
+                <div class="job-actions">
+                  <button class="btn btn-primary btn-sm" (click)="viewJobDetails(job)">
+                    <i class="fas fa-eye me-1"></i>View Details
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm" (click)="shareJob(job)">
+                    <i class="fas fa-share-alt me-1"></i>Share
+                  </button>
+                  <small class="text-muted ms-auto">
+                    Last Date: {{ formatDate(job.lastDate) }}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Other Jobs Section -->
+      <div class="all-jobs-section" *ngIf="getOtherJobs().length > 0">
+        <div class="section-header mb-4">
+          <h3 class="text-primary">
+            <i class="fas fa-briefcase me-2"></i>All Available Positions
+            <span class="badge bg-primary ms-2">{{ getOtherJobs().length }}</span>
+          </h3>
+          <p class="text-muted">Browse through all available job opportunities</p>
+        </div>
+        
+        <div class="jobs-grid">
+          <div class="job-item" *ngFor="let job of getOtherJobs()">
+            <div class="job-item-content">
+              <div class="job-header">
+                <div class="job-title-section">
+                  <h5 class="job-title">{{ job.title }}</h5>
+                  <span class="job-type-badge" [ngClass]="getJobTypeClass(job.type)">
+                    {{ job.type }}
+                  </span>
+                </div>
+                <div class="job-date">
+                  <i class="fas fa-calendar-alt me-1"></i>
+                  {{ formatDate(job.createdDate) }}
+                </div>
+              </div>
+              
+              <div class="job-details">
+                <div class="company-location">
+                  <div class="company">
+                    <i class="fas fa-building me-1"></i>
+                    <strong>{{ job.company }}</strong>
+                  </div>
+                  <div class="location">
+                    <i class="fas fa-map-marker-alt me-1"></i>
+                    {{ job.location }}
+                  </div>
+                </div>
+                
+                <p class="job-description">
+                  {{ job.description.length > 150 ? job.description.substring(0, 150) + '...' : job.description }}
+                </p>
+                
+                <div class="job-actions">
+                  <button class="btn btn-primary btn-sm" (click)="viewJobDetails(job)">
+                    <i class="fas fa-eye me-1"></i>View Details
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm" (click)="shareJob(job)">
+                    <i class="fas fa-share-alt me-1"></i>Share
+                  </button>
+                  <small class="text-muted ms-auto">
+                    Last Date: {{ formatDate(job.lastDate) }}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination or Load More -->
+      <div class="text-center mt-5" *ngIf="filteredJobs.length > 12">
+        <button class="btn btn-outline-primary">
+          <i class="bi bi-arrow-down me-2"></i>Load More Jobs
+        </button>
+      </div>
+    </div>
+
+    <!-- No Jobs State -->
+    <div *ngIf="!isLoading && filteredJobs.length === 0" class="text-center py-5">
+      <div class="no-jobs-illustration mb-4">
+        <i class="bi bi-briefcase display-1 text-muted"></i>
+      </div>
+      <h3 class="text-muted mb-3">No Jobs Available</h3>
+      <p class="text-muted mb-4">
+        Currently there are no job openings in {{ categoryTitle.toLowerCase() }}.<br>
+        Please check back later or explore other categories.
+      </p>
+      <a routerLink="/all-latest-jobs" class="btn btn-primary">
+        <i class="bi bi-arrow-left me-2"></i>View All Jobs
+      </a>
+    </div>
+
+    <!-- Statistics -->
+    <div *ngIf="!isLoading && filteredJobs.length > 0" class="job-stats mt-5">
+      <div class="row text-center">
+        <div class="col-md-4">
+          <div class="stat-card">
+            <h3 class="text-primary">{{ filteredJobs.length }}</h3>
+            <p class="text-muted mb-0">Active Jobs</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <h3 class="text-success">{{ getFreshJobsCount() }}</h3>
+            <p class="text-muted mb-0">Fresh Openings</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <h3 class="text-warning">{{ getUrgentJobsCount() }}</h3>
+            <p class="text-muted mb-0">Urgent Applications</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

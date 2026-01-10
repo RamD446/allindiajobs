@@ -8,5 +8,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
-
+  
+  openRdmWebtech() {
+    window.open('https://rdmwebtech.com', '_blank');
+  }
 }

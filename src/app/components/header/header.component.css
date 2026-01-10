@@ -1,39 +1,100 @@
-/* Navbar Base Styles */
+/* Custom Toggle Button */
+.custom-toggler {
+  background: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.custom-toggler:focus {
+  box-shadow: none;
+  border-color: #ffd700;
+}
+
+.custom-toggler i {
+  color: #fff;
+  font-size: 1.3rem;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.custom-toggler:hover {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.custom-toggler:hover i {
+  color: #ffd700;
+}
+
+/* Navbar */
 .navbar {
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  padding: 0.5rem 0;
+  padding: 0.3rem 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  min-height: 56px;
+  min-height: 50px;
 }
 
 .container-fluid {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
 }
 
 /* Logo Styles */
 .navbar-brand.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
   color: #fff !important;
   transition: transform 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+  text-decoration: none;
 }
 
 .navbar-brand.logo:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
-.logo-text {
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.logo-icon-wrapper {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  border-radius: 8px;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.logo-icon {
+  color: #1e3c72;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.logo-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.logo-main {
   color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
-.logo-accent {
+.logo-sub {
   color: #ffd700;
-  font-weight: 800;
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-top: -2px;
+  letter-spacing: 0.5px;
 }
 
 /* Nav Links */
@@ -175,10 +236,31 @@
 
 @media (max-width: 575.98px) {
   .container-fluid {
-    padding: 0 1rem;
+    padding: 0 0.8rem;
   }
 
   .navbar-collapse {
     width: 280px;
+  }
+  
+  .logo-container {
+    gap: 0.5rem;
+  }
+  
+  .logo-icon-wrapper {
+    padding: 0.3rem;
+    border-radius: 6px;
+  }
+  
+  .logo-icon {
+    font-size: 1rem;
+  }
+  
+  .logo-main {
+    font-size: 1.1rem;
+  }
+  
+  .logo-sub {
+    font-size: 0.65rem;
   }
 }

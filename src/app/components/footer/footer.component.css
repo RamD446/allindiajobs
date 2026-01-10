@@ -3,12 +3,22 @@ footer {
   color: white;
   padding: 0.5rem;
   text-align: center;
-  position: fixed;
-  bottom: 0;
   width: 100%;
 }
 
 footer p {
   margin: 0;
   font-size: 0.9rem;
+}
+
+.footer-link {
+  color: #ffd700;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
 }

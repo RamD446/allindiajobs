@@ -4,6 +4,35 @@
     <div class="category-header-mobile text-center mb-4">
       <h1 class="page-title-mobile">{{ categoryTitle }}</h1>
       <p class="page-subtitle-mobile">Find the best opportunities</p>
+      
+      <!-- Job Category Icons - Only show on All Latest Jobs page -->
+      <div class="job-category-icons" *ngIf="categoryTitle === 'All Latest Jobs'">
+        <div class="category-item" (click)="navigateToCategory('IT / Software Jobs')">
+          <i class="bi bi-laptop fire-icon"></i>
+          <span class="category-text">IT/Software</span>
+        </div>
+        <div class="category-item" (click)="navigateToCategory('Non-IT / BPO Jobs')">
+          <i class="bi bi-headset fire-icon"></i>
+          <span class="category-text">BPO/Non-IT</span>
+        </div>
+        <div class="category-item" (click)="navigateToCategory('Government Jobs')">
+          <i class="bi bi-bank fire-icon"></i>
+          <span class="category-text">Government</span>
+        </div>
+        <div class="category-item" (click)="navigateToCategory('All Private/ Bank Jobs')">
+          <i class="bi bi-building fire-icon"></i>
+          <span class="category-text">Private/Bank</span>
+        </div>
+        <div class="category-item" (click)="navigateToCategory('Walk-in Drive/Internships Jobs')">
+          <i class="bi bi-person-walking fire-icon"></i>
+          <span class="category-text">Walk-in</span>
+        </div>
+        <div class="category-item" (click)="navigateToCategory('Walk-in Drive/Internships Jobs')">
+          <i class="bi bi-mortarboard fire-icon"></i>
+          <span class="category-text">Internships</span>
+        </div>
+      </div>
+      
       <div class="header-divider-mobile"></div>
     </div>
 
@@ -17,14 +46,12 @@
 
     <!-- Jobs List -->
     <div *ngIf="!isLoading && filteredJobs.length > 0" class="jobs-section">
-      <!-- New Jobs Section -->
-      <div class="new-jobs-section mb-5" *ngIf="getNewJobs().length > 0">
-        <div class="section-header mb-4">
-          <h3 class="text-success">
-            <i class="fas fa-star me-2"></i>New Job Openings
+      <div class="new-jobs-section mb-4" *ngIf="getNewJobs().length > 0">
+        <div class="section-header mb-3">
+          <h5 class="text-success mb-2">
+            <i class="bi bi-star-fill me-1"></i>New Openings
             <span class="badge bg-success ms-2">{{ getNewJobs().length }}</span>
-          </h3>
-          
+          </h5>
         </div>
         
         <div class="jobs-grid-mobile">

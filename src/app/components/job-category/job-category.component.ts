@@ -171,4 +171,20 @@ export class JobCategoryComponent implements OnInit {
       return createdDate < sevenDaysAgo;
     }).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
   }
+
+  // Navigate to different job categories
+  navigateToCategory(category: string) {
+    const routeMapping: { [key: string]: string } = {
+      'IT / Software Jobs': 'it-software-jobs',
+      'Non-IT / BPO Jobs': 'non-it-bpo-jobs',
+      'Government Jobs': 'government-jobs',
+      'All Private/ Bank Jobs': 'private-bank-jobs',
+      'Walk-in Drive/Internships Jobs': 'walk-in-drive-jobs'
+    };
+
+    const route = routeMapping[category];
+    if (route) {
+      this.router.navigate([`/${route}`]);
+    }
+  }
 }

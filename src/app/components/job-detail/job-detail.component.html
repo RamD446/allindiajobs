@@ -1,173 +1,70 @@
-<div class="job-detail-container" *ngIf="job">
+<div class="job-detail-compact" *ngIf="job">
+
+
   <div class="container-fluid">
-    <!-- Back Button -->
-    <div class="row mb-4">
-      <div class="col-12">
-        <button class="btn btn-outline-secondary btn-back" (click)="goBack()">
-          <i class="fas fa-arrow-left me-2"></i>
-          Back to Jobs
-        </button>
-      </div>
-    </div>
-
-    <!-- Job Detail Header -->
-    <div class="row">
-      <div class="col-lg-8">
-        <div class="job-detail-card">
-          <!-- Job Header -->
-          <div class="job-header">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <h1 class="job-title">{{ job.title }}</h1>
-                <h2 class="company-name">{{ job.company }}</h2>
+      <div class="row">
+        <!-- Left Column: Job Title and Description -->
+        <div class="col-md-8">
+          <div class="job-main-info">
+            <h1 class="job-title-main">{{ job.title }}</h1>
+            <div class="job-description-main">
+              <h3>Job Description</h3>
+              <div class="description-text">
+                <ul class="description-points">
+                  <li *ngFor="let point of job.description.split('.'); let i = index" 
+                      [style.display]="point.trim() ? 'list-item' : 'none'">
+                    {{ point.trim() }}
+                  </li>
+                </ul>
               </div>
-              <div class="job-actions-header">
-                <button class="btn btn-outline-primary btn-sm me-2" (click)="shareJob(job)">
-                  <i class="fas fa-share-alt me-1"></i>
-                  Share
-                </button>
-                <button class="btn btn-outline-success btn-sm" (click)="saveJob(job)">
-                  <i class="fas fa-bookmark me-1"></i>
-                  Save
-                </button>
-              </div>
-            </div>
-
-            <!-- Job Meta Information -->
-            <div class="job-meta-info">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <div class="meta-item">
-                    <i class="fas fa-tag me-2 text-info"></i>
-                    <span class="meta-label">Category:</span>
-                    <span class="meta-value">{{ job.category }}</span>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <div class="meta-item">
-                    <i class="fas fa-phone me-2 text-success"></i>
-                    <span class="meta-label">Contact:</span>
-                    <span class="meta-value">{{ job.contactInfo }}</span>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <div class="meta-item">
-                    <i class="fas fa-calendar-alt me-2 text-warning"></i>
-                    <span class="meta-label">Posted on:</span>
-                    <span class="meta-value">{{ formatDate(job.createdDate) }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Job Description -->
-          <div class="job-content">
-            <h3 class="section-title">
-              <i class="fas fa-file-alt me-2"></i>
-              Job Description
-            </h3>
-            <div class="job-description">
-              {{ job.description }}
-            </div>
-          </div>
-
-          <!-- How to Apply Section -->
-          <div class="how-to-apply">
-            <h3 class="section-title">
-              <i class="fas fa-question-circle me-2"></i>
-              How to Apply
-            </h3>
-            <div class="apply-instructions">
-              <p *ngIf="job.applicationInstructions; else defaultInstructions">
-                {{ job.applicationInstructions }}
-              </p>
-              <ng-template #defaultInstructions>
-                <p>To apply for this position, please follow the application process as specified by {{ job.company }}.</p>
-                <div *ngIf="job.applicationEmail || job.applicationUrl">
-                  <p><strong>Application Method:</strong></p>
-                  <ul>
-                    <li *ngIf="job.applicationEmail">Email your resume to: <a href="mailto:{{ job.applicationEmail }}">{{ job.applicationEmail }}</a></li>
-                    <li *ngIf="job.applicationUrl">Apply online at: <a [href]="job.applicationUrl" target="_blank">{{ job.applicationUrl }}</a></li>
-                  </ul>
-                </div>
-                <div *ngIf="!job.applicationEmail && !job.applicationUrl">
-                  <ul>
-                    <li>Contact {{ job.company }} directly for application details</li>
-                    <li>Prepare your updated resume and cover letter</li>
-                    <li>Follow up within the application deadline</li>
-                  </ul>
-                </div>
-              </ng-template>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Sidebar -->
-      <div class="col-lg-4">
-        <div class="job-sidebar">
-          <!-- Contact Information -->
-          <div class="quick-actions-card">
-            <h4 class="card-title">
-              <i class="fas fa-bolt me-2"></i>
-              Quick Actions
-            </h4>
-            <div class="action-buttons">
-              <button class="btn btn-primary btn-lg w-100 mb-3" (click)="applyForJob(job)">
-                <i class="fas fa-paper-plane me-2"></i>
-                Apply Now
-              </button>
-              <button class="btn btn-outline-success w-100 mb-2" (click)="saveJob(job)">
-                <i class="fas fa-bookmark me-2"></i>
-                Save for Later
-              </button>
-              <button class="btn btn-outline-info w-100" (click)="shareJob(job)">
-                <i class="fas fa-share-alt me-2"></i>
-                Share with Friends
-              </button>
-            </div>
-          </div>
-
-          <!-- Company Info -->
-          <div class="company-info-card">
-            <h4 class="card-title">
-              <i class="fas fa-building me-2"></i>
-              About Company
-            </h4>
-            <div class="company-details">
-              <h5>{{ job.company }}</h5>
-              <p class="text-muted" *ngIf="job.companyDescription">
-                {{ job.companyDescription }}
-              </p>
-              <div class="company-stats">
-                <div class="stat-item" *ngIf="job.companySize">
-                  <i class="fas fa-users me-2 text-primary"></i>
-                  <span>{{ job.companySize }}</span>
+        
+        <!-- Right Column: All Other Info -->
+        <div class="col-md-4">
+          <div class="job-side-info">
+            <div class="company-info">
+              <h2 class="company-name-side">{{ job.company }}</h2>
+              
+              <div class="job-details">
+                <div class="detail-item">
+                  <span class="detail-label">Category:</span>
+                  <span class="detail-value">{{ job.category }}</span>
                 </div>
-                <div class="stat-item">
-                  <i class="fas fa-phone me-2 text-success"></i>
-                  <span>{{ job.contactInfo }}</span>
+                
+                <div class="detail-item">
+                  <span class="detail-label">Contact:</span>
+                  <span class="detail-value">{{ job.contactInfo }}</span>
+                </div>
+                
+                <div class="detail-item">
+                  <span class="detail-label">Posted:</span>
+                  <span class="detail-value">{{ formatDate(job.createdDate) }}</span>
                 </div>
               </div>
+              
+              <button class="share-btn-side" (click)="shareJob(job)">
+                <i class="fas fa-share-alt"></i>
+                Share Job
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </div>
 
-<!-- Job Not Found State -->
-<div class="job-not-found" *ngIf="!job">
-  <div class="container text-center">
+<!-- Job Not Found -->
+<div class="not-found-compact" *ngIf="!job">
+  <div class="container-fluid">
     <div class="not-found-content">
-      <i class="fas fa-search fa-5x text-muted mb-4"></i>
-      <h2 class="mb-3">Job Not Found</h2>
-      <p class="text-muted mb-4">The job you're looking for doesn't exist or has been removed.</p>
-      <a routerLink="/all-latest-jobs" class="btn btn-primary">
-        <i class="fas fa-arrow-left me-2"></i>
-        Back to All Jobs
+      <i class="fas fa-exclamation-circle"></i>
+      <h2>Job Not Found</h2>
+      <p>The job you're looking for doesn't exist or has been removed.</p>
+      <a routerLink="/all-latest-jobs" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Jobs
       </a>
     </div>
   </div>

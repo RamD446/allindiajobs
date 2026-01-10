@@ -1,9 +1,14 @@
 footer {
   background-color: #333;
   color: white;
-  padding: 1rem;
+  padding: 0.5rem;
   text-align: center;
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+
+footer p {
+  margin: 0;
+  font-size: 0.9rem;
 }

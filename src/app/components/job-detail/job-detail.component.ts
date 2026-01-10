@@ -1,18 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-
-interface Job {
-  id: string;
-  title: string;
-  company: string;
-  category: string;
-  type: string;
-  location: string;
-  description: string;
-  lastDate: string;
-  createdDate: string;
-}
+import { Job } from '../../models/job.model';
 
 @Component({
   selector: 'app-job-detail',
@@ -54,42 +43,19 @@ export class JobDetailComponent implements OnInit {
     });
   }
 
-  getDaysLeft(lastDate: string): number {
-    const today = new Date();
-    const deadline = new Date(lastDate);
-    const diffTime = deadline.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
-  getStatusClass(daysLeft: number): string {
-    if (daysLeft < 0) return 'text-danger';
-    if (daysLeft <= 3) return 'text-warning';
-    return 'text-success';
-  }
-
-  getStatusText(daysLeft: number): string {
-    if (daysLeft < 0) return 'Application Expired';
-    if (daysLeft === 0) return 'Last Day to Apply';
-    if (daysLeft === 1) return '1 Day Left';
-    if (daysLeft <= 3) return `${daysLeft} Days Left`;
-    return `${daysLeft} Days Remaining`;
-  }
-
-  getJobTypeClass(jobType: string): string {
-    switch (jobType.toLowerCase()) {
-      case 'full-time': 
+  // Method to get color class for job category badge
+  getCategoryClass(category: string): string {
+    switch (category) {
+      case 'IT / Software Jobs': 
         return 'badge-primary';
-      case 'part-time': 
+      case 'Non-IT / BPO Jobs': 
         return 'badge-secondary';
-      case 'contract': 
-        return 'badge-warning';
-      case 'internship': 
-        return 'badge-info';
-      case 'remote': 
+      case 'Government Jobs': 
         return 'badge-success';
-      case 'freelance': 
-        return 'badge-light';
+      case 'All Private/ Bank Jobs': 
+        return 'badge-warning';
+      case 'Walk-in Drive/Internships Jobs': 
+        return 'badge-info';
       default: 
         return 'badge-primary';
     }

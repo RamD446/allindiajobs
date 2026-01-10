@@ -4,18 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserLocalPersistence, setPersistence } from 'firebase/auth';
 import { ref, push, get, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
-
-interface Job {
-  id: string;
-  title: string;
-  company: string;
-  category: string;
-  type: string;
-  location: string;
-  description: string;
-  lastDate: string;
-  createdDate: string;
-}
+import { Job, DEFAULT_JOB_CATEGORIES } from '../../models/job.model';
 
 @Component({
   selector: 'app-login',
@@ -44,26 +33,31 @@ export class LoginComponent implements OnInit {
     id: '',
     title: '',
     company: '',
-    category: 'All Latest Jobs',
-    type: 'Full-time',
-    location: '',
+    category: '',
     description: '',
-    lastDate: '',
+    contactInfo: '',
     createdDate: new Date().toISOString().split('T')[0]
   };
 
-  jobCategories = [
-    'All Latest Jobs',
-    'IT / Software Jobs',
-    'Non-IT / BPO Jobs', 
-    'Government Jobs',
-    'All Private/ Bank Jobs',
-    'Walk-in Drive/Internships Jobs'
-  ];
+  jobCategories: string[] = [];
 
-  jobTypes = ['Full-time', 'Part-time', 'Contract', 'Internship', 'Freelance'];
+  constructor(private cdr: ChangeDetectorRef) {
+    this.loadJobMetadata();
+  }
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  private loadJobMetadata() {
+    // Load job categories from shared constants
+    // This could be expanded to fetch from Firebase configuration in the future
+    this.jobCategories = [...DEFAULT_JOB_CATEGORIES];
+    
+    // Future enhancement: fetch these from Firebase configuration:
+    // const categoriesRef = ref(db, 'config/jobCategories');
+    // onValue(categoriesRef, (snapshot) => {
+    //   if (snapshot.val()) {
+    //     this.jobCategories = snapshot.val();
+    //   }
+    // });
+  }
 
   ngOnInit() {
     // Check authentication state on component initialization
@@ -219,11 +213,9 @@ export class LoginComponent implements OnInit {
       id: '',
       title: '',
       company: '',
-      category: 'All Latest Jobs',
-      type: 'Full-time',
-      location: '',
+      category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       description: '',
-      lastDate: '',
+      contactInfo: '',
       createdDate: new Date().toISOString().split('T')[0]
     };
   }

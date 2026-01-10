@@ -38,23 +38,16 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <div class="meta-item">
-                    <i class="fas fa-briefcase me-2 text-primary"></i>
-                    <span class="meta-label">Job Type:</span>
-                    <span class="badge ms-2" [ngClass]="getJobTypeClass(job.type)">{{ job.type }}</span>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <div class="meta-item">
-                    <i class="fas fa-map-marker-alt me-2 text-danger"></i>
-                    <span class="meta-label">Location:</span>
-                    <span class="meta-value">{{ job.location }}</span>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <div class="meta-item">
                     <i class="fas fa-tag me-2 text-info"></i>
                     <span class="meta-label">Category:</span>
                     <span class="meta-value">{{ job.category }}</span>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="meta-item">
+                    <i class="fas fa-phone me-2 text-success"></i>
+                    <span class="meta-label">Contact:</span>
+                    <span class="meta-value">{{ job.contactInfo }}</span>
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -86,13 +79,26 @@
               How to Apply
             </h3>
             <div class="apply-instructions">
-              <p>To apply for this position:</p>
-              <ul>
-                <li>Click the "Apply Now" button below</li>
-                <li>Prepare your updated resume</li>
-                <li>Write a compelling cover letter</li>
-                <li>Follow the application instructions carefully</li>
-              </ul>
+              <p *ngIf="job.applicationInstructions; else defaultInstructions">
+                {{ job.applicationInstructions }}
+              </p>
+              <ng-template #defaultInstructions>
+                <p>To apply for this position, please follow the application process as specified by {{ job.company }}.</p>
+                <div *ngIf="job.applicationEmail || job.applicationUrl">
+                  <p><strong>Application Method:</strong></p>
+                  <ul>
+                    <li *ngIf="job.applicationEmail">Email your resume to: <a href="mailto:{{ job.applicationEmail }}">{{ job.applicationEmail }}</a></li>
+                    <li *ngIf="job.applicationUrl">Apply online at: <a [href]="job.applicationUrl" target="_blank">{{ job.applicationUrl }}</a></li>
+                  </ul>
+                </div>
+                <div *ngIf="!job.applicationEmail && !job.applicationUrl">
+                  <ul>
+                    <li>Contact {{ job.company }} directly for application details</li>
+                    <li>Prepare your updated resume and cover letter</li>
+                    <li>Follow up within the application deadline</li>
+                  </ul>
+                </div>
+              </ng-template>
             </div>
           </div>
         </div>
@@ -101,22 +107,7 @@
       <!-- Sidebar -->
       <div class="col-lg-4">
         <div class="job-sidebar">
-          <!-- Application Deadline -->
-          <div class="deadline-card">
-            <div class="deadline-header">
-              <i class="fas fa-clock me-2"></i>
-              Application Deadline
-            </div>
-            <div class="deadline-date">
-              {{ formatDate(job.lastDate) }}
-            </div>
-            <div class="deadline-status" [ngClass]="getStatusClass(getDaysLeft(job.lastDate))">
-              <i class="fas fa-exclamation-triangle me-1"></i>
-              {{ getStatusText(getDaysLeft(job.lastDate)) }}
-            </div>
-          </div>
-
-          <!-- Quick Actions -->
+          <!-- Contact Information -->
           <div class="quick-actions-card">
             <h4 class="card-title">
               <i class="fas fa-bolt me-2"></i>
@@ -146,18 +137,17 @@
             </h4>
             <div class="company-details">
               <h5>{{ job.company }}</h5>
-              <p class="text-muted">
-                {{ job.company }} is a leading organization in the industry, 
-                committed to excellence and providing great career opportunities.
+              <p class="text-muted" *ngIf="job.companyDescription">
+                {{ job.companyDescription }}
               </p>
               <div class="company-stats">
-                <div class="stat-item">
+                <div class="stat-item" *ngIf="job.companySize">
                   <i class="fas fa-users me-2 text-primary"></i>
-                  <span>500+ Employees</span>
+                  <span>{{ job.companySize }}</span>
                 </div>
                 <div class="stat-item">
-                  <i class="fas fa-map-marker-alt me-2 text-danger"></i>
-                  <span>{{ job.location }}</span>
+                  <i class="fas fa-phone me-2 text-success"></i>
+                  <span>{{ job.contactInfo }}</span>
                 </div>
               </div>
             </div>

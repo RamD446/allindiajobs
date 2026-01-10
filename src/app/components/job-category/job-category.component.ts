@@ -3,18 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
-
-interface Job {
-  id: string;
-  title: string;
-  company: string;
-  category: string;
-  type: string;
-  location: string;
-  description: string;
-  lastDate: string;
-  createdDate: string;
-}
+import { Job } from '../../models/job.model';
 
 @Component({
   selector: 'app-job-category',
@@ -87,8 +76,9 @@ export class JobCategoryComponent implements OnInit {
           
           console.log('Filtered jobs for', category, ':', this.filteredJobs); // Debug log
         } else {
-          console.log('No data found in Firebase - loading sample data'); // Debug log
-          this.loadSampleData();
+          console.log('No data found in Firebase'); // Debug log
+          this.jobs = [];
+          this.filteredJobs = [];
         }
         
         console.log('Setting isLoading to false'); // Debug log
@@ -111,131 +101,19 @@ export class JobCategoryComponent implements OnInit {
     return date.toLocaleDateString('en-GB');
   }
 
-  getDaysLeft(lastDate: string): number {
-    const today = new Date();
-    const deadline = new Date(lastDate);
-    const diffTime = deadline.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
-  getStatusClass(daysLeft: number): string {
-    if (daysLeft < 0) return 'text-danger';
-    if (daysLeft <= 3) return 'text-warning';
-    return 'text-success';
-  }
-
-  getFreshJobsCount(): number {
-    return this.filteredJobs.filter(job => this.getDaysLeft(job.lastDate) > 3).length;
-  }
-
-  getUrgentJobsCount(): number {
-    return this.filteredJobs.filter(job => {
-      const daysLeft = this.getDaysLeft(job.lastDate);
-      return daysLeft <= 3 && daysLeft >= 0;
-    }).length;
-  }
-
-  loadSampleData() {
-    // Sample data if Firebase is empty
-    this.jobs = [
-      {
-        id: 'sample1',
-        title: 'Senior Software Developer',
-        company: 'Tech Solutions Ltd',
-        category: 'IT / Software Jobs',
-        type: 'Full-time',
-        location: 'Bangalore',
-        description: 'Develop and maintain web applications using modern technologies like Angular, React, and Node.js.',
-        lastDate: '2026-01-30',
-        createdDate: '2026-01-01'
-      },
-      {
-        id: 'sample2',
-        title: 'Data Analyst',
-        company: 'Analytics Corp',
-        category: 'IT / Software Jobs',
-        type: 'Full-time',
-        location: 'Mumbai',
-        description: 'Analyze business data and provide insights to improve decision making using SQL, Python, and Power BI.',
-        lastDate: '2026-01-25',
-        createdDate: '2026-01-02'
-      },
-      {
-        id: 'sample3',
-        title: 'Government Clerk',
-        company: 'State Government',
-        category: 'Government Jobs',
-        type: 'Full-time',
-        location: 'Delhi',
-        description: 'Handle administrative tasks and public service duties. Excellent opportunity for government career.',
-        lastDate: '2026-02-15',
-        createdDate: '2026-01-03'
-      },
-      {
-        id: 'sample4',
-        title: 'Customer Service Representative',
-        company: 'BPO Solutions',
-        category: 'Non-IT / BPO Jobs',
-        type: 'Full-time',
-        location: 'Hyderabad',
-        description: 'Handle customer inquiries and provide excellent customer service in a fast-paced environment.',
-        lastDate: '2026-01-28',
-        createdDate: '2026-01-04'
-      },
-      {
-        id: 'sample5',
-        title: 'Bank Officer',
-        company: 'National Bank',
-        category: 'All Private/ Bank Jobs',
-        type: 'Full-time',
-        location: 'Chennai',
-        description: 'Process banking transactions, customer service, and loan processing in a reputed banking institution.',
-        lastDate: '2026-02-10',
-        createdDate: '2026-01-05'
-      },
-      {
-        id: 'sample6',
-        title: 'Walk-in Interview - Sales Executive',
-        company: 'Sales Corp',
-        category: 'Walk-in Drive/Internships Jobs',
-        type: 'Full-time',
-        location: 'Pune',
-        description: 'Immediate hiring for sales executives. Walk-in interview from 10 AM to 4 PM.',
-        lastDate: '2026-01-20',
-        createdDate: '2026-01-06'
-      }
-    ];
-
-    const categoryMapping = this.categoryMappings[this.categoryParam];
-    if (categoryMapping) {
-      if (categoryMapping.category === 'All Latest Jobs') {
-        this.filteredJobs = this.jobs;
-      } else {
-        this.filteredJobs = this.jobs.filter(job => job.category === categoryMapping.category);
-      }
-    }
-    
-    console.log('Sample data loaded and filtered:', this.filteredJobs);
-    this.isLoading = false;
-    this.cdr.detectChanges(); // Force change detection
-  }
-
-  // Method to get color class for job type badge
-  getJobTypeClass(jobType: string): string {
-    switch (jobType.toLowerCase()) {
-      case 'full-time': 
+  // Method to get color class for job category badge
+  getCategoryClass(category: string): string {
+    switch (category) {
+      case 'IT / Software Jobs': 
         return 'badge-primary';
-      case 'part-time': 
+      case 'Non-IT / BPO Jobs': 
         return 'badge-secondary';
-      case 'contract': 
-        return 'badge-warning';
-      case 'internship': 
-        return 'badge-info';
-      case 'remote': 
+      case 'Government Jobs': 
         return 'badge-success';
-      case 'freelance': 
-        return 'badge-light';
+      case 'All Private/ Bank Jobs': 
+        return 'badge-warning';
+      case 'Walk-in Drive/Internships Jobs': 
+        return 'badge-info';
       default: 
         return 'badge-primary';
     }

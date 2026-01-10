@@ -121,27 +121,15 @@
               </div>
               
               <div class="col-md-6 mb-3">
-                <label class="form-label">Category *</label>
+                <label class="form-label">Job Category *</label>
                 <select class="form-control" [(ngModel)]="jobForm.category" name="category" required>
                   <option *ngFor="let category of jobCategories" [value]="category">{{ category }}</option>
                 </select>
               </div>
               
               <div class="col-md-6 mb-3">
-                <label class="form-label">Job Type *</label>
-                <select class="form-control" [(ngModel)]="jobForm.type" name="type" required>
-                  <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
-                </select>
-              </div>
-              
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Location *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.location" name="location" required>
-              </div>
-              
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Last Date to Apply *</label>
-                <input type="date" class="form-control" [(ngModel)]="jobForm.lastDate" name="lastDate" required>
+                <label class="form-label">Contact Information *</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.contactInfo" name="contactInfo" required placeholder="Phone/Email/Address">
               </div>
               
               <div class="col-12 mb-3">
@@ -176,7 +164,7 @@
                 <div class="job-info">
                   <h6 class="job-title-small">{{ job.title }}</h6>
                   <small class="job-company-small">
-                    <i class="bi bi-building me-1"></i>{{ job.company }} • {{ job.location }}
+                    <i class="bi bi-building me-1"></i>{{ job.company }} • {{ job.contactInfo }}
                   </small>
                 </div>
                 <div class="job-actions-small">
@@ -192,8 +180,7 @@
               <div class="job-body-compact">
                 <div class="job-badges-small">
                   <span class="badge bg-primary me-1">{{ job.category }}</span>
-                  <span class="badge bg-success me-1">{{ job.type }}</span>
-                  <span class="badge bg-info">{{ job.lastDate }}</span>
+                  <span class="badge bg-info">Contact: {{ job.contactInfo }}</span>
                 </div>
                 <p class="job-desc-small">{{ job.description }}</p>
               </div>

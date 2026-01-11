@@ -1,52 +1,40 @@
-<div class="job-category-container">
-  <!-- Bootstrap Container with Breadcrumb Navigation -->
-  <div class="container">
-    <nav aria-label="breadcrumb" class="breadcrumb-nav">
-      <ol class="breadcrumb d-flex flex-wrap align-items-center">
-        <li class="breadcrumb-item">
-          <a routerLink="/all-latest-jobs">
-            <i class="bi bi-house-fill"></i> Home
-          </a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">
-          {{ categoryTitle }}
-        </li>
-        <li class="breadcrumb-item job-count-breadcrumb">
-          <span class="featured-count">
-            <i class="bi bi-lightning-fill"></i> {{ getNewJobs().length }} Featured
-          </span>
-        </li>
-      </ol>
-    </nav>
-
-    <!-- Hero Section - Icons Only -->
-    <div class="hero-icons-section" *ngIf="categoryTitle === 'All Latest Jobs'">
-      <div class="category-icons">
-        <button class="icon-btn" (click)="navigateToCategory('IT / Software Jobs')">
-          <i class="bi bi-laptop-fill"></i>
-          <span>IT/Software</span>
-        </button>
-        <button class="icon-btn" (click)="navigateToCategory('Non-IT / BPO Jobs')">
-          <i class="bi bi-headset"></i>
-          <span>BPO/Non-IT</span>
-        </button>
-        <button class="icon-btn" (click)="navigateToCategory('Government Jobs')">
-          <i class="bi bi-building-fill"></i>
-          <span>Government</span>
-        </button>
-        <button class="icon-btn" (click)="navigateToCategory('All Private/ Bank Jobs')">
-          <i class="bi bi-bank"></i>
-          <span>Private/Bank</span>
-        </button>
-        <button class="icon-btn" (click)="navigateToCategory('Walk-in Drive/Internships Jobs')">
-          <i class="bi bi-person-walking"></i>
-          <span>Walk-in</span>
-        </button>
-        <button class="icon-btn" (click)="navigateToCategory('Walk-in Drive/Internships Jobs')">
-          <i class="bi bi-mortarboard-fill"></i>
-          <span>Internships</span>
-        </button>
+<div class="modern-job-container">
+  <div class="container-fluid px-0">
+    <!-- Modern Hero Header -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">{{ categoryTitle }}</h1>
+        <p class="hero-subtitle">Discover your next career opportunity</p>
+        
+        <!-- Category Pills - Only show on All Latest Jobs page -->
+        <div class="category-pills" *ngIf="categoryTitle === 'All Latest Jobs'">
+          <button class="pill-button" (click)="navigateToCategory('IT / Software Jobs')">
+            <i class="bi bi-laptop-fill"></i>
+            <span>IT/Software</span>
+          </button>
+          <button class="pill-button" (click)="navigateToCategory('Non-IT / BPO Jobs')">
+            <i class="bi bi-headset"></i>
+            <span>BPO/Non-IT</span>
+          </button>
+          <button class="pill-button" (click)="navigateToCategory('Government Jobs')">
+            <i class="bi bi-building-fill"></i>
+            <span>Government</span>
+          </button>
+          <button class="pill-button" (click)="navigateToCategory('All Private/ Bank Jobs')">
+            <i class="bi bi-bank"></i>
+            <span>Private/Bank</span>
+          </button>
+          <button class="pill-button" (click)="navigateToCategory('Walk-in Drive/Internships Jobs')">
+            <i class="bi bi-person-walking"></i>
+            <span>Walk-in</span>
+          </button>
+          <button class="pill-button" (click)="navigateToCategory('Walk-in Drive/Internships Jobs')">
+            <i class="bi bi-mortarboard-fill"></i>
+            <span>Internships</span>
+          </button>
+        </div>
       </div>
+      <div class="hero-decoration"></div>
     </div>
 
     <!-- Loading State -->
@@ -57,91 +45,102 @@
       </div>
     </div>
 
-    <!-- Job Cards Section -->
-    <div *ngIf="!isLoading && filteredJobs.length > 0" class="jobs-section">
-      <!-- Featured Jobs -->
-      <div class="featured-jobs mb-5" *ngIf="getNewJobs().length > 0">
-        <div class="d-flex align-items-center justify-content-between section-title">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
-            <span>Featured Openings</span>
+    <!-- Jobs Content -->
+    <div *ngIf="!isLoading && filteredJobs.length > 0" class="jobs-content">
+      <!-- Featured Jobs Section -->
+      <div class="featured-section" *ngIf="getNewJobs().length > 0">
+        <div class="section-title">
+          <div class="title-wrapper">
+            <h2 class="section-heading">
+              <i class="bi bi-lightning-charge-fill featured-icon"></i>
+              Featured Openings <span class="job-count">{{ getNewJobs().length }}</span>
+            </h2>
           </div>
-          <span class="job-badge">{{ getNewJobs().length }} Jobs</span>
+          
         </div>
         
-        <div class="jobs-grid">
-          <div class="job-card" *ngFor="let job of getNewJobs()">
+        <div class="modern-jobs-grid">
+          <div class="modern-job-card" *ngFor="let job of getNewJobs()">
             <div class="card-header">
-              <h5 class="job-title">{{ job.title }}</h5>
+              <h3 class="job-title">{{ job.title }}</h3>
             </div>
-            <div class="card-body">
-              <p class="job-description">{{ job.description.length > 120 ? job.description.substring(0, 120) + '...' : job.description }}</p>
+            
+            <div class="card-content">
+              <p class="job-description">{{ job.description.length > 180 ? job.description.substring(0, 180) + '...' : job.description }}</p>
             </div>
+            
             <div class="card-footer">
-              <div class="job-meta">
-                <span class="date-badge">
-                  <i class="bi bi-calendar-check me-1"></i>{{ formatDate(job.createdDate) }}
-                </span>
+              <div class="job-badges">
+                <span class="date-badge">Posted date : {{ formatDate(job.createdDate) }}</span>
+                <span class="category-badge view-details-badge" (click)="viewJobDetails(job)">
+                View Details <i class="bi bi-arrow-right"></i>
+              </span>
               </div>
-              <button class="view-btn" (click)="viewJobDetails(job)">
-                View Details <i class="bi bi-arrow-right ms-1"></i>
-              </button>
+              
             </div>
           </div>
         </div>
       </div>
 
-      <!-- All Jobs -->
-      <div class="all-jobs mb-4" *ngIf="getOtherJobs().length > 0">
-        <div class="d-flex align-items-center justify-content-between section-title">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-briefcase-fill text-primary me-2"></i>
-            <span>All Opportunities</span>
+      <!-- All Jobs Section -->
+      <div class="all-jobs-section" *ngIf="getOtherJobs().length > 0">
+        <div class="section-title">
+          <div class="title-wrapper">
+            <h2 class="section-heading">
+              <i class="bi bi-briefcase-fill"></i>
+              All Opportunities
+            </h2>
+            <span class="job-count">{{ getOtherJobs().length }}</span>
           </div>
-          <span class="job-badge">{{ getOtherJobs().length }} Jobs</span>
+          <div class="section-description">Browse all available positions</div>
         </div>
         
-        <div class="jobs-grid">
-          <div class="job-card" *ngFor="let job of getOtherJobs()">
+        <div class="modern-jobs-grid">
+          <div class="modern-job-card" *ngFor="let job of getOtherJobs()">
             <div class="card-header">
-              <h5 class="job-title">{{ job.title }}</h5>
+              <h3 class="job-title">{{ job.title }}</h3>
             </div>
-            <div class="card-body">
-              <p class="job-description">{{ job.description.length > 120 ? job.description.substring(0, 120) + '...' : job.description }}</p>
+            
+            <div class="card-content">
+              <p class="job-description">{{ job.description.length > 180 ? job.description.substring(0, 180) + '...' : job.description }}</p>
             </div>
+            
             <div class="card-footer">
-              <div class="job-meta">
-                <span class="date-badge">
-                  <i class="bi bi-calendar-check me-1"></i>{{ formatDate(job.createdDate) }}
-                </span>
-                <span class="category-badge">
-                  <i class="bi bi-tag me-1"></i>{{ job.category }}
-                </span>
+              <div class="job-badges">
+                <span class="date-badge">Posted date : {{ formatDate(job.createdDate) }}</span>
+                <span class="category-badge">{{ job.category }}</span>
               </div>
-              <button class="view-btn" (click)="viewJobDetails(job)">
-                View Details <i class="bi bi-arrow-right ms-1"></i>
-              </button>
+              <span class="category-badge view-details-badge" (click)="viewJobDetails(job)">
+                View Details <i class="bi bi-arrow-right"></i>
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Load More -->
-      <div class="load-more text-center" *ngIf="filteredJobs.length > 12">
-        <button class="btn btn-outline-primary btn-lg rounded-pill">
-          <i class="bi bi-arrow-repeat me-2"></i>Load More Jobs
+      <!-- Load More Section -->
+      <div class="load-more-section" *ngIf="filteredJobs.length > 12">
+        <button class="load-more-btn">
+          <span>Load More Opportunities</span>
+          <i class="bi bi-chevron-down"></i>
         </button>
       </div>
     </div>
 
     <!-- Empty State -->
     <div *ngIf="!isLoading && filteredJobs.length === 0" class="empty-state">
-      <div class="text-center py-5">
-        <i class="bi bi-search display-1 text-muted mb-3"></i>
-        <h3 class="mb-3">No Jobs Found</h3>
-        <p class="text-muted mb-4">No jobs available in {{ categoryTitle.toLowerCase() }} right now.<br>Try checking other categories or come back later.</p>
-        <a routerLink="/all-latest-jobs" class="btn btn-primary btn-lg rounded-pill">
-          <i class="bi bi-arrow-left me-2"></i>Browse All Jobs
+      <div class="empty-content">
+        <div class="empty-icon">
+          <i class="bi bi-search"></i>
+        </div>
+        <h3 class="empty-title">No Jobs Found</h3>
+        <p class="empty-message">
+          We couldn't find any jobs in {{ categoryTitle.toLowerCase() }} right now.
+          <br>Try checking other categories or come back later.
+        </p>
+        <a routerLink="/all-latest-jobs" class="back-btn">
+          <i class="bi bi-arrow-left"></i>
+          <span>Browse All Jobs</span>
         </a>
       </div>
     </div>

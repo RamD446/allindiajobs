@@ -11,7 +11,7 @@ export const routes: Routes = [
   { path: 'government-jobs', component: JobCategoryComponent },
   { path: 'private-bank-jobs', component: JobCategoryComponent },
   { path: 'walk-in-drive-jobs', component: JobCategoryComponent },
-  { path: 'job-details/:id', component: JobDetailComponent },
+  { path: 'job-details/:id/:title', component: JobDetailComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '/all-latest-jobs' }
 ];

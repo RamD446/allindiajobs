@@ -18,6 +18,7 @@ export class JobCategoryComponent implements OnInit {
   categoryTitle: string = '';
   categoryParam: string = '';
   isLoading: boolean = true;
+  currentPage: number = 1;
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'all-latest-jobs': { title: 'All Latest Jobs', category: 'All Latest Jobs' },
@@ -119,9 +120,21 @@ export class JobCategoryComponent implements OnInit {
     }
   }
 
+  // Create URL-friendly slug from job title
+  private createSlug(title: string): string {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9 -]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .trim()
+      .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+  }
+
   // Navigate to job detail page
   viewJobDetails(job: Job) {
-    this.router.navigate(['/job-details', job.id], { state: { job: job } });
+    const titleSlug = this.createSlug(job.title);
+    this.router.navigate(['/job-details', job.id, titleSlug], { state: { job: job } });
   }
 
   // Save/bookmark job functionality

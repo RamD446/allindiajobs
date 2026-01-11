@@ -19,6 +19,10 @@ export class JobDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Get route parameters
+    const jobId = this.route.snapshot.paramMap.get('id');
+    const jobTitle = this.route.snapshot.paramMap.get('title');
+    
     // Try to get job from router state first
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state?.['job']) {
@@ -29,6 +33,7 @@ export class JobDetailComponent implements OnInit {
         this.job = history.state.job as Job;
       } else {
         // If job not found, redirect back
+        console.log('Job not found in state, redirecting...', { jobId, jobTitle });
         this.router.navigate(['/all-latest-jobs']);
       }
     }

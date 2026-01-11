@@ -3,7 +3,7 @@
     <!-- Modern Hero Header -->
     <div class="hero-section">
       <div class="hero-content">
-        <h3 class="hero-title">{{ categoryTitle }}</h3>
+        <h1 class="hero-title">{{ categoryTitle }}</h1>
         <p class="hero-subtitle">Discover your next career opportunity</p>
         
         <!-- Category Pills - Only show on All Latest Jobs page -->
@@ -51,19 +51,23 @@
       <div class="featured-section" *ngIf="getNewJobs().length > 0">
         <div class="section-title">
           <div class="title-wrapper">
-            <h4 class="section-heading">
+            <h2 class="section-heading">
               <i class="bi bi-lightning-charge-fill featured-icon"></i>
               Featured Openings
-              <span class="job-count">{{ getNewJobs().length }}</span>
-            </h4>
-            
+            </h2>
+            <span class="job-count">{{ getNewJobs().length }}</span>
           </div>
+          <div class="section-description">Latest job opportunities just posted</div>
         </div>
         
         <div class="modern-jobs-grid">
           <div class="modern-job-card" *ngFor="let job of getNewJobs()">
             <div class="card-header">
               <h3 class="job-title">{{ job.title }}</h3>
+              <div class="job-badges">
+                <span class="date-badge">{{ formatDate(job.createdDate) }}</span>
+                <span class="category-badge">{{ job.category }}</span>
+              </div>
             </div>
             
             <div class="card-content">
@@ -71,12 +75,10 @@
             </div>
             
             <div class="card-footer">
-              <div class="job-badges">
-                <span class="date-badge">Posted date : {{ formatDate(job.createdDate) }}</span>
-              </div>
-              <span class="category-badge view-details-badge" (click)="viewJobDetails(job)">
-                View Details
-              </span>
+              <button class="modern-btn" (click)="viewJobDetails(job)">
+                <span>View Details</span>
+                <i class="bi bi-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -86,19 +88,23 @@
       <div class="all-jobs-section" *ngIf="getOtherJobs().length > 0">
         <div class="section-title">
           <div class="title-wrapper">
-            <h4 class="section-heading">
+            <h2 class="section-heading">
               <i class="bi bi-briefcase-fill"></i>
               All Opportunities
-            </h4>
+            </h2>
             <span class="job-count">{{ getOtherJobs().length }}</span>
           </div>
-          <div class="section-description"> all available positions</div>
+          <div class="section-description">Browse all available positions</div>
         </div>
         
         <div class="modern-jobs-grid">
           <div class="modern-job-card" *ngFor="let job of getOtherJobs()">
             <div class="card-header">
               <h3 class="job-title">{{ job.title }}</h3>
+              <div class="job-badges">
+                <span class="date-badge">{{ formatDate(job.createdDate) }}</span>
+                <span class="category-badge">{{ job.category }}</span>
+              </div>
             </div>
             
             <div class="card-content">
@@ -106,13 +112,10 @@
             </div>
             
             <div class="card-footer">
-              <div class="job-badges">
-                <span class="date-badge">Posted date : {{ formatDate(job.createdDate) }}</span>
-                <span class="category-badge">{{ job.category }}</span>
-              </div>
-              <span class="category-badge view-details-badge" (click)="viewJobDetails(job)">
-                View Details <i class="bi bi-arrow-right"></i>
-              </span>
+              <button class="modern-btn" (click)="viewJobDetails(job)">
+                <span>View Details</span>
+                <i class="bi bi-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>

@@ -1,7 +1,14 @@
-<div class="job-detail-compact" *ngIf="job">
+<div class="job-detail-compact">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading job details...</p>
+    </div>
+  </div>
 
-
-  <div class="container-fluid">
+  <!-- Job Details -->
+  <div *ngIf="!isLoading && job" class="container-fluid">
       <div class="row">
         <!-- Left Column: Job Title and Description -->
         <div class="col-md-8">

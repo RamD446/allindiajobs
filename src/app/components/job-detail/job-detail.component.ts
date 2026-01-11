@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Job } from '../../models/job.model';
+import { ref, get } from 'firebase/database';
+import { db } from '../../../config/firebase.config';
 
 @Component({
   selector: 'app-job-detail',
@@ -12,30 +14,63 @@ import { Job } from '../../models/job.model';
 })
 export class JobDetailComponent implements OnInit {
   job: Job | null = null;
+  isLoading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     // Get route parameters
     const jobId = this.route.snapshot.paramMap.get('id');
     const jobTitle = this.route.snapshot.paramMap.get('title');
+    
+    console.log('Job Detail NgOnInit - ID:', jobId, 'Title:', jobTitle);
     
     // Try to get job from router state first
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state?.['job']) {
       this.job = navigation.extras.state['job'] as Job;
+      this.isLoading = false;
+      console.log('Job loaded from navigation state:', this.job);
     } else {
       // If not in state, try to get from history.state
       if (history.state?.job) {
         this.job = history.state.job as Job;
+        this.isLoading = false;
+        console.log('Job loaded from history state:', this.job);
+      } else if (jobId) {
+        // Fetch job from Firebase using the ID
+        console.log('Loading job from Firebase with ID:', jobId);
+        await this.loadJobFromFirebase(jobId);
       } else {
-        // If job not found, redirect back
-        console.log('Job not found in state, redirecting...', { jobId, jobTitle });
+        // If no job ID, redirect back
+        console.log('No job ID found, redirecting...');
         this.router.navigate(['/all-latest-jobs']);
       }
+    }
+  }
+
+  async loadJobFromFirebase(jobId: string) {
+    try {
+      const jobRef = ref(db, `jobs/${jobId}`);
+      const snapshot = await get(jobRef);
+      
+      if (snapshot.exists()) {
+        this.job = {
+          id: jobId,
+          ...snapshot.val()
+        } as Job;
+      } else {
+        console.log('Job not found in Firebase, redirecting...');
+        this.router.navigate(['/all-latest-jobs']);
+      }
+    } catch (error) {
+      console.error('Error loading job from Firebase:', error);
+      this.router.navigate(['/all-latest-jobs']);
+    } finally {
+      this.isLoading = false;
     }
   }
 

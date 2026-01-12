@@ -22,55 +22,76 @@ export class JobDetailComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    console.log('Job Detail Component Initialized');
+    this.isLoading = true;
+    
     // Get route parameters
     const jobId = this.route.snapshot.paramMap.get('id');
     const jobTitle = this.route.snapshot.paramMap.get('title');
     
     console.log('Job Detail NgOnInit - ID:', jobId, 'Title:', jobTitle);
     
-    // Try to get job from router state first
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras?.state?.['job']) {
-      this.job = navigation.extras.state['job'] as Job;
+    if (!jobId) {
+      console.log('No job ID found, redirecting...');
       this.isLoading = false;
-      console.log('Job loaded from navigation state:', this.job);
-    } else {
-      // If not in state, try to get from history.state
+      this.router.navigate(['/all-latest-jobs']);
+      return;
+    }
+    
+    try {
+      // Try to get job from router state first
+      const navigation = this.router.getCurrentNavigation();
+      if (navigation?.extras?.state?.['job']) {
+        this.job = navigation.extras.state['job'] as Job;
+        this.isLoading = false;
+        console.log('Job loaded from navigation state:', this.job);
+        return;
+      }
+      
+      // If not in navigation state, try history state
       if (history.state?.job) {
         this.job = history.state.job as Job;
         this.isLoading = false;
         console.log('Job loaded from history state:', this.job);
-      } else if (jobId) {
-        // Fetch job from Firebase using the ID
-        console.log('Loading job from Firebase with ID:', jobId);
-        await this.loadJobFromFirebase(jobId);
-      } else {
-        // If no job ID, redirect back
-        console.log('No job ID found, redirecting...');
-        this.router.navigate(['/all-latest-jobs']);
+        return;
       }
+      
+      // If no state, fetch from Firebase
+      console.log('Loading job from Firebase with ID:', jobId);
+      await this.loadJobFromFirebase(jobId);
+      
+    } catch (error) {
+      console.error('Error in ngOnInit:', error);
+      this.isLoading = false;
+      this.router.navigate(['/all-latest-jobs']);
     }
   }
 
   async loadJobFromFirebase(jobId: string) {
     try {
+      console.log('Attempting to load job from Firebase:', jobId);
       const jobRef = ref(db, `jobs/${jobId}`);
       const snapshot = await get(jobRef);
       
       if (snapshot.exists()) {
+        const jobData = snapshot.val();
         this.job = {
           id: jobId,
-          ...snapshot.val()
+          ...jobData
         } as Job;
+        console.log('Job loaded successfully from Firebase:', this.job);
       } else {
-        console.log('Job not found in Firebase, redirecting...');
+        console.error('Job not found in Firebase with ID:', jobId);
+        alert('Job not found. Redirecting to job listings...');
         this.router.navigate(['/all-latest-jobs']);
       }
     } catch (error) {
       console.error('Error loading job from Firebase:', error);
+      alert('Error loading job details. Please try again later.');
       this.router.navigate(['/all-latest-jobs']);
     } finally {
       this.isLoading = false;
+      console.log('Loading completed, isLoading set to false');
     }
   }
 

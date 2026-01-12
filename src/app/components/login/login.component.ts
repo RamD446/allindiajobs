@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('Login Component Initialized');
     // Check authentication state on component initialization
     this.isLoading = true;
     

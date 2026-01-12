@@ -61,22 +61,27 @@
         
         <div class="modern-jobs-grid">
           <div class="modern-job-card" *ngFor="let job of getNewJobs()">
-            <div class="card-header">
+            <!-- Row 1: Title -->
+            <div class="card-row-1">
               <h3 class="job-title">{{ job.title }}</h3>
             </div>
             
-            <div class="card-content">
+            <!-- Row 2: Job Description -->
+            <div class="card-row-2">
               <p class="job-description">{{ job.description.length > 180 ? job.description.substring(0, 180) + '...' : job.description }}</p>
             </div>
             
-            <div class="card-footer">
-              <div class="job-badges">
-                <span class="date-badge">Posted date : {{ formatDate(job.createdDate) }}</span>
-                <span class="category-badge view-details-badge" (click)="viewJobDetails(job)">
-                View Details <i class="bi bi-arrow-right"></i>
-              </span>
+            <!-- Row 3: Left info and Right view details -->
+            <div class="card-row-3">
+              <div class="left-info">
+                <span class="small-text category-text">{{ job.category }}</span>
+                <span class="small-text date-text">{{ formatDate(job.createdDate) }}</span>
               </div>
-              
+              <div class="right-action">
+                <span class="view-details-link" (click)="viewJobDetails(job)">
+                  View Details <i class="bi bi-arrow-right"></i>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -97,22 +102,27 @@
         
         <div class="modern-jobs-grid">
           <div class="modern-job-card" *ngFor="let job of getOtherJobs()">
-            <div class="card-header">
+            <!-- Row 1: Title -->
+            <div class="card-row-1">
               <h3 class="job-title">{{ job.title }}</h3>
             </div>
             
-            <div class="card-content">
+            <!-- Row 2: Job Description -->
+            <div class="card-row-2">
               <p class="job-description">{{ job.description.length > 180 ? job.description.substring(0, 180) + '...' : job.description }}</p>
             </div>
             
-            <div class="card-footer">
-              <div class="job-badges">
-                <span class="date-badge">Posted date : {{ formatDate(job.createdDate) }}</span>
-                <span class="category-badge">{{ job.category }}</span>
+            <!-- Row 3: Left info and Right view details -->
+            <div class="card-row-3">
+              <div class="left-info">
+                <span class="small-text category-text">{{ job.category }}</span>
+                <span class="small-text date-text">{{ formatDate(job.createdDate) }}</span>
               </div>
-              <span class="category-badge view-details-badge" (click)="viewJobDetails(job)">
-                View Details <i class="bi bi-arrow-right"></i>
-              </span>
+              <div class="right-action">
+                <span class="view-details-link" (click)="viewJobDetails(job)">
+                  View Details <i class="bi bi-arrow-right"></i>
+                </span>
+              </div>
             </div>
           </div>
         </div>

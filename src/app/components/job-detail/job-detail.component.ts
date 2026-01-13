@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Job } from '../../models/job.model';
@@ -18,7 +18,8 @@ export class JobDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -80,18 +81,26 @@ export class JobDetailComponent implements OnInit {
           ...jobData
         } as Job;
         console.log('Job loaded successfully from Firebase:', this.job);
+        this.isLoading = false;
+        this.cdr.detectChanges(); // Force change detection
+        console.log('Change detection triggered, isLoading:', this.isLoading);
       } else {
         console.error('Job not found in Firebase with ID:', jobId);
+        this.isLoading = false;
+        this.cdr.detectChanges();
         alert('Job not found. Redirecting to job listings...');
         this.router.navigate(['/all-latest-jobs']);
       }
     } catch (error) {
       console.error('Error loading job from Firebase:', error);
+      this.isLoading = false;
+      this.cdr.detectChanges();
       alert('Error loading job details. Please try again later.');
       this.router.navigate(['/all-latest-jobs']);
     } finally {
       this.isLoading = false;
-      console.log('Loading completed, isLoading set to false');
+      this.cdr.detectChanges();
+      console.log('Loading completed, isLoading set to false, change detection triggered');
     }
   }
 

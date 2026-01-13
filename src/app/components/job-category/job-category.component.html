@@ -68,7 +68,12 @@
             
             <!-- Row 2: Job Description -->
             <div class="card-row-2">
-              <p class="job-description">{{ job.description.length > 180 ? job.description.substring(0, 180) + '...' : job.description }}</p>
+              <ul class="job-description-points">
+                <li *ngFor="let point of job.description.split('.').slice(0, 2); let i = index" 
+                    [style.display]="point.trim() ? 'list-item' : 'none'">
+                  {{ point.trim() }}
+                </li>
+              </ul>
             </div>
             
             <!-- Row 3: Left info and Right view details -->
@@ -109,7 +114,12 @@
             
             <!-- Row 2: Job Description -->
             <div class="card-row-2">
-              <p class="job-description">{{ job.description.length > 180 ? job.description.substring(0, 180) + '...' : job.description }}</p>
+              <ul class="job-description-points">
+                <li *ngFor="let point of job.description.split('.').slice(0, 2); let i = index" 
+                    [style.display]="point.trim() ? 'list-item' : 'none'">
+                  {{ point.trim() }}
+                </li>
+              </ul>
             </div>
             
             <!-- Row 3: Left info and Right view details -->

@@ -1,13 +1,21 @@
 <div class="modern-job-container">
-  <div class="container-fluid px-0">
-    <!-- Modern Hero Header -->
-    <div class="hero-section">
-      <div class="hero-content">
-        <h1 class="hero-title">{{ categoryTitle }}</h1>
-        <p class="hero-subtitle">Discover your next career opportunity</p>
+     <!-- Modern Hero Header -->
+    <div class="d-flex align-items-center mb-2 gap-2">
+      <span class="badge bg-primary px-2 py-1 small" style="border-radius: 0.5rem 0 0.5rem 0;">
+        <i class="bi bi-lightning-charge-fill featured-icon me-1" style="font-size: 0.9rem;"></i>Home &raquo; {{ categoryTitle }}
+      </span>
+      <span class=" bg-primary d-flex align-items-center fw-semibold text-white small mb-0">
         
-        <!-- Category Pills - Only show on All Latest Jobs page -->
-        <div class="category-pills" *ngIf="categoryTitle === 'All Latest Jobs'">
+        Openings <span class="badge bg-light text-primary ms-1 small" style="font-weight: 500;">{{ getNewJobs().length }}</span>
+      </span>
+    </div>
+  <div class="container-fluid px-0">
+ 
+
+    <!-- Category Pills Section - Separate with different background -->
+    <div class="category-section" *ngIf="categoryTitle === 'All Latest Jobs'">
+      <div class="container-fluid">
+        <div class="category-pills">
           <button class="pill-button" (click)="navigateToCategory('IT / Software Jobs')">
             <i class="bi bi-laptop-fill"></i>
             <span>IT/Software</span>
@@ -34,7 +42,6 @@
           </button>
         </div>
       </div>
-      <div class="hero-decoration"></div>
     </div>
 
     <!-- Loading State -->
@@ -49,15 +56,7 @@
     <div *ngIf="!isLoading && filteredJobs.length > 0" class="jobs-content">
       <!-- Featured Jobs Section -->
       <div class="featured-section" *ngIf="getNewJobs().length > 0">
-        <div class="section-title">
-          <div class="title-wrapper">
-            <h2 class="section-heading">
-              <i class="bi bi-lightning-charge-fill featured-icon"></i>
-              Featured Openings <span class="job-count">{{ getNewJobs().length }}</span>
-            </h2>
-          </div>
-          
-        </div>
+       
         
         <div class="modern-jobs-grid">
           <div class="modern-job-card" *ngFor="let job of getNewJobs()">

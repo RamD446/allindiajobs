@@ -124,27 +124,6 @@
 }
 
 /* Section Titles */
-.section-title {
-  margin-bottom: 2rem;
-}
-
-.title-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: white;
-  margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
 
 .featured-icon {
   color: #fbbf24;

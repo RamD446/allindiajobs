@@ -1,20 +1,25 @@
 <div class="modern-job-container">
-     <!-- Modern Hero Header -->
-    <div class="d-flex align-items-center mb-2 gap-2">
-      <span class="badge bg-primary px-2 py-1 small" style="border-radius: 0.5rem 0 0.5rem 0;">
-        <i class="bi bi-lightning-charge-fill featured-icon me-1" style="font-size: 0.9rem;"></i>Home &raquo; {{ categoryTitle }}
+  <!-- Modern Hero Header -->
+  <div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between flex-nowrap mb-2 gap-2 py-2">
+      <span class="badge bg-primary px-2 py-1" style="border-radius: 0.5rem 0 0.5rem 0; font-size: 0.8rem;">
+        <i class="bi bi-house-door me-1" style="font-size: 0.75rem;"></i>Home &raquo; {{ categoryTitle }}
       </span>
-      <span class=" bg-primary d-flex align-items-center fw-semibold text-white small mb-0">
-        
-        Openings <span class="badge bg-light text-primary ms-1 small" style="font-weight: 500;">{{ getNewJobs().length }}</span>
+      <span class="badge bg-primary px-2 py-1" style="font-size: 0.8rem;">
+        <i class="bi bi-briefcase me-1" style="font-size: 0.75rem;"></i>{{ getNewJobs().length }} Jobs
       </span>
     </div>
+  </div>
+  
   <div class="container-fluid px-0">
  
 
     <!-- Category Pills Section - Separate with different background -->
     <div class="category-section" *ngIf="categoryTitle === 'All Latest Jobs'">
       <div class="container-fluid">
+        <h6 class="text-center text-muted mb-3" style="font-size: 0.85rem;">
+          <i class="bi bi-funnel me-1"></i>Quick Filters
+        </h6>
         <div class="category-pills">
           <button class="pill-button" (click)="navigateToCategory('IT / Software Jobs')">
             <i class="bi bi-laptop-fill"></i>

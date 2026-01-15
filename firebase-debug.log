@@ -1,0 +1,16 @@
+[debug] [2026-01-15T04:47:04.555Z] ----------------------------------------------------------------------
+[debug] [2026-01-15T04:47:04.558Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\raman\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2026-01-15T04:47:04.558Z] CLI Version:   15.2.1
+[debug] [2026-01-15T04:47:04.558Z] Platform:      win32
+[debug] [2026-01-15T04:47:04.558Z] Node Version:  v24.11.0
+[debug] [2026-01-15T04:47:04.559Z] Time:          Thu Jan 15 2026 10:17:04 GMT+0530 (India Standard Time)
+[debug] [2026-01-15T04:47:04.559Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-01-15T04:47:07.205Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-01-15T04:47:07.206Z] > authorizing via signed-in user (ramana9000r@gmail.com)
+[debug] [2026-01-15T04:47:07.206Z] [iam] checking project allindiajobs-36405 for permissions ["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]
+[debug] [2026-01-15T04:47:07.207Z] Checked if tokens are valid: true, expires at: 1768454446931
+[debug] [2026-01-15T04:47:07.207Z] Checked if tokens are valid: true, expires at: 1768454446931
+[debug] [2026-01-15T04:47:07.208Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/allindiajobs-36405:testIamPermissions [none]
+[debug] [2026-01-15T04:47:07.208Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/allindiajobs-36405:testIamPermissions x-goog-quota-user=projects/allindiajobs-36405
+[debug] [2026-01-15T04:47:07.208Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/allindiajobs-36405:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]}

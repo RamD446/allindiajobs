@@ -20,6 +20,22 @@ export class HeaderComponent {
     this.isNavActive = false;
   }
 
+  shareWebsite() {
+    const shareData = {
+      title: 'AllIndia Jobs',
+      text: 'Find the best job opportunities in India!',
+      url: window.location.href
+    };
+    
+    if (navigator.share) {
+      navigator.share(shareData).catch(err => console.log('Error sharing:', err));
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     if (window.innerWidth > 768) {

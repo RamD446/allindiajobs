@@ -290,10 +290,20 @@
 @media (max-width: 768px) {
   .job-detail-compact {
     padding-top: 65px;
+    padding-bottom: 1rem;
   }
   
   .job-detail-compact .container-fluid {
-    padding: 0.5rem;
+    padding: 0.5rem !important;
+  }
+  
+  .job-detail-compact .row {
+    margin: 0;
+  }
+  
+  .job-detail-compact .col-md-8,
+  .job-detail-compact .col-md-4 {
+    padding: 0;
   }
   
   .modern-header {
@@ -362,10 +372,20 @@
 @media (max-width: 576px) {
   .job-detail-compact {
     padding-top: 60px;
+    padding-bottom: 0.5rem;
   }
   
   .job-detail-compact .container-fluid {
-    padding: 0.3rem;
+    padding: 0.3rem !important;
+  }
+  
+  .job-detail-compact .row {
+    margin: 0;
+  }
+  
+  .job-detail-compact .col-md-8,
+  .job-detail-compact .col-md-4 {
+    padding: 0;
   }
   
   .modern-header {

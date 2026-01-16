@@ -176,6 +176,8 @@ export class LoginComponent implements OnInit {
     
     try {
       this.isSaving = true;
+      this.cdr.detectChanges();
+      
       if (this.editingJob) {
         // Update existing job
         const jobRef = ref(db, `jobs/${this.editingJob.id}`);
@@ -193,12 +195,17 @@ export class LoginComponent implements OnInit {
         await push(jobsRef, newJobData);
         console.log('Job created successfully');
       }
-      // Close modal immediately after successful save
+      
+      // Reset saving state before closing modal
+      this.isSaving = false;
+      this.cdr.detectChanges();
+      
+      // Close modal after successful save
       this.cancelJobForm();
     } catch (error) {
       console.error('Error saving job:', error);
-    } finally {
       this.isSaving = false;
+      this.cdr.detectChanges();
     }
   }
 

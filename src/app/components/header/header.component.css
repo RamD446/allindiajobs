@@ -157,8 +157,39 @@
   display: none;
 }
 
+.mobile-logo-section {
+  display: none;
+}
+
 /* Mobile Styles */
 @media (max-width: 991.98px) {
+  .mobile-logo-section {
+    display: block;
+    padding: 0 0 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .mobile-logo-section .logo-container {
+    justify-content: center;
+  }
+  
+  .mobile-logo-section .logo-icon-wrapper {
+    padding: 0.5rem;
+  }
+  
+  .mobile-logo-section .logo-icon {
+    font-size: 1.3rem;
+  }
+  
+  .mobile-logo-section .logo-main {
+    font-size: 1.5rem;
+  }
+  
+  .mobile-logo-section .logo-sub {
+    font-size: 0.8rem;
+  }
+  
   .navbar-collapse {
     background: #000;
     position: fixed;
@@ -262,5 +293,65 @@
   
   .logo-sub {
     font-size: 0.65rem;
+  }
+}
+
+/* Share Button */
+.share-icon-btn {
+  display: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  padding: 0.4rem 0.6rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  margin-left: auto;
+  margin-right: 0.5rem;
+}
+
+.share-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #ffd700;
+  transform: scale(1.05);
+}
+
+@media (max-width: 991.98px) {
+  .share-icon-btn {
+    display: flex;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .share-icon-btn {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Enhanced Mobile Logo Visibility */
+@media (max-width: 575.98px) {
+  .navbar-brand .logo-container {
+    gap: 0.5rem;
+  }
+  
+  .navbar-brand .logo-icon-wrapper {
+    padding: 0.35rem !important;
+    border-radius: 6px !important;
+  }
+  
+  .navbar-brand .logo-icon {
+    font-size: 1.1rem !important;
+  }
+  
+  .navbar-brand .logo-main {
+    font-size: 1.15rem !important;
+  }
+  
+  .navbar-brand .logo-sub {
+    font-size: 0.7rem !important;
   }
 }

@@ -173,8 +173,8 @@
 
 .modern-jobs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
   margin-bottom: 3rem;
 }
 
@@ -485,5 +485,29 @@
   
   .section-description {
     font-size: 0.9rem;
+  }
+}
+
+/* Tablet - 2 columns */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .modern-jobs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* Medium screens - 3 columns */
+@media (min-width: 1025px) and (max-width: 1400px) {
+  .modern-jobs-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Large screens - 4 columns (default) */
+@media (min-width: 1401px) {
+  .modern-jobs-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
   }
 }

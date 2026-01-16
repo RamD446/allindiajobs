@@ -12,6 +12,12 @@
           </div>
         </div>
       </a>
+      
+      <!-- Share Button -->
+      <button class="share-icon-btn" (click)="shareWebsite()" title="Share">
+        <i class="bi bi-share-fill"></i>
+      </button>
+      
       <button 
         class="navbar-toggler custom-toggler" 
         type="button" 
@@ -23,6 +29,17 @@
       </button>
       <div class="collapse navbar-collapse" [class.show]="isNavActive">
         <button class="btn-close btn-close-white mobile-close-btn" (click)="toggleNav()" aria-label="Close"></button>
+        <div class="mobile-logo-section">
+          <div class="logo-container">
+            <div class="logo-icon-wrapper">
+              <i class="bi bi-lightning-charge-fill logo-icon"></i>
+            </div>
+            <div class="logo-text-wrapper">
+              <span class="logo-main">AllIndia</span>
+              <span class="logo-sub">Jobs.com</span>
+            </div>
+          </div>
+        </div>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <a routerLink="/all-latest-jobs" routerLinkActive="active" class="nav-link" (click)="closeNav()">

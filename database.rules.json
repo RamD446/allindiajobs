@@ -1,10 +1,7 @@
 {
   "rules": {
-    "posts": {
-      "$postId": {
-        ".write": "auth != null && !data.exists()",
-        ".read": true
-      }
-    }
+    ".read": true,
+    ".write": true
   }
 }
+

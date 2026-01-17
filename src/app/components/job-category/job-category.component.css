@@ -1,53 +1,11 @@
+/* Container */
 .modern-job-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
   margin-top: 60px;
 }
 
-.hero-section {
-  position: relative;
-  background: linear-gradient(135deg, rgba(255, 192, 203, 0.95) 0%, rgba(255, 182, 193, 0.95) 100%);
-  color: #2c3e50;
-  padding: 1.5rem 1.5rem;
-  margin: 1rem;
-  border-radius: 24px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.hero-decoration {
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  border-radius: 50%;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-}
-
-.hero-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  letter-spacing: -0.02em;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 0;
-  opacity: 0.95;
-  font-weight: 500;
-}
-
-/* Category Section - Separate with different background */
+/* Category Section */
 .category-section {
   background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
   padding: 2rem 0;
@@ -81,7 +39,6 @@
 }
 
 .pill-button:hover {
-  background: rgba(255, 255, 255, 0.2);
   border-color: #ffd700;
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -91,6 +48,7 @@
   font-size: 0.9rem;
 }
 
+/* Loading */
 .loading-section {
   display: flex;
   justify-content: center;
@@ -124,51 +82,9 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Jobs Content */
 .jobs-content {
   padding: 2rem 1rem;
-}
-
-.section-title {
-  margin-bottom: 2rem;
-}
-
-.title-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin: 0;
-}
-
-.featured-icon {
-  color: #ffd700;
-  font-size: 1.5rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-.job-count {
-  background: #f3f4f6;
-  color: #374151;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border: 1px solid #e5e7eb;
-}
-
-.section-description {
-  color: rgba(44, 62, 80, 0.8);
-  font-size: 1rem;
-  margin: 0;
 }
 
 .modern-jobs-grid {
@@ -178,6 +94,7 @@
   margin-bottom: 3rem;
 }
 
+/* Job Card */
 .modern-job-card {
   background: #f8f9fa;
   border-radius: 16px;
@@ -195,21 +112,20 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* Row 1: Title */
 .card-row-1 {
-  padding: 0.75rem 0.85rem 0.6rem;
+  padding: 0.75rem 0.85rem 1.2rem;
   background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
   flex-shrink: 0;
 }
 
 .job-title {
- 
+  font-size: .9rem;
+  font-weight: 600;
   color: #007bff;
   margin: 0;
   line-height: 1.3;
 }
 
-/* Row 2: Job Description */
 .card-row-2 {
   padding: 0.6rem 0.85rem;
   flex: 1;
@@ -217,14 +133,6 @@
   align-items: flex-start;
 }
 
-.job-description {
-  color: #6c757d;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  margin: 0;
-}
-
-/* Row 3: Left info and Right action */
 .card-row-3 {
   padding: 0.5rem 0.85rem 0.6rem;
   background: #ffffff;
@@ -238,7 +146,6 @@
 
 .left-info {
   display: flex;
-  flex-direction: row;
   gap: 0.25rem;
   align-items: center;
 }
@@ -246,27 +153,19 @@
 .small-text {
   font-size: 0.65rem;
   font-weight: 500;
+  padding: 0.15rem 0.4rem;
+  border-radius: 8px;
+  display: inline-block;
 }
 
 .category-text {
   color: #667eea;
   background: rgba(102, 126, 234, 0.1);
-  padding: 0.15rem 0.4rem;
-  border-radius: 8px;
-  display: inline-block;
 }
 
 .date-text {
   color: #28a745;
   background: rgba(40, 167, 69, 0.1);
-  padding: 0.15rem 0.4rem;
-  border-radius: 8px;
-  display: inline-block;
-}
-
-.right-action {
-  display: flex;
-  align-items: center;
 }
 
 .view-details-link {
@@ -289,6 +188,7 @@
   box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
+/* Load More */
 .load-more-section {
   text-align: center;
   margin: 3rem 0;
@@ -302,7 +202,7 @@
   border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 600;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
@@ -315,6 +215,7 @@
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
+/* Empty State */
 .empty-state {
   display: flex;
   justify-content: center;
@@ -363,36 +264,18 @@
 
 .back-btn:hover {
   background: rgba(44, 62, 80, 0.2);
-  color: #2c3e50;
-  text-decoration: none;
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
+/* Responsive - Mobile */
 @media (max-width: 768px) {
   .modern-job-container {
     margin-top: 70px;
   }
   
-  .hero-section {
-    padding: 1.5rem 1rem;
-    margin: 0.25rem;
-    border-radius: 16px;
-  }
-  
-  .hero-title {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .hero-subtitle {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  
   .category-pills {
     gap: 0.5rem;
-    margin-top: 1rem;
   }
   
   .pill-button {
@@ -417,77 +300,12 @@
     gap: 1rem;
   }
   
-  .modern-job-card {
-    border-radius: 16px;
-  }
-  
-  .card-row-1 {
-    padding: 1rem 1rem 0.5rem;
-  }
-  
   .job-title {
-    font-size: 1.1rem;
-    line-height: 1.3;
-  }
-  
-  .card-row-2 {
-    padding: 0.5rem 1rem;
-  }
-  
-  .job-description {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-  
-  .card-row-3 {
-    padding: 0.4rem 1rem 0.75rem;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.4rem;
-    justify-content: space-between;
-  }
-  
-  .left-info {
-    flex-direction: row;
-    gap: 0.2rem;
-    width: auto;
-  }
-  
-  .small-text {
-    font-size: 0.65rem;
-    padding: 0.1rem 0.3rem;
-  }
-  
-  .right-action {
-    align-self: center;
-  }
-  
-  .view-details-link {
-    font-size: 0.65rem;
-    padding: 0.25rem 0.5rem;
-    gap: 0.2rem;
-  }
-  
-  .section-heading {
-    font-size: 1.4rem;
-  }
-  
-  .title-wrapper {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-  
-  .job-count {
-    align-self: flex-start;
-  }
-  
-  .section-description {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 }
 
-/* Tablet - 2 columns */
+/* Responsive - Tablet */
 @media (min-width: 769px) and (max-width: 1024px) {
   .modern-jobs-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -495,18 +313,9 @@
   }
 }
 
-/* Medium screens - 3 columns */
+/* Responsive - Medium screens */
 @media (min-width: 1025px) and (max-width: 1400px) {
   .modern-jobs-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-}
-
-/* Large screens - 4 columns (default) */
-@media (min-width: 1401px) {
-  .modern-jobs-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
   }
 }

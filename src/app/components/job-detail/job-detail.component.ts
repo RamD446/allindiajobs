@@ -146,13 +146,13 @@ export class JobDetailComponent implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: job.title,
-        text: `Check out this job opportunity at ${job.company}`,
         url: window.location.href
       });
     } else {
       // Fallback for browsers that don't support Web Share API
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        alert('Job link copied to clipboard!');
+      const shareText = `${job.title}\n${window.location.href}`;
+      navigator.clipboard.writeText(shareText).then(() => {
+        alert('Job title and link copied to clipboard!');
       });
     }
   }

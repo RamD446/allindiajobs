@@ -96,51 +96,7 @@
         </div>
       </div>
 
-      <!-- All Jobs Section -->
-      <div class="all-jobs-section" *ngIf="getOtherJobs().length > 0">
-        <div class="section-title">
-          <div class="title-wrapper">
-            <h2 class="section-heading">
-              <i class="bi bi-briefcase-fill"></i>
-              All Opportunities
-            </h2>
-            <span class="job-count">{{ getOtherJobs().length }}</span>
-          </div>
-          <div class="section-description">Browse all available positions</div>
-        </div>
-        
-        <div class="modern-jobs-grid">
-          <div class="modern-job-card" *ngFor="let job of getOtherJobs()">
-            <!-- Row 1: Title -->
-            <div class="card-row-1">
-              <h3 class="job-title">{{ job.title }}</h3>
-            </div>
-            
-            <!-- Row 2: Job Description -->
-            <div class="card-row-2">
-              <ul class="job-description-points">
-                <li *ngFor="let point of job.description.split('.').slice(0, 2); let i = index" 
-                    [style.display]="point.trim() ? 'list-item' : 'none'">
-                  {{ point.trim() }}
-                </li>
-              </ul>
-            </div>
-            
-            <!-- Row 3: Left info and Right view details -->
-            <div class="card-row-3">
-              <div class="left-info">
-                <span class="small-text category-text">{{ job.category }}</span>
-                <span class="small-text date-text">{{ formatDate(job.createdDate) }}</span>
-              </div>
-              <div class="right-action">
-                <span class="view-details-link" (click)="viewJobDetails(job)">
-                  View Details <i class="bi bi-arrow-right"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
       <!-- Load More Section -->
       <div class="load-more-section" *ngIf="filteredJobs.length > 12">

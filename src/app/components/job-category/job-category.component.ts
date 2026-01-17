@@ -165,13 +165,8 @@ export class JobCategoryComponent implements OnInit {
 
   // Get new jobs (created in last 7 days)
   getNewJobs(): Job[] {
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    
-    return this.filteredJobs.filter(job => {
-      const createdDate = new Date(job.createdDate);
-      return createdDate >= sevenDaysAgo;
-    }).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+    // Return all filtered jobs sorted by newest first
+    return this.filteredJobs.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
   }
 
   // Get other jobs (older than 7 days)

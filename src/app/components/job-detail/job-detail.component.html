@@ -55,6 +55,13 @@
                   <span class="detail-value">{{ job.contactInfo }}</span>
                 </div>
                 
+                <div class="detail-item" *ngIf="job.applicationUrl">
+                  <span class="detail-label">More information visit Website:</span>
+                  <span class="detail-value">
+                    <a class="website-link-side" [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer">{{ job.applicationUrl }}</a>
+                  </span>
+                </div>
+
                 <div class="detail-item">
                   <span class="detail-label">Posted:</span>
                   <span class="detail-value">{{ formatDate(job.createdDate) }}</span>

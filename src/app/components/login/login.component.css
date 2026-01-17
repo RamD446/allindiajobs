@@ -291,7 +291,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .login-container {
-    margin-top: 60px;
+    margin-top: 0;
     margin-bottom: 30px;
   }
   
@@ -339,7 +339,7 @@
 }
 @media (max-width: 576px) {
   .login-container {
-    margin-top: 50px;
+    margin-top: 0;
     margin-bottom: 20px;
   }
   

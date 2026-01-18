@@ -83,19 +83,20 @@
   display: flex;
   gap: 0.6rem;
 }
-
 .social-mini {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   text-decoration: none;
   transition: all 0.3s ease;
-  font-size: 0.8rem;
+  font-size: 1rem;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  flex: 0 0 auto;
 }
 
 .social-mini.whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); }
@@ -103,9 +104,39 @@
 .social-mini.facebook { background: linear-gradient(135deg, #1877F2 0%, #42a5f5 100%); }
 .social-mini.instagram { background: linear-gradient(135deg, #E4405F 0%, #C13584 50%, #833AB4 100%); }
 
+/* Copy (clipboard) button color */
+.social-mini.copy { background: linear-gradient(135deg, #6c757d 0%, #495057 100%); }
+/* Share (primary) button color */
+.social-mini.share { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
 .social-mini:hover {
   transform: translateY(-3px) scale(1.1);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Make share button match mini icons size inside the icon row */
+.social-icons-below .share-btn-side {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 576px) {
+  .social-mini,
+  .social-icons-below .share-btn-side {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
 }
 
 /* Job Info */

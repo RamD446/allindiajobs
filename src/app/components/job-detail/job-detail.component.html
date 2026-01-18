@@ -68,10 +68,21 @@
                 </div>
               </div>
               
-              <button class="share-btn-side" (click)="shareJob(job)">
-                <i class="fas fa-share-alt"></i>
-                Share Job
-              </button>
+              
+                <div class="social-icons-below mt-3">
+                 <a class="social-mini share" title="Share" (click)="shareJob(job)">
+                   <i class="bi bi-share-fill"></i>
+                  </a>
+                  <a class="social-mini copy" title="Copy link" (click)="copyLink(job)">
+                    <i class="bi bi-clipboard"></i>
+                  </a>
+                  <a class="social-mini youtube" title="YouTube" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
+                    <i class="bi bi-youtube"></i>
+                  </a>
+                  <a class="social-mini whatsapp" title="WhatsApp" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
+                    <i class="bi bi-whatsapp"></i>
+                  </a>
+                </div>
             </div>
           </div>
         </div>

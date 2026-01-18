@@ -187,4 +187,14 @@ export class JobCategoryComponent implements OnInit {
       this.router.navigate([`/${route}`]);
     }
   }
+
+  // Open external channels (YouTube / WhatsApp) in a new tab
+  openExternalChannel(url: string) {
+    try {
+      window.open(url, '_blank', 'noopener');
+    } catch (e) {
+      // fallback: set location (will navigate away)
+      window.location.href = url;
+    }
+  }
 }

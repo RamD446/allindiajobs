@@ -153,6 +153,23 @@ export class JobDetailComponent implements OnInit {
     }
   }
 
+  copyLink(job: Job) {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Job link copied to clipboard!');
+    }).catch(() => {
+      alert('Unable to copy. Please copy the link manually.');
+    });
+  }
+
+  openExternalChannel(url: string) {
+    try {
+      window.open(url, '_blank', 'noopener');
+    } catch (e) {
+      window.location.href = url;
+    }
+  }
+
   goBack() {
     window.history.back();
   }

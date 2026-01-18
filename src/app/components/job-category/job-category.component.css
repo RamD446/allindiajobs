@@ -48,6 +48,13 @@
   font-size: 0.9rem;
 }
 
+/* Full color icons for quick-filters */
+.pill-gov i { color: #0d6efd; }
+.pill-private i { color: #6610f2; }
+.pill-walkin i { color: #fd7e14; }
+.pill-youtube i { color: #FF0000; }
+.pill-whatsapp i { color: #25D366; }
+
 /* Loading */
 .loading-section {
   display: flex;

@@ -58,14 +58,12 @@
               <h5 class="job-title">{{ job.title }}</h5>
             </div>
             
-            <!-- Row 2: Job Description -->
+            <!-- Row 2: Job Description (single-line summary) -->
             <div class="card-row-2">
-              <ul class="job-description-points">
-                <li *ngFor="let point of job.description.split('.').slice(0, 2); let i = index" 
-                    [style.display]="point.trim() ? 'list-item' : 'none'">
-                  {{ point.trim() }}
-                </li>
-              </ul>
+              <p class="job-summary">
+                <span class="job-summary-icon"><i class="bi bi-star-fill"></i></span>
+                {{ job.description ? (job.description.split('.')[0].length > 120 ? job.description.split('.')[0].slice(0,120) + '...' : job.description.split('.')[0]) : '' }}
+              </p>
             </div>
             
             <!-- Row 3: Left info and Right view details -->
@@ -76,7 +74,7 @@
               </div>
               <div class="right-action">
                 <span class="view-details-link" (click)="viewJobDetails(job)">
-                  View Details <i class="bi bi-arrow-right"></i>
+                  Read More <i class="bi bi-arrow-right-circle-fill"></i>
                 </span>
               </div>
             </div>

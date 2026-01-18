@@ -116,17 +116,13 @@ export class JobDetailComponent implements OnInit {
   // Method to get color class for job category badge
   getCategoryClass(category: string): string {
     switch (category) {
-      case 'IT / Software Jobs': 
-        return 'badge-primary';
-      case 'Non-IT / BPO Jobs': 
-        return 'badge-secondary';
-      case 'Government Jobs': 
+      case 'Government Jobs':
         return 'badge-success';
-      case 'All Private/ Bank Jobs': 
+      case 'All Private Jobs':
         return 'badge-warning';
-      case 'Walk-in Drive/Internships Jobs': 
+      case 'Walk-in Drives':
         return 'badge-info';
-      default: 
+      default:
         return 'badge-primary';
     }
   }

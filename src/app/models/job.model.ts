@@ -21,11 +21,9 @@ export interface Job {
 
 // Job Categories - simplified list as requested
 export const DEFAULT_JOB_CATEGORIES = [
-  'IT / Software Jobs',
-  'Non-IT / BPO Jobs', 
   'Government Jobs',
-  'All Private/ Bank Jobs',
-  'Walk-in Drive/Internships Jobs'
+  'All Private Jobs',
+  'Walk-in Drives'
 ] as const;
 
 export type JobCategory = typeof DEFAULT_JOB_CATEGORIES[number];

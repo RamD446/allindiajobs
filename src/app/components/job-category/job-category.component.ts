@@ -22,11 +22,9 @@ export class JobCategoryComponent implements OnInit {
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'all-latest-jobs': { title: 'All Latest Jobs', category: 'All Latest Jobs' },
-    'it-software-jobs': { title: 'IT / Software Jobs', category: 'IT / Software Jobs' },
-    'non-it-bpo-jobs': { title: 'Non-IT / BPO Jobs', category: 'Non-IT / BPO Jobs' },
     'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
-    'private-bank-jobs': { title: 'All Private/ Bank Jobs', category: 'All Private/ Bank Jobs' },
-    'walk-in-drive-jobs': { title: 'Walk-in Drive/Internships Jobs', category: 'Walk-in Drive/Internships Jobs' }
+    'private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' },
+    'walk-in-drives': { title: 'Walk-in Drives', category: 'Walk-in Drives' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -105,17 +103,13 @@ export class JobCategoryComponent implements OnInit {
   // Method to get color class for job category badge
   getCategoryClass(category: string): string {
     switch (category) {
-      case 'IT / Software Jobs': 
-        return 'badge-primary';
-      case 'Non-IT / BPO Jobs': 
-        return 'badge-secondary';
-      case 'Government Jobs': 
+      case 'Government Jobs':
         return 'badge-success';
-      case 'All Private/ Bank Jobs': 
+      case 'All Private Jobs':
         return 'badge-warning';
-      case 'Walk-in Drive/Internships Jobs': 
+      case 'Walk-in Drives':
         return 'badge-info';
-      default: 
+      default:
         return 'badge-primary';
     }
   }
@@ -183,11 +177,9 @@ export class JobCategoryComponent implements OnInit {
   // Navigate to different job categories
   navigateToCategory(category: string) {
     const routeMapping: { [key: string]: string } = {
-      'IT / Software Jobs': 'it-software-jobs',
-      'Non-IT / BPO Jobs': 'non-it-bpo-jobs',
       'Government Jobs': 'government-jobs',
-      'All Private/ Bank Jobs': 'private-bank-jobs',
-      'Walk-in Drive/Internships Jobs': 'walk-in-drive-jobs'
+      'All Private Jobs': 'private-jobs',
+      'Walk-in Drives': 'walk-in-drives'
     };
 
     const route = routeMapping[category];

@@ -14,36 +14,24 @@
   <div class="container-fluid px-0">
  
 
-    <!-- Category Pills Section - Separate with different background -->
+   <!-- Category Pills Section - Separate with different background -->
     <div class="category-section" *ngIf="categoryTitle === 'All Latest Jobs'">
       <div class="container-fluid">
         <h6 class="text-center text-muted mb-3" style="font-size: 0.85rem;">
           <i class="bi bi-funnel me-1"></i>Quick Filters
         </h6>
         <div class="category-pills">
-          <button class="pill-button" (click)="navigateToCategory('IT / Software Jobs')">
-            <i class="bi bi-laptop-fill"></i>
-            <span>IT/Software</span>
-          </button>
-          <button class="pill-button" (click)="navigateToCategory('Non-IT / BPO Jobs')">
-            <i class="bi bi-headset"></i>
-            <span>BPO/Non-IT</span>
-          </button>
           <button class="pill-button" (click)="navigateToCategory('Government Jobs')">
             <i class="bi bi-building-fill"></i>
-            <span>Government</span>
+            <span>Government Jobs</span>
           </button>
-          <button class="pill-button" (click)="navigateToCategory('All Private/ Bank Jobs')">
-            <i class="bi bi-bank"></i>
-            <span>Private/Bank</span>
+          <button class="pill-button" (click)="navigateToCategory('All Private Jobs')">
+            <i class="bi bi-briefcase-fill"></i>
+            <span>All Private Jobs</span>
           </button>
-          <button class="pill-button" (click)="navigateToCategory('Walk-in Drive/Internships Jobs')">
+          <button class="pill-button" (click)="navigateToCategory('Walk-in Drives')">
             <i class="bi bi-person-walking"></i>
-            <span>Walk-in</span>
-          </button>
-          <button class="pill-button" (click)="navigateToCategory('Walk-in Drive/Internships Jobs')">
-            <i class="bi bi-mortarboard-fill"></i>
-            <span>Internships</span>
+            <span>Walk-in Drives</span>
           </button>
         </div>
       </div>

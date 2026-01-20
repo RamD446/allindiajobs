@@ -23,15 +23,15 @@
         <div class="category-pills">
           <button class="pill-button pill-gov" (click)="navigateToCategory('Government Jobs')">
             <i class="bi bi-building-fill"></i>
-            <span>Government Jobs</span>
+            <span>all Government Jobs</span>
           </button>
           <button class="pill-button pill-private" (click)="navigateToCategory('All Private Jobs')">
             <i class="bi bi-briefcase-fill"></i>
-            <span>All Private Jobs</span>
+            <span>all Private Jobs</span>
           </button>
           <button class="pill-button pill-walkin" (click)="navigateToCategory('Walk-in Drives')">
             <i class="bi bi-person-walking"></i>
-            <span>Walk-in Drives</span>
+            <span>all Walk-in Drives</span>
           </button>
           <button class="pill-button pill-youtube" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
             <i class="bi bi-youtube"></i>
@@ -63,7 +63,7 @@
           <div class="modern-job-card" *ngFor="let job of getNewJobs()">
             <!-- Row 1: Title -->
             <div class="card-row-1">
-              <h5 class="job-title">{{ job.title }}</h5>
+              <h1 class="job-title">{{ job.title }}</h1>
             </div>
             
             <!-- Row 2: Job Description (single-line summary) -->

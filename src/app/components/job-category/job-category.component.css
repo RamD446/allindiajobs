@@ -120,13 +120,13 @@
 }
 
 .card-row-1 {
-  padding: 0.75rem 0.85rem 1.2rem;
+  padding: 0.75rem 0.85rem 1.3rem;
   background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
   flex-shrink: 0;
 }
 
 .job-title {
-  font-size: .9rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #007bff;
   margin: 0;

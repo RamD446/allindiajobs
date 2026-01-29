@@ -1,9 +1,10 @@
 footer {
-  background-color: #333;
-  color: white;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
   padding: 0.5rem;
   text-align: center;
   width: 100%;
+  border-top: 1px solid #333;
 }
 
 footer p {
@@ -11,14 +12,26 @@ footer p {
   font-size: 0.9rem;
 }
 
+footer a {
+  color: #64b5f6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #90caf9;
+  text-decoration: underline;
+}
+
 .footer-link {
-  color: #ffd700;
+  color: #ffd54f;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .footer-link:hover {
-  color: #fff;
+  color: #fff176;
   text-decoration: underline;
 }

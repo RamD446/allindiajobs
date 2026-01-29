@@ -61,26 +61,28 @@
         
         <div class="modern-jobs-grid">
           <div class="modern-job-card" *ngFor="let job of getNewJobs()">
-            <!-- Row 1: Title -->
+            <!-- Row 1: Company Name and Title -->
             <div class="card-row-1">
-              <h1 class="job-title">{{ job.title }}</h1>
+              <div class="company-title-row">
+                <span class="company-name-display">{{ job.company }}</span>
+                <h2 class="job-title">{{ job.title }}</h2>
+              </div>
             </div>
             
-            <!-- Row 2: Job Description (single-line summary) -->
+            <!-- Row 2: Description -->
             <div class="card-row-2">
               <p class="job-summary">
-                <span class="job-summary-icon"><i class="bi bi-star-fill"></i></span>
                 {{ job.description ? (job.description.split('.')[0].length > 120 ? job.description.split('.')[0].slice(0,120) + '...' : job.description.split('.')[0]) : '' }}
               </p>
             </div>
             
-            <!-- Row 3: Left info and Right view details -->
+            <!-- Row 3: Footer with Job Type, Date, and Continue Reading -->
             <div class="card-row-3">
-              <div class="left-info">
-                <span class="small-text category-text">{{ job.category }}</span>
-                <span class="small-text date-text">{{ formatDate(job.createdDate) }}</span>
-              </div>
-              <div class="right-action">
+              <div class="footer-content">
+                <div class="left-footer-info">
+                  <span class="job-type-text">{{ job.category }}</span>
+                  <span class="date-text"><i class="bi bi-calendar-fill me-1"></i>{{ formatDate(job.createdDate) }}</span>
+                </div>
                 <span class="view-details-link" (click)="viewJobDetails(job)">
                   Continue reading <i class="bi bi-arrow-right-circle-fill"></i>
                 </span>

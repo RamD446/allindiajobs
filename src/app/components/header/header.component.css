@@ -296,21 +296,50 @@
   }
 }
 
-/* Share Button */
-.share-icon-btn {
+/* Action Buttons Container */
+.header-action-buttons {
   display: none;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  align-items: center;
+  gap: 0.3rem;
+  margin-left: auto;
+  margin-right: 0.5rem;
+}
+
+/* Install App Button */
+.install-icon-btn {
+  background: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.4);
   border-radius: 8px;
-  color: white;
+  color: #ffd700;
   padding: 0.4rem 0.6rem;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1rem;
-  margin-left: auto;
-  margin-right: 0.5rem;
+}
+
+.install-icon-btn:hover {
+  background: rgba(255, 215, 0, 0.3);
+  border-color: #ffd700;
+  transform: scale(1.05);
+  color: white;
+}
+
+/* Share Button */
+.share-icon-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
 }
 
 .share-icon-btn:hover {
@@ -320,12 +349,13 @@
 }
 
 @media (max-width: 991.98px) {
-  .share-icon-btn {
+  .header-action-buttons {
     display: flex;
   }
 }
 
 @media (max-width: 575.98px) {
+  .install-icon-btn,
   .share-icon-btn {
     padding: 0.35rem 0.5rem;
     font-size: 0.95rem;

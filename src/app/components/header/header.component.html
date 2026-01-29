@@ -13,10 +13,18 @@
         </div>
       </a>
       
-      <!-- Share Button -->
-      <button class="share-icon-btn" (click)="shareWebsite()" title="Share">
-        <i class="bi bi-share-fill"></i>
-      </button>
+      <!-- Action Buttons -->
+      <div class="header-action-buttons">
+        <!-- Install App Button -->
+        <button class="install-icon-btn" (click)="installApp()" title="Install App" *ngIf="canInstall">
+          <i class="bi bi-download"></i>
+        </button>
+        
+        <!-- Share Button -->
+        <button class="share-icon-btn" (click)="shareWebsite()" title="Share">
+          <i class="bi bi-share-fill"></i>
+        </button>
+      </div>
       
       <button 
         class="navbar-toggler custom-toggler" 

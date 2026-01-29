@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,8 +9,27 @@ import { RouterModule } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   isNavActive = false;
+  canInstall = false;
+  private deferredPrompt: any = null;
+
+  ngOnInit() {
+    // Listen for the beforeinstallprompt event
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Save the event so it can be triggered later
+      this.deferredPrompt = e;
+      this.canInstall = true;
+    });
+
+    // Listen for app installed event
+    window.addEventListener('appinstalled', () => {
+      this.canInstall = false;
+      this.deferredPrompt = null;
+    });
+  }
 
   toggleNav() {
     this.isNavActive = !this.isNavActive;
@@ -18,6 +37,24 @@ export class HeaderComponent {
 
   closeNav() {
     this.isNavActive = false;
+  }
+
+  installApp() {
+    if (this.deferredPrompt) {
+      // Show the install prompt
+      this.deferredPrompt.prompt();
+      
+      // Wait for the user to respond to the prompt
+      this.deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        this.deferredPrompt = null;
+        this.canInstall = false;
+      });
+    }
   }
 
   shareWebsite() {

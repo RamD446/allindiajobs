@@ -19,6 +19,8 @@ export class JobCategoryComponent implements OnInit {
   categoryParam: string = '';
   isLoading: boolean = true;
   currentPage: number = 1;
+  selectedJobTypes: string[] = [];
+  selectedCompanies: string[] = [];
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'all-latest-jobs': { title: 'All Latest Jobs', category: 'All Latest Jobs' },
@@ -196,5 +198,74 @@ export class JobCategoryComponent implements OnInit {
       // fallback: set location (will navigate away)
       window.location.href = url;
     }
+  }
+
+  // Filter methods for quick filters
+  getUniqueCompanies(): string[] {
+    // Get companies only from currently filtered jobs (based on category)
+    const companies = [...new Set(this.filteredJobs.map(job => job.company))];
+    return companies.filter(company => company).slice(0, 10); // Show first 10 companies
+  }
+
+  getUniqueJobTypes(): string[] {
+    const jobTypes = [...new Set(this.jobs.map(job => job.category))];
+    return jobTypes.filter(type => type); // Remove empty/undefined values
+  }
+
+  getJobCountByCompany(company: string): number {
+    // Count jobs only from currently filtered jobs (based on category)
+    return this.filteredJobs.filter(job => job.company === company).length;
+  }
+
+  getJobCountByType(jobType: string): number {
+    return this.jobs.filter(job => job.category === jobType).length;
+  }
+
+  filterByCompany(event: any) {
+    const company = event.target.value;
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      this.selectedCompanies.push(company);
+    } else {
+      this.selectedCompanies = this.selectedCompanies.filter(comp => comp !== company);
+    }
+    
+    this.applyFilters();
+  }
+
+  filterByJobType(event: any) {
+    const jobType = event.target.value;
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      this.selectedJobTypes.push(jobType);
+    } else {
+      this.selectedJobTypes = this.selectedJobTypes.filter(type => type !== jobType);
+    }
+    
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    let filtered = this.jobs;
+
+    // Apply category filter
+    if (this.categoryTitle !== 'All Latest Jobs') {
+      filtered = filtered.filter(job => job.category === this.categoryTitle);
+    }
+
+    // Apply job type filters
+    if (this.selectedJobTypes.length > 0) {
+      filtered = filtered.filter(job => this.selectedJobTypes.includes(job.category));
+    }
+
+    // Apply company filters
+    if (this.selectedCompanies.length > 0) {
+      filtered = filtered.filter(job => this.selectedCompanies.includes(job.company));
+    }
+
+    this.filteredJobs = filtered;
+    this.cdr.detectChanges();
   }
 }

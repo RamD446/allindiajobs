@@ -1,26 +1,8 @@
 <div class="modern-job-container">
-  <!-- Modern Hero Header -->
-  <div class="container-fluid">
-    <div class="d-flex align-items-center justify-content-between flex-nowrap mb-2 gap-2 py-2">
-      <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 0.8rem; color: white;">
-        <i class="bi bi-house-door me-1" style="font-size: 0.75rem;"></i>Home &raquo; {{ categoryTitle }}
-      </span>
-      <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 0.8rem; color: white;">
-        <i class="bi bi-briefcase me-1" style="font-size: 0.75rem;"></i>{{ getNewJobs().length }} Jobs
-      </span>
-    </div>
-  </div>
-  
-  <div class="container-fluid px-0">
- 
-
-   <!-- Category Pills Section - Separate with different background -->
-    <div class="category-section" *ngIf="categoryTitle === 'All Latest Jobs'">
-      <div class="container-fluid">
-        <h6 class="text-center text-muted mb-3" style="font-size: 0.85rem;">
-          <i class="bi bi-funnel me-1"></i>Quick Filters
-        </h6>
-        <div class="category-pills">
+  <!-- Category Pills Section - Displayed on all pages -->
+  <div class="category-section">
+    <div class="container-fluid">
+      <div class="category-pills">
           <button class="pill-button pill-gov" (click)="navigateToCategory('Government Jobs')">
             <i class="bi bi-building-fill"></i>
             <span>all Government Jobs</span>
@@ -37,13 +19,27 @@
             <i class="bi bi-youtube"></i>
             <span>YouTube</span>
           </button>
-          <button class="pill-button pill-whatsapp" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
-            <i class="bi bi-whatsapp"></i>
-            <span>WhatsApp</span>
-          </button>
-        </div>
+        <button class="pill-button pill-whatsapp" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
+          <i class="bi bi-whatsapp"></i>
+          <span>WhatsApp</span>
+        </button>
       </div>
     </div>
+  </div>
+
+  <!-- Modern Hero Header -->
+  <div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between flex-nowrap mb-2 gap-2 py-2">
+      <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 0.8rem; color: white;">
+        <i class="bi bi-house-door me-1" style="font-size: 0.75rem;"></i>Home &raquo; {{ categoryTitle }}
+      </span>
+      <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 0.8rem; color: white;">
+        <i class="bi bi-briefcase me-1" style="font-size: 0.75rem;"></i>{{ getNewJobs().length }} Jobs
+      </span>
+    </div>
+  </div>
+  
+  <div class="container-fluid px-0">
 
     <!-- Loading State -->
     <div *ngIf="isLoading" class="loading-section">
@@ -55,51 +51,83 @@
 
     <!-- Jobs Content -->
     <div *ngIf="!isLoading && filteredJobs.length > 0" class="jobs-content">
-      <!-- Featured Jobs Section -->
-      <div class="featured-section" *ngIf="getNewJobs().length > 0">
-       
-        
-        <div class="modern-jobs-grid">
-          <div class="modern-job-card" *ngFor="let job of getNewJobs()">
-            <!-- Row 1: Company Name and Title -->
-            <div class="card-row-1">
-              <div class="company-title-row">
-                <span class="company-name-display">{{ job.company }}</span>
-                <h2 class="job-title">{{ job.title }}</h2>
+      <div class="container-fluid">
+        <div class="row">
+          <!-- Existing Jobs Section - Left Side (col-9) -->
+          <div class="col-lg-9 col-md-9">
+            <!-- Featured Jobs Section -->
+            <div class="featured-section" *ngIf="getNewJobs().length > 0">
+             
+              
+              <div class="modern-jobs-grid">
+                <div class="modern-job-card" *ngFor="let job of getNewJobs()">
+                  <!-- Row 1: Company Name and Title -->
+                  <div class="card-row-1">
+                    <div class="company-title-row">
+                      <span class="company-name-display">{{ job.company }}</span>
+                      <h2 class="job-title">{{ job.title }}</h2>
+                    </div>
+                  </div>
+                  
+                  <!-- Row 2: Description -->
+                  <div class="card-row-2">
+                    <p class="job-summary">
+                      {{ job.description ? (job.description.split('.')[0].length > 120 ? job.description.split('.')[0].slice(0,120) + '...' : job.description.split('.')[0]) : '' }}
+                    </p>
+                  </div>
+                  
+                  <!-- Row 3: Footer with Job Type, Date, and Continue Reading -->
+                  <div class="card-row-3">
+                    <div class="footer-content">
+                      <div class="left-footer-info">
+                        <span class="job-type-text">{{ job.category }}</span>
+                        <span class="date-text"><i class="bi bi-calendar-fill me-1"></i>{{ formatDate(job.createdDate) }}</span>
+                      </div>
+                      <span class="view-details-link" (click)="viewJobDetails(job)">
+                        Continue reading <i class="bi bi-arrow-right-circle-fill"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            
-            <!-- Row 2: Description -->
-            <div class="card-row-2">
-              <p class="job-summary">
-                {{ job.description ? (job.description.split('.')[0].length > 120 ? job.description.split('.')[0].slice(0,120) + '...' : job.description.split('.')[0]) : '' }}
-              </p>
+
+           
+
+            <!-- Load More Section -->
+            <div class="load-more-section" *ngIf="filteredJobs.length > 12">
+              <button class="load-more-btn">
+                <span>Load More Opportunities</span>
+                <i class="bi bi-chevron-down"></i>
+              </button>
             </div>
-            
-            <!-- Row 3: Footer with Job Type, Date, and Continue Reading -->
-            <div class="card-row-3">
-              <div class="footer-content">
-                <div class="left-footer-info">
-                  <span class="job-type-text">{{ job.category }}</span>
-                  <span class="date-text"><i class="bi bi-calendar-fill me-1"></i>{{ formatDate(job.createdDate) }}</span>
+          </div>
+
+          <!-- Quick Filters Section - Right Side (col-3) -->
+          <div class="col-lg-3 col-md-3">
+            <div class="filters-sidebar">
+              <div class="filter-card">
+                <h6 class="filter-title">
+                  <i class="bi bi-funnel me-2"></i>Quick Filters
+                </h6>
+                
+                <!-- Company Filters - Display based on current category -->
+                <div class="filter-group mb-3">
+                  <h6 class="filter-subtitle">Company</h6>
+                  <div class="company-filter-options">
+                    <label class="company-filter-option" *ngFor="let company of getUniqueCompanies()">
+                      <input type="checkbox" [value]="company" (change)="filterByCompany($event)">
+                      <span class="company-filter-text">{{ company }}</span>
+                      <span class="company-filter-count">({{ getJobCountByCompany(company) }})</span>
+                    </label>
+                  </div>
                 </div>
-                <span class="view-details-link" (click)="viewJobDetails(job)">
-                  Continue reading <i class="bi bi-arrow-right-circle-fill"></i>
-                </span>
+
+               
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-     
-
-      <!-- Load More Section -->
-      <div class="load-more-section" *ngIf="filteredJobs.length > 12">
-        <button class="load-more-btn">
-          <span>Load More Opportunities</span>
-          <i class="bi bi-chevron-down"></i>
-        </button>
       </div>
     </div>
 

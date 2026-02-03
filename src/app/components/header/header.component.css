@@ -83,18 +83,20 @@
 }
 
 .logo-main {
-  color: #fff;
+  color: #ffffff;
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: -0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .logo-sub {
-  color: #ffd700;
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 500;
   margin-top: -2px;
   letter-spacing: 0.5px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 /* Nav Links */
@@ -103,7 +105,7 @@
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: #ffffff !important;
   font-weight: 500;
   font-size: 0.9rem;
   padding: 0.4rem 0.85rem !important;
@@ -120,12 +122,12 @@
   transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background: #ffd700;
+  background: #ffffff;
   transition: width 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #fff !important;
+  color: #ffffff !important;
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -134,8 +136,8 @@
 }
 
 .nav-link.active {
-  color: #ffd700 !important;
-  background: rgba(255, 215, 0, 0.15);
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Navbar Toggler */
@@ -307,10 +309,10 @@
 
 /* Install App Button */
 .install-icon-btn {
-  background: rgba(255, 215, 0, 0.2);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  color: #ffd700;
+  color: #ffffff;
   padding: 0.4rem 0.6rem;
   display: flex;
   align-items: center;
@@ -321,10 +323,10 @@
 }
 
 .install-icon-btn:hover {
-  background: rgba(255, 215, 0, 0.3);
-  border-color: #ffd700;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #ffffff;
   transform: scale(1.05);
-  color: white;
+  color: #ffffff;
 }
 
 /* Share Button */
@@ -332,7 +334,7 @@
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  color: white;
+  color: #ffffff;
   padding: 0.4rem 0.6rem;
   display: flex;
   align-items: center;
@@ -344,7 +346,7 @@
 
 .share-icon-btn:hover {
   background: rgba(255, 255, 255, 0.2);
-  border-color: #ffd700;
+  border-color: #ffffff;
   transform: scale(1.05);
 }
 

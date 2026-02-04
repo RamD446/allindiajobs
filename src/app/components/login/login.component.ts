@@ -85,17 +85,17 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
         this.currentUser = user;
         this.loginError = '';
-        this.loadJobs();
         console.log('User is logged in:', user.email);
+        // Load jobs and only then set loading to false
+        this.loadJobs();
       } else {
         this.isLoggedIn = false;
         this.currentUser = null;
         this.jobs = [];
+        this.isLoading = false;
         console.log('User is logged out');
+        this.cdr.detectChanges();
       }
-      
-      this.isLoading = false;
-      this.cdr.detectChanges(); // Force change detection
     });
   }
 
@@ -104,7 +104,6 @@ export class LoginComponent implements OnInit {
     try {
       this.isLoading = true;
       this.loginError = '';
-      this.cdr.detectChanges();
       
       // Ensure persistence is set before login
       await setPersistence(auth, browserLocalPersistence);
@@ -113,10 +112,10 @@ export class LoginComponent implements OnInit {
       this.isLoggedIn = true;
       this.currentUser = userCredential.user;
       console.log('Login successful:', userCredential.user.email);
+      // Jobs will be loaded by onAuthStateChanged callback
     } catch (error: any) {
       this.loginError = error.message;
       console.error('Login error:', error);
-    } finally {
       this.isLoading = false;
       this.cdr.detectChanges();
     }
@@ -155,9 +154,18 @@ export class LoginComponent implements OnInit {
         } else {
           this.jobs = [];
         }
+        // Set loading to false after jobs are loaded
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }, (error) => {
+        console.error('Error loading jobs:', error);
+        this.isLoading = false;
+        this.cdr.detectChanges();
       });
     } catch (error) {
       console.error('Error loading jobs:', error);
+      this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 

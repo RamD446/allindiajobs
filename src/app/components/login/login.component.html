@@ -139,7 +139,14 @@
               
               <div class="col-12 mb-3">
                 <label class="form-label">Job Description *</label>
-                <textarea class="form-control" rows="4" [(ngModel)]="jobForm.description" name="description" required></textarea>
+                <quill-editor 
+                  [(ngModel)]="jobForm.description" 
+                  name="description" 
+                  [modules]="quillModules"
+                  [styles]="{height: '350px'}"
+                  placeholder="Enter job description with formatting, colors, and links..."
+                  required>
+                </quill-editor>
               </div>
             </div>
             
@@ -187,7 +194,7 @@
                   <span class="badge bg-primary me-1">{{ job.category }}</span>
                   <span class="badge bg-info">Contact: {{ job.contactInfo }}</span>
                 </div>
-                <p class="job-desc-small">{{ job.description }}</p>
+                <div class="job-desc-small" [innerHTML]="job.description"></div>
                 <div *ngIf="job.applicationUrl" class="mt-2">
                   <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="small">Open Application Link</a>
                 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { QuillModule } from 'ngx-quill';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserLocalPersistence, setPersistence } from 'firebase/auth';
 import { ref, push, get, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
@@ -9,7 +10,7 @@ import { Job, DEFAULT_JOB_CATEGORIES } from '../../models/job.model';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, QuillModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -27,6 +28,20 @@ export class LoginComponent implements OnInit {
   showJobForm: boolean = false;
   editingJob: Job | null = null;
   isSaving: boolean = false;
+
+  // Quill editor configuration
+  quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'align': [] }],
+      ['link'],
+      ['clean']
+    ]
+  };
 
   // Job form
   jobForm: Job = {

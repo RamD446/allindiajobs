@@ -26,14 +26,7 @@
             <h6 class="job-title-main">{{ job.title }}</h6>
             <div class="job-description-main">
               <h3>Job Description</h3>
-              <div class="description-text">
-                <ul class="description-points">
-                  <li *ngFor="let point of job.description.split('.'); let i = index" 
-                      [style.display]="point.trim() ? 'list-item' : 'none'">
-                    {{ point.trim() }}
-                  </li>
-                </ul>
-              </div>
+              <div class="description-text" [innerHTML]="job.description"></div>
             </div>
           </div>
         </div>

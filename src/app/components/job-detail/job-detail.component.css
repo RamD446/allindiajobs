@@ -173,6 +173,100 @@
   line-height: 1.7;
 }
 
+/* Rich Text Formatting from Quill Editor */
+.description-text p {
+  margin-bottom: 0.8rem;
+}
+
+.description-text strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.description-text em {
+  font-style: italic;
+}
+
+.description-text u {
+  text-decoration: underline;
+}
+
+.description-text a {
+  color: #667eea;
+  text-decoration: underline;
+}
+
+.description-text a:hover {
+  color: #764ba2;
+}
+
+.description-text ul,
+.description-text ol {
+  margin-left: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.description-text ul li,
+.description-text ol li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.description-text blockquote {
+  border-left: 4px solid #e91e63;
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-bottom: 0.8rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.description-text h1, .description-text h2, .description-text h3,
+.description-text h4, .description-text h5, .description-text h6 {
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #e91e63;
+}
+
+.description-text code {
+  background: #f3f4f6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.description-text pre {
+  background: #f3f4f6;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 0.8rem;
+}
+
+/* Support for Quill color and alignment classes */
+.description-text .ql-align-center {
+  text-align: center;
+}
+
+.description-text .ql-align-right {
+  text-align: right;
+}
+
+.description-text .ql-align-justify {
+  text-align: justify;
+}
+
+/* Preserve colors from Quill editor - inline styles will work automatically with innerHTML */
+.description-text span[style*="color"] {
+  /* Colors will be preserved from inline styles */
+}
+
+.description-text span[style*="background-color"] {
+  /* Background colors will be preserved from inline styles */
+}
+
 .description-points {
   list-style: none;
   padding: 0;

@@ -1,17 +1,7 @@
 <div class="modern-job-container">
   
 
-  <!-- Modern Hero Header -->
-  <div class="container-fluid">
-    <div class="d-flex align-items-center justify-content-between flex-nowrap mb-2 gap-2 py-2">
-      <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 0.8rem; color: white;">
-        <i class="bi bi-house-door me-1" style="font-size: 0.75rem;"></i>Home &raquo; {{ categoryTitle }}
-      </span>
-      <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 0.8rem; color: white;">
-        <i class="bi bi-briefcase me-1" style="font-size: 0.75rem;"></i>{{ getNewJobs().length }} Jobs
-      </span>
-    </div>
-  </div>
+ 
   
   <div class="container-fluid px-0">
 
@@ -29,30 +19,56 @@
         <div class="row">
           <!-- Existing Jobs Section - Left Side (col-9) -->
           <div class="col-lg-9 col-md-9">
+            <!-- Modern Hero Header -->
+            <div class="hero-header">
+              <div class="hero-breadcrumb">
+                <i class="bi bi-house-door-fill"></i>
+                <span>Home</span>
+                <i class="bi bi-chevron-right"></i>
+                <span class="hero-category">{{ categoryTitle }}</span>
+              </div>
+              <div class="hero-job-count">
+                <i class="bi bi-briefcase-fill"></i>
+                <span class="count-number">{{ getNewJobs().length }}</span>
+                <span class="count-label">Jobs Available</span>
+              </div>
+            </div>
+
             <!-- Category Pills Section - Displayed on all pages -->
   <div class="category-section">
     <div class="container-fluid">
-      <div class="category-pills">
-          <button class="pill-button pill-gov" (click)="navigateToCategory('Government Jobs')">
-            <i class="bi bi-building-fill"></i>
-            <span>all Government Jobs</span>
-          </button>
-          <button class="pill-button pill-private" (click)="navigateToCategory('All Private Jobs')">
-            <i class="bi bi-briefcase-fill"></i>
-            <span>all Private Jobs</span>
-          </button>
-          <button class="pill-button pill-walkin" (click)="navigateToCategory('Walk-in Drives')">
-            <i class="bi bi-person-walking"></i>
-            <span>all Walk-in Drives</span>
-          </button>
-          <button class="pill-button pill-youtube" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
-            <i class="bi bi-youtube"></i>
-            <span>YouTube</span>
-          </button>
-        <button class="pill-button pill-whatsapp" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
+      <!-- Category Pills Container -->
+      <div class="category-pills-container">
+        <button class="pill-button pill-all-jobs" routerLink="/all-latest-jobs">
+          <i class="bi bi-grid-3x3-gap-fill"></i>
+          <span>All Latest Jobs</span>
+        </button>
+        <button class="pill-button pill-gov" (click)="navigateToCategory('Government Jobs')">
+          <i class="bi bi-building-fill"></i>
+          <span>all Government Jobs</span>
+        </button>
+        <button class="pill-button pill-private" (click)="navigateToCategory('All Private Jobs')">
+          <i class="bi bi-briefcase-fill"></i>
+          <span>all Private Jobs</span>
+        </button>
+        <button class="pill-button pill-walkin" (click)="navigateToCategory('Walk-in Drives')">
+          <i class="bi bi-person-walking"></i>
+          <span>all Walk-in Drives</span>
+        </button>
+      </div>
+
+      <!-- Social Media Channels Row -->
+      <div class="social-channels-row">
+        <span class="channels-label">Follow Channels</span>
+        <button class="pill-button-small pill-youtube" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
+          <i class="bi bi-youtube"></i>
+          <span>YouTube</span>
+        </button>
+        <button class="pill-button-small pill-whatsapp" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
           <i class="bi bi-whatsapp"></i>
           <span>WhatsApp</span>
         </button>
+        
       </div>
     </div>
   </div>

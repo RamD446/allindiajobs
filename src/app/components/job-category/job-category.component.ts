@@ -71,6 +71,11 @@ export class JobCategoryComponent implements OnInit {
           // Filter jobs by category
           if (category === 'All Latest Jobs') {
             this.filteredJobs = this.jobs;
+          } else if (category === 'All Private Jobs') {
+            // Include both Private Jobs and Walk-in Drives for private jobs
+            this.filteredJobs = this.jobs.filter(job => 
+              job.category === 'All Private Jobs' || job.category === 'Walk-in Drives'
+            );
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
           }
@@ -267,7 +272,14 @@ export class JobCategoryComponent implements OnInit {
 
     // Apply category filter
     if (this.categoryTitle !== 'All Latest Jobs') {
-      filtered = filtered.filter(job => job.category === this.categoryTitle);
+      if (this.categoryTitle === 'All Private Jobs') {
+        // Include both Private Jobs and Walk-in Drives for private jobs
+        filtered = filtered.filter(job => 
+          job.category === 'All Private Jobs' || job.category === 'Walk-in Drives'
+        );
+      } else {
+        filtered = filtered.filter(job => job.category === this.categoryTitle);
+      }
     }
 
     // Apply job type filters

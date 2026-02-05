@@ -202,6 +202,8 @@
 .job-body-compact {
   border-top: 1px solid #f1f3f4;
   padding-top: 0.75rem;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .job-badges-small {
@@ -218,16 +220,25 @@
   font-size: 0.85rem;
   line-height: 1.6;
   margin-bottom: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* Quill Editor Styling */
 .job-desc-small p {
   margin-bottom: 0.5rem;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 .job-desc-small a {
   color: #667eea;
   text-decoration: underline;
+  word-break: break-all;
+  max-width: 100%;
 }
 
 .job-desc-small a:hover {
@@ -239,10 +250,14 @@
   margin-left: 1.5rem;
   margin-bottom: 0.5rem;
   padding-left: 0.5rem;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 .job-desc-small li {
   margin-bottom: 0.25rem;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .job-desc-small strong {
@@ -267,6 +282,9 @@
   margin-left: 0;
   margin-bottom: 0.5rem;
   color: #6c757d;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .job-desc-small h1,
@@ -279,6 +297,9 @@
   margin-top: 0.75rem;
   margin-bottom: 0.5rem;
   color: #2c3e50;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  max-width: 100%;
 }
 
 .job-desc-small code {
@@ -287,6 +308,7 @@
   border-radius: 4px;
   font-family: monospace;
   font-size: 0.85em;
+  word-break: break-all;
 }
 
 .job-desc-small pre {
@@ -295,6 +317,8 @@
   border-radius: 6px;
   overflow-x: auto;
   margin-bottom: 0.5rem;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* Support for Quill color classes */
@@ -308,6 +332,11 @@
 
 .job-desc-small .ql-align-justify {
   text-align: justify;
+}
+
+/* Don't override inline styles - let Quill colors and backgrounds show */
+.job-desc-small *[style] {
+  /* Inline styles will apply naturally */
 }
 
 /* Quill Editor in Form */

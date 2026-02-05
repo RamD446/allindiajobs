@@ -250,4 +250,52 @@ export class LoginComponent implements OnInit {
       createdDate: new Date().toISOString().split('T')[0]
     };
   }
+
+  shareJobOnWhatsApp(job: Job) {
+    // Strip HTML tags for WhatsApp message
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = job.description;
+    const plainDescription = tempDiv.textContent || tempDiv.innerText || '';
+    
+    // Truncate description if too long
+    const maxDescLength = 200;
+    const shortDesc = plainDescription.length > maxDescLength 
+      ? plainDescription.substring(0, maxDescLength) + '...' 
+      : plainDescription;
+    
+    // Create job detail URL (adjust domain as needed)
+    const jobUrl = `${window.location.origin}/job-details/${job.id}/${this.createSlug(job.title)}`;
+    
+    // Create WhatsApp message
+    const message = `
+🔔 *New Job Alert!*
+
+📌 *${job.title}*
+🏢 *Company:* ${job.company}
+📂 *Category:* ${job.category}
+📞 *Contact:* ${job.contactInfo}
+
+📝 *Description:*
+${shortDesc}
+
+🔗 *View Full Details:*
+${jobUrl}
+
+_Share this opportunity with your friends!_
+    `.trim();
+    
+    // Encode message for URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Open WhatsApp share link
+    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+  }
+
+  private createSlug(title: string): string {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
 }
+

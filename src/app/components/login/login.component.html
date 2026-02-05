@@ -170,16 +170,22 @@
         </div>
         
         <div class="row" *ngIf="jobs.length > 0">
-          <div class="col-12 mb-4" *ngFor="let job of jobs">
-            <div class="job-card-compact">
-              <div class="job-header-compact">
+          <div class="col-12 mb-3" *ngFor="let job of jobs">
+            <div class="job-card-compact" [class.expanded]="isJobExpanded(job.id)">
+              <div class="job-header-compact" (click)="toggleJobExpand(job.id)" style="cursor: pointer;">
                 <div class="job-info">
-                  <h6 class="job-title-small">{{ job.title }}</h6>
-                  <small class="job-company-small">
-                    <i class="bi bi-building me-1"></i>{{ job.company }} • {{ job.contactInfo }}
-                  </small>
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="bi" [class.bi-chevron-right]="!isJobExpanded(job.id)" [class.bi-chevron-down]="isJobExpanded(job.id)"></i>
+                    <div>
+                      <h6 class="job-title-small mb-0">{{ job.title }}</h6>
+                      <small class="job-company-small text-muted">
+                        <i class="bi bi-building me-1"></i>{{ job.company }} • 
+                        <span class="badge bg-primary badge-sm">{{ job.category }}</span>
+                      </small>
+                    </div>
+                  </div>
                 </div>
-                <div class="job-actions-small">
+                <div class="job-actions-small" (click)="$event.stopPropagation()">
                   <button class="btn btn-sm btn-success me-1" (click)="shareJobOnWhatsApp(job)" title="Share on WhatsApp">
                     <i class="bi bi-whatsapp"></i>
                   </button>
@@ -192,14 +198,16 @@
                 </div>
               </div>
               
-              <div class="job-body-compact">
-                <div class="job-badges-small">
-                  <span class="badge bg-primary me-1">{{ job.category }}</span>
-                  <span class="badge bg-info">Contact: {{ job.contactInfo }}</span>
+              <div class="job-body-compact" *ngIf="isJobExpanded(job.id)">
+                <div class="job-meta-info mb-2">
+                  <small class="text-muted me-3"><i class="bi bi-calendar3 me-1"></i>Posted: {{ job.createdDate }}</small>
+                  <small class="text-muted"><i class="bi bi-telephone me-1"></i>{{ job.contactInfo }}</small>
                 </div>
                 <div class="job-desc-small" [innerHTML]="job.description"></div>
-                <div *ngIf="job.applicationUrl" class="mt-2">
-                  <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="small">Open Application Link</a>
+                <div *ngIf="job.applicationUrl" class="mt-3">
+                  <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-link-45deg me-1"></i>Open Application Link
+                  </a>
                 </div>
               </div>
             </div>

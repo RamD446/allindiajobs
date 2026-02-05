@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   showJobForm: boolean = false;
   editingJob: Job | null = null;
   isSaving: boolean = false;
+  expandedJobIds: Set<string> = new Set();
 
   // Quill editor configuration
   quillModules = {
@@ -151,6 +152,12 @@ export class LoginComponent implements OnInit {
             id: key,
             ...data[key]
           }));
+          // Sort jobs by creation date - newest first
+          this.jobs.sort((a, b) => {
+            const dateA = new Date(a.createdDate || '1970-01-01').getTime();
+            const dateB = new Date(b.createdDate || '1970-01-01').getTime();
+            return dateB - dateA; // Descending order (newest first)
+          });
         } else {
           this.jobs = [];
         }
@@ -167,6 +174,18 @@ export class LoginComponent implements OnInit {
       this.isLoading = false;
       this.cdr.detectChanges();
     }
+  }
+
+  toggleJobExpand(jobId: string) {
+    if (this.expandedJobIds.has(jobId)) {
+      this.expandedJobIds.delete(jobId);
+    } else {
+      this.expandedJobIds.add(jobId);
+    }
+  }
+
+  isJobExpanded(jobId: string): boolean {
+    return this.expandedJobIds.has(jobId);
   }
 
   showCreateForm() {

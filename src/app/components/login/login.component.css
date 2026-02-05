@@ -171,15 +171,26 @@
   border-color: #667eea;
 }
 
+.job-card-compact.expanded {
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+  border-color: #667eea;
+}
+
 .job-header-compact {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
 }
 
 .job-info {
   flex: 1;
+}
+
+.job-info .bi {
+  color: #667eea;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
 }
 
 .job-title-small {
@@ -190,8 +201,12 @@
 }
 
 .job-company-small {
-  color: #6c757d;
   font-size: 0.875rem;
+}
+
+.job-company-small .badge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
 }
 
 .job-actions-small {
@@ -202,8 +217,27 @@
 .job-body-compact {
   border-top: 1px solid #f1f3f4;
   padding-top: 0.75rem;
+  margin-top: 0.75rem;
   overflow: hidden;
   max-width: 100%;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 2000px;
+  }
+}
+
+.job-meta-info {
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 4px;
 }
 
 .job-badges-small {
@@ -216,7 +250,6 @@
 }
 
 .job-desc-small {
-  color: #6c757d;
   font-size: 0.85rem;
   line-height: 1.6;
   margin-bottom: 0;

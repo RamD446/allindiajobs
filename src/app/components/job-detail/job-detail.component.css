@@ -5,6 +5,23 @@
   padding-top: 80px;
 }
 
+/* Hero Header Card */
+.hero-header-card {
+  background: #ffffff;
+  padding: 0.5rem 0.8rem;
+  margin: 0.5rem 1rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+@media (max-width: 768px) {
+  .hero-header-card {
+    margin: 0.5rem 0.5rem 1rem;
+    padding: 0.4rem 0.6rem;
+  }
+}
+
 /* Loading State */
 .loading-container {
   display: flex;
@@ -184,6 +201,7 @@
   word-wrap: break-word;
   word-break: break-word;
   max-width: 100%;
+  font-size: 0.80rem;
 }
 
 /* Rich Text Formatting from Quill Editor */
@@ -192,6 +210,7 @@
   max-width: 100%;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  font-size: 0.80rem;
 }
 
 .description-text strong {

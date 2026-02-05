@@ -175,7 +175,6 @@ export class JobDetailComponent implements OnInit {
 📌 *${job.title}*
 🏢 *Company:* ${job.company}
 📂 *Category:* ${job.category}
-📞 *Contact:* ${job.contactInfo}
 
 📝 *Description:*
 ${shortDesc}

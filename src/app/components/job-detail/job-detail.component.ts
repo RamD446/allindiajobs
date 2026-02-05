@@ -153,6 +153,46 @@ export class JobDetailComponent implements OnInit {
     }
   }
 
+  shareOnWhatsApp(job: Job) {
+    // Strip HTML tags for WhatsApp message
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = job.description;
+    const plainDescription = tempDiv.textContent || tempDiv.innerText || '';
+    
+    // Truncate description if too long
+    const maxDescLength = 200;
+    const shortDesc = plainDescription.length > maxDescLength 
+      ? plainDescription.substring(0, maxDescLength) + '...' 
+      : plainDescription;
+    
+    // Create job detail URL
+    const jobUrl = window.location.href;
+    
+    // Create WhatsApp message
+    const message = `
+🔔 *New Job Alert!*
+
+📌 *${job.title}*
+🏢 *Company:* ${job.company}
+📂 *Category:* ${job.category}
+📞 *Contact:* ${job.contactInfo}
+
+📝 *Description:*
+${shortDesc}
+
+🔗 *View Full Details:*
+${jobUrl}
+
+_Share this opportunity with your friends!_
+    `.trim();
+    
+    // Encode message for URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Open WhatsApp share link
+    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+  }
+
   copyLink(job: Job) {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {

@@ -60,21 +60,34 @@
                 </div>
               </div>
               
-              
-                <div class="social-icons-below mt-3">
-                 <a class="social-mini share" title="Share" (click)="shareJob(job)">
-                   <i class="bi bi-share-fill"></i>
+              <!-- Share Job Section -->
+              <div class="share-section mt-3">
+                <div class="section-label">Share Job</div>
+                <div class="social-icons-row">
+                  <a class="social-mini share" title="Share" (click)="shareJob(job)">
+                    <i class="bi bi-share-fill"></i>
+                  </a>
+                  <a class="social-mini whatsapp" title="Share on WhatsApp" (click)="shareOnWhatsApp(job)">
+                    <i class="bi bi-whatsapp"></i>
                   </a>
                   <a class="social-mini copy" title="Copy link" (click)="copyLink(job)">
                     <i class="bi bi-clipboard"></i>
                   </a>
+                </div>
+              </div>
+              
+              <!-- Follow Channels Section -->
+              <div class="follow-section mt-3">
+                <div class="section-label">Follow Channels</div>
+                <div class="social-icons-row">
                   <a class="social-mini youtube" title="YouTube" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
                     <i class="bi bi-youtube"></i>
                   </a>
-                  <a class="social-mini whatsapp" title="WhatsApp" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
+                  <a class="social-mini whatsapp" title="WhatsApp Channel" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
                     <i class="bi bi-whatsapp"></i>
                   </a>
                 </div>
+              </div>
             </div>
           </div>
         </div>

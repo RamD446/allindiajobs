@@ -96,6 +96,25 @@
 }
 
 /* Social Icons - Mobile-like compact design for all screens */
+.share-section,
+.follow-section {
+  margin-top: 1rem;
+}
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.social-icons-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
 .social-icons-below {
   display: flex;
   gap: 0.4rem;
@@ -118,6 +137,7 @@
 }
 
 .social-mini.whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); }
+.social-mini.whatsapp-share { background: #25D366; }
 .social-mini.youtube { background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%); }
 .social-mini.facebook { background: linear-gradient(135deg, #1877F2 0%, #42a5f5 100%); }
 .social-mini.instagram { background: linear-gradient(135deg, #E4405F 0%, #C13584 50%, #833AB4 100%); }

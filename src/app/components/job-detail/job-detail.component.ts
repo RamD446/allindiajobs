@@ -168,6 +168,8 @@ export class JobDetailComponent implements OnInit {
 
 🔗 ${jobUrl}
 
+_Share this with your friends, very helpful for job seekers!_
+
 📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H
 
 📺 Subscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs

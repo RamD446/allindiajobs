@@ -160,35 +160,17 @@ export class JobDetailComponent implements OnInit {
   }
 
   shareOnWhatsApp(job: Job) {
-    // Strip HTML tags for WhatsApp message
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = job.description;
-    const plainDescription = tempDiv.textContent || tempDiv.innerText || '';
-    
-    // Truncate description if too long
-    const maxDescLength = 200;
-    const shortDesc = plainDescription.length > maxDescLength 
-      ? plainDescription.substring(0, maxDescLength) + '...' 
-      : plainDescription;
-    
-    // Create job detail URL
     const jobUrl = window.location.href;
     
-    // Create WhatsApp message
+    // Create WhatsApp message with title, URL, and channel links
     const message = `
-🔔 *New Job Alert!*
-
 📌 *${job.title}*
-🏢 *Company:* ${job.company}
-📂 *Category:* ${job.category}
 
-📝 *Description:*
-${shortDesc}
+🔗 ${jobUrl}
 
-🔗 *View Full Details:*
-${jobUrl}
+📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H
 
-_Share this opportunity with your friends!_
+📺 Subscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs
     `.trim();
     
     // Encode message for URL

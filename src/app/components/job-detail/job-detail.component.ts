@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Job } from '../../models/job.model';
-import { ref, get } from 'firebase/database';
+import { ref, get, query, orderByChild, limitToLast } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 
 @Component({
@@ -16,6 +16,8 @@ import { db } from '../../../config/firebase.config';
 export class JobDetailComponent implements OnInit {
   job: Job | null = null;
   isLoading: boolean = true;
+  relatedJobs: Job[] = [];
+  latestJobs: Job[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -83,9 +85,12 @@ export class JobDetailComponent implements OnInit {
           ...jobData
         } as Job;
         console.log('Job loaded successfully from Firebase:', this.job);
+        
+        // Load related and latest jobs
+        await this.loadRelatedAndLatestJobs();
+        
         this.isLoading = false;
-        this.cdr.detectChanges(); // Force change detection
-        console.log('Change detection triggered, isLoading:', this.isLoading);
+        this.cdr.detectChanges();
       } else {
         console.error('Job not found in Firebase with ID:', jobId);
         this.isLoading = false;
@@ -99,11 +104,57 @@ export class JobDetailComponent implements OnInit {
       this.cdr.detectChanges();
       alert('Error loading job details. Please try again later.');
       this.router.navigate(['/all-latest-jobs']);
-    } finally {
-      this.isLoading = false;
-      this.cdr.detectChanges();
-      console.log('Loading completed, isLoading set to false, change detection triggered');
     }
+  }
+
+  async loadRelatedAndLatestJobs() {
+    try {
+      const jobsRef = ref(db, 'jobs');
+      const snapshot = await get(jobsRef);
+      
+      if (snapshot.exists()) {
+        const allJobs: Job[] = [];
+        snapshot.forEach((childSnapshot) => {
+          const jobData = childSnapshot.val();
+          if (childSnapshot.key !== this.job?.id) {
+            allJobs.push({
+              id: childSnapshot.key!,
+              ...jobData
+            } as Job);
+          }
+        });
+        
+        // Get related jobs (same category) - sorted by latest first
+        if (this.job) {
+          console.log('Current job category:', this.job.category);
+          console.log('All jobs:', allJobs.map(j => ({ title: j.title, category: j.category })));
+          
+          this.relatedJobs = allJobs
+            .filter(j => j.category === this.job!.category)
+            .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+            .slice(0, 5);
+            
+          console.log('Related jobs found:', this.relatedJobs.length);
+        }
+        
+        // Get latest jobs (all categories)
+        this.latestJobs = allJobs
+          .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+          .slice(0, 10);
+          
+        this.cdr.detectChanges();
+      }
+    } catch (error) {
+      console.error('Error loading related jobs:', error);
+    }
+  }
+
+  viewJobDetails(job: Job) {
+    const titleSlug = job.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    this.router.navigate(['/job', job.id, titleSlug], { state: { job } }).then(() => {
+      window.scrollTo(0, 0);
+      this.ngOnInit(); // Reload the component
+    });
   }
 
   formatDate(dateString: string): string {

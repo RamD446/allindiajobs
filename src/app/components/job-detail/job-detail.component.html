@@ -1,128 +1,155 @@
-<div class="job-detail-compact">
+<div class="job-detail-page">
   <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-container">
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <p>Loading job details...</p>
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
+    <p class="mt-3">Loading job details...</p>
   </div>
 
   <!-- Job Details -->
-  <div *ngIf="!isLoading && job" class="container-fluid">
-      <!-- Modern Hero Header -->
-      <div class="hero-header-card">
-        <div class="d-flex align-items-center justify-content-between flex-nowrap">
-          <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 0.5rem 0 0.5rem 0; font-size: 0.7rem; color: white; cursor: pointer;">
-            <i class="bi bi-house-door me-1" style="font-size: 0.65rem;"></i><span routerLink="/all-latest-jobs">Home</span> &raquo; Job Details
-          </span>
-        </div>
-      </div>
-      
-      <div class="row">
-        <!-- Left Column: Job Title and Description -->
-        <div class="col-md-8">
-          <div class="job-main-info">
-            <h6 class="job-title-main">{{ job.title }}</h6>
-            <div class="job-description-main">
-              <h3>Job Description</h3>
-              <div class="description-text" [innerHTML]="getSafeHtml(job.description)"></div>
+  <div *ngIf="!isLoading && job" class="job-content">
+    <div class="container-fluid px-0">
+      <div class="row g-0">
+        <!-- Main Content (col-9) -->
+        <div class="col-lg-9">
+          <!-- Breadcrumb -->
+          <div class="breadcrumb-nav">
+            <span routerLink="/all-latest-jobs" class="breadcrumb-link">
+              <i class="bi bi-house-door"></i> Home
+            </span>
+            <i class="bi bi-chevron-right"></i>
+            <span class="breadcrumb-current">Job Details</span>
+          </div>
+
+          <!-- Job Header Card -->
+          <div class="job-header-card">
+            <h1 class="job-title">{{ job.title }}</h1>
+            <div class="job-meta">
+              <span class="meta-item">
+                <i class="bi bi-building"></i>
+                <span>{{ job.company }}</span>
+              </span>
+              <span class="meta-item">
+                <i class="bi bi-tag"></i>
+                <span>{{ job.category }}</span>
+              </span>
+              <span class="meta-item">
+                <i class="bi bi-calendar3"></i>
+                <span>{{ formatDate(job.createdDate) }}</span>
+              </span>
             </div>
-            
-            <!-- Creator and Note Section -->
-            <div class="creator-note-section mt-4">
-              <div class="creator-info">
-                <small class="text-muted">
-                  <i class="bi bi-person-circle me-1"></i>Created by <strong>Yalla Ramana</strong>
-                </small>
+          </div>
+
+          <!-- Description Card -->
+          <div class="content-card">
+            <h2 class="section-title">Job Description</h2>
+            <div class="description-content" [innerHTML]="getSafeHtml(job.description)"></div>
+          </div>
+
+          <!-- Important Note -->
+          <div class="alert-card">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <div class="alert-text">
+              <strong>Important:</strong> Please verify details on the official website before applying.
+            </div>
+          </div>
+
+          <!-- Creator Info -->
+          <div class="creator-card">
+            <i class="bi bi-person-circle"></i>
+            <span>Posted by <strong>Yalla Ramana</strong></span>
+          </div>
+
+          <!-- Latest Jobs Section -->
+          <div class="latest-jobs-section" *ngIf="latestJobs.length > 0">
+            <h3 class="section-heading">Latest Top Jobs</h3>
+            <div class="jobs-list">
+              <div class="job-item" *ngFor="let latJob of latestJobs" (click)="viewJobDetails(latJob)">
+                <span class="job-item-title">{{ latJob.title }}</span>
+                <i class="bi bi-chevron-right"></i>
               </div>
-              <div class="verification-note mt-2">
-                <div class="alert alert-warning d-flex align-items-start" role="alert">
-                  <i class="bi bi-exclamation-triangle-fill me-2 mt-1"></i>
-                  <div>
-                    <strong>Note:</strong> Before applying, please verify the official website.
-                  </div>
-                </div>
+            </div>
+          </div>
+
+          <!-- Related Jobs Section (Same Category) -->
+          <div class="related-jobs-section" *ngIf="relatedJobs.length > 0">
+            <h3 class="section-heading">Related Jobs in {{ job.category }}</h3>
+            <div class="jobs-list">
+              <div class="job-item" *ngFor="let relJob of relatedJobs" (click)="viewJobDetails(relJob)">
+                <span class="job-item-title">{{ relJob.title }}</span>
+                <i class="bi bi-chevron-right"></i>
               </div>
             </div>
           </div>
         </div>
-        
-        <!-- Right Column: All Other Info -->
-        <div class="col-md-4">
-          <div class="job-side-info">
-            <div class="company-info">
-              <h4 class="company-name-side">{{ job.company }}</h4>
-              
-              <div class="job-details">
-                <div class="detail-item">
-                  <span class="detail-label">Category:</span>
-                  <span class="detail-value">{{ job.category }}</span>
-                </div>
-                
-                <div class="detail-item">
-                  <span class="detail-label">Contact:</span>
-                  <span class="detail-value">{{ job.contactInfo }}</span>
-                </div>
-                
-                <div class="detail-item" *ngIf="job.applicationUrl">
-                  <span class="detail-label">More information visit Website:</span>
-                  <span class="detail-value">
-                    <a class="website-link-side" [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer">{{ job.applicationUrl }}</a>
-                  </span>
-                </div>
 
-                <div class="detail-item">
-                  <span class="detail-label">Posted:</span>
-                  <span class="detail-value">{{ formatDate(job.createdDate) }}</span>
-                </div>
+        <!-- Sidebar (col-3) -->
+        <div class="col-lg-3">
+          <div class="sidebar-sticky">
+            <!-- Contact Card -->
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">Contact Information</h3>
+              <div class="info-item">
+                <i class="bi bi-telephone"></i>
+                <span>{{ job.contactInfo }}</span>
               </div>
-              
-              <!-- Share Job Section -->
-              <div class="share-section mt-3">
-                <div class="section-label">Share Job</div>
-                <div class="social-icons-row">
-                  <a class="social-mini share" title="Share" (click)="shareJob(job)">
-                    <i class="bi bi-share-fill"></i>
-                  </a>
-                  <a class="social-mini whatsapp" title="Share on WhatsApp" (click)="shareOnWhatsApp(job)">
-                    <i class="bi bi-whatsapp"></i>
-                  </a>
-                  <a class="social-mini copy" title="Copy link" (click)="copyLink(job)">
-                    <i class="bi bi-clipboard"></i>
-                  </a>
-                </div>
+              <div class="info-item" *ngIf="job.applicationUrl">
+                <i class="bi bi-link-45deg"></i>
+                <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer">Visit Website</a>
               </div>
-              
-              <!-- Follow Channels Section -->
-              <div class="follow-section mt-3">
-                <div class="section-label">Follow Channels</div>
-                <div class="social-icons-row">
-                  <a class="social-mini youtube" title="YouTube" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
-                    <i class="bi bi-youtube"></i>
-                  </a>
-                  <a class="social-mini whatsapp" title="WhatsApp Channel" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
-                    <i class="bi bi-whatsapp"></i>
-                  </a>
-                </div>
+            </div>
+
+            <!-- Share Card -->
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">Share Job</h3>
+              <div class="share-buttons">
+                <button class="share-btn share-primary" (click)="shareJob(job)" title="Share">
+                  <i class="bi bi-share-fill"></i>
+                  <span>Share</span>
+                </button>
+                <button class="share-btn share-whatsapp" (click)="shareOnWhatsApp(job)" title="WhatsApp">
+                  <i class="bi bi-whatsapp"></i>
+                  <span>WhatsApp</span>
+                </button>
+                <button class="share-btn share-copy" (click)="copyLink(job)" title="Copy Link">
+                  <i class="bi bi-clipboard"></i>
+                  <span>Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Follow Card -->
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">Follow Us</h3>
+              <div class="follow-buttons">
+                <button class="follow-btn follow-youtube" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
+                  <i class="bi bi-youtube"></i>
+                  <span>YouTube</span>
+                </button>
+                <button class="follow-btn follow-whatsapp" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
+                  <i class="bi bi-whatsapp"></i>
+                  <span>WhatsApp Channel</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-</div>
+  </div>
 
-<!-- Job Not Found -->
-<div class="not-found-compact" *ngIf="!job">
-  <div class="container-fluid">
-    <div class="not-found-content">
-      <i class="fas fa-exclamation-circle"></i>
-      <h2>Job Not Found</h2>
-      <p>The job you're looking for doesn't exist or has been removed.</p>
-      <a routerLink="/all-latest-jobs" class="back-link">
-        <i class="fas fa-arrow-left"></i>
-        Back to Jobs
-      </a>
+  <!-- Job Not Found -->
+  <div class="not-found" *ngIf="!isLoading && !job">
+    <div class="container">
+      <div class="not-found-content">
+        <i class="bi bi-exclamation-circle"></i>
+        <h2>Job Not Found</h2>
+        <p>The job you're looking for doesn't exist or has been removed.</p>
+        <button routerLink="/all-latest-jobs" class="btn-back">
+          <i class="bi bi-arrow-left"></i> Back to Jobs
+        </button>
+      </div>
     </div>
   </div>
 </div>

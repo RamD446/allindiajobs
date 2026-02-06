@@ -22,6 +22,33 @@
   }
 }
 
+/* Creator and Note Section */
+.creator-note-section {
+  border-top: 1px solid #e9ecef;
+  padding-top: 1rem;
+}
+
+.creator-info {
+  margin-bottom: 0.5rem;
+}
+
+.creator-info strong {
+  color: #667eea;
+}
+
+.verification-note .alert {
+  font-size: 0.85rem;
+  padding: 0.75rem;
+  margin-bottom: 0;
+  border-radius: 8px;
+}
+
+.verification-note .alert-warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #856404;
+}
+
 /* Loading State */
 .loading-container {
   display: flex;

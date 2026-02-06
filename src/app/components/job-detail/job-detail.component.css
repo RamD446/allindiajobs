@@ -248,8 +248,12 @@
   word-break: break-word;
   max-width: 100%;
   font-size: 0.80rem;
-  color: #374151;
   white-space: normal;
+}
+
+/* Default color only for elements without inline styles */
+.description-text *:not([style*="color"]) {
+  color: #374151;
 }
 
 /* Force normal white space handling for all elements */

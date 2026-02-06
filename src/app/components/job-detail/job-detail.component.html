@@ -42,7 +42,7 @@
           </div>
 
           <!-- Description Card -->
-          <div class="content-card">
+          <div class="content-card description-section">
             <h2 class="section-title">Job Description</h2>
             <div class="description-content" [innerHTML]="getSafeHtml(job.description)"></div>
           </div>
@@ -59,28 +59,6 @@
           <div class="creator-card">
             <i class="bi bi-person-circle"></i>
             <span>Posted by <strong>Yalla Ramana</strong></span>
-          </div>
-
-          <!-- Latest Jobs Section -->
-          <div class="latest-jobs-section" *ngIf="latestJobs.length > 0">
-            <h3 class="section-heading">Latest Top Jobs</h3>
-            <div class="jobs-list">
-              <div class="job-item" *ngFor="let latJob of latestJobs" (click)="viewJobDetails(latJob)">
-                <span class="job-item-title">{{ latJob.title }}</span>
-                <i class="bi bi-chevron-right"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Related Jobs Section (Same Category) -->
-          <div class="related-jobs-section" *ngIf="relatedJobs.length > 0">
-            <h3 class="section-heading">Related Jobs in {{ job.category }}</h3>
-            <div class="jobs-list">
-              <div class="job-item" *ngFor="let relJob of relatedJobs" (click)="viewJobDetails(relJob)">
-                <span class="job-item-title">{{ relJob.title }}</span>
-                <i class="bi bi-chevron-right"></i>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -106,15 +84,15 @@
               <div class="share-buttons">
                 <button class="share-btn share-primary" (click)="shareJob(job)" title="Share">
                   <i class="bi bi-share-fill"></i>
-                  <span>Share</span>
+                  <span class="btn-text">Share</span>
                 </button>
                 <button class="share-btn share-whatsapp" (click)="shareOnWhatsApp(job)" title="WhatsApp">
                   <i class="bi bi-whatsapp"></i>
-                  <span>WhatsApp</span>
+                  <span class="btn-text">WhatsApp</span>
                 </button>
                 <button class="share-btn share-copy" (click)="copyLink(job)" title="Copy Link">
                   <i class="bi bi-clipboard"></i>
-                  <span>Copy</span>
+                  <span class="btn-text">Copy</span>
                 </button>
               </div>
             </div>
@@ -125,13 +103,39 @@
               <div class="follow-buttons">
                 <button class="follow-btn follow-youtube" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
                   <i class="bi bi-youtube"></i>
-                  <span>YouTube</span>
+                  <span class="btn-text">YouTube</span>
                 </button>
                 <button class="follow-btn follow-whatsapp" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
                   <i class="bi bi-whatsapp"></i>
-                  <span>WhatsApp Channel</span>
+                  <span class="btn-text">WhatsApp Channel</span>
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latest Jobs Section (Full Width) -->
+      <div class="full-width-section" *ngIf="latestJobs.length > 0">
+        <div class="container-fluid">
+          <h3 class="section-heading">Latest Top Jobs</h3>
+          <div class="jobs-grid">
+            <div class="job-card" *ngFor="let latJob of latestJobs" (click)="viewJobDetails(latJob)">
+              <span class="job-card-title">{{ latJob.title }}</span>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Jobs Section (Full Width) -->
+      <div class="full-width-section related-section" *ngIf="relatedJobs.length > 0">
+        <div class="container-fluid">
+          <h3 class="section-heading">Related Jobs in {{ job.category }}</h3>
+          <div class="jobs-grid">
+            <div class="job-card" *ngFor="let relJob of relatedJobs" (click)="viewJobDetails(relJob)">
+              <span class="job-card-title">{{ relJob.title }}</span>
+              <i class="bi bi-chevron-right"></i>
             </div>
           </div>
         </div>

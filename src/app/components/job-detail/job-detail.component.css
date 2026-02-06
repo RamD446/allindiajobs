@@ -158,6 +158,11 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
+.content-card.description-section {
+  border-bottom: 3px solid #ffb6c1;
+  margin-bottom: 0.5rem;
+}
+
 .section-title {
   font-size: 0.9375rem;
   font-weight: 600;
@@ -481,6 +486,32 @@
   .sidebar-sticky {
     position: relative;
     top: 0;
+  }
+  
+  /* Share and Follow on separate rows on mobile */
+  .share-buttons,
+  .follow-buttons {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  
+  /* Hide text, show only icons on mobile */
+  .share-btn .btn-text,
+  .follow-btn .btn-text {
+    display: none;
+  }
+  
+  .share-btn,
+  .follow-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+  
+  .share-btn i,
+  .follow-btn i {
+    font-size: 1.25rem;
   }
 }
 
@@ -1167,5 +1198,95 @@
   .share-btn-side {
     padding: 0.7rem 1rem;
     font-size: 0.85rem;
+  }
+}
+
+/* Full Width Sections for Latest/Related Jobs */
+.full-width-section {
+  background: white;
+  padding: 1.5rem 0;
+  margin-top: 1.5rem;
+}
+
+.full-width-section.related-section {
+  background: #fff5f7;
+}
+
+.full-width-section .container-fluid {
+  padding: 0 1rem;
+}
+
+.section-heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #ffb6c1;
+}
+
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.job-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
+  border-color: #ffb6c1;
+}
+
+.job-card-title {
+  font-size: 0.8125rem;
+  color: #2d3748;
+  font-weight: 500;
+  line-height: 1.4;
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.job-card i {
+  font-size: 0.875rem;
+  color: #ffb6c1;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .full-width-section {
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
+  
+  .section-heading {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .jobs-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .job-card {
+    padding: 0.75rem 0.875rem;
+  }
+  
+  .job-card-title {
+    font-size: 0.8rem;
   }
 }

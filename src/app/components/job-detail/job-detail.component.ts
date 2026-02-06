@@ -145,16 +145,19 @@ export class JobDetailComponent implements OnInit {
 
   shareJob(job: Job) {
     console.log('Sharing job:', job.title);
+    const jobUrl = window.location.href;
+    
     if (navigator.share) {
       navigator.share({
         title: job.title,
-        url: window.location.href
+        text: `Share this with your friends, very helpful for job seekers!\n\nFollow our WhatsApp Channel: https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H\n\nSubscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs`,
+        url: jobUrl
       });
     } else {
       // Fallback for browsers that don't support Web Share API
-      const shareText = `${job.title}\n${window.location.href}`;
+      const shareText = `📌 ${job.title}\n\n🔗 ${jobUrl}\n\nShare this with your friends, very helpful for job seekers!\n\n📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H\n\n📺 Subscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs`;
       navigator.clipboard.writeText(shareText).then(() => {
-        alert('Job title and link copied to clipboard!');
+        alert('Job details copied to clipboard!');
       });
     }
   }

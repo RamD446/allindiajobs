@@ -117,7 +117,7 @@
               
               <div class="col-md-6 mb-3">
                 <label class="form-label">Company Name *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" required>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" >
               </div>
               
               <div class="col-md-6 mb-3">
@@ -129,7 +129,12 @@
               
               <div class="col-md-6 mb-3">
                 <label class="form-label">Contact Information *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.contactInfo" name="contactInfo" required placeholder="Phone/Email/Address">
+                <input type="text" class="form-control" [(ngModel)]="jobForm.contactInfo" name="contactInfo"  placeholder="Phone/Email/Address">
+              </div>
+              
+              <div class="col-md-6 mb-3" *ngIf="editingJob">
+                <label class="form-label">Created Date *</label>
+                <input type="date" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" >
               </div>
               
               <div class="col-md-6 mb-3">

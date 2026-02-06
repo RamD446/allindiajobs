@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Job } from '../../models/job.model';
 import { ref, get } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
@@ -19,7 +20,8 @@ export class JobDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
   ) {}
 
   async ngOnInit() {
@@ -111,6 +113,10 @@ export class JobDetailComponent implements OnInit {
       month: 'long',
       year: 'numeric'
     });
+  }
+
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   // Method to get color class for job category badge

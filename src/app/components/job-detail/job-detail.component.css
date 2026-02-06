@@ -242,14 +242,28 @@
 }
 
 .description-text {
-  color: #374151;
   line-height: 1.7;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
   max-width: 100%;
   font-size: 0.80rem;
+  color: #374151;
+  white-space: normal;
 }
+
+/* Force normal white space handling for all elements */
+.description-text *,
+.description-text p,
+.description-text li,
+.description-text span,
+.description-text strong {
+  white-space: normal !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Don't override inline styles - remove all color rules for child elements */
 
 /* Rich Text Formatting from Quill Editor */
 .description-text p {
@@ -262,7 +276,6 @@
 
 .description-text strong {
   font-weight: 600;
-  color: #1f2937;
 }
 
 .description-text em {
@@ -274,13 +287,8 @@
 }
 
 .description-text a {
-  color: #667eea;
   text-decoration: underline;
   word-break: break-all;
-}
-
-.description-text a:hover {
-  color: #764ba2;
 }
 
 .description-text ul,
@@ -306,7 +314,6 @@
   word-wrap: break-word;
   margin-left: 0;
   margin-bottom: 0.8rem;
-  color: #6b7280;
   font-style: italic;
 }
 
@@ -315,7 +322,6 @@
   font-weight: 600;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
-  color: #e91e63;
   overflow-wrap: break-word;
   word-wrap: break-word;
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -14,6 +14,8 @@ export class HeaderComponent implements OnInit {
   canInstall = false;
   private deferredPrompt: any = null;
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngOnInit() {
     // Listen for the beforeinstallprompt event
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -21,13 +23,20 @@ export class HeaderComponent implements OnInit {
       e.preventDefault();
       // Save the event so it can be triggered later
       this.deferredPrompt = e;
-      this.canInstall = true;
+      // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+      setTimeout(() => {
+        this.canInstall = true;
+        this.cdr.detectChanges();
+      });
     });
 
     // Listen for app installed event
     window.addEventListener('appinstalled', () => {
-      this.canInstall = false;
-      this.deferredPrompt = null;
+      setTimeout(() => {
+        this.canInstall = false;
+        this.deferredPrompt = null;
+        this.cdr.detectChanges();
+      });
     });
   }
 

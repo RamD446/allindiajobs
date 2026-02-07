@@ -1,7 +1,7 @@
 /* Job Detail Page - Compact Mobile-Friendly Design */
 .job-detail-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
   padding: 70px 0 8px 0;
 }
 
@@ -119,7 +119,7 @@
 .desc-content {
   color: #4a5568;
   line-height: 1.6;
-  font-size: 13px;
+  font-size: 14px;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -150,6 +150,14 @@
 .desc-content a {
   color: #667eea;
   text-decoration: underline;
+}
+
+/* Desktop - 15px */
+@media (min-width: 992px) {
+  .desc-content {
+    font-size: 15px;
+    line-height: 1.7;
+  }
 }
 
 /* Application Link */
@@ -640,7 +648,8 @@
   }
 
   .desc-content {
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 1.7;
   }
 
   .job-header,
@@ -725,7 +734,8 @@
   }
 
   .desc-content {
-    font-size: 11px;
+    font-size: 13px;
+    line-height: 1.6;
   }
 
   .job-header,

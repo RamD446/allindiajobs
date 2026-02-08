@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { JobCategoryComponent } from './components/job-category/job-category.component';
 import { LoginComponent } from './components/login/login.component';
-import { JobDetailComponent } from './components/job-detail/job-detail.component';
+import { JobFullInformation } from './components/job-full-information/job-full-information';
 import { InfoPageComponent } from './components/info-page/info-page.component';
 
 export const routes: Routes = [
@@ -15,7 +15,8 @@ export const routes: Routes = [
   { path: 'privacy-policy', component: InfoPageComponent },
   { path: 'terms-and-conditions', component: InfoPageComponent },
   { path: 'disclaimer', component: InfoPageComponent },
-  { path: 'job-details/:id/:title', component: JobDetailComponent },
+  { path: 'job/:id/:title', component: JobFullInformation },
+  { path: 'job-details/:id/:title', component: JobFullInformation }, // Legacy route support
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '/all-latest-jobs' }
 ];

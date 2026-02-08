@@ -1,0 +1,252 @@
+<div class="job-full-info-page">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <h3>Loading Job Information...</h3>
+      <p>Please wait while we fetch the latest job details</p>
+    </div>
+  </div>
+
+  <!-- Job Full Information Content -->
+  <div *ngIf="!isLoading && job" class="job-content">
+    <div class="container-fluid">
+      
+      <!-- Enhanced Breadcrumb -->
+      <nav class="enhanced-breadcrumb">
+        <div class="breadcrumb-item">
+          <span routerLink="/all-latest-jobs" class="breadcrumb-link">
+            <i class="bi bi-house-door-fill"></i>
+            <span>All India Jobs</span>
+          </span>
+        </div>
+        <i class="bi bi-chevron-right breadcrumb-separator"></i>
+        <div class="breadcrumb-item">
+          <span class="breadcrumb-current">{{ job.title | slice:0:60 }}{{ job.title.length > 60 ? '...' : '' }}</span>
+        </div>
+      </nav>
+
+      <!-- Main Content Grid -->
+      <div class="content-grid">
+        
+        <!-- Main Job Information Section -->
+        <div class="main-content-area">
+          
+          <!-- Hero Job Card -->
+          <div class="hero-job-card">
+            
+            <!-- Job Header with Enhanced Design -->
+            <div class="job-hero-header">
+              <div class="job-title-section">
+                <h1 class="job-main-title">{{ job.title }}</h1>
+                <div class="job-subtitle">Complete Job Information & Application Details</div>
+              </div>
+              
+              <!-- Enhanced Job Meta Badges -->
+              <div class="job-meta-badges">
+                <div class="meta-badge company-meta">
+                  <i class="bi bi-building-fill"></i>
+                  <div class="meta-content">
+                    <span class="meta-label">Company</span>
+                    <span class="meta-value">{{ job.company }}</span>
+                  </div>
+                </div>
+                
+                <div class="meta-badge category-meta">
+                  <i class="bi bi-tag-fill"></i>
+                  <div class="meta-content">
+                    <span class="meta-label">Category</span>
+                    <span class="meta-value">{{ job.category }}</span>
+                  </div>
+                </div>
+                
+                <div class="meta-badge date-meta">
+                  <i class="bi bi-calendar-event-fill"></i>
+                  <div class="meta-content">
+                    <span class="meta-label">Posted On</span>
+                    <span class="meta-value">{{ formatDate(job.createdDate) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Primary Action Button -->
+            <div class="primary-action-section" *ngIf="job.applicationUrl">
+              <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="primary-apply-button">
+                <i class="bi bi-send-fill"></i>
+                <span>Apply Now - Official Website</span>
+                <i class="bi bi-arrow-up-right-square-fill"></i>
+              </a>
+              <p class="action-help-text">Click above to apply directly on the official website</p>
+            </div>
+
+            <!-- Job Description Section -->
+            <div class="description-section">
+              <div class="section-header">
+                <i class="bi bi-file-text-fill section-icon"></i>
+                <h2 class="section-title">Complete Job Description</h2>
+              </div>
+              <div class="description-container">
+                <div class="enhanced-description" [innerHTML]="getSafeHtml(job.description)"></div>
+              </div>
+            </div>
+
+            <!-- Quick Actions Bar -->
+            <div class="quick-actions-bar">
+              <button class="quick-action-btn" (click)="shareJob(job)">
+                <i class="bi bi-share-fill"></i>
+                <span>Share Job</span>
+              </button>
+              
+              <button class="quick-action-btn whatsapp-btn" (click)="shareOnWhatsApp(job)">
+                <i class="bi bi-whatsapp"></i>
+                <span>WhatsApp</span>
+              </button>
+              
+              <button class="quick-action-btn copy-btn" (click)="copyLink(job)">
+                <i class="bi bi-clipboard-fill"></i>
+                <span>Copy Link</span>
+              </button>
+              
+              <button class="quick-action-btn youtube-btn" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
+                <i class="bi bi-youtube"></i>
+                <span>YouTube</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Enhanced Sidebar -->
+        <div class="enhanced-sidebar">
+          
+          <!-- Current Job Summary -->
+          <div class="sidebar-widget">
+            <div class="widget-header">
+              <i class="bi bi-briefcase-fill widget-icon"></i>
+              <h3 class="widget-title">Job Summary</h3>
+            </div>
+            <div class="widget-content">
+              <div class="job-summary-item">
+                <span class="summary-label">Position:</span>
+                <span class="summary-value">{{ job.title | slice:0:35 }}{{ job.title.length > 35 ? '...' : '' }}</span>
+              </div>
+              <div class="job-summary-item">
+                <span class="summary-label">Company:</span>
+                <span class="summary-value">{{ job.company }}</span>
+              </div>
+              <div class="job-summary-item">
+                <span class="summary-label">Category:</span>
+                <span class="summary-value">{{ job.category }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Application Link Widget -->
+          <div class="sidebar-widget" *ngIf="job.applicationUrl">
+            <div class="widget-header">
+              <i class="bi bi-globe-americas widget-icon"></i>
+              <h3 class="widget-title">Official Portal</h3>
+            </div>
+            <div class="widget-content">
+              <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="official-portal-link">
+                <i class="bi bi-arrow-up-right-circle-fill"></i>
+                <div class="portal-link-content">
+                  <span class="portal-title">Visit Official Website</span>
+                  <span class="portal-subtitle">Apply directly on company portal</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Latest Opportunities Widget -->
+          <div class="sidebar-widget latest-jobs-widget">
+            <div class="widget-header">
+              <i class="bi bi-bell-fill widget-icon"></i>
+              <h3 class="widget-title">Latest 20 Opportunities</h3>
+            </div>
+            <div class="widget-content">
+              
+              <!-- Loading State -->
+              <div *ngIf="isLoading" class="widget-loading">
+                <div class="loading-dots"></div>
+                <span>Loading opportunities...</span>
+              </div>
+              
+              <!-- No Jobs State -->
+              <div *ngIf="!isLoading && (!latestJobs || latestJobs.length === 0)" class="no-opportunities">
+                <i class="bi bi-exclamation-circle"></i>
+                <span>No opportunities available</span>
+              </div>
+              
+              <!-- Opportunities List -->
+              <div *ngIf="!isLoading && latestJobs && latestJobs.length > 0" class="opportunities-list">
+                <div 
+                  *ngFor="let latestJob of latestJobs.slice(0, 20); trackBy: trackByJobId; let i = index" 
+                  class="opportunity-item"
+                  (click)="viewJobDetails(latestJob)">
+                  
+                  <div class="opportunity-index">{{ i + 1 }}</div>
+                  
+                  <div class="opportunity-content">
+                    <h4 class="opportunity-title">{{ latestJob.title | slice:0:50 }}{{ latestJob.title.length > 50 ? '...' : '' }}</h4>
+                    <div class="opportunity-meta">
+                      <span class="opportunity-company">
+                        <i class="bi bi-building"></i>
+                        {{ latestJob.company | slice:0:20 }}{{ latestJob.company.length > 20 ? '...' : '' }}
+                      </span>
+                      <span class="opportunity-date">
+                        <i class="bi bi-calendar3"></i>
+                        {{ formatDate(latestJob.createdDate) }}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div class="opportunity-action">
+                    <i class="bi bi-arrow-right-circle"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Help & Support Widget -->
+          <div class="sidebar-widget">
+            <div class="widget-header">
+              <i class="bi bi-question-circle-fill widget-icon"></i>
+              <h3 class="widget-title">Need Help?</h3>
+            </div>
+            <div class="widget-content">
+              <div class="help-item">
+                <i class="bi bi-whatsapp help-icon whatsapp"></i>
+                <a href="https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H" target="_blank" class="help-link">Join WhatsApp Channel</a>
+              </div>
+              <div class="help-item">
+                <i class="bi bi-youtube help-icon youtube"></i>
+                <a href="https://www.youtube.com/@allindiajobs-newjobs" target="_blank" class="help-link">Subscribe YouTube</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Not Found Section -->
+  <div class="enhanced-not-found" *ngIf="!isLoading && !job">
+    <div class="not-found-content">
+      <div class="not-found-animation">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <h2>Job Information Not Found</h2>
+      <p>The job you're looking for might have been moved, removed, or doesn't exist.</p>
+      <div class="not-found-actions">
+        <button class="back-to-jobs-btn" (click)="goBack()">
+          <i class="bi bi-arrow-left-circle-fill"></i>
+          <span>Back to All Jobs</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

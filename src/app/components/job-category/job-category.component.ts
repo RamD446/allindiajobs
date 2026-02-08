@@ -150,7 +150,7 @@ export class JobCategoryComponent implements OnInit {
   // Navigate to job detail page
   viewJobDetails(job: Job) {
     const titleSlug = this.createSlug(job.title);
-    this.router.navigate(['/job-details', job.id, titleSlug], { state: { job: job } });
+    this.router.navigate(['/job', job.id, titleSlug], { state: { job: job } });
   }
 
   // Save/bookmark job functionality

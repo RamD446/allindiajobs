@@ -283,7 +283,7 @@ export class LoginComponent implements OnInit {
       : plainDescription;
     
     // Create job detail URL (adjust domain as needed)
-    const jobUrl = `${window.location.origin}/job-details/${job.id}/${this.createSlug(job.title)}`;
+    const jobUrl = `${window.location.origin}/job/${job.id}/${this.createSlug(job.title)}`;
     
     // Create WhatsApp message
     const message = `

@@ -183,6 +183,37 @@ _Amazing job opportunity for you!_
     });
   }
 
+  getCategoryClass(category: string): string {
+    if (!category) return 'category-other';
+    
+    const normalizedCategory = category.toLowerCase().trim();
+    
+    // Map categories to CSS classes with category- prefix
+    if (normalizedCategory.includes('government') || normalizedCategory.includes('सरकारी')) {
+      return 'category-government';
+    } else if (normalizedCategory.includes('private') || normalizedCategory.includes('प्राइवेट')) {
+      return 'category-private';
+    } else if (normalizedCategory.includes('bank') || normalizedCategory.includes('बैंक')) {
+      return 'category-banking';
+    } else if (normalizedCategory.includes('railway') || normalizedCategory.includes('रेलवे')) {
+      return 'category-railway';
+    } else if (normalizedCategory.includes('defence') || normalizedCategory.includes('defense') || normalizedCategory.includes('सेना')) {
+      return 'category-defence';
+    } else if (normalizedCategory.includes('teaching') || normalizedCategory.includes('teacher') || normalizedCategory.includes('शिक्षा')) {
+      return 'category-teaching';
+    } else if (normalizedCategory.includes('engineering') || normalizedCategory.includes('engineer') || normalizedCategory.includes('इंजीनियर')) {
+      return 'category-engineering';
+    } else if (normalizedCategory.includes('medical') || normalizedCategory.includes('doctor') || normalizedCategory.includes('चिकित्सा')) {
+      return 'category-medical';
+    } else if (normalizedCategory.includes('police') || normalizedCategory.includes('पुलिस')) {
+      return 'category-police';
+    } else if (normalizedCategory.includes('it') || normalizedCategory.includes('software') || normalizedCategory.includes('tech')) {
+      return 'category-it';
+    } else {
+      return 'category-other';
+    }
+  }
+
   openExternalChannel(url: string) {
     try {
       window.open(url, '_blank', 'noopener');

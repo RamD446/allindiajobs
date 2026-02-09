@@ -1,9 +1,9 @@
 /* Custom Toggle Button */
 .custom-toggler {
   background: none;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  padding: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  padding: 0.25rem;
   transition: all 0.3s ease;
 }
 
@@ -14,7 +14,7 @@
 
 .custom-toggler i {
   color: #fff;
-  font-size: 1.3rem;
+  font-size: 0.9rem;
   display: block;
   transition: all 0.3s ease;
 }
@@ -32,9 +32,9 @@
 /* Navbar */
 .navbar {
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  padding: 0.3rem 0;
+  padding: 0.15rem 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  min-height: 50px;
+  min-height: 42px;
 }
 
 .container-fluid {
@@ -57,13 +57,13 @@
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.5rem;
 }
 
 .logo-icon-wrapper {
   background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  border-radius: 8px;
-  padding: 0.4rem;
+  border-radius: 6px;
+  padding: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,7 +72,7 @@
 
 .logo-icon {
   color: #1e3c72;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
 }
 
@@ -84,7 +84,7 @@
 
 .logo-main {
   color: #ffffff;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: -0.5px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -92,7 +92,7 @@
 
 .logo-sub {
   color: #ffffff;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 500;
   margin-top: -2px;
   letter-spacing: 0.5px;
@@ -107,11 +107,18 @@
 .nav-link {
   color: #ffffff !important;
   font-weight: 500;
-  font-size: 0.9rem;
-  padding: 0.4rem 0.85rem !important;
-  border-radius: 8px;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.7rem !important;
+  border-radius: 6px;
   transition: all 0.3s ease;
   position: relative;
+}
+
+.nav-link i {
+  font-size: 0.7rem;
+  width: 14px;
+  display: inline-block;
+  text-align: center;
 }
 
 .nav-link::after {
@@ -237,11 +244,18 @@
   .nav-link {
     width: 100%;
     text-align: left;
-    padding: 0.75rem 1rem !important;
+    padding: 0.5rem 0.8rem !important;
     color: #fff !important;
     background: transparent;
-    border-radius: 8px;
-    font-size: 0.95rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+  
+  .nav-link i {
+    font-size: 0.7rem;
+    width: 14px;
+    display: inline-block;
+    text-align: center;
   }
 
   .nav-link:hover {
@@ -302,24 +316,31 @@
 .header-action-buttons {
   display: none;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.25rem;
   margin-left: auto;
-  margin-right: 0.5rem;
+  margin-right: 0.4rem;
+}
+
+/* Show action buttons only on mobile */
+@media (max-width: 991.98px) {
+  .header-action-buttons {
+    display: flex;
+  }
 }
 
 /* Install App Button */
 .install-icon-btn {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  border-radius: 5px;
   color: #ffffff;
-  padding: 0.4rem 0.6rem;
+  padding: 0.2rem 0.35rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  font-size: 0.75rem;
 }
 
 .install-icon-btn:hover {
@@ -333,15 +354,15 @@
 .share-icon-btn {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  border-radius: 5px;
   color: #ffffff;
-  padding: 0.4rem 0.6rem;
+  padding: 0.2rem 0.35rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  font-size: 0.75rem;
 }
 
 .share-icon-btn:hover {
@@ -350,40 +371,42 @@
   transform: scale(1.05);
 }
 
-@media (max-width: 991.98px) {
-  .header-action-buttons {
-    display: flex;
-  }
-}
-
 @media (max-width: 575.98px) {
   .install-icon-btn,
   .share-icon-btn {
-    padding: 0.35rem 0.5rem;
-    font-size: 0.95rem;
+    padding: 0.15rem 0.25rem;
+    font-size: 0.7rem;
+  }
+  
+  .custom-toggler {
+    padding: 0.2rem;
+  }
+  
+  .custom-toggler i {
+    font-size: 0.8rem;
   }
 }
 
 /* Enhanced Mobile Logo Visibility */
 @media (max-width: 575.98px) {
   .navbar-brand .logo-container {
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
   
   .navbar-brand .logo-icon-wrapper {
-    padding: 0.35rem !important;
-    border-radius: 6px !important;
+    padding: 0.2rem !important;
+    border-radius: 5px !important;
   }
   
   .navbar-brand .logo-icon {
-    font-size: 1.1rem !important;
+    font-size: 0.9rem !important;
   }
   
   .navbar-brand .logo-main {
-    font-size: 1.15rem !important;
+    font-size: 1rem !important;
   }
   
   .navbar-brand .logo-sub {
-    font-size: 0.7rem !important;
+    font-size: 0.55rem !important;
   }
 }

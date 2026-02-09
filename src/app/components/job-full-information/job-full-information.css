@@ -8,7 +8,7 @@
 .ultra-compact-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
-  padding: 70px 15px 15px 15px;
+  padding: 50px 15px 15px 15px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
 }
@@ -872,7 +872,7 @@
 /* Responsive Design */
 @media (max-width: 991px) {
   .ultra-compact-page {
-    padding: 60px 10px 10px 10px;
+    padding: 48px 10px 10px 10px;
   }
   
   .info-card {
@@ -893,7 +893,7 @@
   
 @media (max-width: 768px) {
   .ultra-compact-page {
-    padding: 55px 8px 8px 8px;
+    padding: 46px 8px 8px 8px;
   }
   
   .info-card {
@@ -953,7 +953,7 @@
 
 @media (max-width: 576px) {
   .ultra-compact-page {
-    padding: 55px 3px 5px 3px;
+    padding: 45px 3px 5px 3px;
   }
   
   .info-card {

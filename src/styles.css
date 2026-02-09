@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* Global Mobile Fix - Prevent Horizontal Scroll */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 /* Modal Improvements */
 .modal-xl {
   max-width: 1200px;

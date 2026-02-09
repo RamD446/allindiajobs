@@ -44,7 +44,7 @@
           <div class="summary-row link-row" *ngIf="job.applicationUrl">
             <i class="bi bi-link-45deg"></i>
             <span class="summary-label">More Information:</span>
-            <a [href]="job.applicationUrl" target="_blank" class="apply-link">Visit Application Link</a>
+            <a [href]="job.applicationUrl" target="_blank" class="apply-link">{{ job.applicationUrl }}</a>
           </div>
           
           <!-- Share Job Row -->

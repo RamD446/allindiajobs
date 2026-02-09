@@ -1,17 +1,19 @@
-/* Ultra Compact Job Full Information Component */
+/* Job Full Information - Mobile First Design */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Main Page Container - Mobile First */
 .ultra-compact-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
-  padding: 55px 15px 15px 15px;
+  padding: 44px 4px 8px 4px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Ultra Loading */
@@ -870,49 +872,54 @@
   transform: translateY(-2px);
 }
 
-/* Responsive Design */
+/* Responsive Design - Mobile First */
 @media (max-width: 991px) {
   .ultra-compact-page {
-    padding: 52px 10px 10px 10px;
+    padding: 44px 6px 8px 6px;
   }
   
   .info-card {
-    padding: 15px;
-    margin-bottom: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
   }
   
   .action-row {
     flex-wrap: nowrap;
-    gap: 6px;
+    gap: 4px;
+    overflow-x: auto;
   }
   
   .action-btn {
     padding: 4px 8px;
     font-size: 9px;
+    white-space: nowrap;
   }
 }
   
 @media (max-width: 768px) {
   .ultra-compact-page {
-    padding: 50px 8px 8px 8px;
+    padding: 44px 4px 6px 4px;
   }
   
   .info-card {
-    padding: 15px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 6px;
   }
   
   .job-title-main {
-    font-size: 16px;
+    font-size: 15px;
   }
   
   .card-section-title {
-    font-size: 13px;
-    margin-bottom: 12px;
+    font-size: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
   }
   
   .job-desc-content {
-    font-size: 12px;
+    font-size: 11px;
   }
   
   .summary-row {
@@ -954,17 +961,17 @@
 
 @media (max-width: 576px) {
   .ultra-compact-page {
-    padding: 48px 5px 8px 5px;
+    padding: 43px 3px 5px 3px;
   }
   
   .info-card {
-    padding: 10px 8px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+    padding: 8px 6px;
+    margin-bottom: 5px;
+    border-radius: 6px;
   }
   
   .desc-card {
-    padding: 10px 6px;
+    padding: 8px 5px;
   }
   
   .desc-card .card-section-title {
@@ -976,13 +983,18 @@
   }
   
   .job-title-main {
-    font-size: 14px;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  
+  .title-divider {
+    margin-bottom: 6px;
   }
   
   .job-meta-row {
     flex-wrap: nowrap;
-    gap: 5px;
-    font-size: 10px;
+    gap: 4px;
+    font-size: 9px;
   }
   
   .meta-separator {
@@ -990,24 +1002,117 @@
   }
   
   .action-row {
-    padding: 10px 0;
+    padding: 8px 0;
     flex-wrap: nowrap;
-    gap: 5px;
+    gap: 3px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .action-label {
-    font-size: 10px;
+    font-size: 9px;
     min-width: auto;
+    flex-shrink: 0;
   }
   
   .action-btn {
-    padding: 3px 6px;
+    padding: 3px 5px;
+    font-size: 7px;
+    flex-shrink: 0;
+  }
+  
+  .summary-row {
+    padding: 6px 0;
+    gap: 6px;
+  }
+  
+  .summary-row i {
+    font-size: 11px;
+    width: 16px;
+  }
+  
+  .summary-label {
+    font-size: 10px;
+    min-width: 70px;
+  }
+  
+  .summary-value {
+    font-size: 10px;
+  }
+  
+  .card-section-title {
+    font-size: 11px;
+    margin-bottom: 6px;
+    padding-bottom: 5px;
+  }
+  
+  .job-list-item {
+    padding: 6px;
+    gap: 6px;
+  }
+  
+  .job-number {
+    width: 16px;
+    height: 16px;
     font-size: 8px;
+  }
+  
+  .job-name {
+    font-size: 9px;
+  }
+  
+  .job-company {
+    font-size: 8px;
+  }
+  
+  .sidebar-card {
+    padding: 8px;
   }
 }
 
 /* Bootstrap Grid Override for column spacing */
 .row.g-2 {
-  --bs-gutter-x: 1rem;
-  --bs-gutter-y: 0.5rem;
+  --bs-gutter-x: 0.5rem;
+  --bs-gutter-y: 0.25rem;
+}
+
+@media (min-width: 992px) {
+  .row.g-2 {
+    --bs-gutter-x: 1rem;
+    --bs-gutter-y: 0.5rem;
+  }
+  
+  .ultra-compact-page {
+    padding: 55px 15px 15px 15px;
+  }
+}
+
+/* Extra small devices - Very tight spacing */
+@media (max-width: 400px) {
+  .ultra-compact-page {
+    padding: 42px 2px 4px 2px;
+  }
+  
+  .info-card {
+    padding: 6px 5px;
+    margin-bottom: 4px;
+    border-radius: 5px;
+  }
+  
+  .job-title-main {
+    font-size: 12px;
+  }
+  
+  .card-section-title {
+    font-size: 10px;
+  }
+  
+  .action-btn {
+    padding: 2px 4px;
+    font-size: 6px;
+  }
+  
+  .action-label {
+    font-size: 8px;
+  }
 }

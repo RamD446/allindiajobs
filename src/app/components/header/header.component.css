@@ -71,20 +71,17 @@
   gap: 0.5rem;
 }
 
-.logo-icon-wrapper {
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  border-radius: 6px;
-  padding: 0.25rem;
+.logo-icon {
+  color: #ffd700;
+  font-size: 1.5rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
-}
-
-.logo-icon {
-  color: #1e3c72;
-  font-size: 0.95rem;
-  font-weight: 700;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .logo-text-wrapper {
@@ -194,10 +191,6 @@
     justify-content: center;
   }
   
-  .mobile-logo-section .logo-icon-wrapper {
-    padding: 0.5rem;
-  }
-  
   .mobile-logo-section .logo-icon {
     font-size: 1.3rem;
   }
@@ -305,11 +298,6 @@
     gap: 0.5rem;
   }
   
-  .logo-icon-wrapper {
-    padding: 0.3rem;
-    border-radius: 6px;
-  }
-  
   .logo-icon {
     font-size: 1rem;
   }
@@ -402,11 +390,6 @@
 @media (max-width: 575.98px) {
   .navbar-brand .logo-container {
     gap: 0.4rem;
-  }
-  
-  .navbar-brand .logo-icon-wrapper {
-    padding: 0.2rem !important;
-    border-radius: 5px !important;
   }
   
   .navbar-brand .logo-icon {

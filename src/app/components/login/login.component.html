@@ -133,8 +133,8 @@
               </div>
               
               <div class="col-md-6 mb-3" *ngIf="editingJob">
-                <label class="form-label">Created Date *</label>
-                <input type="date" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" >
+                <label class="form-label">Created Date & Time *</label>
+                <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" >
               </div>
               
               <div class="col-md-6 mb-3">
@@ -205,7 +205,7 @@
               
               <div class="job-body-compact" *ngIf="isJobExpanded(job.id)">
                 <div class="job-meta-info mb-2">
-                  <small class="text-muted me-3"><i class="bi bi-calendar3 me-1"></i>Posted: {{ job.createdDate }}</small>
+                  <small class="text-muted me-3"><i class="bi bi-calendar3 me-1"></i>Posted: {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}</small>
                   <small class="text-muted"><i class="bi bi-telephone me-1"></i>{{ job.contactInfo }}</small>
                 </div>
                 <div class="job-desc-small" [innerHTML]="job.description"></div>

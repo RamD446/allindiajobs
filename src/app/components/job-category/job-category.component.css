@@ -162,33 +162,47 @@
 }
 
 .jc-social-btn {
-  min-width: 110px;
-  height: 36px;
-  border-radius: 6px;
+  min-width: 80px;
+  height: 32px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  gap: 0.5rem;
-  padding: 0.2rem 1rem;
+  gap: 0.3rem;
+  padding: 0.1rem 0.7rem;
+  box-shadow: none;
+  opacity: 0.92;
+}
+
+.jc-social-btn span {
+  font-size: 0.75rem;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 .jc-social-btn i {
-  font-size: 1.3rem;
-  color: #fff;
-  margin-right: 0.5rem;
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
 }
 
 .jc-yt {
-  background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+  background: linear-gradient(135deg, #ff4e4e 0%, #c82333 100%);
 }
 
 .jc-wa {
-  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.jc-social-btn:hover {
+  opacity: 1;
+  filter: brightness(1.08);
+  transform: translateY(-2px) scale(1.04);
 }
 
 /* Jobs List */

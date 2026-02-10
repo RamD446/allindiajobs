@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     category: '',
     description: '',
     contactInfo: '',
-    createdDate: new Date().toISOString().split('T')[0]
+    createdDate: new Date().toISOString()
   };
 
   jobCategories: string[] = [];
@@ -232,7 +232,7 @@ export class LoginComponent implements OnInit {
         const { id, ...jobData } = this.jobForm;
         const newJobData = {
           ...jobData,
-          createdDate: new Date().toISOString().split('T')[0]
+          createdDate: new Date().toISOString()
         };
         await push(jobsRef, newJobData);
         console.log('Job created successfully');
@@ -266,7 +266,7 @@ export class LoginComponent implements OnInit {
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       description: '',
       contactInfo: '',
-      createdDate: new Date().toISOString().split('T')[0]
+      createdDate: new Date().toISOString()
     };
   }
 

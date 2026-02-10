@@ -113,13 +113,20 @@
   background: #f8f9fa;
   border: 1px solid #e9ecef;
   border-radius: 6px;
-  width: 32px;
-  height: 32px;
+  padding: 0.35rem 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.3rem;
   cursor: pointer;
   transition: all 0.2s;
+}
+
+.jc-pill span {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #495057;
+  white-space: nowrap;
 }
 
 .jc-pill:hover {
@@ -155,24 +162,25 @@
 }
 
 .jc-social-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 5px;
+  min-width: 110px;
+  height: 36px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   cursor: pointer;
   transition: all 0.2s;
-}
-
-.jc-social-btn:hover {
-  transform: scale(1.1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  gap: 0.5rem;
+  padding: 0.2rem 1rem;
 }
 
 .jc-social-btn i {
-  font-size: 0.7rem;
+  font-size: 1.3rem;
   color: #fff;
+  margin-right: 0.5rem;
 }
 
 .jc-yt {
@@ -218,20 +226,20 @@
 .jc-job-info {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.25rem;
   min-width: 0;
-  overflow: hidden;
+  flex-wrap: wrap;
 }
 
 .jc-job-title {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #2c3e50;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 1;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.3;
+  flex-basis: 100%;
 }
 
 .jc-sep {
@@ -289,46 +297,68 @@
 }
 
 .jc-filter-title {
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #2c3e50;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.jc-filter-title:hover {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+  color: #fff;
+}
+
+.jc-filter-title:hover i {
+  color: #fff;
 }
 
 .jc-filter-title i {
-  color: #667eea;
-  font-size: 0.65rem;
-}
-
-.jc-filter-subtitle {
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: #495057;
-  margin-bottom: 0.3rem;
+  color: #ff6b6b;
+  font-size: 0.8rem;
 }
 
 .jc-filter-option {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  font-size: 0.6rem;
+  gap: 0.4rem;
+  font-size: 0.75rem;
   color: #495057;
-  padding: 0.2rem 0;
+  padding: 0.35rem 0.4rem;
   cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  margin-bottom: 0.2rem;
+}
+
+.jc-filter-option:hover {
+  background: linear-gradient(135deg, #fff0f0 0%, #ffe8e8 100%);
+  color: #dc3545;
 }
 
 .jc-filter-option input {
-  width: 14px;
-  height: 14px;
-  accent-color: #667eea;
+  width: 16px;
+  height: 16px;
+  accent-color: #ff6b6b;
 }
 
 .jc-filter-count {
   color: #adb5bd;
-  font-size: 0.55rem;
+  font-size: 0.65rem;
+}
+
+.jc-filter-divider {
+  border: none;
+  border-top: 2px solid #ff6b6b;
+  margin: 0.2rem 0 0.6rem 0;
+  width: 100%;
+  opacity: 0.7;
 }
 
 /* Empty State */
@@ -427,12 +457,16 @@
   }
   
   .jc-pill {
-    width: 28px;
-    height: 28px;
+    padding: 0.3rem 0.5rem;
+    gap: 0.2rem;
   }
   
   .jc-pill i {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+  }
+  
+  .jc-pill span {
+    font-size: 0.55rem;
   }
   
   .jc-social-btn {
@@ -449,8 +483,7 @@
   }
   
   .jc-job-title {
-    font-size: 0.65rem;
-    max-width: 50%;
+    font-size: 0.75rem;
   }
   
   .jc-job-btn {

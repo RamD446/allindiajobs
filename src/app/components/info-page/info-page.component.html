@@ -1,6 +1,14 @@
-<div class="info-page-container">
-  <div class="container">
-    <h2 class="info-title">{{ title }}</h2>
-    <div class="info-content" [innerHTML]="sanitizedContent"></div>
+<div class="info-page-bg" style="min-height:100vh; background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%); padding-top:40px;">
+  <div class="container py-5">
+    <div class="card shadow info-card" style="border-radius: 16px;">
+      <div class="card-body">
+        <h2 class="info-title mb-4">{{ title }}</h2>
+        <div class="mb-3 text-end text-muted" style="font-size: 1rem;">
+          <i class="bi bi-calendar3"></i>
+          {{ today | date:'yyyy-MM-dd' }}
+        </div>
+        <div class="info-content" [innerHTML]="sanitizedContent"></div>
+      </div>
+    </div>
   </div>
 </div>

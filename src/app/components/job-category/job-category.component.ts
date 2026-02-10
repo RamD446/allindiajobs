@@ -13,12 +13,13 @@ import { Job } from '../../models/job.model';
   styleUrl: './job-category.component.css'
 })
 export class JobCategoryComponent implements OnInit {
+    jobsPerPage: number = 100;
+    currentPage: number = 1;
   jobs: Job[] = [];
   filteredJobs: Job[] = [];
   categoryTitle: string = '';
   categoryParam: string = '';
   isLoading: boolean = true;
-  currentPage: number = 1;
   selectedJobTypes: string[] = [];
   selectedCompanies: string[] = [];
 
@@ -189,8 +190,22 @@ export class JobCategoryComponent implements OnInit {
 
   // Get new jobs (created in last 7 days)
   getNewJobs(): Job[] {
-    // Return all filtered jobs sorted by newest first
-    return this.filteredJobs.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+    // Return jobs for the current page, sorted by newest first
+    const sorted = this.filteredJobs.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+    const start = (this.currentPage - 1) * this.jobsPerPage;
+    const end = start + this.jobsPerPage;
+    return sorted.slice(start, end);
+
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.filteredJobs.length / this.jobsPerPage);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.getTotalPages()) {
+      this.currentPage = page;
+    }
   }
 
   // Get other jobs (older than 7 days)

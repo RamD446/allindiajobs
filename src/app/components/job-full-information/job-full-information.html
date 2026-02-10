@@ -19,13 +19,13 @@
         
         <!-- Card 2: Job Description Only -->
         <div class="info-card desc-card">
-          <h5 class="card-section-title">Job Description</h5>
+          <h1 class="card-section-title">Job Description</h1>
           <div class="job-desc-content" [innerHTML]="getSafeHtml(job.description)"></div>
         </div>
         
         <!-- Card 3: Job Summary -->
         <div class="info-card summary-card">
-          <h5 class="card-section-title">Job Summary</h5>
+          <h1 class="card-section-title">Job Summary</h1>
           
           <!-- Company Name Row -->
           <div class="summary-row">
@@ -49,7 +49,7 @@
           
           <!-- Share Job Row -->
           <div class="action-row">
-            <span class="action-label">Share Job:</span>
+            <span class="action-label">Share && Follow</span>
             <button class="action-btn share-btn" (click)="shareJob(job)">
               <i class="bi bi-share"></i> Share
             </button>
@@ -59,11 +59,8 @@
             <button class="action-btn copy-btn" (click)="copyLink(job)">
               <i class="bi bi-clipboard"></i> Copy Link
             </button>
-          </div>
-          
-          <!-- Follow Groups Row -->
-          <div class="action-row">
-            <span class="action-label">Follow Groups:</span>
+            <div class="action-row">
+           ||
             <button class="action-btn whatsapp-group-btn" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
               <i class="bi bi-whatsapp"></i> WhatsApp Group
             </button>
@@ -72,6 +69,10 @@
             </button>
           </div>
         </div>
+          </div>
+          
+          <!-- Follow Groups Row -->
+          
         
       </div>
       <div class="col-12 col-lg-3 order-2 order-lg-2">

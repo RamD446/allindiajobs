@@ -1,12 +1,13 @@
-.container {
-  padding: 100px 20px;
-  max-width: 900px;
-  margin: 0 auto;
+
+.info-page-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
+  padding-top: 40px;
 }
 
-.info-page {
-  background: white;
-  border-radius: 12px;
+.info-card {
+  background: #fff;
+  border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   overflow: hidden;
   min-height: 70vh;

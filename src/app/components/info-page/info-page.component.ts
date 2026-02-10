@@ -11,6 +11,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrl: './info-page.component.css'
 })
 export class InfoPageComponent implements OnInit {
+    today: Date = new Date();
   pageKey = '';
   title = '';
   content = '';

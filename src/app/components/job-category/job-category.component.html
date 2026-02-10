@@ -75,13 +75,20 @@
             </div>
           </div>
 
-          <!-- Load More -->
-          <div class="jc-load-more" *ngIf="filteredJobs.length > 12">
-            <button class="jc-load-btn">
-              <span>Load More</span>
-              <i class="bi bi-chevron-down"></i>
-            </button>
-          </div>
+          <!-- Pagination -->
+          <nav *ngIf="filteredJobs.length > jobsPerPage" class="jc-pagination mt-4">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <button class="page-link" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+              </li>
+              <li class="page-item" *ngFor="let page of [].constructor(getTotalPages()); let i = index" [class.active]="currentPage === (i+1)">
+                <button class="page-link" (click)="goToPage(i+1)">{{ i+1 }}</button>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === getTotalPages()">
+                <button class="page-link" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === getTotalPages()">Next</button>
+              </li>
+            </ul>
+          </nav>
         </div>
 
         <!-- Right Column - Filters -->

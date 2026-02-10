@@ -1,143 +1,116 @@
-<div class="modern-job-container">
-  <div class="container-fluid px-0">
-
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="loading-section">
-      <div class="loading-spinner">
-        <div class="spinner"></div>
-        <p class="loading-text">Finding amazing opportunities...</p>
-      </div>
-    </div>
-
-    <!-- Jobs Content -->
-    <div *ngIf="!isLoading && filteredJobs.length > 0" class="jobs-content">
-      <div class="container-fluid">
-        <div class="row">
-          <!-- Existing Jobs Section - Left Side (col-8) -->
-          <div class="col-lg-8 col-md-8">
-            <!-- Modern Hero Header -->
-            <div class="hero-header">
-              <div class="hero-breadcrumb">
-                <i class="bi bi-house-door-fill"></i>
-                <span>Home</span>
-                <i class="bi bi-chevron-right"></i>
-                <span class="hero-category">{{ categoryTitle }}</span>
-              </div>
-              <div class="hero-job-count">
-                <i class="bi bi-briefcase-fill"></i>
-                <span class="count-number">{{ getNewJobs().length }}</span>
-                <span class="count-label">Jobs Available</span>
-              </div>
-            </div>
-
-            <!-- Category Pills Section - Displayed on all pages -->
-  <div class="category-section">
-    <div class="container-fluid">
-      <!-- Category Pills Container -->
-      <div class="category-pills-container">
-        <button class="pill-button pill-all-jobs" routerLink="/all-latest-jobs">
-          <i class="bi bi-grid-3x3-gap-fill"></i>
-          <span>All Latest Jobs</span>
-        </button>
-        <button class="pill-button pill-gov" (click)="navigateToCategory('Government Jobs')">
-          <i class="bi bi-building-fill"></i>
-          <span>all Government Jobs</span>
-        </button>
-        <button class="pill-button pill-private" (click)="navigateToCategory('All Private Jobs')">
-          <i class="bi bi-briefcase-fill"></i>
-          <span>all Private Jobs</span>
-        </button>
-        <button class="pill-button pill-walkin" (click)="navigateToCategory('Walk-in Drives')">
-          <i class="bi bi-person-walking"></i>
-          <span>all Walk-in Drives</span>
-        </button>
-      </div>
-
-      <!-- Social Media Channels Row -->
-      <div class="social-channels-row">
-        <span class="channels-label">Follow Channels</span>
-        <button class="pill-button-small pill-youtube-colorful" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
-          <i class="bi bi-youtube"></i>
-          <span>YouTube</span>
-        </button>
-        <button class="pill-button-small pill-whatsapp-colorful" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
-          <i class="bi bi-whatsapp"></i>
-          <span>WhatsApp</span>
-        </button>
-      </div>
-    </div>
+<div class="jc">
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="jc-loading">
+    <div class="jc-spinner"></div>
+    <p class="jc-loading-text">Finding jobs...</p>
   </div>
-            <!-- Jobs List Section -->
-            <div class="jobs-list-section" *ngIf="getNewJobs().length > 0">
-              <div class="job-row" *ngFor="let job of getNewJobs()" (click)="viewJobDetails(job)">
-                <div class="job-row-info">
-                  <span class="job-row-title">{{ job.title }}</span>
-                  <span class="job-row-separator">|</span>
-                  <span class="job-row-category">{{ job.category }}</span>
-                  <span class="job-row-separator">|</span>
-                  <span class="job-row-time">{{ getTimeAgo(job.createdDate) }}</span>
-                </div>
-                <button class="job-row-btn" (click)="viewJobDetails(job); $event.stopPropagation()">
-                  <i class="bi bi-arrow-right"></i>
-                </button>
-              </div>
+
+  <!-- Jobs Content -->
+  <div *ngIf="!isLoading && filteredJobs.length > 0">
+    <div class="container-fluid px-0">
+      <div class="row g-0">
+        <!-- Left Column -->
+        <div class="col-lg-8 col-md-8 col-12">
+          <!-- Header -->
+          <div class="jc-header">
+            <div class="jc-breadcrumb">
+              <i class="bi bi-house-fill"></i>
+              <span>Home</span>
+              <i class="bi bi-chevron-right"></i>
+              <span class="jc-category-name">{{ categoryTitle }}</span>
             </div>
+            <div class="jc-count">
+              <i class="bi bi-briefcase-fill"></i>
+              <span class="jc-count-num">{{ getNewJobs().length }}</span>
+              <span>Jobs</span>
+            </div>
+          </div>
 
-           
-
-            <!-- Load More Section -->
-            <div class="load-more-section" *ngIf="filteredJobs.length > 12">
-              <button class="load-more-btn">
-                <span>Load More Opportunities</span>
-                <i class="bi bi-chevron-down"></i>
+          <!-- Category Pills -->
+          <div class="jc-pills">
+            <div class="jc-pills-row">
+              <button class="jc-pill jc-pill-all" routerLink="/all-latest-jobs">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+              </button>
+              <button class="jc-pill jc-pill-gov" (click)="navigateToCategory('Government Jobs')">
+                <i class="bi bi-building-fill"></i>
+              </button>
+              <button class="jc-pill jc-pill-prv" (click)="navigateToCategory('All Private Jobs')">
+                <i class="bi bi-briefcase-fill"></i>
+              </button>
+              <button class="jc-pill jc-pill-walk" (click)="navigateToCategory('Walk-in Drives')">
+                <i class="bi bi-person-walking"></i>
+              </button>
+            </div>
+            <div class="jc-social">
+              <span class="jc-social-label">Follow</span>
+              <button class="jc-social-btn jc-yt" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
+                <i class="bi bi-youtube"></i>
+              </button>
+              <button class="jc-social-btn jc-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
+                <i class="bi bi-whatsapp"></i>
               </button>
             </div>
           </div>
 
-          <!-- Quick Filters Section - Right Side (col-4) -->
-          <div class="col-lg-4 col-md-4">
-            <div class="filters-sidebar">
-              <div class="filter-card">
-                <h6 class="filter-title">
-                  <i class="bi bi-funnel me-2"></i>Quick Filters
-                </h6>
-                
-                <!-- Company Filters - Display based on current category -->
-                <div class="filter-group mb-3">
-                  <h6 class="filter-subtitle">Company</h6>
-                  <div class="company-filter-options">
-                    <label class="company-filter-option" *ngFor="let company of getUniqueCompanies()">
-                      <input type="checkbox" [value]="company" (change)="filterByCompany($event)">
-                      <span class="company-filter-text">{{ company }}</span>
-                      <span class="company-filter-count">({{ getJobCountByCompany(company) }})</span>
-                    </label>
-                  </div>
-                </div>
-
-               
+          <!-- Jobs List -->
+          <div class="jc-jobs" *ngIf="getNewJobs().length > 0">
+            <div class="jc-job" *ngFor="let job of getNewJobs()" (click)="viewJobDetails(job)">
+              <div class="jc-job-info">
+                <span class="jc-job-title">{{ job.title }}</span>
+                <span class="jc-sep">|</span>
+                <span class="jc-job-cat">{{ job.category }}</span>
+                <span class="jc-sep">|</span>
+                <span class="jc-job-time">{{ getTimeAgo(job.createdDate) }}</span>
               </div>
+              <button class="jc-job-btn" (click)="viewJobDetails(job); $event.stopPropagation()">
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Load More -->
+          <div class="jc-load-more" *ngIf="filteredJobs.length > 12">
+            <button class="jc-load-btn">
+              <span>Load More</span>
+              <i class="bi bi-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column - Filters -->
+        <div class="col-lg-4 col-md-4 col-12">
+          <div class="jc-filters">
+            <h6 class="jc-filter-title">
+              <i class="bi bi-funnel"></i>
+              <span>Quick Filters</span>
+            </h6>
+            <div class="jc-filter-group">
+              <h6 class="jc-filter-subtitle">Company</h6>
+              <label class="jc-filter-option" *ngFor="let company of getUniqueCompanies()">
+                <input type="checkbox" [value]="company" (change)="filterByCompany($event)">
+                <span>{{ company }}</span>
+                <span class="jc-filter-count">({{ getJobCountByCompany(company) }})</span>
+              </label>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Empty State -->
-    <div *ngIf="!isLoading && filteredJobs.length === 0" class="empty-state">
-      <div class="empty-content">
-        <div class="empty-icon">
-          <i class="bi bi-search"></i>
-        </div>
-        <h3 class="empty-title">No Jobs Found</h3>
-        <p class="empty-message">
-          We couldn't find any jobs in {{ categoryTitle.toLowerCase() }} right now.
-          <br>Try checking other categories or come back later.
-        </p>
-        <a routerLink="/all-latest-jobs" class="back-btn">
-          <i class="bi bi-arrow-left"></i>
-          <span>Browse All Jobs</span>
-        </a>
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredJobs.length === 0" class="jc-empty">
+    <div>
+      <div class="jc-empty-icon">
+        <i class="bi bi-search"></i>
       </div>
+      <h3 class="jc-empty-title">No Jobs Found</h3>
+      <p class="jc-empty-text">No jobs in {{ categoryTitle.toLowerCase() }} right now.</p>
+      <a routerLink="/all-latest-jobs" class="jc-back-btn">
+        <i class="bi bi-arrow-left"></i>
+        <span>Browse All Jobs</span>
+      </a>
     </div>
   </div>
 </div>

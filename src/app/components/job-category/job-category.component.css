@@ -1,3 +1,7 @@
+/* Make job title text blue */
+.jc-job-title {
+  color: #0074d9; /* A clear blue shade */
+}
 /* Job Category Page - Fresh Modern Design */
 /* Mobile First - Header: 40px mobile, 42px desktop */
 
@@ -249,7 +253,7 @@
 .jc-job-title {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #0000ff; /* pure blue */
   white-space: normal;
   word-break: break-word;
   line-height: 1.3;

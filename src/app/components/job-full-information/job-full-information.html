@@ -4,7 +4,7 @@
   </div>
   <div *ngIf="!isLoading && job" class="ultra-content">
     <div class="row g-2">
-      <div class="col-12 col-lg-9 order-1 order-lg-1">
+      <div class="col-12 col-lg-6 order-1 order-lg-1">
         
         <!-- Card 1: Job Title, Created By, Date -->
         <div class="info-card" [ngClass]="getCategoryClass(job.category)">
@@ -75,7 +75,7 @@
           
         
       </div>
-      <div class="col-12 col-lg-3 order-2 order-lg-2">
+      <div class="col-12 col-lg-6 order-2 order-lg-2">
         <!-- Card: Top 10 Latest Jobs (No Scroll) -->
         <div class="info-card sidebar-card">
           <h5 class="card-section-title">Top 10 Latest Jobs</h5>

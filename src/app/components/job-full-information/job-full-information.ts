@@ -168,7 +168,7 @@ export class JobFullInformation implements OnInit {
 
 
 
-📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H
+📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p
 
 📺 Subscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs
 _Amazing job opportunity for you!_

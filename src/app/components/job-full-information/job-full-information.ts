@@ -146,12 +146,12 @@ export class JobFullInformation implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: job.title,
-        text: `Check out this amazing job opportunity!\n\nFollow our WhatsApp Channel: https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H\n\nSubscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs`,
+        text: `Check out this amazing job opportunity!\n\nFollow our WhatsApp Channel: https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p\n\nSubscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs`,
         url: jobUrl
       });
     } else {
       // Fallback for browsers that don't support Web Share API
-      const shareText = `📌 ${job.title}\n\n🔗 ${jobUrl}\n\nCheck out this amazing job opportunity!\n\n📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H\n\n📺 Subscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs`;
+      const shareText = `📌 ${job.title}\n\n🔗 ${jobUrl}\n\nCheck out this amazing job opportunity!\n\n📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p Subscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs`;
       navigator.clipboard.writeText(shareText).then(() => {
         alert('Job details copied to clipboard!');
       });
@@ -166,11 +166,12 @@ export class JobFullInformation implements OnInit {
 
 🔗 ${jobUrl}
 
-_Amazing job opportunity for you!_
+
 
 📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H
 
 📺 Subscribe YouTube: https://www.youtube.com/@allindiajobs-newjobs
+_Amazing job opportunity for you!_
     `.trim();
     
     const encodedMessage = encodeURIComponent(message);

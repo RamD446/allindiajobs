@@ -21,6 +21,12 @@
         <div class="info-card desc-card">
           <h1 class="card-section-title">Job Description</h1>
           <div class="job-desc-content" [innerHTML]="getSafeHtml(job.description)"></div>
+           <div class="summary-row link-row" *ngIf="job.applicationUrl">
+            <i class="bi bi-link-45deg"></i>
+            <span class="summary-label">More Information:</span>
+            <a [href]="job.applicationUrl" target="_blank" class="apply-link">Click here </a>
+          </div>
+          
         </div>
         
         <!-- Card 3: Job Summary -->
@@ -41,11 +47,7 @@
             <span class="summary-value">{{ job.category }}</span>
           </div>
           
-          <div class="summary-row link-row" *ngIf="job.applicationUrl">
-            <i class="bi bi-link-45deg"></i>
-            <span class="summary-label">More Information:</span>
-            <a [href]="job.applicationUrl" target="_blank" class="apply-link">{{ job.applicationUrl }}</a>
-          </div>
+         
           
           <!-- Share Job Row -->
           <div class="action-row">

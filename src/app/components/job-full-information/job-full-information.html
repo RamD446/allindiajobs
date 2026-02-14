@@ -109,19 +109,21 @@
         </div>
       </div>
       <div class="col-12 col-lg-6 order-2 order-lg-2">
-        <!-- Card: Top 10 Latest Jobs (No Scroll) -->
+        <!-- Card: Top Latest Jobs (No Scroll) -->
         <div class="info-card sidebar-card">
-          <h5 class="card-section-title">Top 10 Latest Jobs</h5>
+          <h5 class="card-section-title">Top Latest Jobs</h5>
           <div *ngIf="!isLoading && latestJobs && latestJobs.length > 0" class="jobs-list">
             <div *ngFor="let latestJob of latestJobs.slice(0, 10); trackBy: trackByJobId; let i = index" 
                  class="job-list-item"
                  (click)="viewJobDetails(latestJob)">
               <div class="job-number">{{ i + 1 }}</div>
               <div class="job-info">
-                <div class="job-name">{{ latestJob.title }}</div>
+                <div class="job-name">
+                  {{ latestJob.title }}
+                </div>
                 <div class="job-meta-mini">
-                  <span class="job-company">{{ latestJob.company }}</span>
-                  <span class="meta-dot">•</span>
+                  <span class="job-category">{{ latestJob.category }}</span>
+                  <span class="meta-sep">|</span>
                   <span class="job-time-ago">{{ getTimeAgo(latestJob.createdDate) }}</span>
                 </div>
               </div>

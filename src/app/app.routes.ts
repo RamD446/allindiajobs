@@ -11,6 +11,7 @@ export const routes: Routes = [
   { path: 'private-jobs', component: JobCategoryComponent },
   { path: 'walk-in-drives', component: JobCategoryComponent },
   { path: 'banking-jobs', component: JobCategoryComponent },
+  { path: 'it-jobs', component: JobCategoryComponent },
   { path: 'about-us', component: InfoPageComponent },
   { path: 'contact-us', component: InfoPageComponent },
   { path: 'privacy-policy', component: InfoPageComponent },

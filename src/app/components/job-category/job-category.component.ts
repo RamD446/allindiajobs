@@ -28,7 +28,8 @@ export class JobCategoryComponent implements OnInit {
     'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
     'private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' },
     'walk-in-drives': { title: 'Walk-in Drives', category: 'Walk-in Drives' },
-    'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' }
+    'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' },
+    'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -150,6 +151,8 @@ export class JobCategoryComponent implements OnInit {
         return 'badge-info';
       case 'Banking Jobs':
         return 'badge-danger';
+      case 'IT Jobs':
+        return 'badge-primary';
       default:
         return 'badge-primary';
     }
@@ -235,7 +238,8 @@ export class JobCategoryComponent implements OnInit {
       'Government Jobs': 'government-jobs',
       'All Private Jobs': 'private-jobs',
       'Walk-in Drives': 'walk-in-drives',
-      'Banking Jobs': 'banking-jobs'
+      'Banking Jobs': 'banking-jobs',
+      'IT Jobs': 'it-jobs'
     };
 
     const route = routeMapping[category];

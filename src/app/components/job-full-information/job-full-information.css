@@ -323,14 +323,14 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
+  border: 1px solid #ff69b4; /* Pink border */
 }
 
 .job-list-item:hover {
   background: linear-gradient(135deg, #fff5f7 0%, #ffe8ed 100%);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-color: #ffb6c1;
+  box-shadow: 0 2px 8px rgba(255, 105, 180, 0.2);
+  border-color: #ff1493;
 }
 
 .job-number {
@@ -354,16 +354,28 @@
 
 .job-name {
   font-size: 16px;
-
   color: #0000FF;
   line-height: 1.5;
-  
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.job-company {
+.star-icon-mini {
+  color: #007bff; /* Blue color */
+  font-size: 0.65rem;
+  margin-right: 2px;
+}
+
+.job-category {
   font-size: 10px;
-  color: #6c757d;
-  font-weight: 500;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.meta-sep {
+  color: #ffb6c1;
+  font-size: 10px;
 }
 
 .job-meta-mini {
@@ -373,8 +385,8 @@
   margin-top: 2px;
 }
 
-.meta-dot {
-  color: #dee2e6;
+.meta-sep {
+  color: #ffb6c1;
   font-size: 10px;
 }
 

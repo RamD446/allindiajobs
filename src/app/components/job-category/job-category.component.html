@@ -49,6 +49,10 @@
                 <i class="bi bi-piggy-bank-fill"></i>
                 <span>Banking Jobs</span>
               </button>
+              <button class="jc-pill jc-pill-it" (click)="navigateToCategory('IT Jobs')">
+                <i class="bi bi-cpu-fill"></i>
+                <span>IT Jobs</span>
+              </button>
             </div>
             <!-- <div class="jc-social">
               <span class="jc-social-label">Follow official channels</span>
@@ -67,7 +71,10 @@
           <div class="jc-jobs" *ngIf="getNewJobs().length > 0">
             <div class="jc-job" *ngFor="let job of getNewJobs()" (click)="viewJobDetails(job)">
               <div class="jc-job-info">
-                <span class="jc-job-title">{{ job.title }}</span>
+                <span class="jc-job-title">
+                  <i class="bi bi-star-fill star-icon"></i>
+                  {{ job.title }}
+                </span>
                 <span class="jc-sep">|</span>
                 <span class="jc-job-cat">{{ job.category }}</span>
                 <span class="jc-sep">|</span>

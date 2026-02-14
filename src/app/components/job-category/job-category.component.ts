@@ -27,7 +27,8 @@ export class JobCategoryComponent implements OnInit {
     'all-latest-jobs': { title: 'All Latest Jobs', category: 'All Latest Jobs' },
     'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
     'private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' },
-    'walk-in-drives': { title: 'Walk-in Drives', category: 'Walk-in Drives' }
+    'walk-in-drives': { title: 'Walk-in Drives', category: 'Walk-in Drives' },
+    'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -73,9 +74,16 @@ export class JobCategoryComponent implements OnInit {
           if (category === 'All Latest Jobs') {
             this.filteredJobs = this.jobs;
           } else if (category === 'All Private Jobs') {
-            // Include both Private Jobs and Walk-in Drives for private jobs
+            // Include Private Jobs, Walk-in Drives, and all Bank-related jobs
             this.filteredJobs = this.jobs.filter(job => 
-              job.category === 'All Private Jobs' || job.category === 'Walk-in Drives'
+              job.category === 'All Private Jobs' || 
+              job.category === 'Walk-in Drives' ||
+              (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
+            );
+          } else if (category === 'Banking Jobs') {
+            // Include all bank-related categories
+            this.filteredJobs = this.jobs.filter(job => 
+              job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
             );
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
@@ -140,6 +148,8 @@ export class JobCategoryComponent implements OnInit {
         return 'badge-warning';
       case 'Walk-in Drives':
         return 'badge-info';
+      case 'Banking Jobs':
+        return 'badge-danger';
       default:
         return 'badge-primary';
     }
@@ -224,7 +234,8 @@ export class JobCategoryComponent implements OnInit {
     const routeMapping: { [key: string]: string } = {
       'Government Jobs': 'government-jobs',
       'All Private Jobs': 'private-jobs',
-      'Walk-in Drives': 'walk-in-drives'
+      'Walk-in Drives': 'walk-in-drives',
+      'Banking Jobs': 'banking-jobs'
     };
 
     const route = routeMapping[category];
@@ -296,9 +307,15 @@ export class JobCategoryComponent implements OnInit {
     // Apply category filter
     if (this.categoryTitle !== 'All Latest Jobs') {
       if (this.categoryTitle === 'All Private Jobs') {
-        // Include both Private Jobs and Walk-in Drives for private jobs
+        // Include Private Jobs, Walk-in Drives, and all Bank-related jobs
         filtered = filtered.filter(job => 
-          job.category === 'All Private Jobs' || job.category === 'Walk-in Drives'
+          job.category === 'All Private Jobs' || 
+          job.category === 'Walk-in Drives' ||
+          (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
+        );
+      } else if (this.categoryTitle === 'Banking Jobs') {
+        filtered = filtered.filter(job => 
+          job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
         );
       } else {
         filtered = filtered.filter(job => job.category === this.categoryTitle);

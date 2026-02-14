@@ -27,56 +27,87 @@
             <a [href]="job.applicationUrl" target="_blank" class="apply-link">Click here </a>
           </div>
           
+          <div class="job-warning-note">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span><strong>Note:</strong> Before applying for a job, make sure to double-check the job information.</span>
+          </div>
         </div>
         
         <!-- Card 3: Job Summary -->
         <div class="info-card summary-card">
-          <h1 class="card-section-title">Job Summary</h1>
+          <h1 class="card-section-title">Quick Highlights</h1>
           
-          <!-- Company Name Row -->
-          <div class="summary-row">
-            <i class="bi bi-building"></i>
-            <span class="summary-label">Company:</span>
-            <span class="summary-value">{{ job.company }}</span>
-          </div>
-          
-          <!-- Job Type & Application Link Row -->
-          <div class="summary-row">
-            <i class="bi bi-briefcase"></i>
-            <span class="summary-label">Job Type:</span>
-            <span class="summary-value">{{ job.category }}</span>
-          </div>
-          
-         
-          
-          <!-- Share Job Row -->
-          <div class="action-row">
-            <span class="action-label">Share </span>
-            <button class="action-btn share-btn" (click)="shareJob(job)">
-              <i class="bi bi-share"></i> Share
-            </button>
-            <button class="action-btn whatsapp-btn" (click)="shareOnWhatsApp(job)">
-              <i class="bi bi-whatsapp"></i> WhatsApp
-            </button>
-            <button class="action-btn copy-btn" (click)="copyLink(job)">
-              <i class="bi bi-clipboard"></i> Copy Link
-            </button>
+          <div class="summary-grid">
+            <!-- Company -->
+            <div class="summary-item">
+              <div class="item-icon company-icon">
+                <i class="bi bi-building-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">Company</span>
+                <span class="item-value">{{ job.company }}</span>
+              </div>
+            </div>
             
+            <!-- Job Type -->
+            <div class="summary-item">
+              <div class="item-icon category-icon">
+                <i class="bi bi-tag-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">Category</span>
+                <span class="item-value">{{ job.category }}</span>
+              </div>
+            </div>
+
+            <!-- Date -->
+            <div class="summary-item">
+              <div class="item-icon date-icon">
+                <i class="bi bi-calendar-check-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">Posted On</span>
+                <span class="item-value">{{ formatDate(job.createdDate) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+          
+          <div class="action-section">
+            <h6 class="action-title">Share Opportunity</h6>
+            <div class="action-grid">
+              <button class="action-pill share-pill" (click)="shareJob(job)">
+                <i class="bi bi-share-fill"></i>
+                <span>Share</span>
+              </button>
+              <button class="action-pill whatsapp-pill" (click)="shareOnWhatsApp(job)">
+                <i class="bi bi-whatsapp"></i>
+                <span>WhatsApp</span>
+              </button>
+              <button class="action-pill copy-pill" (click)="copyLink(job)">
+                <i class="bi bi-link-45deg"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="follow-section">
+            <h6 class="action-title">Join Groups</h6>
+            <div class="follow-grid">
+              <button class="follow-pill wa-group-pill" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
+                <i class="bi bi-whatsapp"></i>
+                <span>WhatsApp Group</span>
+              </button>
+              <button class="follow-pill yt-pill" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
+                <i class="bi bi-youtube"></i>
+                <span>YouTube Channel</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="action-row">
-           <span class="action-label"> Follow Group</span>
-            <button class="action-btn whatsapp-group-btn" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
-              <i class="bi bi-whatsapp"></i> WhatsApp 
-            </button>
-            <button class="action-btn youtube-btn" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
-              <i class="bi bi-youtube"></i> YouTube
-            </button>
-          </div>
-          </div>
-          
-          <!-- Follow Groups Row -->
-          
-        
       </div>
       <div class="col-12 col-lg-6 order-2 order-lg-2">
         <!-- Card: Top 10 Latest Jobs (No Scroll) -->
@@ -89,7 +120,11 @@
               <div class="job-number">{{ i + 1 }}</div>
               <div class="job-info">
                 <div class="job-name">{{ latestJob.title }}</div>
-                <div class="job-company">{{ latestJob.company }}</div>
+                <div class="job-meta-mini">
+                  <span class="job-company">{{ latestJob.company }}</span>
+                  <span class="meta-dot">•</span>
+                  <span class="job-time-ago">{{ getTimeAgo(latestJob.createdDate) }}</span>
+                </div>
               </div>
             </div>
           </div>

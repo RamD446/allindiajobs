@@ -23,7 +23,11 @@ export interface Job {
 export const DEFAULT_JOB_CATEGORIES = [
   'Government Jobs',
   'All Private Jobs',
-  'Walk-in Drives'
+  'Walk-in Drives',
+  'Bank Jobs',
+  'IT Jobs',
+  'Pharmaceutical Jobs',
+  'Sales and Marketing Jobs',
 ] as const;
 
 export type JobCategory = typeof DEFAULT_JOB_CATEGORIES[number];

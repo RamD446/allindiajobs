@@ -29,6 +29,15 @@ export class LoginComponent implements OnInit {
   editingJob: Job | null = null;
   isSaving: boolean = false;
   expandedJobIds: Set<string> = new Set();
+  
+  // Visitor Tracking
+  visitorStats: any = {
+    daily: 0,
+    monthly: 0,
+    total: 0,
+    apiCalls: 0,
+    jobClicks: 0
+  };
 
   // Quill editor configuration
   quillModules = {
@@ -87,14 +96,36 @@ export class LoginComponent implements OnInit {
         this.currentUser = user;
         this.loginError = '';
         console.log('User is logged in:', user.email);
-        // Load jobs and only then set loading to false
+        // Load jobs and stats only then set loading to false
         this.loadJobs();
+        this.loadVisitorStats();
       } else {
         this.isLoggedIn = false;
         this.currentUser = null;
         this.jobs = [];
         this.isLoading = false;
         console.log('User is logged out');
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private loadVisitorStats() {
+    const now = new Date();
+    const day = now.toISOString().split('T')[0];
+    const month = day.substring(0, 7);
+
+    const statsRef = ref(db, 'stats');
+    onValue(statsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        this.visitorStats = {
+          daily: data.daily?.[day] || 0,
+          monthly: data.monthly?.[month] || 0,
+          total: data.total || 0,
+          apiCalls: data.apiCalls || 0,
+          jobClicks: data.jobClicks || 0
+        };
         this.cdr.detectChanges();
       }
     });

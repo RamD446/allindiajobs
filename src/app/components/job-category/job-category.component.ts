@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { onValue, ref } from 'firebase/database';
+import { onValue, ref, get, update } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 import { Job } from '../../models/job.model';
 
@@ -57,6 +57,15 @@ export class JobCategoryComponent implements OnInit {
 
   loadJobs(category: string) {
     this.isLoading = true;
+    
+    // Track API call
+    try {
+      get(ref(db, 'stats/apiCalls')).then(snapshot => {
+        const count = (snapshot.val() || 0) + 1;
+        update(ref(db, 'stats'), { apiCalls: count });
+      });
+    } catch (e) { console.error('Error tracking API call:', e); }
+
     try {
       const jobsRef = ref(db, 'jobs');
       onValue(jobsRef, (snapshot) => {
@@ -171,6 +180,14 @@ export class JobCategoryComponent implements OnInit {
 
   // Navigate to job detail page
   viewJobDetails(job: Job) {
+    // Track Job Click
+    try {
+      get(ref(db, 'stats/jobClicks')).then(snapshot => {
+        const count = (snapshot.val() || 0) + 1;
+        update(ref(db, 'stats'), { jobClicks: count });
+      });
+    } catch (e) { console.error('Error tracking job click:', e); }
+
     const titleSlug = this.createSlug(job.title);
     this.router.navigate(['/job', job.id, titleSlug], { state: { job: job } });
   }

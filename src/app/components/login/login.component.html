@@ -100,6 +100,57 @@
         </div>
       </div>
 
+      <!-- Visitor Stats Dashboard -->
+      <div class="visitor-stats-row mb-4">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="stats-card daily">
+              <div class="stats-icon"><i class="bi bi-person-check-fill"></i></div>
+              <div class="stats-info">
+                <h3 class="stats-value">{{ visitorStats.daily }}</h3>
+                <p class="stats-label">Daily Visitors</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="stats-card monthly">
+              <div class="stats-icon"><i class="bi bi-calendar-event-fill"></i></div>
+              <div class="stats-info">
+                <h3 class="stats-value">{{ visitorStats.monthly }}</h3>
+                <p class="stats-label">Monthly Visitors</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="stats-card total">
+              <div class="stats-icon"><i class="bi bi-people-fill"></i></div>
+              <div class="stats-info">
+                <h3 class="stats-value">{{ visitorStats.total }}</h3>
+                <p class="stats-label">Total Visitors</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="stats-card api-calls">
+              <div class="stats-icon"><i class="bi bi-cloud-arrow-down-fill"></i></div>
+              <div class="stats-info">
+                <h3 class="stats-value">{{ visitorStats.apiCalls }}</h3>
+                <p class="stats-label">Total API Calls (Jobs Loaded)</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="stats-card job-clicks">
+              <div class="stats-icon"><i class="bi bi-cursor-fill"></i></div>
+              <div class="stats-info">
+                <h3 class="stats-value">{{ visitorStats.jobClicks }}</h3>
+                <p class="stats-label">Total Job Title Clicks</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Job Form Modal -->
       <div *ngIf="showJobForm" class="job-form-modal">
         <div class="job-form-content">

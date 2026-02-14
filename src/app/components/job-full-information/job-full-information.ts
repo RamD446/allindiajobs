@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Job } from '../../models/job.model';
-import { ref, get, query, orderByChild, limitToLast } from 'firebase/database';
+import { ref, get, query, orderByChild, limitToLast, update } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 
 @Component({
@@ -40,6 +40,14 @@ export class JobFullInformation implements OnInit {
       this.router.navigate(['/all-latest-jobs']);
       return;
     }
+
+    // Track Job Click on load
+    try {
+      get(ref(db, 'stats/jobClicks')).then(snapshot => {
+        const count = (snapshot.val() || 0) + 1;
+        update(ref(db, 'stats'), { jobClicks: count });
+      });
+    } catch (e) { console.error('Error tracking job click:', e); }
     
     try {
       // Try to get job from router state first

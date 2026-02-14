@@ -90,6 +90,76 @@
   height: 1rem;
 }
 
+/* Visitor Stats Dashboard */
+.visitor-stats-row {
+  margin-top: 1rem;
+}
+
+.stats-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stats-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.daily .stats-icon { background: rgba(102, 126, 234, 0.1); color: #667eea; }
+.monthly .stats-icon { background: rgba(40, 167, 69, 0.1); color: #28a745; }
+.total .stats-icon { background: rgba(255, 105, 180, 0.1); color: #ff69b4; }
+.api-calls .stats-icon { background: rgba(0, 123, 255, 0.1); color: #007bff; }
+.job-clicks .stats-icon { background: rgba(253, 126, 20, 0.1); color: #fd7e14; }
+
+.stats-info {
+  flex: 1;
+}
+
+.stats-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.stats-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .stats-card {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .stats-value {
+    font-size: 1.5rem;
+  }
+}
+
 /* Job Management Section */
 .job-management-section {
   background: #f8f9fa;

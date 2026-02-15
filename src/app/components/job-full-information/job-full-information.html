@@ -9,11 +9,21 @@
       <div class="col-12 col-md-7 order-1">
         <!-- Badge Header (Adapted from Category Header) -->
         <div class="jc-header mb-2">
-          <div class="jc-breadcrumb">
-            <i class="bi bi-house-fill"></i>
-            <span (click)="goBack()" style="cursor: pointer;">Home</span>
-            <i class="bi bi-chevron-right"></i>
-            <span class="jc-category-name">{{ job.category }}</span>
+          <div class="jc-header-left">
+            <div class="jc-breadcrumb">
+              <i class="bi bi-house-fill"></i>
+              <span (click)="goBack()" style="cursor: pointer;">Home</span>
+              <i class="bi bi-chevron-right"></i>
+              <span class="jc-category-name">{{ job.category }}</span>
+            </div>
+            <div class="jc-follow-mini">
+              <button class="mini-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')" title="Follow on YouTube">
+                <i class="bi bi-youtube"></i>
+              </button>
+              <button class="mini-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')" title="Join WhatsApp Channel">
+                <i class="bi bi-whatsapp"></i>
+              </button>
+            </div>
           </div>
         </div>
 

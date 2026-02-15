@@ -54,6 +54,39 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
+.jc-header-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.jc-follow-mini {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mini-social-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: white;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.mini-social-btn:hover {
+  transform: scale(1.1);
+}
+
+.mini-yt { background: #FF0000; }
+.mini-wa { background: #25D366; }
+
 .jc-breadcrumb {
   display: flex;
   align-items: center;
@@ -131,38 +164,10 @@
   z-index: 1;
 }
 
-/* Border Beam Animation */
-.jc-pill::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    transparent 40%,
-    var(--pill-accent, #667eea) 50%,
-    transparent 60%,
-    transparent 100%
-  );
-  animation: border-beam 4s linear infinite;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
 .jc-pill:hover {
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 15px var(--pill-glow, rgba(102, 126, 234, 0.3));
-}
-
-.jc-pill:hover::after {
-  opacity: 1;
-}
-
-@keyframes border-beam {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 .jc-pill span {

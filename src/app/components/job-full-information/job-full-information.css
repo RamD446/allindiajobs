@@ -1575,3 +1575,38 @@
     font-size: 8px;
   }
 }
+
+/* Header Left & Follow Mini */
+.jc-header-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.jc-follow-mini {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mini-social-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: white;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.mini-social-btn:hover {
+  transform: scale(1.1);
+}
+
+.mini-yt { background: #FF0000; }
+.mini-wa { background: #25D366; }
+

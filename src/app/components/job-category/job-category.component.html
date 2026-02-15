@@ -13,17 +13,22 @@
         <div class="col-lg-8 col-md-8 col-12">
           <!-- Header -->
           <div class="jc-header">
-            <div class="jc-breadcrumb">
-              <i class="bi bi-house-fill"></i>
-              <span>Home</span>
-              <i class="bi bi-chevron-right"></i>
-              <span class="jc-category-name">{{ categoryTitle }}</span>
+            <div class="jc-header-left">
+              <div class="jc-breadcrumb">
+                <i class="bi bi-house-fill"></i>
+                <span routerLink="/all-latest-jobs" style="cursor: pointer;">Home</span>
+                <i class="bi bi-chevron-right"></i>
+                <span class="jc-category-name">{{ categoryTitle }}</span>
+              </div>
+              <div class="jc-follow-mini">
+                <button class="mini-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')" title="YouTube">
+                  <i class="bi bi-youtube"></i>
+                </button>
+                <button class="mini-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')" title="WhatsApp">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+              </div>
             </div>
-            <!-- <div class="jc-count">
-              <i class="bi bi-briefcase-fill"></i>
-              <span class="jc-count-num">{{ getNewJobs().length }}</span>
-              <span>Jobs</span>
-            </div> -->
           </div>
 
           <!-- Category Pills -->

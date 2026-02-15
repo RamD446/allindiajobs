@@ -5,7 +5,7 @@ export interface Job {
   company: string;
   category: string;
   description: string;
-  contactInfo: string;
+  contactInfo?: string;
   createdDate: string;
   // Optional additional fields
   companyDescription?: string;
@@ -17,6 +17,9 @@ export interface Job {
   benefits?: string;
   experienceLevel?: string;
   salary?: string;
+  walkInStartDate?: string;
+  walkInEndDate?: string;
+  lastDateToApply?: string;
 }
 
 // Job Categories - simplified list as requested

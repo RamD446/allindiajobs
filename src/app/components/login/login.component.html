@@ -161,46 +161,69 @@
           
           <form (ngSubmit)="saveJob()" #jobFormRef="ngForm" class="job-form-body">
             <div class="row">
-              <div class="col-md-6 mb-3">
+              <!-- Basic Info - 3 Columns for compact view -->
+              <div class="col-md-4 mb-3">
                 <label class="form-label">Job Title *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Software Engineer">
               </div>
               
-              <div class="col-md-6 mb-3">
+              <div class="col-md-4 mb-3">
                 <label class="form-label">Company Name *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" >
+                <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" placeholder="e.g. Tech Solutions">
               </div>
               
-              <div class="col-md-6 mb-3">
+              <div class="col-md-4 mb-3">
                 <label class="form-label">Job Category *</label>
                 <select class="form-control" [(ngModel)]="jobForm.category" name="category" required>
                   <option *ngFor="let category of jobCategories" [value]="category">{{ category }}</option>
                 </select>
               </div>
-              
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Contact Information *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.contactInfo" name="contactInfo"  placeholder="Phone/Email/Address">
-              </div>
-              
-              <div class="col-md-6 mb-3" *ngIf="editingJob">
+
+              <div class="col-md-4 mb-3" *ngIf="editingJob">
                 <label class="form-label">Created Date & Time *</label>
-                <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" >
+                <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" required>
               </div>
-              
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Application URL</label>
-                <input type="url" class="form-control" [(ngModel)]="jobForm.applicationUrl" name="applicationUrl" placeholder="https://example.com/apply">
-              </div>
-              
+
+              <!-- Conditional Fields - also responsive -->
+              <ng-container *ngIf="jobForm.category === 'Walk-in Drives'">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label text-danger">Walk-in Start Date *</label>
+                  <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label text-danger">Walk-in End Date *</label>
+                  <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate" required>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="jobForm.category === 'Government Jobs'">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label text-primary">Last Date to Apply *</label>
+                  <input type="date" class="form-control border-primary" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply" required>
+                </div>
+              </ng-container>
+
+              <!-- Application URL - Full Row for visibility -->
               <div class="col-12 mb-3">
-                <label class="form-label">Job Description *</label>
+                <label class="form-label">Application URL (Registration Link)</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                  <input type="url" class="form-control" [(ngModel)]="jobForm.applicationUrl" name="applicationUrl" placeholder="https://example.com/apply">
+                </div>
+              </div>
+              
+              <!-- Description - Full Row -->
+              <div class="col-12 mb-3">
+                <label class="form-label d-flex justify-content-between">
+                  <span>Job Description *</span>
+                  <small class="text-muted">Include roles, responsibilities, and eligibility</small>
+                </label>
                 <quill-editor 
                   [(ngModel)]="jobForm.description" 
                   name="description" 
                   [modules]="quillModules"
                   [styles]="{height: '350px'}"
-                  placeholder="Enter job description with formatting, colors, and links..."
+                  placeholder="Detailed job description..."
                   required>
                 </quill-editor>
               </div>

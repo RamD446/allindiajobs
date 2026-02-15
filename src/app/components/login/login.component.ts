@@ -60,8 +60,10 @@ export class LoginComponent implements OnInit {
     company: '',
     category: '',
     description: '',
-    contactInfo: '',
-    createdDate: new Date().toISOString()
+    createdDate: new Date().toISOString().slice(0, 16),
+    walkInStartDate: '',
+    walkInEndDate: '',
+    lastDateToApply: ''
   };
 
   jobCategories: string[] = [];
@@ -228,7 +230,18 @@ export class LoginComponent implements OnInit {
   editJob(job: Job) {
     this.showJobForm = true;
     this.editingJob = job;
-    this.jobForm = { ...job };
+    
+    // Format date for datetime-local input (YYYY-MM-DDTHH:mm)
+    let formattedDate = '';
+    if (job.createdDate) {
+      const d = new Date(job.createdDate);
+      formattedDate = d.toISOString().slice(0, 16);
+    }
+    
+    this.jobForm = { 
+      ...job,
+      createdDate: formattedDate || new Date().toISOString().slice(0, 16)
+    };
   }
 
   async deleteJob(jobId: string) {
@@ -296,8 +309,10 @@ export class LoginComponent implements OnInit {
       company: '',
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       description: '',
-      contactInfo: '',
-      createdDate: new Date().toISOString()
+      createdDate: new Date().toISOString().slice(0, 16),
+      walkInStartDate: '',
+      walkInEndDate: '',
+      lastDateToApply: ''
     };
   }
 
@@ -323,7 +338,6 @@ export class LoginComponent implements OnInit {
 📌 *${job.title}*
 🏢 *Company:* ${job.company}
 📂 *Category:* ${job.category}
-📞 *Contact:* ${job.contactInfo}
 
 📝 *Description:*
 ${shortDesc}

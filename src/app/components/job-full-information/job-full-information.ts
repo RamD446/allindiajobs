@@ -121,6 +121,14 @@ export class JobFullInformation implements OnInit {
   }
 
   viewJobDetails(job: Job) {
+    // Track Job Click
+    try {
+      get(ref(db, 'stats/jobClicks')).then(snapshot => {
+        const count = (snapshot.val() || 0) + 1;
+        update(ref(db, 'stats'), { jobClicks: count });
+      });
+    } catch (e) { console.error('Error tracking job click:', e); }
+
     const titleSlug = job.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     this.router.navigate(['/job', job.id, titleSlug], { state: { job } }).then(() => {
       window.scrollTo(0, 0);

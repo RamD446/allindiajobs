@@ -1,9 +1,31 @@
-<div class="info-page-bg" style="min-height:100vh; background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%); padding-top:40px;">
-  <div class="container py-5">
-    <div class="card shadow info-card" style="border-radius: 16px;">
+<div class="info-page-bg">
+  <div class="container py-3">
+    <!-- Breadcrumb -->
+    <div class="jc-header mb-3">
+      <div class="jc-breadcrumb">
+        <i class="bi bi-house-fill"></i>
+        <span routerLink="/all-latest-jobs" style="cursor: pointer;">Home</span>
+        <i class="bi bi-chevron-right"></i>
+        <span class="jc-category-name">{{ title }}</span>
+      </div>
+    </div>
+
+    <!-- Combined View (3 columns) -->
+    <div *ngIf="showCombined" class="row g-3">
+      <div class="col-12 col-lg-4" *ngFor="let section of combinedSections">
+        <div class="card shadow-sm info-card h-100">
+          <div class="card-body">
+            <h4 class="info-title border-bottom pb-2 mb-3">{{ section.title }}</h4>
+            <div class="info-content-small" [innerHTML]="section.content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Single Page View -->
+    <div *ngIf="!showCombined" class="card shadow info-card">
       <div class="card-body">
         <h2 class="info-title mb-4">{{ title }}</h2>
-      
         <div class="info-content" [innerHTML]="sanitizedContent"></div>
       </div>
     </div>

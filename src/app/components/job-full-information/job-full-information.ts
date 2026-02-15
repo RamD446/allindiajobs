@@ -265,4 +265,19 @@ _Amazing job opportunity for you!_
   goBack() {
     this.router.navigate(['/all-latest-jobs']);
   }
+
+  navigateToCategory(category: string) {
+    const routeMapping: { [key: string]: string } = {
+      'Government Jobs': 'government-jobs',
+      'All Private Jobs': 'private-jobs',
+      'Walk-in Drives': 'walk-in-drives',
+      'Banking Jobs': 'banking-jobs',
+      'IT Jobs': 'it-jobs'
+    };
+
+    const route = routeMapping[category];
+    if (route) {
+      this.router.navigate([`/${route}`]);
+    }
+  }
 }

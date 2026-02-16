@@ -17,7 +17,7 @@
               <span class="jc-category-name">{{ job.category }}</span>
             </div>
             <div class="jc-follow-mini">
-              <button class="mini-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')" title="Follow on YouTube">
+              <button class="mini-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')" title="Follow on YouTube">
                 <i class="bi bi-youtube"></i>
               </button>
               <button class="mini-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')" title="Join WhatsApp Channel">
@@ -201,43 +201,7 @@
           <div *ngIf="!isLoading && (!latestJobs || latestJobs.length === 0)" class="p-3 text-center">No jobs available</div>
         </div>
 
-        <!-- Join Groups / Follow sections -->
-        <div class="info-card">
-          <!-- Share Opportunity -->
-          <div class="action-section">
-            <h6 class="action-title">Share Opportunity</h6>
-            <div class="action-grid">
-              <button class="action-pill share-pill" (click)="shareJob(job)">
-                <i class="bi bi-share-fill"></i>
-                <span>Share</span>
-              </button>
-              <button class="action-pill whatsapp-pill" (click)="shareOnWhatsApp(job)">
-                <i class="bi bi-whatsapp"></i>
-                <span>WhatsApp</span>
-              </button>
-              <button class="action-pill copy-pill" (click)="copyLink(job)">
-                <i class="bi bi-link-45deg"></i>
-                <span>Copy</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="summary-divider my-2"></div>
-
-          <div class="follow-section">
-            <h6 class="action-title">Join Groups</h6>
-            <div class="follow-grid">
-              <button class="follow-pill wa-group-pill" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
-                <i class="bi bi-whatsapp"></i>
-                <span>WhatsApp Group</span>
-              </button>
-              <button class="follow-pill yt-pill" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
-                <i class="bi bi-youtube"></i>
-                <span>YouTube Channel</span>
-              </button>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   </div>

@@ -10,13 +10,20 @@
       </div>
     </div>
 
-    <!-- Combined View (3 columns) -->
-    <div *ngIf="showCombined" class="row g-3">
-      <div class="col-12 col-lg-4" *ngFor="let section of combinedSections">
-        <div class="card shadow-sm info-card h-100">
-          <div class="card-body">
-            <h4 class="info-title border-bottom pb-2 mb-3">{{ section.title }}</h4>
-            <div class="info-content-small" [innerHTML]="section.content"></div>
+    <!-- Combined View (Single column, full width cards) -->
+    <div *ngIf="showCombined" class="row g-4">
+      <div class="col-12" *ngFor="let section of combinedSections; let i = index">
+        <div class="card shadow-sm info-card border-0 overflow-hidden">
+          <div class="card-body p-4">
+            <h3 class="info-title d-flex align-items-center gap-3 pb-3 mb-4 border-bottom">
+              <i class="bi bi-info-square-fill text-primary" *ngIf="i === 0"></i>
+              <i class="bi bi-shield-lock-fill text-success" *ngIf="i === 1"></i>
+              <i class="bi bi-exclamation-triangle-fill text-warning" *ngIf="i === 2"></i>
+              <i class="bi bi-file-earmark-text-fill text-info" *ngIf="i === 3"></i>
+              <i class="bi bi-envelope-fill text-danger" *ngIf="i === 4"></i>
+              {{ section.title }}
+            </h3>
+            <div class="info-content px-2" [innerHTML]="section.content"></div>
           </div>
         </div>
       </div>

@@ -1,15 +1,100 @@
-<footer>
-  <div class="footer-row">
-    <p>&copy; 2026 AllIndiaJobs.</p>
-  </div>
-  <div class="footer-row">
-    <p>
-      <a routerLink="/about-us">About Us</a> |
-      <a routerLink="/disclaimer">Disclaimer</a> |
-      <a routerLink="/privacy-policy">Privacy Policy</a>
-    </p>
-  </div>
-  <div class="footer-row footer-deployer">
-    <p>Website deployed by <a href="#" class="footer-link" (click)="openRdmWebtech()">Rdmwebtech</a></p>
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <!-- Section 1: Job Types -->
+      <div class="footer-section">
+        <h6 class="footer-title">
+          <i class="bi bi-briefcase-fill"></i>
+          Quick Job Links
+        </h6>
+        <ul class="footer-links">
+          <li *ngFor="let job of jobTypes">
+            <a [routerLink]="job.route" (click)="scrollToTop()">
+              <i class="bi bi-chevron-right small me-2"></i>
+              {{ job.name }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Section 2: Career Types -->
+      <div class="footer-section">
+        <h6 class="footer-title">
+          <i class="bi bi-building"></i>
+          Career Office Links
+        </h6>
+        <ul class="footer-links">
+          <li *ngFor="let career of careerTypes">
+            <a href="javascript:void(0)" (click)="navigateToCareer(career.type)">
+              <i class="bi bi-chevron-right small me-2"></i>
+              {{ career.name }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Section 3: Info Pages -->
+      <div class="footer-section">
+        <h6 class="footer-title">
+          <i class="bi bi-info-circle-fill"></i>
+          Information
+        </h6>
+        <ul class="footer-links">
+          <li>
+            <a routerLink="/about-us" (click)="scrollToTop()">
+              <i class="bi bi-chevron-right small me-2"></i>
+              About Us
+            </a>
+          </li>
+          <li>
+            <a routerLink="/disclaimer" (click)="scrollToTop()">
+              <i class="bi bi-chevron-right small me-2"></i>
+              Disclaimer
+            </a>
+          </li>
+          <li>
+            <a routerLink="/privacy-policy" (click)="scrollToTop()">
+              <i class="bi bi-chevron-right small me-2"></i>
+              Privacy Policy
+            </a>
+          </li>
+          <li>
+            <a routerLink="/terms-and-conditions" (click)="scrollToTop()">
+              <i class="bi bi-chevron-right small me-2"></i>
+              Terms & Conditions
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Section 4: Contact -->
+      <div class="footer-section">
+        <h6 class="footer-title">
+          <i class="bi bi-envelope-paper-fill"></i>
+          Contact Us
+        </h6>
+        <div class="contact-details">
+          <p class="contact-info">
+            <i class="bi bi-envelope-fill me-3"></i>
+            <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a>
+          </p>
+          <p class="contact-info">
+            <i class="bi bi-globe me-3"></i>
+            <a href="https://allindajobs.com">allindajobs.com</a>
+          </p>
+          <div class="mt-4 pt-2">
+            <p class="small text-muted mb-0">Independent job information portal.</p>
+            <p class="small text-muted">Stay updated with latest jobs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p class="copyright">&copy; 2026 <strong>AllIndiaJobs</strong>. All Rights Reserved.</p>
+        <p class="deployer">Website by <a href="javascript:void(0)" (click)="openRdmWebtech()">Rdmwebtech</a></p>
+      </div>
+    </div>
   </div>
 </footer>

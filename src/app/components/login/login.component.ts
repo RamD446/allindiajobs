@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserLocalPersistence, setPersistence } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { ref, push, get, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
 import { Job, DEFAULT_JOB_CATEGORIES, JobCareer, CAREER_JOB_TYPES, News } from '../../models/job.model';
@@ -194,7 +194,7 @@ export class LoginComponent implements OnInit {
       this.loginError = '';
       
       // Ensure persistence is set before login
-      await setPersistence(auth, browserLocalPersistence);
+      await setPersistence(auth, browserSessionPersistence);
       
       const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
       this.isLoggedIn = true;

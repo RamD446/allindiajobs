@@ -23,73 +23,84 @@ export class InfoPageComponent implements OnInit {
     'about-us': {
       title: 'About Us',
       content: `
-        <h3>Welcome to AllIndiaJobs</h3>
-        <p>AllIndiaJobs provides daily job updates across India to help job seekers find opportunities easily.</p>
-
-        <h4>Our Mission</h4>
+        <h3>About All India Jobs</h3>
+        <p>All India Jobs is an independent job information website. We collect publicly available job information from official company websites and publish it in a simplified format to help job seekers easily find employment opportunities.</p>
+        
+        <h4>What We Do:</h4>
         <ul>
-          <li>No login or registration required</li>
-          <li>No personal data collection for browsing</li>
-          <li>Simple and user-friendly interface</li>
-          <li>Job updates from trusted public sources</li>
+          <li>Do NOT charge any fees</li>
+          <li>Do NOT offer recruitment services</li>
+          <li>Do NOT guarantee job placement</li>
+          <li>Do NOT collect resumes</li>
         </ul>
-
-        <h4>Job Categories</h4>
-        <ul>
-          <li>Government Jobs</li>
-          <li>Private Jobs</li>
-          <li>Walk-in Drives</li>
-        </ul>
-
-        <p><strong>Email:</strong> <a href="mailto:raman9000r@gmail.com">raman9000r@gmail.com</a></p>
+        <p>Our goal is to provide genuine job updates and guide users to official application pages.</p>
+        <p><strong>Email:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     },
 
     'contact-us': {
       title: 'Contact Us',
       content: `
-        <p>For website issues or partnerships, contact us at:</p>
-        <p><strong>Email:</strong> <a href="mailto:ramana9000r@gmail.com">ramana9000r@gmail.com</a></p>
-        <p>We do not collect personal information for browsing jobs.</p>
+        <p>If you have any questions, job update corrections, or business inquiries, please contact us:</p>
+        <p><strong>📧 Email:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
+        <p><strong>🌐 Website:</strong> <a href="https://allindajobs.com">https://allindajobs.com</a></p>
+        <p>We aim to respond within 24–48 hours.</p>
       `
     },
 
     'privacy-policy': {
       title: 'Privacy Policy',
       content: `
-        <p><strong>Last Updated:</strong> January 20, 2026</p>
-
-        <p>We respect your privacy. We may collect limited data such as browser type, device information, and analytics data to improve our website.</p>
-
-        <h4>We Use Information To:</h4>
+        <p><strong>Effective Date:</strong> February 17, 2026</p>
+        <p>Welcome to <a href="https://allindajobs.com">https://allindajobs.com</a>. At All India Jobs, we respect your privacy.</p>
+        
+        <h4>1. Information We Collect</h4>
+        <p>We do NOT collect:</p>
         <ul>
-          <li>Improve user experience</li>
-          <li>Respond to inquiries</li>
-          <li>Analyze website traffic</li>
+          <li>User accounts</li>
+          <li>Personal login information</li>
+          <li>Payment details</li>
+          <li>Uploaded documents</li>
         </ul>
-
-        <p>We may use cookies and third-party services like Google Analytics or AdSense. Users can disable cookies in browser settings.</p>
-
-        <p>For questions, contact: 
-        <a href="mailto:raman9000r@gmail.com">raman9000r@gmail.com</a></p>
+        <p>Users are not required to register or provide personal information to use this website.</p>
+        <p>We may automatically collect basic non-personal information such as: Browser type, Device type, Anonymous traffic data. This information is used only for website improvement and analytics purposes.</p>
+        
+        <h4>2. Job Information</h4>
+        <p>All job listings published on this website are publicly available information collected from official company career pages. We do not modify official application processes. When users click the "Apply" button, they are redirected to the official company website.</p>
+        
+        <h4>3. Third-Party Services</h4>
+        <p>We may use third-party services such as: Google Analytics for traffic analysis, Google AdSense for advertisements. These services may use cookies to display ads or analyze usage.</p>
+        
+        <h4>4. External Links</h4>
+        <p>Our website contains links to external official job pages. We are not responsible for the privacy policies or practices of those external websites.</p>
+        
+        <h4>5. Consent</h4>
+        <p>By using our website, you agree to this Privacy Policy.</p>
+        
+        <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     },
 
     'disclaimer': {
       title: 'Disclaimer',
       content: `
-        <p><strong>Last Updated:</strong> January 20, 2026</p>
+        <p>All India Jobs is not a recruitment agency. We do not: Offer jobs directly, Conduct interviews, Ask for money, or Process applications. All job listings redirect users to official company websites for application.</p>
+        <p>We are not responsible for hiring decisions, interview processes, or employment outcomes. Users should verify all job details directly from the official employer.</p>
+        <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
+      `
+    },
 
-        <p>AllIndiaJobs is an independent job information website. We publish job notifications collected from official websites and public sources.</p>
-
+    'terms-and-conditions': {
+      title: 'Terms & Conditions',
+      content: `
+        <p>By using <a href="https://allindajobs.com">https://allindajobs.com</a>, you agree:</p>
         <ul>
-          <li>We are not affiliated with any government or private organization.</li>
-          <li>Users should verify details from official websites before applying.</li>
-          <li>We do not charge any fees.</li>
-          <li>We are not responsible for errors or losses arising from the use of information.</li>
+          <li>To use the website for lawful purposes only.</li>
+          <li>Not to misuse job information for fraudulent activities.</li>
+          <li>Not to copy or republish website content without permission.</li>
         </ul>
-
-        <p>Contact: <a href="mailto:raman9000r@gmail.com">raman9000r@gmail.com</a></p>
+        <p>We reserve the right to update or remove content without notice.</p>
+        <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     }
   };
@@ -101,11 +112,16 @@ export class InfoPageComponent implements OnInit {
     const path = this.route.snapshot.url.map(s => s.path).join('/');
     this.pageKey = path || this.route.snapshot.routeConfig?.path || '';
 
-    // Check if we should show combined view (About, Disclaimer, Privacy)
-    const combinedKeys = ['about-us', 'disclaimer', 'privacy-policy'];
+    // Check if we should show combined view (About, Disclaimer, Privacy, Terms, Contact)
+    let combinedKeys = ['about-us', 'disclaimer', 'privacy-policy', 'terms-and-conditions', 'contact-us'];
     if (combinedKeys.includes(this.pageKey)) {
       this.showCombined = true;
-      this.combinedSections = combinedKeys.map(key => {
+      
+      // Reorder: move the clicked page key to the first position
+      const otherKeys = combinedKeys.filter(key => key !== this.pageKey);
+      const reorderedKeys = [this.pageKey, ...otherKeys];
+      
+      this.combinedSections = reorderedKeys.map(key => {
         const data = this.pageContents[key];
         return {
           key,

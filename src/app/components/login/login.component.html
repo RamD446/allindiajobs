@@ -128,31 +128,31 @@
           </div>
           
           <form (ngSubmit)="saveNews()" #newsFormRef="ngForm" class="job-form-body">
-            <div class="row">
-              <div class="col-md-6 mb-3">
+            <div class="row g-2">
+              <div class="col-md-6 mb-2">
                 <label class="form-label">News Title *</label>
                 <input type="text" class="form-control" [(ngModel)]="newsForm.title" name="title" required placeholder="e.g. New Government Job Opening">
               </div>
               
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6 mb-2">
                 <label class="form-label">News Type *</label>
                 <input type="text" class="form-control" [(ngModel)]="newsForm.newsType" name="newsType" required placeholder="e.g. Breaking News, Alert">
               </div>
 
-              <div class="col-12 mb-3">
-                <label class="form-label">Description *</label>
+              <div class="col-12 mb-0">
+                <label class="form-label mb-1">Description *</label>
                 <quill-editor 
                   [(ngModel)]="newsForm.description" 
                   name="description" 
                   [modules]="quillModules"
-                  [styles]="{height: '450px'}"
+                  [styles]="{height: '500px', width: '100%'}"
                   placeholder="Detailed news description..."
                   required>
                 </quill-editor>
               </div>
             </div>
             
-            <div class="job-form-footer">
+            <div class="job-form-footer mt-3">
               <button type="button" class="btn btn-secondary me-2" (click)="cancelNewsForm()" [disabled]="isSaving">Cancel</button>
               <button type="submit" class="btn btn-primary" [disabled]="!newsFormRef.valid || isSaving">
                 <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>

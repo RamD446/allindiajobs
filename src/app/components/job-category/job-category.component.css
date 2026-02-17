@@ -204,6 +204,22 @@
 .jc-pill-walk i { color: #ec4899; }
 .jc-pill-bank i { color: #8b5cf6; }
 
+/* Active Pill State */
+.jc-pill.jc-pill-active {
+  background: #fff5f7;
+  border: 2px solid #ff69b4;
+  box-shadow: 0 2px 8px rgba(255, 105, 180, 0.2);
+}
+
+.jc-pill.jc-pill-active i {
+  color: #ff69b4;
+}
+
+.jc-pill.jc-pill-active span {
+  color: #d91e63;
+  font-weight: 700;
+}
+
 /* Filter Group Label */
 .jc-filter-label {
   color: #1e293b;
@@ -398,8 +414,10 @@
   background: #fff;
   padding: 0.75rem;
   margin: 0.15rem;
-  border-radius: 6px;
+  border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 2px solid #667eea;
+  position: relative;
 }
 
 .occ-title {
@@ -409,7 +427,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #2c3e50;
+  color: #667eea;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #667eea;
 }
 
 .occ-type-card {
@@ -447,7 +467,7 @@
   background: #f0f7ff;
   border-radius: 8px;
   padding: 0.75rem;
-  border: 1px solid #cce5ff;
+  border: 2px solid #667eea;
   animation: slideDown 0.3s ease-out;
 }
 

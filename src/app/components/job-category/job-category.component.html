@@ -34,67 +34,30 @@
           <!-- Category Pills Card -->
           <div class="jc-top-card mb-1">
             <div class="jc-pills-row">
-              <button class="jc-pill jc-pill-all" routerLink="/all-latest-jobs">
+              <button class="jc-pill jc-pill-all" routerLink="/all-latest-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-grid-3x3-gap-fill"></i>
                 <span>All Jobs ({{ getTotalJobCountByCategory('All') }})</span>
               </button>
-              <button class="jc-pill jc-pill-it" (click)="navigateToCategory('IT Jobs')">
+              <button class="jc-pill jc-pill-it" routerLink="/it-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-laptop-fill"></i>
                 <span>IT Jobs ({{ getTotalJobCountByCategory('IT Jobs') }})</span>
               </button>
-              <button class="jc-pill jc-pill-gov" (click)="navigateToCategory('Government Jobs')">
+              <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-building-fill"></i>
                 <span>Govt Jobs ({{ getTotalJobCountByCategory('Government Jobs') }})</span>
               </button>
-              <button class="jc-pill jc-pill-prv" (click)="navigateToCategory('All Private Jobs')">
+              <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-briefcase-fill"></i>
                 <span>Private Jobs ({{ getTotalJobCountByCategory('All Private Jobs') }})</span>
               </button>
-              <button class="jc-pill jc-pill-walk" (click)="navigateToCategory('Walk-in Drives')">
+              <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-person-walking"></i>
                 <span> Walk-ins ({{ getTotalJobCountByCategory('Walk-in Drives') }})</span>
               </button>
-              <button class="jc-pill jc-pill-bank" (click)="navigateToCategory('Banking Jobs')">
+              <button class="jc-pill jc-pill-bank" routerLink="/banking-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-piggy-bank-fill"></i>
                 <span>Banking Jobs ({{ getTotalJobCountByCategory('Banking Jobs') }})</span>
               </button>
-            </div>
-          </div>
-
-          <!-- Official Company Careers (Quick Filter Section) -->
-          <div class="occ-section ">
-            <h6 class="occ-title">
-              <i class="bi bi-building-check text-primary"></i> Official Company Careers
-            </h6>
-            <div class="occ-types row g-2">
-              <div class="col-6 col-md-3" *ngFor="let type of careerJobTypes">
-                <div class="occ-type-card" [class.active]="selectedCareerType === type" (click)="filterCareersByType(type)">
-                  <span class="occ-type-name">{{ type }}</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Career Links Display based on selected Job Type -->
-            <div class="occ-links-container mt-3" *ngIf="selectedCareerType">
-              <div class="occ-links-header d-flex justify-content-between align-items-center mb-2">
-                <small class="text-primary fw-bold">{{ selectedCareerType }} Career Links</small>
-                <button class="btn btn-sm btn-link p-0 text-decoration-none text-muted" (click)="selectedCareerType = ''">
-                  <i class="bi bi-x-circle"></i> Close
-                </button>
-              </div>
-              <div class="row g-2">
-                <div class="col-md-6" *ngFor="let career of filteredCareers">
-                  <div class="occ-link-card">
-                    <span class="occ-company-name">{{ career.company }}</span>
-                    <a [href]="career.careerOfficeUrl" target="_blank" class="occ-action-link">
-                      Click here <i class="bi bi-box-arrow-up-right"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="col-12" *ngIf="filteredCareers.length === 0">
-                  <p class="text-muted small mb-0 p-2 text-center border rounded bg-light">No career links available for this category yet.</p>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -135,6 +98,43 @@
 
         <!-- Right Column - Filters -->
         <div class="col-12 col-md-3">
+          <!-- Official Company Careers (Quick Filter Section) -->
+          <div class="occ-section">
+            <h6 class="occ-title">
+              <i class="bi bi-building-check text-primary"></i> Official Company Careers
+            </h6>
+            <div class="occ-types row g-2">
+              <div class="col-6 col-md-6" *ngFor="let type of careerJobTypes">
+                <div class="occ-type-card" [class.active]="selectedCareerType === type" (click)="filterCareersByType(type)">
+                  <span class="occ-type-name">{{ type }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Career Links Display based on selected Job Type -->
+            <div class="occ-links-container mt-3" *ngIf="selectedCareerType">
+              <div class="occ-links-header d-flex justify-content-between align-items-center mb-2">
+                <small class="text-primary fw-bold">{{ selectedCareerType }} Career Links</small>
+                <button class="btn btn-sm btn-link p-0 text-decoration-none text-muted" (click)="selectedCareerType = ''">
+                  <i class="bi bi-x-circle"></i> Close
+                </button>
+              </div>
+              <div class="row g-2">
+                <div class="col-12" *ngFor="let career of filteredCareers">
+                  <div class="occ-link-card">
+                    <span class="occ-company-name">{{ career.company }}</span>
+                    <a [href]="career.careerOfficeUrl" target="_blank" class="occ-action-link">
+                      Click here <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-12" *ngIf="filteredCareers.length === 0">
+                  <p class="text-muted small mb-0 p-2 text-center border rounded bg-light">No career links available for this category yet.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="jc-filters">
             <div class="d-flex justify-content-between align-items-center mb-2 px-1">
               <h6 class="jc-filter-title mb-0 p-0">

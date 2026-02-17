@@ -1,6 +1,9 @@
-import { Component, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { onValue, ref } from 'firebase/database';
+import { db } from '../../../config/firebase.config';
+import { Job } from '../../models/job.model';
 
 @Component({
   selector: 'app-header',
@@ -13,24 +16,22 @@ export class HeaderComponent implements OnInit {
   isNavActive = false;
   canInstall = false;
   private deferredPrompt: any = null;
+  jobs: Job[] = [];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}
 
   ngOnInit() {
+    this.loadJobs();
     // Listen for the beforeinstallprompt event
     window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Save the event so it can be triggered later
       this.deferredPrompt = e;
-      // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
       setTimeout(() => {
         this.canInstall = true;
         this.cdr.detectChanges();
       });
     });
 
-    // Listen for app installed event
     window.addEventListener('appinstalled', () => {
       setTimeout(() => {
         this.canInstall = false;
@@ -40,7 +41,45 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  toggleNav() {
+  loadJobs() {
+    try {
+      const jobsRef = ref(db, 'jobs');
+      onValue(jobsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          this.jobs = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }));
+        }
+        this.cdr.detectChanges();
+      });
+    } catch (error) {
+      console.error('Error loading jobs for header:', error);
+    }
+  }
+
+  getJobCountByCategory(category: string): number {
+    if (category === 'All') return this.jobs.length;
+    if (category === 'Banking Jobs') {
+      return this.jobs.filter(job => 
+        job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
+      ).length;
+    }
+    if (category === 'All Private Jobs') {
+       return this.jobs.filter(job => 
+        job.category === 'All Private Jobs' || 
+        job.category === 'Walk-in Drives' ||
+        (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
+      ).length;
+    }
+    return this.jobs.filter(job => job.category === category).length;
+  }
+
+  toggleNav(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
     this.isNavActive = !this.isNavActive;
   }
 
@@ -48,20 +87,23 @@ export class HeaderComponent implements OnInit {
     this.isNavActive = false;
   }
 
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    if (this.isNavActive) {
+      const clickedInside = this.el.nativeElement.contains(event.target);
+      if (!clickedInside) {
+        this.closeNav();
+      }
+    }
+  }
+
   installApp() {
     if (this.deferredPrompt) {
-      // Show the install prompt
       this.deferredPrompt.prompt();
-      
-      // Wait for the user to respond to the prompt
       this.deferredPrompt.userChoice.then((choiceResult: any) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-        }
         this.deferredPrompt = null;
         this.canInstall = false;
+        this.cdr.detectChanges();
       });
     }
   }
@@ -76,15 +118,18 @@ export class HeaderComponent implements OnInit {
     if (navigator.share) {
       navigator.share(shareData).catch(err => console.log('Error sharing:', err));
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
       alert('Link copied to clipboard!');
     }
   }
 
+  openExternalChannel(url: string) {
+    window.open(url, '_blank', 'noopener');
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 991) {
       this.isNavActive = false;
     }
   }

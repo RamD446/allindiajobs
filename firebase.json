@@ -1,5 +1,6 @@
 {
   "database": {
+    "instance": "allindiajobs-36405-default-rtdb",
     "rules": "database.rules.json"
   },
   "hosting": {

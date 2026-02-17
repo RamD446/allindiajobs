@@ -373,6 +373,100 @@
   color: #fff;
 }
 
+/* Official Company Careers Styling */
+.occ-section {
+  background: #fff;
+  padding: 0.75rem;
+  margin: 0.15rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.occ-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2c3e50;
+}
+
+.occ-type-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.occ-type-card:hover {
+  border-color: #667eea;
+  background: #f0f2ff;
+  transform: translateY(-2px);
+}
+
+.occ-type-card.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  color: white;
+}
+
+.occ-type-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.occ-links-container {
+  background: #f0f7ff;
+  border-radius: 8px;
+  padding: 0.75rem;
+  border: 1px solid #cce5ff;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.occ-link-card {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  border: 1px solid #e1e8ed;
+}
+
+.occ-company-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.occ-action-link {
+  font-size: 0.7rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.occ-action-link:hover {
+  text-decoration: underline;
+}
+
 /* Filters Sidebar */
 .jc-filters {
   background: #fff;

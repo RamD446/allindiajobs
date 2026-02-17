@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { onValue, ref, get, update } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
-import { Job } from '../../models/job.model';
+import { Job, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
 
 @Component({
   selector: 'app-job-category',
@@ -17,6 +17,10 @@ export class JobCategoryComponent implements OnInit {
     currentPage: number = 1;
   jobs: Job[] = [];
   filteredJobs: Job[] = [];
+  jobCareers: JobCareer[] = [];
+  filteredCareers: JobCareer[] = [];
+  careerJobTypes: string[] = [...CAREER_JOB_TYPES];
+  selectedCareerType: string = '';
   categoryTitle: string = '';
   categoryParam: string = '';
   isLoading: boolean = true;
@@ -44,14 +48,12 @@ export class JobCategoryComponent implements OnInit {
       const mapping = this.categoryMappings[path];
       if (mapping) {
         this.categoryTitle = mapping.title;
-        console.log('Loading jobs for category:', mapping.category); // Debug log
         this.loadJobs(mapping.category);
       } else {
-        console.log('No mapping found for path:', path); // Debug log
-        // Default to all latest jobs
         this.categoryTitle = 'All Latest Jobs';
         this.loadJobs('All Latest Jobs');
       }
+      this.loadJobCareers();
     });
   }
 
@@ -119,6 +121,34 @@ export class JobCategoryComponent implements OnInit {
       this.isLoading = false;
       this.cdr.detectChanges(); // Force change detection
     }
+  }
+
+  loadJobCareers() {
+    try {
+      const careersRef = ref(db, 'jobCareers');
+      onValue(careersRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          this.jobCareers = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }));
+          // By default, filter by the first type or show none
+          if (this.selectedCareerType) {
+            this.filterCareersByType(this.selectedCareerType);
+          }
+        }
+        this.cdr.detectChanges();
+      });
+    } catch (error) {
+      console.error('Error loading careers:', error);
+    }
+  }
+
+  filterCareersByType(type: string) {
+    this.selectedCareerType = type;
+    this.filteredCareers = this.jobCareers.filter(career => career.jobType === type);
+    this.cdr.detectChanges();
   }
 
   formatDate(dateString: string): string {

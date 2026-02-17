@@ -10,7 +10,7 @@
     <div class="container-fluid px-0">
       <div class="row g-0">
         <!-- Left Column -->
-        <div class="col-lg-8 col-md-8 col-12">
+        <div class="col-12 col-md-9 pe-md-1">
           <!-- Header -->
           <div class="jc-header">
             <div class="jc-header-left">
@@ -58,7 +58,7 @@
           </div>
 
           <!-- Official Company Careers (Quick Filter Section) -->
-          <div class="occ-section mt-3 mb-4">
+          <div class="occ-section ">
             <h6 class="occ-title">
               <i class="bi bi-building-check text-primary"></i> Official Company Careers
             </h6>
@@ -130,19 +130,65 @@
         </div>
 
         <!-- Right Column - Filters -->
-        <div class="col-lg-4 col-md-4 col-12">
+        <div class="col-12 col-md-3">
           <div class="jc-filters">
-            <h6 class="jc-filter-title">
-              <i class="bi bi-funnel"></i>
-              <span>Quick Filters</span>
-            </h6>
-            <hr class="jc-filter-divider">
-            <div class="jc-filter-group">
-              <label class="jc-filter-option" *ngFor="let company of getUniqueCompanies()">
-                <input type="checkbox" [value]="company" (change)="filterByCompany($event)">
-                <span>{{ company }}</span>
-                <span class="jc-filter-count">({{ getJobCountByCompany(company) }})</span>
-              </label>
+            <div class="d-flex justify-content-between align-items-center mb-2 px-1">
+              <h6 class="jc-filter-title mb-0 p-0" style="font-size: 1.1rem;">
+                <i class="bi bi-funnel"></i>
+                <span>Quick Filters</span>
+              </h6>
+              <button class="btn btn-sm btn-link text-danger p-0 text-decoration-none" style="font-size: 0.9rem;" (click)="clearAllFilters()" *ngIf="hasActiveFilters()">
+                Clear All
+              </button>
+            </div>
+            <hr class="jc-filter-divider my-1">
+            
+            <!-- Company Filter -->
+            <div class="jc-filter-group mb-2">
+              <p class="jc-filter-label fw-bold mb-1" style="font-size: 0.95rem;">Company</p>
+              <div class="jc-filter-options-scroll">
+                <label class="jc-filter-option" *ngFor="let company of getUniqueCompanies()" [class.active]="selectedCompanies.includes(company)">
+                  <input type="checkbox" [value]="company" [checked]="selectedCompanies.includes(company)" (change)="filterByCompany($event)">
+                  <span class="jc-filter-text">{{ company }}</span>
+                  <span class="jc-filter-count">({{ getJobCountByCompany(company) }})</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="jc-filter-group mb-2">
+              <p class="jc-filter-label fw-bold mb-1" style="font-size: 0.95rem;">Category</p>
+              <div class="jc-filter-options-scroll">
+                <label class="jc-filter-option" *ngFor="let cat of getUniqueCategories()" [class.active]="selectedCategories.includes(cat)">
+                  <input type="checkbox" [value]="cat" [checked]="selectedCategories.includes(cat)" (change)="filterByCategory($event)">
+                  <span class="jc-filter-text">{{ cat }}</span>
+                  <span class="jc-filter-count">({{ getJobCountByCategory(cat) }})</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Experience Filter -->
+            <div class="jc-filter-group mb-2">
+              <p class="jc-filter-label fw-bold mb-1" style="font-size: 0.95rem;">Experience</p>
+              <div class="jc-filter-options-scroll">
+                <label class="jc-filter-option" *ngFor="let exp of getUniqueExperienceLevels()" [class.active]="selectedExperienceLevels.includes(exp)">
+                  <input type="checkbox" [value]="exp" [checked]="selectedExperienceLevels.includes(exp)" (change)="filterByExperienceLevel($event)">
+                  <span class="jc-filter-text">{{ exp }}</span>
+                  <span class="jc-filter-count">({{ getJobCountByExperience(exp) }})</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Salary Filter -->
+            <div class="jc-filter-group mb-2" *ngIf="getUniqueSalaries().length > 0">
+              <p class="jc-filter-label fw-bold mb-1" style="font-size: 0.95rem;">Salary</p>
+              <div class="jc-filter-options-scroll">
+                <label class="jc-filter-option" *ngFor="let sal of getUniqueSalaries()" [class.active]="selectedSalaries.includes(sal)">
+                  <input type="checkbox" [value]="sal" [checked]="selectedSalaries.includes(sal)" (change)="filterBySalary($event)">
+                  <span class="jc-filter-text">{{ sal }}</span>
+                  <span class="jc-filter-count">({{ getJobCountBySalary(sal) }})</span>
+                </label>
+              </div>
             </div>
           </div>
         </div>

@@ -26,6 +26,9 @@ export class JobCategoryComponent implements OnInit {
   isLoading: boolean = true;
   selectedJobTypes: string[] = [];
   selectedCompanies: string[] = [];
+  selectedCategories: string[] = [];
+  selectedExperienceLevels: string[] = [];
+  selectedSalaries: string[] = [];
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'all-latest-jobs': { title: 'All Latest Jobs', category: 'All Latest Jobs' },
@@ -307,19 +310,84 @@ export class JobCategoryComponent implements OnInit {
 
   // Filter methods for quick filters
   getUniqueCompanies(): string[] {
-    // Get companies only from currently filtered jobs (based on category)
     const companies = [...new Set(this.filteredJobs.map(job => job.company))];
-    return companies.filter(company => company).slice(0, 10); // Show first 10 companies
+    return companies.filter(company => company).slice(0, 20);
   }
 
-  getUniqueJobTypes(): string[] {
-    const jobTypes = [...new Set(this.jobs.map(job => job.category))];
-    return jobTypes.filter(type => type); // Remove empty/undefined values
+  getUniqueCategories(): string[] {
+    const cats = [...new Set(this.filteredJobs.map(job => job.category))];
+    return cats.filter((c): c is string => !!c).sort();
+  }
+
+  getUniqueExperienceLevels(): string[] {
+    const exps = [...new Set(this.filteredJobs.map(job => job.experienceLevel))];
+    return exps.filter((e): e is string => !!e).sort();
+  }
+
+  getUniqueSalaries(): string[] {
+    const sals = [...new Set(this.filteredJobs.map(job => job.salary))];
+    return sals.filter((s): s is string => !!s).sort();
   }
 
   getJobCountByCompany(company: string): number {
-    // Count jobs only from currently filtered jobs (based on category)
     return this.filteredJobs.filter(job => job.company === company).length;
+  }
+
+  getJobCountByCategory(category: string): number {
+    return this.filteredJobs.filter(job => job.category === category).length;
+  }
+
+  getJobCountByExperience(exp: string): number {
+    return this.filteredJobs.filter(job => job.experienceLevel === exp).length;
+  }
+
+  getJobCountBySalary(sal: string): number {
+    return this.filteredJobs.filter(job => job.salary === sal).length;
+  }
+
+  hasActiveFilters(): boolean {
+    return this.selectedCompanies.length > 0 || 
+           this.selectedCategories.length > 0 || 
+           this.selectedExperienceLevels.length > 0 ||
+           this.selectedSalaries.length > 0;
+  }
+
+  clearAllFilters() {
+    this.selectedCompanies = [];
+    this.selectedCategories = [];
+    this.selectedExperienceLevels = [];
+    this.selectedSalaries = [];
+    this.applyFilters();
+  }
+
+  filterByCategory(event: any) {
+    const cat = event.target.value;
+    if (event.target.checked) {
+      this.selectedCategories.push(cat);
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(c => c !== cat);
+    }
+    this.applyFilters();
+  }
+
+  filterByExperienceLevel(event: any) {
+    const exp = event.target.value;
+    if (event.target.checked) {
+      this.selectedExperienceLevels.push(exp);
+    } else {
+      this.selectedExperienceLevels = this.selectedExperienceLevels.filter(e => e !== exp);
+    }
+    this.applyFilters();
+  }
+
+  filterBySalary(event: any) {
+    const sal = event.target.value;
+    if (event.target.checked) {
+      this.selectedSalaries.push(sal);
+    } else {
+      this.selectedSalaries = this.selectedSalaries.filter(s => s !== sal);
+    }
+    this.applyFilters();
   }
 
   getJobCountByType(jobType: string): number {
@@ -381,6 +449,21 @@ export class JobCategoryComponent implements OnInit {
     // Apply company filters
     if (this.selectedCompanies.length > 0) {
       filtered = filtered.filter(job => this.selectedCompanies.includes(job.company));
+    }
+
+    // Apply category filters
+    if (this.selectedCategories.length > 0) {
+      filtered = filtered.filter(job => this.selectedCategories.includes(job.category));
+    }
+
+    // Apply experience level filters
+    if (this.selectedExperienceLevels.length > 0) {
+      filtered = filtered.filter(job => job.experienceLevel && this.selectedExperienceLevels.includes(job.experienceLevel));
+    }
+
+    // Apply salary filters
+    if (this.selectedSalaries.length > 0) {
+      filtered = filtered.filter(job => job.salary && this.selectedSalaries.includes(job.salary));
     }
 
     this.filteredJobs = filtered;

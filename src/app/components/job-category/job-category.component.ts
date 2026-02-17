@@ -311,7 +311,7 @@ export class JobCategoryComponent implements OnInit {
   // Filter methods for quick filters
   getUniqueCompanies(): string[] {
     const companies = [...new Set(this.filteredJobs.map(job => job.company))];
-    return companies.filter(company => company).slice(0, 20);
+    return companies.filter(company => company).sort().slice(0, 100);
   }
 
   getUniqueCategories(): string[] {
@@ -335,6 +335,23 @@ export class JobCategoryComponent implements OnInit {
 
   getJobCountByCategory(category: string): number {
     return this.filteredJobs.filter(job => job.category === category).length;
+  }
+
+  getTotalJobCountByCategory(category: string): number {
+    if (category === 'All') return this.jobs.length;
+    if (category === 'Banking Jobs') {
+      return this.jobs.filter(job => 
+        job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
+      ).length;
+    }
+    if (category === 'All Private Jobs') {
+       return this.jobs.filter(job => 
+        job.category === 'All Private Jobs' || 
+        job.category === 'Walk-in Drives' ||
+        (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
+      ).length;
+    }
+    return this.jobs.filter(job => job.category === category).length;
   }
 
   getJobCountByExperience(exp: string): number {
@@ -468,5 +485,8 @@ export class JobCategoryComponent implements OnInit {
 
     this.filteredJobs = filtered;
     this.cdr.detectChanges();
+    
+    // Scroll to top when filter is applied
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

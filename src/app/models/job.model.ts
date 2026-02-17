@@ -34,3 +34,28 @@ export const DEFAULT_JOB_CATEGORIES = [
 ] as const;
 
 export type JobCategory = typeof DEFAULT_JOB_CATEGORIES[number];
+
+export interface JobCareer {
+  id: string;
+  company: string;
+  jobType: string;
+  careerOfficeUrl: string;
+  createdDate: string;
+}
+
+export interface News {
+  id: string;
+  title: string;
+  newsType: string;
+  description: string;
+  createdDate: string;
+}
+
+export const CAREER_JOB_TYPES = [
+  'Government',
+  'Central Government',
+  'Private Job',
+  'MNC Company'
+] as const;
+
+export type CareerJobType = typeof CAREER_JOB_TYPES[number];

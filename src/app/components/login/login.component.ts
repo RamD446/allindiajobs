@@ -5,7 +5,7 @@ import { QuillModule } from 'ngx-quill';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserLocalPersistence, setPersistence } from 'firebase/auth';
 import { ref, push, get, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
-import { Job, DEFAULT_JOB_CATEGORIES } from '../../models/job.model';
+import { Job, DEFAULT_JOB_CATEGORIES, JobCareer, CAREER_JOB_TYPES, News } from '../../models/job.model';
 
 @Component({
   selector: 'app-login',
@@ -25,19 +25,19 @@ export class LoginComponent implements OnInit {
 
   // Job management
   jobs: Job[] = [];
+  jobCareers: JobCareer[] = [];
+  newsList: News[] = [];
+  activeTab: 'jobs' | 'careers' | 'news' = 'jobs';
   showJobForm: boolean = false;
+  showCareerForm: boolean = false;
+  showNewsForm: boolean = false;
   editingJob: Job | null = null;
+  editingCareer: JobCareer | null = null;
+  editingNews: News | null = null;
   isSaving: boolean = false;
   expandedJobIds: Set<string> = new Set();
-  
-  // Visitor Tracking
-  visitorStats: any = {
-    daily: 0,
-    monthly: 0,
-    total: 0,
-    apiCalls: 0,
-    jobClicks: 0
-  };
+  expandedCareerIds: Set<string> = new Set();
+  expandedNewsIds: Set<string> = new Set();
 
   // Quill editor configuration
   quillModules = {
@@ -67,6 +67,25 @@ export class LoginComponent implements OnInit {
   };
 
   jobCategories: string[] = [];
+  careerJobTypes: string[] = [...CAREER_JOB_TYPES];
+
+  // Career form
+  careerForm: JobCareer = {
+    id: '',
+    company: '',
+    jobType: this.careerJobTypes[0],
+    careerOfficeUrl: '',
+    createdDate: new Date().toISOString().slice(0, 16)
+  };
+
+  // News form
+  newsForm: News = {
+    id: '',
+    title: '',
+    newsType: 'Breaking News',
+    description: '',
+    createdDate: new Date().toISOString().slice(0, 16)
+  };
 
   constructor(private cdr: ChangeDetectorRef) {
     this.loadJobMetadata();
@@ -98,9 +117,10 @@ export class LoginComponent implements OnInit {
         this.currentUser = user;
         this.loginError = '';
         console.log('User is logged in:', user.email);
-        // Load jobs and stats only then set loading to false
+        // Load jobs, careers and news only then set loading to false
         this.loadJobs();
-        this.loadVisitorStats();
+        this.loadJobCareers();
+        this.loadNews();
       } else {
         this.isLoggedIn = false;
         this.currentUser = null;
@@ -112,25 +132,59 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private loadVisitorStats() {
-    const now = new Date();
-    const day = now.toISOString().split('T')[0];
-    const month = day.substring(0, 7);
-
-    const statsRef = ref(db, 'stats');
-    onValue(statsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        this.visitorStats = {
-          daily: data.daily?.[day] || 0,
-          monthly: data.monthly?.[month] || 0,
-          total: data.total || 0,
-          apiCalls: data.apiCalls || 0,
-          jobClicks: data.jobClicks || 0
-        };
+  private loadJobCareers() {
+    try {
+      const careersRef = ref(db, 'jobCareers');
+      onValue(careersRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          this.jobCareers = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }));
+          // Sort careers by creation date - newest first
+          this.jobCareers.sort((a, b) => {
+            const dateA = new Date(a.createdDate || '1970-01-01').getTime();
+            const dateB = new Date(b.createdDate || '1970-01-01').getTime();
+            return dateB - dateA;
+          });
+        } else {
+          this.jobCareers = [];
+        }
         this.cdr.detectChanges();
-      }
-    });
+      }, (error) => {
+        console.error('Error loading job careers:', error);
+      });
+    } catch (error) {
+      console.error('Error loading job careers:', error);
+    }
+  }
+
+  private loadNews() {
+    try {
+      const newsRef = ref(db, 'news');
+      onValue(newsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          this.newsList = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }));
+          this.newsList.sort((a, b) => {
+            const dateA = new Date(a.createdDate || '1970-01-01').getTime();
+            const dateB = new Date(b.createdDate || '1970-01-01').getTime();
+            return dateB - dateA;
+          });
+        } else {
+          this.newsList = [];
+        }
+        this.cdr.detectChanges();
+      }, (error) => {
+        console.error('Error loading news:', error);
+      });
+    } catch (error) {
+      console.error('Error loading news:', error);
+    }
   }
 
   // Firebase Authentication Methods
@@ -221,10 +275,46 @@ export class LoginComponent implements OnInit {
     return this.expandedJobIds.has(jobId);
   }
 
+  toggleCareerExpand(careerId: string) {
+    if (this.expandedCareerIds.has(careerId)) {
+      this.expandedCareerIds.delete(careerId);
+    } else {
+      this.expandedCareerIds.add(careerId);
+    }
+  }
+
+  isCareerExpanded(careerId: string): boolean {
+    return this.expandedCareerIds.has(careerId);
+  }
+
+  toggleNewsExpand(newsId: string) {
+    if (this.expandedNewsIds.has(newsId)) {
+      this.expandedNewsIds.delete(newsId);
+    } else {
+      this.expandedNewsIds.add(newsId);
+    }
+  }
+
+  isNewsExpanded(newsId: string): boolean {
+    return this.expandedNewsIds.has(newsId);
+  }
+
   showCreateForm() {
     this.showJobForm = true;
     this.editingJob = null;
     this.resetJobForm();
+  }
+
+  showCareerCreateForm() {
+    this.showCareerForm = true;
+    this.editingCareer = null;
+    this.resetCareerForm();
+  }
+
+  showNewsCreateForm() {
+    this.showNewsForm = true;
+    this.editingNews = null;
+    this.resetNewsForm();
   }
 
   editJob(job: Job) {
@@ -244,6 +334,38 @@ export class LoginComponent implements OnInit {
     };
   }
 
+  editCareer(career: JobCareer) {
+    this.showCareerForm = true;
+    this.editingCareer = career;
+    
+    let formattedDate = '';
+    if (career.createdDate) {
+      const d = new Date(career.createdDate);
+      formattedDate = d.toISOString().slice(0, 16);
+    }
+    
+    this.careerForm = { 
+      ...career,
+      createdDate: formattedDate || new Date().toISOString().slice(0, 16)
+    };
+  }
+
+  editNews(news: News) {
+    this.showNewsForm = true;
+    this.editingNews = news;
+    
+    let formattedDate = '';
+    if (news.createdDate) {
+      const d = new Date(news.createdDate);
+      formattedDate = d.toISOString().slice(0, 16);
+    }
+    
+    this.newsForm = { 
+      ...news,
+      createdDate: formattedDate || new Date().toISOString().slice(0, 16)
+    };
+  }
+
   async deleteJob(jobId: string) {
     if (confirm('Are you sure you want to delete this job?')) {
       try {
@@ -252,6 +374,30 @@ export class LoginComponent implements OnInit {
         console.log('Job deleted successfully');
       } catch (error) {
         console.error('Error deleting job:', error);
+      }
+    }
+  }
+
+  async deleteCareer(careerId: string) {
+    if (confirm('Are you sure you want to delete this career?')) {
+      try {
+        const careerRef = ref(db, `jobCareers/${careerId}`);
+        await remove(careerRef);
+        console.log('Career deleted successfully');
+      } catch (error) {
+        console.error('Error deleting career:', error);
+      }
+    }
+  }
+
+  async deleteNews(newsId: string) {
+    if (confirm('Are you sure you want to delete this news item?')) {
+      try {
+        const newsRef = ref(db, `news/${newsId}`);
+        await remove(newsRef);
+        console.log('News deleted successfully');
+      } catch (error) {
+        console.error('Error deleting news:', error);
       }
     }
   }
@@ -295,11 +441,91 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  async saveCareer() {
+    if (this.isSaving) return;
+    
+    try {
+      this.isSaving = true;
+      this.cdr.detectChanges();
+      
+      if (this.editingCareer) {
+        const careerRef = ref(db, `jobCareers/${this.editingCareer.id}`);
+        const { id, ...careerData } = this.careerForm;
+        await update(careerRef, careerData);
+        console.log('Career updated successfully');
+      } else {
+        const careersRef = ref(db, 'jobCareers');
+        const { id, ...careerData } = this.careerForm;
+        const newCareerData = {
+          ...careerData,
+          createdDate: new Date().toISOString()
+        };
+        await push(careersRef, newCareerData);
+        console.log('Career created successfully');
+      }
+      
+      this.isSaving = false;
+      this.cdr.detectChanges();
+      this.cancelCareerForm();
+    } catch (error) {
+      console.error('Error saving career:', error);
+      this.isSaving = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  async saveNews() {
+    if (this.isSaving) return;
+    
+    try {
+      this.isSaving = true;
+      this.cdr.detectChanges();
+      
+      if (this.editingNews) {
+        const newsRef = ref(db, `news/${this.editingNews.id}`);
+        const { id, ...newsData } = this.newsForm;
+        await update(newsRef, newsData);
+        console.log('News updated successfully');
+      } else {
+        const newsRef = ref(db, 'news');
+        const { id, ...newsData } = this.newsForm;
+        const newNewsData = {
+          ...newsData,
+          createdDate: new Date().toISOString()
+        };
+        await push(newsRef, newNewsData);
+        console.log('News created successfully');
+      }
+      
+      this.isSaving = false;
+      this.cdr.detectChanges();
+      this.cancelNewsForm();
+    } catch (error) {
+      console.error('Error saving news:', error);
+      this.isSaving = false;
+      this.cdr.detectChanges();
+    }
+  }
+
   cancelJobForm() {
     this.showJobForm = false;
     this.editingJob = null;
     this.isSaving = false;
     this.resetJobForm();
+  }
+
+  cancelCareerForm() {
+    this.showCareerForm = false;
+    this.editingCareer = null;
+    this.isSaving = false;
+    this.resetCareerForm();
+  }
+
+  cancelNewsForm() {
+    this.showNewsForm = false;
+    this.editingNews = null;
+    this.isSaving = false;
+    this.resetNewsForm();
   }
 
   resetJobForm() {
@@ -313,6 +539,26 @@ export class LoginComponent implements OnInit {
       walkInStartDate: '',
       walkInEndDate: '',
       lastDateToApply: ''
+    };
+  }
+
+  resetCareerForm() {
+    this.careerForm = {
+      id: '',
+      company: '',
+      jobType: this.careerJobTypes[0],
+      careerOfficeUrl: '',
+      createdDate: new Date().toISOString().slice(0, 16)
+    };
+  }
+
+  resetNewsForm() {
+    this.newsForm = {
+      id: '',
+      title: '',
+      newsType: 'Breaking News',
+      description: '',
+      createdDate: new Date().toISOString().slice(0, 16)
     };
   }
 

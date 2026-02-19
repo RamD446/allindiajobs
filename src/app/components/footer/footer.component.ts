@@ -23,8 +23,8 @@ export class FooterComponent {
   ];
 
   careerTypes = [
-    { name: 'MNC Company', type: 'MNC Company' },
-    { name: 'Private Job', type: 'Private Job' },
+    { name: 'IT Services MNC', type: 'IT Services MNC' },
+    { name: 'Global Tech', type: 'Global Tech' },
     { name: 'Government', type: 'Government' },
     { name: 'Central Govt', type: 'Central Government' }
   ];

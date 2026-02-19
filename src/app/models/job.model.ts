@@ -55,8 +55,8 @@ export interface News {
 export const CAREER_JOB_TYPES = [
   'Government',
   'Central Government',
-  'Private Job',
-  'MNC Company'
+  'Global Tech',
+  'IT Services MNC'
 ] as const;
 
 export type CareerJobType = typeof CAREER_JOB_TYPES[number];

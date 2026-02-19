@@ -42,6 +42,10 @@
                 <i class="bi bi-laptop-fill"></i>
                 <span>IT Jobs ({{ getTotalJobCountByCategory('IT Jobs') }})</span>
               </button>
+              <button class="jc-pill jc-pill-fresher" routerLink="/fresher-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e8f5e9; color: #2e7d32;">
+                <i class="bi bi-mortarboard-fill"></i>
+                <span>Fresher Jobs ({{ getTotalJobCountByCategory('Fresher Jobs') }})</span>
+              </button>
               <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-building-fill"></i>
                 <span>Govt Jobs ({{ getTotalJobCountByCategory('Government Jobs') }})</span>

@@ -60,9 +60,8 @@ export class LoginComponent implements OnInit {
     company: '',
     category: '',
     description: '',
-    createdDate: new Date().toISOString().slice(0, 16),
+    createdDate: '', // Will be set in constructor or reset
     experience: 'Fresher',
-    createdBy: '',
     walkInStartDate: '',
     walkInEndDate: '',
     lastDateToApply: ''
@@ -320,20 +319,25 @@ export class LoginComponent implements OnInit {
     this.resetNewsForm();
   }
 
+  private toLocalIsoString(date: Date): string {
+    const tzOffset = date.getTimezoneOffset() * 60000;
+    const localISODate = new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+    return localISODate;
+  }
+
   editJob(job: Job) {
     this.showJobForm = true;
     this.editingJob = job;
     
-    // Format date for datetime-local input (YYYY-MM-DDTHH:mm)
+    // Format date for datetime-local input (YYYY-MM-DDTHH:mm) using local time
     let formattedDate = '';
     if (job.createdDate) {
-      const d = new Date(job.createdDate);
-      formattedDate = d.toISOString().slice(0, 16);
+      formattedDate = this.toLocalIsoString(new Date(job.createdDate));
     }
     
     this.jobForm = { 
       ...job,
-      createdDate: formattedDate || new Date().toISOString().slice(0, 16)
+      createdDate: formattedDate || this.toLocalIsoString(new Date())
     };
   }
 
@@ -425,8 +429,7 @@ export class LoginComponent implements OnInit {
         const { id, ...jobData } = this.jobForm;
         const newJobData = {
           ...jobData,
-          createdDate: new Date().toISOString(),
-          createdBy: this.currentUser?.email || 'Admin'
+          createdDate: jobData.createdDate || new Date().toISOString()
         };
         await push(jobsRef, newJobData);
         console.log('Job created successfully');
@@ -539,9 +542,8 @@ export class LoginComponent implements OnInit {
       company: '',
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       description: '',
-      createdDate: new Date().toISOString().slice(0, 16),
+      createdDate: this.toLocalIsoString(new Date()),
       experience: this.experienceOptions[0],
-      createdBy: this.currentUser?.email || '',
       walkInStartDate: '',
       walkInEndDate: '',
       lastDateToApply: ''

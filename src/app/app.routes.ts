@@ -12,6 +12,7 @@ export const routes: Routes = [
   { path: 'walk-in-drives', component: JobCategoryComponent },
   { path: 'banking-jobs', component: JobCategoryComponent },
   { path: 'it-jobs', component: JobCategoryComponent },
+  { path: 'fresher-jobs', component: JobCategoryComponent },
   { path: 'about-us', component: InfoPageComponent },
   { path: 'contact-us', component: InfoPageComponent },
   { path: 'privacy-policy', component: InfoPageComponent },

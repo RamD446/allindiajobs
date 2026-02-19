@@ -13,7 +13,7 @@ import { Job, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
   styleUrl: './job-category.component.css'
 })
 export class JobCategoryComponent implements OnInit {
-    jobsPerPage: number = 100;
+    jobsPerPage: number = 30;
     currentPage: number = 1;
   jobs: Job[] = [];
   filteredJobs: Job[] = [];
@@ -36,7 +36,8 @@ export class JobCategoryComponent implements OnInit {
     'private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' },
     'walk-in-drives': { title: 'Walk-in Drives', category: 'Walk-in Drives' },
     'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' },
-    'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' }
+    'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' },
+    'fresher-jobs': { title: 'Fresher Jobs', category: 'Fresher Jobs' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -62,6 +63,7 @@ export class JobCategoryComponent implements OnInit {
 
   loadJobs(category: string) {
     this.isLoading = true;
+    this.currentPage = 1; // Reset to first page when category changes or data is reloaded
     
     // Track API call
     try {
@@ -100,6 +102,8 @@ export class JobCategoryComponent implements OnInit {
             this.filteredJobs = this.jobs.filter(job => 
               job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
             );
+          } else if (category === 'Fresher Jobs') {
+            this.filteredJobs = this.jobs.filter(job => job.experience === 'Fresher');
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
           }
@@ -351,6 +355,9 @@ export class JobCategoryComponent implements OnInit {
         (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
       ).length;
     }
+    if (category === 'Fresher Jobs') {
+      return this.jobs.filter(job => job.experience === 'Fresher').length;
+    }
     return this.jobs.filter(job => job.category === category).length;
   }
 
@@ -438,6 +445,7 @@ export class JobCategoryComponent implements OnInit {
   }
 
   applyFilters() {
+    this.currentPage = 1; // Reset to first page when filters are applied
     let filtered = this.jobs;
 
     // Apply category filter

@@ -8,7 +8,6 @@ export interface Job {
   contactInfo?: string;
   createdDate: string;
   experience?: string;
-  createdBy?: string;
   // Optional additional fields
   companyDescription?: string;
   companySize?: string;

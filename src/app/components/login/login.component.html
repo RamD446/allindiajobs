@@ -249,11 +249,6 @@
                 <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" required>
               </div>
 
-              <div class="col-md-4 mb-3" *ngIf="editingJob">
-                <label class="form-label">Created By</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.createdBy" name="createdBy" readonly>
-              </div>
-
               <!-- Conditional Fields - also responsive -->
               <ng-container *ngIf="jobForm.category === 'Walk-in Drives'">
                 <div class="col-md-4 mb-3">

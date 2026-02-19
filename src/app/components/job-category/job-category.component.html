@@ -34,9 +34,14 @@
           <!-- Category Pills Card -->
           <div class="jc-top-card mb-1">
             <div class="jc-pills-row">
+            
               <button class="jc-pill jc-pill-all" routerLink="/all-latest-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-grid-3x3-gap-fill"></i>
                 <span>All Jobs ({{ getTotalJobCountByCategory('All') }})</span>
+              </button>
+                 <button *ngIf="getTodayJobsCount() > 0" class="jc-pill jc-pill-today" routerLink="/today-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
+                <i class="bi bi-clock-history"></i>
+                <span>Today Posted ({{ getTodayJobsCount() }})</span>
               </button>
               <button class="jc-pill jc-pill-it" routerLink="/it-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-laptop-fill"></i>
@@ -46,6 +51,7 @@
                 <i class="bi bi-mortarboard-fill"></i>
                 <span>Fresher Jobs ({{ getTotalJobCountByCategory('Fresher Jobs') }})</span>
               </button>
+             
               <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-building-fill"></i>
                 <span>Govt Jobs ({{ getTotalJobCountByCategory('Government Jobs') }})</span>

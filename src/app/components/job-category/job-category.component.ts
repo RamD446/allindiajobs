@@ -37,7 +37,8 @@ export class JobCategoryComponent implements OnInit {
     'walk-in-drives': { title: 'Walk-in Drives', category: 'Walk-in Drives' },
     'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' },
     'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' },
-    'fresher-jobs': { title: 'Fresher Jobs', category: 'Fresher Jobs' }
+    'fresher-jobs': { title: 'Fresher Jobs', category: 'Fresher Jobs' },
+    'today-jobs': { title: 'Today Posted Jobs', category: 'Today Posted Jobs' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -104,6 +105,8 @@ export class JobCategoryComponent implements OnInit {
             );
           } else if (category === 'Fresher Jobs') {
             this.filteredJobs = this.jobs.filter(job => job.experience === 'Fresher');
+          } else if (category === 'Today Posted Jobs') {
+            this.filteredJobs = this.jobs.filter(job => this.isToday(job.createdDate));
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
           }
@@ -161,6 +164,19 @@ export class JobCategoryComponent implements OnInit {
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB');
+  }
+
+  isToday(dateString: string): boolean {
+    if (!dateString) return false;
+    const today = new Date();
+    const d = new Date(dateString);
+    return d.getDate() === today.getDate() &&
+      d.getMonth() === today.getMonth() &&
+      d.getFullYear() === today.getFullYear();
+  }
+
+  getTodayJobsCount(): number {
+    return this.jobs.filter(job => this.isToday(job.createdDate)).length;
   }
 
   getTimeAgo(dateString: string): string {
@@ -357,6 +373,9 @@ export class JobCategoryComponent implements OnInit {
     }
     if (category === 'Fresher Jobs') {
       return this.jobs.filter(job => job.experience === 'Fresher').length;
+    }
+    if (category === 'Today Posted Jobs') {
+      return this.getTodayJobsCount();
     }
     return this.jobs.filter(job => job.category === category).length;
   }

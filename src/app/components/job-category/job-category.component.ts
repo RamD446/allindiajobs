@@ -38,7 +38,9 @@ export class JobCategoryComponent implements OnInit {
     'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' },
     'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' },
     'fresher-jobs': { title: 'Fresher Jobs', category: 'Fresher Jobs' },
-    'today-jobs': { title: 'Today Posted Jobs', category: 'Today Posted Jobs' }
+    'today-jobs': { title: 'Today Posted Jobs', category: 'Today Posted Jobs' },
+    'today-walkins': { title: 'Today Walk-in Drives', category: 'Today Walk-in Drives' },
+    'today-expired-gov-jobs': { title: 'Today Expired Gov Jobs', category: 'Today Expired Gov Jobs' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -107,6 +109,10 @@ export class JobCategoryComponent implements OnInit {
             this.filteredJobs = this.jobs.filter(job => job.experience === 'Fresher');
           } else if (category === 'Today Posted Jobs') {
             this.filteredJobs = this.jobs.filter(job => this.isToday(job.createdDate));
+          } else if (category === 'Today Walk-in Drives') {
+            this.filteredJobs = this.jobs.filter(job => job.category === 'Walk-in Drives' && this.isToday(job.createdDate));
+          } else if (category === 'Today Expired Gov Jobs') {
+            this.filteredJobs = this.jobs.filter(job => job.category === 'Government Jobs' && job.lastDateToApply && this.isToday(job.lastDateToApply));
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
           }
@@ -168,15 +174,26 @@ export class JobCategoryComponent implements OnInit {
 
   isToday(dateString: string): boolean {
     if (!dateString) return false;
+    
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     const d = new Date(dateString);
-    return d.getDate() === today.getDate() &&
-      d.getMonth() === today.getMonth() &&
-      d.getFullYear() === today.getFullYear();
+    d.setHours(0, 0, 0, 0);
+    
+    return d.getTime() === today.getTime();
   }
 
   getTodayJobsCount(): number {
     return this.jobs.filter(job => this.isToday(job.createdDate)).length;
+  }
+
+  getTodayWalkinsCount(): number {
+    return this.jobs.filter(job => job.category === 'Walk-in Drives' && this.isToday(job.createdDate)).length;
+  }
+
+  getTodayExpiredGovJobsCount(): number {
+    return this.jobs.filter(job => job.category === 'Government Jobs' && job.lastDateToApply && this.isToday(job.lastDateToApply)).length;
   }
 
   getTimeAgo(dateString: string): string {
@@ -376,6 +393,12 @@ export class JobCategoryComponent implements OnInit {
     }
     if (category === 'Today Posted Jobs') {
       return this.getTodayJobsCount();
+    }
+    if (category === 'Today Walk-in Drives') {
+      return this.getTodayWalkinsCount();
+    }
+    if (category === 'Today Expired Gov Jobs') {
+      return this.getTodayExpiredGovJobsCount();
     }
     return this.jobs.filter(job => job.category === category).length;
   }

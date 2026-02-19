@@ -198,7 +198,11 @@
 }
 
 .jc-pill-all i { color: #6366f1; }
+.jc-pill-today i { color: #e65100; }
+.jc-pill-today-walkin i { color: #c2185b; }
+.jc-pill-today-expired i { color: #b71c1c; }
 .jc-pill-it i { color: #0ea5e9; }
+.jc-pill-fresher i { color: #2e7d32; }
 .jc-pill-gov i { color: #f59e0b; }
 .jc-pill-prv i { color: #10b981; }
 .jc-pill-walk i { color: #ec4899; }

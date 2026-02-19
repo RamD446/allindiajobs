@@ -61,6 +61,8 @@ export class LoginComponent implements OnInit {
     category: '',
     description: '',
     createdDate: new Date().toISOString().slice(0, 16),
+    experience: 'Fresher',
+    createdBy: '',
     walkInStartDate: '',
     walkInEndDate: '',
     lastDateToApply: ''
@@ -68,6 +70,7 @@ export class LoginComponent implements OnInit {
 
   jobCategories: string[] = [];
   careerJobTypes: string[] = [...CAREER_JOB_TYPES];
+  experienceOptions: string[] = ['Fresher', 'Experience'];
 
   // Career form
   careerForm: JobCareer = {
@@ -422,7 +425,8 @@ export class LoginComponent implements OnInit {
         const { id, ...jobData } = this.jobForm;
         const newJobData = {
           ...jobData,
-          createdDate: new Date().toISOString()
+          createdDate: new Date().toISOString(),
+          createdBy: this.currentUser?.email || 'Admin'
         };
         await push(jobsRef, newJobData);
         console.log('Job created successfully');
@@ -536,6 +540,8 @@ export class LoginComponent implements OnInit {
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       description: '',
       createdDate: new Date().toISOString().slice(0, 16),
+      experience: this.experienceOptions[0],
+      createdBy: this.currentUser?.email || '',
       walkInStartDate: '',
       walkInEndDate: '',
       lastDateToApply: ''

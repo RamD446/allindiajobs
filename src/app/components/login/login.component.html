@@ -237,9 +237,21 @@
 
               
 
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs'">
+                <label class="form-label">Experience *</label>
+                <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
+                  <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>
+                </select>
+              </div>
+
               <div class="col-md-4 mb-3" *ngIf="editingJob">
                 <label class="form-label">Created Date & Time *</label>
                 <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" required>
+              </div>
+
+              <div class="col-md-4 mb-3" *ngIf="editingJob">
+                <label class="form-label">Created By</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.createdBy" name="createdBy" readonly>
               </div>
 
               <!-- Conditional Fields - also responsive -->

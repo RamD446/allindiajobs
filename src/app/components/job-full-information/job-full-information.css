@@ -148,6 +148,28 @@
   align-items: center;
 }
 
+.share-group {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.logo-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 2px;
+  background: #f0f0f0;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+}
+
+.badge-logo {
+  width: 14px;
+  height: 8px;
+  object-fit: contain;
+}
+
 .qs-btn {
   width: 24px;
   height: 24px;

@@ -37,7 +37,7 @@
             
               <button class="jc-pill jc-pill-all" routerLink="/all-latest-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-grid-3x3-gap-fill"></i>
-                <span>All Jobs ({{ getTotalJobCountByCategory('All') }})</span>
+                <span>All Jobs</span>
               </button>
                  <button *ngIf="getTodayJobsCount() > 0" class="jc-pill jc-pill-today" routerLink="/today-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
                 <i class="bi bi-clock-history"></i>
@@ -45,36 +45,36 @@
               </button>
               <button *ngIf="getTodayWalkinsCount() > 0" class="jc-pill jc-pill-today-walkin" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fce4ec; color: #c2185b;">
                 <i class="bi bi-person-walking"></i>
-                <span>Today Walk-ins ({{ getTodayWalkinsCount() }})</span>
+                <span>Today Walk-ins</span>
               </button>
               <button *ngIf="getTodayExpiredGovJobsCount() > 0" class="jc-pill jc-pill-today-expired" routerLink="/today-expired-gov-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #ffebee; color: #b71c1c;">
                 <i class="bi bi-calendar-x-fill"></i>
-                <span>Today Expired Gov Jobs ({{ getTodayExpiredGovJobsCount() }})</span>
+                <span>Today Expired Gov Jobs</span>
               </button>
               <button class="jc-pill jc-pill-it" routerLink="/it-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-laptop-fill"></i>
-                <span>IT Jobs ({{ getTotalJobCountByCategory('IT Jobs') }})</span>
+                <span>IT Jobs</span>
               </button>
               <button class="jc-pill jc-pill-fresher" routerLink="/fresher-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e8f5e9; color: #2e7d32;">
                 <i class="bi bi-mortarboard-fill"></i>
-                <span>Fresher Jobs ({{ getTotalJobCountByCategory('Fresher Jobs') }})</span>
+                <span>Fresher Jobs</span>
               </button>
              
               <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-building-fill"></i>
-                <span>Govt Jobs ({{ getTotalJobCountByCategory('Government Jobs') }})</span>
+                <span>Govt Jobs</span>
               </button>
               <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-briefcase-fill"></i>
-                <span>Private Jobs ({{ getTotalJobCountByCategory('All Private Jobs') }})</span>
+                <span>Private Jobs</span>
               </button>
               <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-person-walking"></i>
-                <span> Walk-ins ({{ getTotalJobCountByCategory('Walk-in Drives') }})</span>
+                <span> Walk-ins</span>
               </button>
               <button class="jc-pill jc-pill-bank" routerLink="/banking-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-piggy-bank-fill"></i>
-                <span>Banking Jobs ({{ getTotalJobCountByCategory('Banking Jobs') }})</span>
+                <span>Banking Jobs</span>
               </button>
             </div>
           </div>

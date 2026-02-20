@@ -64,6 +64,14 @@
 .jc-follow-mini {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
+}
+
+.follow-text {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-right: 2px;
 }
 
 .mini-social-btn {

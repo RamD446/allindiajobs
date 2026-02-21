@@ -110,7 +110,7 @@ export class JobCategoryComponent implements OnInit {
           } else if (category === 'Today Posted Jobs') {
             this.filteredJobs = this.jobs.filter(job => this.isToday(job.createdDate));
           } else if (category === 'Today Walk-in Drives') {
-            this.filteredJobs = this.jobs.filter(job => job.category === 'Walk-in Drives' && this.isToday(job.createdDate));
+            this.filteredJobs = this.jobs.filter(job => this.isWalkInToday(job));
           } else if (category === 'Today Expired Gov Jobs') {
             this.filteredJobs = this.jobs.filter(job => job.category === 'Government Jobs' && job.lastDateToApply && this.isToday(job.lastDateToApply));
           } else {
@@ -184,12 +184,28 @@ export class JobCategoryComponent implements OnInit {
     return d.getTime() === today.getTime();
   }
 
+  isWalkInToday(job: Job): boolean {
+    if (job.category !== 'Walk-in Drives') return false;
+    if (!job.walkInStartDate || !job.walkInEndDate) return false;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startDate = new Date(job.walkInStartDate);
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(job.walkInEndDate);
+    endDate.setHours(23, 59, 59, 999);
+
+    return today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime();
+  }
+
   getTodayJobsCount(): number {
     return this.jobs.filter(job => this.isToday(job.createdDate)).length;
   }
 
   getTodayWalkinsCount(): number {
-    return this.jobs.filter(job => job.category === 'Walk-in Drives' && this.isToday(job.createdDate)).length;
+    return this.jobs.filter(job => this.isWalkInToday(job)).length;
   }
 
   getTodayExpiredGovJobsCount(): number {

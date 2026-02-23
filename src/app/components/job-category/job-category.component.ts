@@ -213,27 +213,37 @@ export class JobCategoryComponent implements OnInit {
   }
 
   getTimeAgo(dateString: string): string {
-    const now = new Date();
-    const date = new Date(dateString);
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffMs = now.getTime() - date.getTime();
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    // Show full date and time for older jobs
-    return date.toLocaleString('en-GB', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
-  }
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return 'Just now';
+
+  if (diffMins < 60)
+    return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
+
+  // Less than 24 hours → Today
+  if (diffHours < 24)
+    return 'Today Posted';
+
+  // 1 to 10 days
+  if (diffDays <= 10)
+    return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+
+  // Older than 10 days → show full date
+  return date.toLocaleString('en-GB', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+}
 
   // Method to get color class for job category badge
   getCategoryClass(category: string): string {

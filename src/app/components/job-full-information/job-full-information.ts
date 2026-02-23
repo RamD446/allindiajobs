@@ -197,19 +197,29 @@ export class JobFullInformation implements OnInit {
   shareOnWhatsApp(job: Job) {
     const jobUrl = window.location.href;
     
-    const message = `
-📌 *${job.title}*
-
-🔗 ${jobUrl}
-
-
-
-📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p
-
-📺 Subscribe YouTube: https://www.youtube.com/@allindajobs
-_Amazing job opportunity for you!_
-    `.trim();
+    let messageParts: string[] = [
+      `📌 *${job.title}*`,
+      `🏢 *Company:* ${job.company}`,
+      ``,
+      `🔗 ${jobUrl}`
+    ];
     
+    // Add interview dates if they exist
+    if (job.walkInStartDate) {
+      messageParts.push(`📅 *Interview Start:* ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
+    }
+    if (job.walkInEndDate) {
+      messageParts.push(`📅 *Interview End:* ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
+    }
+    if (job.lastDateToApply) {
+      messageParts.push(`📅 *Last Date to Apply:* ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
+    }
+    
+    messageParts.push(``);
+    messageParts.push(`📺 Subscribe YouTube: https://www.youtube.com/@allindajobs`);
+    messageParts.push(`_Amazing job opportunity for you!_`);
+    
+    const message = messageParts.join('\n');
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
   }

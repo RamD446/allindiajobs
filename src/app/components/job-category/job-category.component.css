@@ -321,11 +321,15 @@
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   border: 1px solid #ff69b4; /* Pink border */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
 }
 
 .jc-job {
   padding: 0.4rem 0.5rem;
-  border-bottom: 1px solid #ff69b4; /* Bright pink middle line */
+  border-right: 1px solid #ff69b4; /* Right border between columns */
+  border-bottom: 1px solid #ff69b4; /* Bottom border between rows */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -334,7 +338,14 @@
   transition: background 0.2s;
 }
 
-.jc-job:last-child {
+/* Remove right border from right column jobs */
+.jc-job:nth-child(2n) {
+  border-right: none;
+}
+
+/* Remove bottom border from last row jobs */
+.jc-job:nth-last-child(1),
+.jc-job:nth-last-child(2) {
   border-bottom: none;
 }
 
@@ -737,10 +748,17 @@
   .jc-jobs {
     margin: 0.2rem;
     border-radius: 10px;
+    grid-template-columns: 1fr;
   }
   
   .jc-job {
     padding: 0.5rem 0.6rem;
+    border-right: none !important;
+  }
+  
+  /* Remove right border from mobile since single column */
+  .jc-job:nth-child(2n) {
+    border-right: none;
   }
   
   .jc-job-title {
@@ -815,6 +833,16 @@
   
   .jc-jobs {
     margin: 0.2rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .jc-job {
+    border-right: 1px solid #ff69b4;
+  }
+  
+  /* Remove right border from right column jobs */
+  .jc-job:nth-child(2n) {
+    border-right: none;
   }
   
   .jc-filters {

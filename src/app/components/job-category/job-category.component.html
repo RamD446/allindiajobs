@@ -54,10 +54,6 @@
                 <i class="bi bi-person-walking"></i>
                 <span>Today Walk-ins</span>
               </button>
-              <button *ngIf="getTodayExpiredGovJobsCount() > 0" class="jc-pill jc-pill-today-expired" routerLink="/today-expired-gov-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #ffebee; color: #b71c1c;">
-                <i class="bi bi-calendar-x-fill"></i>
-                <span>Today Expired Gov Jobs</span>
-              </button>
               <button class="jc-pill jc-pill-it" routerLink="/it-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-laptop-fill"></i>
                 <span>IT Jobs</span>
@@ -82,6 +78,10 @@
               <button class="jc-pill jc-pill-bank" routerLink="/banking-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-piggy-bank-fill"></i>
                 <span>Banking Jobs</span>
+              </button> 
+              <button *ngIf="getTodayExpiredGovJobsCount() > 0" class="jc-pill jc-pill-today-expired" routerLink="/today-expired-gov-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #ffebee; color: #b71c1c;">
+                <i class="bi bi-calendar-x-fill"></i>
+                <span>Today Expired Gov Jobs</span>
               </button>
             </div>
           </div>

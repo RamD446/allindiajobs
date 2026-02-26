@@ -10,68 +10,109 @@
     <div class="container-fluid px-0">
       <div class="row g-0">
         <!-- Left Column -->
-        <div class="col-lg-8 col-md-8 col-12">
-          <!-- Header -->
-          <div class="jc-header">
-            <div class="jc-breadcrumb">
-              <i class="bi bi-house-fill"></i>
-              <span>Home</span>
-              <i class="bi bi-chevron-right"></i>
-              <span class="jc-category-name">{{ categoryTitle }}</span>
-            </div>
-            <div class="jc-count">
-              <i class="bi bi-briefcase-fill"></i>
-              <span class="jc-count-num">{{ getNewJobs().length }}</span>
-              <span>Jobs</span>
+        <div class="col-12 col-md-9 pe-md-1">
+          <!-- Header Card -->
+          <div class="jc-top-card mb-1">
+            <div class="jc-header-row">
+              <div class="jc-breadcrumb">
+                <i class="bi bi-house-fill"></i>
+                <span routerLink="/all-latest-jobs" style="cursor: pointer;">Home</span>
+                <i class="bi bi-chevron-right"></i>
+                <span class="jc-category-name">{{ categoryTitle }}</span>
+              </div>
+              <div class="jc-follow-mini">
+                <span class="follow-text">Follow:</span>
+                <button class="mini-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')" title="YouTube">
+                  <i class="bi bi-youtube"></i>
+                </button>
+                <button class="mini-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')" title="WhatsApp">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+                <button class="mini-social-btn mini-fb" (click)="openExternalChannel('https://www.facebook.com/share/17yHma5rhP/')" title="Facebook">
+                  <i class="bi bi-facebook"></i>
+                </button>
+                <button class="mini-social-btn mini-ig" (click)="openExternalChannel('https://www.instagram.com/allindajobs?igsh=MXJxeWl4NXdmeDVtdg==')" title="Instagram">
+                  <i class="bi bi-instagram"></i>
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- Category Pills -->
-          <div class="jc-pills">
+          <!-- Category Pills Card -->
+          <div class="jc-top-card mb-1">
             <div class="jc-pills-row">
-              <button class="jc-pill jc-pill-all" routerLink="/all-latest-jobs">
+            
+              <button class="jc-pill jc-pill-all" routerLink="/all-latest-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-grid-3x3-gap-fill"></i>
                 <span>All Jobs</span>
               </button>
-              <button class="jc-pill jc-pill-gov" (click)="navigateToCategory('Government Jobs')">
-                <i class="bi bi-building-fill"></i>
-                <span>All Govt Jobs</span>
+                 <button *ngIf="getTodayJobsCount() > 0" class="jc-pill jc-pill-today" routerLink="/today-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
+                <i class="bi bi-clock-history"></i>
+                <span>Today Posted ({{ getTodayJobsCount() }})</span>
               </button>
-              <button class="jc-pill jc-pill-prv" (click)="navigateToCategory('All Private Jobs')">
-                <i class="bi bi-briefcase-fill"></i>
-                <span>All Private Jobs</span>
-              </button>
-              <button class="jc-pill jc-pill-walk" (click)="navigateToCategory('Walk-in Drives')">
+              <button *ngIf="getTodayWalkinsCount() > 0" class="jc-pill jc-pill-today-walkin" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fce4ec; color: #c2185b;">
                 <i class="bi bi-person-walking"></i>
-                <span>All Walk-ins</span>
+                <span>Today Walk-ins</span>
+              </button>
+              <button class="jc-pill jc-pill-it" routerLink="/it-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-laptop-fill"></i>
+                <span>IT Jobs</span>
+              </button>
+              <button class="jc-pill jc-pill-fresher" routerLink="/fresher-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e8f5e9; color: #2e7d32;">
+                <i class="bi bi-mortarboard-fill"></i>
+                <span>Fresher Jobs</span>
+              </button>
+             
+              <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-building-fill"></i>
+                <span>Govt Jobs</span>
+              </button>
+              <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-briefcase-fill"></i>
+                <span>Private Jobs</span>
+              </button>
+              <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-person-walking"></i>
+                <span> Walk-ins</span>
+              </button>
+              <button class="jc-pill jc-pill-bank" routerLink="/banking-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-piggy-bank-fill"></i>
+                <span>Banking Jobs</span>
+              </button> 
+              <button *ngIf="getTodayExpiredGovJobsCount() > 0" class="jc-pill jc-pill-today-expired" routerLink="/today-expired-gov-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #ffebee; color: #b71c1c;">
+                <i class="bi bi-calendar-x-fill"></i>
+                <span>Today Expired Gov Jobs</span>
               </button>
             </div>
-            <!-- <div class="jc-social">
-              <span class="jc-social-label">Follow official channels</span>
-              <button class="jc-social-btn jc-yt" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
-                <i class="bi bi-youtube"></i>
-                <span>YouTube</span>
-              </button>
-              <button class="jc-social-btn jc-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
-                <i class="bi bi-whatsapp"></i>
-                <span>WhatsApp</span>
-              </button>
-            </div> -->
           </div>
 
           <!-- Jobs List -->
           <div class="jc-jobs" *ngIf="getNewJobs().length > 0">
             <div class="jc-job" *ngFor="let job of getNewJobs()" (click)="viewJobDetails(job)">
               <div class="jc-job-info">
-                <span class="jc-job-title">{{ job.title }}</span>
-                <span class="jc-sep">|</span>
-                <span class="jc-job-cat">{{ job.category }}</span>
-                <span class="jc-sep">|</span>
-                <span class="jc-job-time">{{ getTimeAgo(job.createdDate) }}</span>
+                <span class="jc-job-title">
+                  <i class="bi bi-star-fill star-icon"></i>
+                   {{ job.title }}
+                </span>
+                <div class="jc-job-meta">
+                  <div class="jc-job-meta-left">
+                    <span class="jc-job-cat">{{ job.category }}</span>
+                    <span class="jc-sep">|</span>
+                    <span class="jc-job-time">{{ getTimeAgo(job.createdDate) }}</span>
+                    <ng-container *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
+                      <span class="jc-sep">|</span>
+                      <span class="jc-job-last-date text-danger fw-bold">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate">
+                      <span class="jc-sep">|</span>
+                      <span class="jc-job-last-date text-danger fw-bold">Wlkn Date: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
+                    </ng-container>
+                  </div>
+                  <button class="jc-job-btn" (click)="viewJobDetails(job); $event.stopPropagation()">
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
               </div>
-              <button class="jc-job-btn" (click)="viewJobDetails(job); $event.stopPropagation()">
-                <i class="bi bi-arrow-right"></i>
-              </button>
             </div>
           </div>
 
@@ -92,20 +133,68 @@
         </div>
 
         <!-- Right Column - Filters -->
-        <div class="col-lg-4 col-md-4 col-12">
-          <div class="jc-filters">
-            <h6 class="jc-filter-title">
-              <i class="bi bi-funnel"></i>
-              <span>Quick Filters</span>
+        <div class="col-12 col-md-3">
+          <!-- Official Company Careers (Quick Filter Section) -->
+          <div class="occ-section">
+            <h6 class="occ-title">
+              <i class="bi bi-building-check text-primary"></i> Official Company Careers
             </h6>
-            <hr class="jc-filter-divider">
-            <div class="jc-filter-group">
-              <label class="jc-filter-option" *ngFor="let company of getUniqueCompanies()">
-                <input type="checkbox" [value]="company" (change)="filterByCompany($event)">
-                <span>{{ company }}</span>
-                <span class="jc-filter-count">({{ getJobCountByCompany(company) }})</span>
-              </label>
+            <div class="occ-types row g-2">
+              <div class="col-6 col-md-6" *ngFor="let type of careerJobTypes">
+                <div class="occ-type-card" [class.active]="selectedCareerType === type" (click)="filterCareersByType(type)">
+                  <span class="occ-type-name">{{ type }}</span>
+                </div>
+              </div>
             </div>
+
+            <!-- Career Links Display based on selected Job Type -->
+            <div class="occ-links-container mt-3" *ngIf="selectedCareerType">
+              <div class="occ-links-header d-flex justify-content-between align-items-center mb-2">
+                <small class="fw-bold" style="color: #000000;">{{ selectedCareerType }} Career Links</small>
+                <button class="btn btn-sm btn-link p-0 text-decoration-none fw-bold" (click)="selectedCareerType = ''" style="color: #000000; font-size: 0.75rem;">
+                  <i class="bi bi-x-circle"></i> Close
+                </button>
+              </div>
+              <div class="row g-2">
+                <div class="col-12" *ngFor="let career of filteredCareers">
+                  <div class="occ-link-card">
+                    <span class="occ-company-name" style="color: #000000;">{{ career.company }}</span>
+                    <a [href]="career.careerOfficeUrl" target="_blank" class="occ-action-link" style="color: #000000;">
+                      Click here <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-12" *ngIf="filteredCareers.length === 0">
+                  <p class="small mb-0 p-2 text-center border rounded bg-light" style="color: #000000; font-weight: 600;">No career links available for this category yet.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="jc-filters">
+            <div class="d-flex justify-content-between align-items-center mb-2 px-1">
+              <h6 class="jc-filter-title mb-0 p-0">
+                <i class="bi bi-funnel"></i>
+                <span>Quick Filters by Company name</span>
+              </h6>
+              <button class="btn btn-sm btn-link text-danger p-0 text-decoration-none" style="font-size: 0.85rem;" (click)="clearAllFilters()" *ngIf="hasActiveFilters()">
+                Clear All
+              </button>
+            </div>
+            <hr class="jc-filter-divider my-1">
+            
+            <!-- Company Filter -->
+            <div class="jc-filter-group mb-2">
+                 <div class="jc-filter-options-scroll">
+                <label class="jc-filter-option" *ngFor="let company of getUniqueCompanies()" [class.active]="selectedCompanies.includes(company)">
+                  <input type="checkbox" [value]="company" [checked]="selectedCompanies.includes(company)" (change)="filterByCompany($event)">
+                  <span class="jc-filter-text">{{ company }}({{ getJobCountByCompany(company) }})</span>
+                </label>
+              </div>
+            </div>
+
+            
+
           </div>
         </div>
       </div>

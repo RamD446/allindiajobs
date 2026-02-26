@@ -2,99 +2,191 @@
   <div *ngIf="isLoading" class="tiny-loading">
     <div class="mini-spin"></div>Loading...
   </div>
+  
   <div *ngIf="!isLoading && job" class="ultra-content">
     <div class="row g-2">
-      <div class="col-12 col-lg-9 order-1 order-lg-1">
-        
-        <!-- Card 1: Job Title, Created By, Date -->
-        <div class="info-card" [ngClass]="getCategoryClass(job.category)">
+      <!-- Left Column: Job Details (col-7) -->
+      <div class="col-12 col-md-7 order-1">
+        <!-- Badge Header (Adapted from Category Header) -->
+        <div class="jc-header mb-2">
+          <div class="jc-header-left">
+            <div class="jc-breadcrumb">
+              <i class="bi bi-house-fill"></i>
+              <span (click)="goBack()" style="cursor: pointer;">Home</span>
+              <i class="bi bi-chevron-right"></i>
+              <span class="jc-category-name">{{ job.category }}</span>
+            </div>
+            <div class="jc-follow-mini">
+              <span class="follow-text">Follow Channels:</span>
+              <button class="mini-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')" title="Follow on YouTube">
+                <i class="bi bi-youtube"></i>
+              </button>
+              <button class="mini-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')" title="Join WhatsApp Channel">
+                <i class="bi bi-whatsapp"></i>
+              </button>
+              <button class="mini-social-btn mini-fb" (click)="openExternalChannel('https://www.facebook.com/share/17yHma5rhP/')" title="Facebook">
+                <i class="bi bi-facebook"></i>
+              </button>
+              <button class="mini-social-btn mini-ig" (click)="openExternalChannel('https://www.instagram.com/allindajobs?igsh=MXJxeWl4NXdmeDVtdg==')" title="Instagram">
+                <i class="bi bi-instagram"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Job Full Information Card -->
+        <div class="info-card" [ngClass]="[getCategoryClass(job.category), 'desc-card']">
           <h1 class="job-title-main">{{ job.title }}</h1>
-          <div class="title-divider"></div>
+          <div class="full-line-divider"></div>
+          
           <div class="job-meta-row">
-            <span class="meta-item">Created by Yalla Ramana</span>
-            <span class="meta-separator">|</span>
-            <span class="meta-item">{{ formatDate(job.createdDate) }}</span>
+            <div class="meta-info-left">
+              <span class="meta-item">Posted By: Admin</span>
+              <span class="meta-separator">|</span>
+              <span class="meta-item">Date: {{ formatDate(job.createdDate) }}</span>
+            </div>
+            
+            <div class="quick-share-row">
+              <button class="qs-btn qs-wa" (click)="shareOnWhatsApp(job)" title="Share on WhatsApp">
+                <i class="bi bi-whatsapp"></i>
+              </button>
+              <button class="qs-btn qs-fb" (click)="shareJob(job)" title="Share Opportunity">
+                <i class="bi bi-share-fill"></i>
+              </button>
+              <button class="qs-btn qs-cp" (click)="copyLink(job)" title="Copy Link">
+                <i class="bi bi-link-45deg"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        
-        <!-- Card 2: Job Description Only -->
-        <div class="info-card desc-card">
-          <h1 class="card-section-title">Job Description</h1>
+          <div class="full-line-divider d-none d-md-block"></div>
+
           <div class="job-desc-content" [innerHTML]="getSafeHtml(job.description)"></div>
+          <div class="info-link-wrapper" *ngIf="job.applicationUrl">
+            <div class="info-link-label">
+              <i class="bi bi-info-circle-fill"></i>
+              <span>Official Notification / Apply Link:</span>
+            </div>
+            <a [href]="job.applicationUrl" target="_blank" class="ultra-apply-link">
+              <i class="bi bi-box-arrow-up-right"></i>
+              <span>Click here to Apply</span>
+            </a>
+          </div>
+          
+          <div class="job-warning-note">
+            <span><strong>Note:</strong> Before applying for a job, make sure to double-check the job information.</span>
+          </div>
         </div>
-        
-        <!-- Card 3: Job Summary -->
+
+        <!-- Quick Highlights -->
         <div class="info-card summary-card">
-          <h1 class="card-section-title">Job Summary</h1>
+          <h1 class="card-section-title">Quick Highlights</h1>
           
-          <!-- Company Name Row -->
-          <div class="summary-row">
-            <i class="bi bi-building"></i>
-            <span class="summary-label">Company:</span>
-            <span class="summary-value">{{ job.company }}</span>
-          </div>
-          
-          <!-- Job Type & Application Link Row -->
-          <div class="summary-row">
-            <i class="bi bi-briefcase"></i>
-            <span class="summary-label">Job Type:</span>
-            <span class="summary-value">{{ job.category }}</span>
-          </div>
-          
-          <div class="summary-row link-row" *ngIf="job.applicationUrl">
-            <i class="bi bi-link-45deg"></i>
-            <span class="summary-label">More Information:</span>
-            <a [href]="job.applicationUrl" target="_blank" class="apply-link">{{ job.applicationUrl }}</a>
-          </div>
-          
-          <!-- Share Job Row -->
-          <div class="action-row">
-            <span class="action-label">Share && Follow</span>
-            <button class="action-btn share-btn" (click)="shareJob(job)">
-              <i class="bi bi-share"></i> Share
-            </button>
-            <button class="action-btn whatsapp-btn" (click)="shareOnWhatsApp(job)">
-              <i class="bi bi-whatsapp"></i> WhatsApp
-            </button>
-            <button class="action-btn copy-btn" (click)="copyLink(job)">
-              <i class="bi bi-clipboard"></i> Copy Link
-            </button>
-            <div class="action-row">
-           ||
-            <button class="action-btn whatsapp-group-btn" (click)="openExternalChannel('https://whatsapp.com/channel/0029Vb79LscKQuJM5YCwc51H')">
-              <i class="bi bi-whatsapp"></i> WhatsApp Group
-            </button>
-            <button class="action-btn youtube-btn" (click)="openExternalChannel('https://www.youtube.com/@allindiajobs-newjobs')">
-              <i class="bi bi-youtube"></i> YouTube
-            </button>
-          </div>
-        </div>
-          </div>
-          
-          <!-- Follow Groups Row -->
-          
-        
-      </div>
-      <div class="col-12 col-lg-3 order-2 order-lg-2">
-        <!-- Card: Top 10 Latest Jobs (No Scroll) -->
-        <div class="info-card sidebar-card">
-          <h5 class="card-section-title">Top 10 Latest Jobs</h5>
-          <div *ngIf="!isLoading && latestJobs && latestJobs.length > 0" class="jobs-list">
-            <div *ngFor="let latestJob of latestJobs.slice(0, 10); trackBy: trackByJobId; let i = index" 
-                 class="job-list-item"
-                 (click)="viewJobDetails(latestJob)">
-              <div class="job-number">{{ i + 1 }}</div>
-              <div class="job-info">
-                <div class="job-name">{{ latestJob.title }}</div>
-                <div class="job-company">{{ latestJob.company }}</div>
+          <div class="summary-grid">
+            <!-- Company -->
+            <div class="summary-item">
+              <div class="item-icon company-icon">
+                <i class="bi bi-building-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">Company</span>
+                <span class="item-value">{{ job.company }}</span>
+              </div>
+            </div>
+            
+            <!-- Job Type -->
+            <div class="summary-item">
+              <div class="item-icon category-icon">
+                <i class="bi bi-tag-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">Category</span>
+                <span class="item-value">{{ job.category }}</span>
+              </div>
+            </div>
+
+            <!-- Date -->
+            <div class="summary-item">
+              <div class="item-icon date-icon">
+                <i class="bi bi-calendar-check-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">Posted On</span>
+                <span class="item-value">{{ formatDate(job.createdDate) }}</span>
+              </div>
+            </div>
+
+            <!-- Walk-in Start Date -->
+            <div class="summary-item highlight-red" *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate">
+              <div class="item-icon walkin-icon">
+                <i class="bi bi-calendar-plus-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">Start Date</span>
+                <span class="item-value">{{ job.walkInStartDate | date:'dd MMM yyyy' }}</span>
+              </div>
+            </div>
+
+            <!-- Walk-in End Date -->
+            <div class="summary-item highlight-red" *ngIf="job.category === 'Walk-in Drives' && job.walkInEndDate">
+              <div class="item-icon walkin-icon">
+                <i class="bi bi-calendar-minus-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">End Date</span>
+                <span class="item-value">{{ job.walkInEndDate | date:'dd MMM yyyy' }}</span>
+              </div>
+            </div>
+
+            <!-- Last Date to Apply -->
+            <div class="summary-item highlight-blue" *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
+              <div class="item-icon gov-icon">
+                <i class="bi bi-calendar-x-fill"></i>
+              </div>
+              <div class="item-details">
+                <span class="item-label">Last Date</span>
+                <span class="item-value">{{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
               </div>
             </div>
           </div>
-          <div *ngIf="!isLoading && (!latestJobs || latestJobs.length === 0)" class="no-jobs">No jobs available</div>
         </div>
+      </div>
+
+      <!-- Right Column: Sidebar (col-5) -->
+      <div class="col-12 col-md-5 order-2">
+       
+        
+
+        <!-- Related Jobs (Category UI Style) -->
+        <div class="info-card sidebar-card p-0 overflow-hidden mb-2">
+          <h5 class="card-section-title">
+            <span>Related Jobs</span>
+            <i class="bi bi-fire"></i>
+          </h5>
+          <div class="jc-jobs" *ngIf="!isLoading && latestJobs && latestJobs.length > 0">
+            <div class="jc-job" *ngFor="let latestJob of latestJobs.slice(0, 10); trackBy: trackByJobId" (click)="viewJobDetails(latestJob)">
+              <div class="jc-job-info">
+                <span class="jc-job-title" style="font-size: 0.9rem; font-weight: 700; color: #000000;">
+                  <i class="bi bi-star-fill star-icon" style="color: #ff69b4; font-size: 0.7rem;"></i>
+                  {{ latestJob.title }}
+                </span>
+                <div class="jc-job-meta">
+                  <div class="jc-job-meta-left">
+                    <span class="jc-job-cat">{{ latestJob.category }}</span>
+                    <span class="jc-sep">|</span>
+                    <span class="jc-job-time">{{ getTimeAgo(latestJob.createdDate) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!isLoading && (!latestJobs || latestJobs.length === 0)" class="p-3 text-center">No jobs available</div>
+        </div>
+
+        
       </div>
     </div>
   </div>
+
   <div *ngIf="!isLoading && !job" class="ultra-not-found">
     <h3>Job Not Found</h3>
     <button class="ultra-back-btn" (click)="goBack()">Back to Jobs</button>

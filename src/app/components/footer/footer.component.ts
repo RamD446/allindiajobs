@@ -16,20 +16,20 @@ export class FooterComponent {
   constructor(private router: Router) {}
 
   jobTypes = [
-    { name: 'Govt Jobs', route: '/government-jobs' },
-    { name: 'Private Jobs', route: '/private-jobs' },
-    { name: 'Walk-ins', route: '/walk-in-drives' },
-    { name: 'Bank Jobs', route: '/banking-jobs' },
-    { name: 'IT Jobs', route: '/it-jobs' },
-    { name: 'Health Tips', route: '/health-and-career-tips' },
-    { name: 'Motivation', route: '/motivation-stories' }
+    { name: 'ప్రభుత్వ ఉద్యోగాలు (Govt Jobs)', route: '/government-jobs' },
+    { name: 'ప్రైవేట్ ఉద్యోగాలు (Private Jobs)', route: '/private-jobs' },
+    { name: 'వాక్-ఇన్స్ (Walk-ins)', route: '/walk-in-drives' },
+    { name: 'బ్యాంక్ ఉద్యోగాలు (Bank Jobs)', route: '/banking-jobs' },
+    { name: 'ఐటి ఉద్యోగాలు (IT Jobs)', route: '/it-jobs' },
+    { name: 'ఆరోగ్య చిట్కాలు (Health Tips)', route: '/health-and-career-tips' },
+    { name: 'ప్రేరణాత్మక కథలు (Motivation)', route: '/motivation-stories' }
   ];
 
   careerTypes = [
-    { name: 'IT Services MNC', type: 'IT Services MNC' },
-    { name: 'Global Tech', type: 'Global Tech' },
-    { name: 'Government', type: 'Government' },
-    { name: 'Central Govt', type: 'Central Government' }
+    { name: 'ఐటి సేవలు (IT Services MNC)', type: 'IT Services MNC' },
+    { name: 'గ్లోబల్ టెక్ (Global Tech)', type: 'Global Tech' },
+    { name: 'ప్రభుత్వం (Government)', type: 'Government' },
+    { name: 'కేంద్ర ప్రభుత్వం (Central Govt)', type: 'Central Government' }
   ];
 
   @HostListener('window:beforeinstallprompt', ['$event'])

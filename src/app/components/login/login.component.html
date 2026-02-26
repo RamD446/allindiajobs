@@ -231,14 +231,13 @@
                   <span>Job Description *</span>
             
                 </label>
-                <quill-editor 
+                <textarea 
                   [(ngModel)]="jobForm.description" 
                   name="description" 
-                  [modules]="quillModules"
-                  [styles]="{height: '350px'}"
+                  class="form-control description-textarea"
                   placeholder="Detailed job description..."
                   required>
-                </quill-editor>
+                </textarea>
               </div>
             </div>
             

@@ -327,23 +327,14 @@
   padding: 0.25rem 0.5rem;
 }
 
-/* Quill Editor Styling */
-::v-deep .ql-editor {
-  font-family: 'Nirmala UI', 'Gautami', 'Inter', -apple-system, sans-serif !important;
-  font-size: 15px !important;
-  line-height: 1.8 !important;
-  color: #333d47 !important;
+/* Description Textarea Styling */
+.description-textarea {
   min-height: 350px;
-}
-
-::v-deep .ql-container {
-  border-radius: 0 0 10px 10px !important;
-  font-family: 'Nirmala UI', 'Gautami', 'Inter', -apple-system, sans-serif !important;
-}
-
-::v-deep .ql-toolbar {
-  border-radius: 10px 10px 0 0 !important;
-  background: #f8fafc;
+  font-family: 'Nirmala UI', 'Gautami', 'Inter', -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #333d47;
+  resize: vertical;
 }
 
 .job-desc-small {

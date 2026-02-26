@@ -99,6 +99,14 @@
                     <span class="jc-job-cat">{{ job.category }}</span>
                     <span class="jc-sep">|</span>
                     <span class="jc-job-time">{{ getTimeAgo(job.createdDate) }}</span>
+                    <ng-container *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
+                      <span class="jc-sep">|</span>
+                      <span class="jc-job-last-date text-danger fw-bold">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate">
+                      <span class="jc-sep">|</span>
+                      <span class="jc-job-last-date text-danger fw-bold">Wlkn Date: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
+                    </ng-container>
                   </div>
                   <button class="jc-job-btn" (click)="viewJobDetails(job); $event.stopPropagation()">
                     <i class="bi bi-arrow-right"></i>

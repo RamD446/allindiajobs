@@ -7,6 +7,12 @@
     font-size: 15px !important;
     font-weight: 700 !important;
   }
+  .job-desc-content {
+    border-left: 1px solid #ff69b4;
+    border-right: 1px solid #ff69b4;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
 }
 /* Job Full Information - Mobile First Design */
 * {
@@ -371,6 +377,18 @@
 .sidebar-card {
   max-height: none;
   overflow: visible;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.sidebar-card .card-section-title {
+  padding-left: 0 !important;
+  padding-top: 0 !important;
+}
+
+.sidebar-card .jc-jobs {
+  border-radius: 0;
 }
 
 /* Sidebar Column Spacing */

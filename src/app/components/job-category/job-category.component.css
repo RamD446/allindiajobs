@@ -249,9 +249,10 @@
 .jc-job-meta-left {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0;
   min-width: 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
 .jc-job-title {
@@ -276,13 +277,13 @@
 
 .jc-sep {
   color: #dee2e6;
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   flex-shrink: 0;
-  margin: 0 6px;
+  margin: 0 4px;
 }
 
 .jc-job-cat {
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: #667eea;
   font-weight: 600;
   flex-shrink: 0;
@@ -290,9 +291,15 @@
 }
 
 .jc-job-time {
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   color: #6c757d;
   font-weight: 600;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.jc-job-last-date {
+  font-size: 0.65rem;
   flex-shrink: 0;
   white-space: nowrap;
 }

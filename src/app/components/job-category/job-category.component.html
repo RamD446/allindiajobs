@@ -10,7 +10,7 @@
     <div class="container-fluid px-0">
       <div class="row g-0">
         <!-- Left Column -->
-        <div class="col-12 col-md-9 pe-md-1">
+        <div [ngClass]="categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories' ? 'col-12' : 'col-12 col-md-9 pe-md-1'">
           <!-- Header Card -->
           <div class="jc-top-card mb-1">
             <div class="jc-header-row">
@@ -79,6 +79,14 @@
                 <i class="bi bi-piggy-bank-fill"></i>
                 <span>Banking Jobs</span>
               </button> 
+              <button class="jc-pill" routerLink="/health-and-career-tips" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e1f5fe; color: #0288d1;">
+                <i class="bi bi-heart-pulse-fill"></i>
+                <span>Health Tips</span>
+              </button>
+              <button class="jc-pill" routerLink="/motivation-stories" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff8e1; color: #ffa000;">
+                <i class="bi bi-lightning-charge-fill"></i>
+                <span>Motivation</span>
+              </button>
               <button *ngIf="getTodayExpiredGovJobsCount() > 0" class="jc-pill jc-pill-today-expired" routerLink="/today-expired-gov-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #ffebee; color: #b71c1c;">
                 <i class="bi bi-calendar-x-fill"></i>
                 <span>Today Expired Gov Jobs</span>
@@ -91,7 +99,7 @@
             <div class="jc-job" *ngFor="let job of getNewJobs()" (click)="viewJobDetails(job)">
               <div class="jc-job-info">
                 <span class="jc-job-title">
-                  <i class="bi bi-star-fill star-icon"></i>
+                  <i class="bi bi-chevron-right star-icon"></i>
                    {{ job.title }}
                 </span>
                 <div class="jc-job-meta">
@@ -133,7 +141,7 @@
         </div>
 
         <!-- Right Column - Filters -->
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-3" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories'">
           <!-- Official Company Careers (Quick Filter Section) -->
           <div class="occ-section">
             <h6 class="occ-title">

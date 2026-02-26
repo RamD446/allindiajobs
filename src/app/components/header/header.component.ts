@@ -14,31 +14,12 @@ import { Job } from '../../models/job.model';
 })
 export class HeaderComponent implements OnInit {
   isNavActive = false;
-  canInstall = false;
-  private deferredPrompt: any = null;
   jobs: Job[] = [];
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}
 
   ngOnInit() {
     this.loadJobs();
-    // Listen for the beforeinstallprompt event
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      this.deferredPrompt = e;
-      setTimeout(() => {
-        this.canInstall = true;
-        this.cdr.detectChanges();
-      });
-    });
-
-    window.addEventListener('appinstalled', () => {
-      setTimeout(() => {
-        this.canInstall = false;
-        this.deferredPrompt = null;
-        this.cdr.detectChanges();
-      });
-    });
   }
 
   loadJobs() {
@@ -94,32 +75,6 @@ export class HeaderComponent implements OnInit {
       if (!clickedInside) {
         this.closeNav();
       }
-    }
-  }
-
-  installApp() {
-    if (this.deferredPrompt) {
-      this.deferredPrompt.prompt();
-      this.deferredPrompt.userChoice.then((choiceResult: any) => {
-        this.deferredPrompt = null;
-        this.canInstall = false;
-        this.cdr.detectChanges();
-      });
-    }
-  }
-
-  shareWebsite() {
-    const shareData = {
-      title: 'AllIndia Jobs',
-      text: 'Find the best job opportunities in India!',
-      url: window.location.href
-    };
-    
-    if (navigator.share) {
-      navigator.share(shareData).catch(err => console.log('Error sharing:', err));
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
     }
   }
 

@@ -327,7 +327,27 @@
   padding: 0.25rem 0.5rem;
 }
 
+/* Quill Editor Styling */
+::v-deep .ql-editor {
+  font-family: 'Nirmala UI', 'Gautami', 'Inter', -apple-system, sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.8 !important;
+  color: #333d47 !important;
+  min-height: 350px;
+}
+
+::v-deep .ql-container {
+  border-radius: 0 0 10px 10px !important;
+  font-family: 'Nirmala UI', 'Gautami', 'Inter', -apple-system, sans-serif !important;
+}
+
+::v-deep .ql-toolbar {
+  border-radius: 10px 10px 0 0 !important;
+  background: #f8fafc;
+}
+
 .job-desc-small {
+  font-family: 'Nirmala UI', 'Gautami', 'Inter', -apple-system, sans-serif;
   font-size: 0.85rem;
   line-height: 1.6;
   margin-bottom: 0;
@@ -337,8 +357,6 @@
   max-width: 100%;
   overflow: hidden;
 }
-
-/* Quill Editor Styling */
 .job-desc-small p {
   margin-bottom: 0.5rem;
   max-width: 100%;
@@ -396,292 +414,4 @@
   max-width: 100%;
   overflow-wrap: break-word;
   word-wrap: break-word;
-}
-
-.job-desc-small h1,
-.job-desc-small h2,
-.job-desc-small h3,
-.job-desc-small h4,
-.job-desc-small h5,
-.job-desc-small h6 {
-  font-weight: 600;
-  margin-top: 0.75rem;
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  max-width: 100%;
-}
-
-.job-desc-small code {
-  background: #f3f4f6;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 0.85em;
-  word-break: break-all;
-}
-
-.job-desc-small pre {
-  background: #f3f4f6;
-  padding: 0.75rem;
-  border-radius: 6px;
-  overflow-x: auto;
-  margin-bottom: 0.5rem;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-/* Support for Quill color classes */
-.job-desc-small .ql-align-center {
-  text-align: center;
-}
-
-.job-desc-small .ql-align-right {
-  text-align: right;
-}
-
-.job-desc-small .ql-align-justify {
-  text-align: justify;
-}
-
-/* Don't override inline styles - let Quill colors and backgrounds show */
-.job-desc-small *[style] {
-  /* Inline styles will apply naturally */
-}
-
-/* Quill Editor in Form */
-::ng-deep .ql-toolbar {
-  border-radius: 8px 8px 0 0;
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
-}
-
-::ng-deep .ql-container {
-  border-radius: 0 0 8px 8px;
-  font-size: 0.9rem;
-  border: 1px solid #dee2e6;
-  border-top: none;
-}
-
-::ng-deep .ql-editor {
-  min-height: 350px;
-  max-height: 500px;
-  overflow-y: auto;
-}
-
-::ng-deep .ql-editor.ql-blank::before {
-  color: #adb5bd;
-  font-style: italic;
-}
-
-/* Quill Color Picker */
-::ng-deep .ql-color-picker .ql-picker-label,
-::ng-deep .ql-background .ql-picker-label {
-  padding: 2px 4px;
-}
-
-::ng-deep .ql-picker-label:hover {
-  color: #667eea;
-}
-
-/* Make toolbar icons more visible */
-::ng-deep .ql-toolbar button:hover,
-::ng-deep .ql-toolbar button:focus {
-  color: #667eea;
-  background: #e9ecef;
-  border-radius: 4px;
-}
-
-::ng-deep .ql-toolbar button.ql-active {
-  color: #667eea;
-  background: #e9ecef;
-}
-
-.job-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.job-card-header {
-  padding: 1.5rem 1.5rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.job-title {
-  color: #2c3e50;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0;
-  flex: 1;
-}
-
-.job-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.job-card-body {
-  padding: 1rem 1.5rem 1.5rem;
-  flex: 1;
-}
-
-.job-company {
-  color: #6c757d;
-  font-weight: 500;
-  margin-bottom: 1rem;
-}
-
-.job-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.badge {
-  font-size: 0.75rem;
-  padding: 0.35rem 0.65rem;
-}
-
-.job-description {
-  color: #6c757d;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin-bottom: 1rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.job-details {
-  border-top: 1px solid #e9ecef;
-  padding-top: 1rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .login-container {
-    margin-top: 0;
-    margin-bottom: 30px;
-  }
-  
-  .login-section,
-  .auth-check-loading {
-    padding: 2rem 0;
-  }
-  
-  .login-card,
-  .loading-card {
-    padding: 1.5rem;
-  }
-  
-  .job-management-section {
-    padding-top: 1rem;
-  }
-  
-  .job-management-section .d-flex {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start !important;
-  }
-  
-  .job-management-section .d-flex > div {
-    width: 100%;
-  }
-  
-  .job-management-section .d-flex button {
-    width: 100%;
-    margin-right: 0 !important;
-    margin-bottom: 0.5rem;
-  }
-  
-  .job-form-content {
-    width: 95%;
-    margin: 1rem;
-    max-height: 90vh;
-  }
-  
-  .job-form-header,
-  .job-form-body,
-  .job-form-footer {
-    padding: 1rem;
-  }
-}
-@media (max-width: 576px) {
-  .login-container {
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-  
-  .login-section,
-  .auth-check-loading {
-    padding: 1rem 0;
-  }
-  
-  .login-card,
-  .loading-card {
-    padding: 1rem;
-    border-radius: 10px;
-  }
-  
-  .login-card h2 {
-    font-size: 1.5rem;
-  }
-  
-  .job-management-section {
-    padding-top: 0.5rem;
-  }
-  
-  .job-management-section h2 {
-    font-size: 1.3rem;
-  }
-  
-  .job-form-content {
-    width: 98%;
-    margin: 0.5rem;
-    border-radius: 10px;
-  }
-  
-  .job-form-header {
-    padding: 0.75rem;
-  }
-  
-  .job-form-header h4 {
-    font-size: 1rem;
-  }
-  
-  .job-form-body,
-  .job-form-footer {
-    padding: 0.75rem;
-  }
-  
-  .job-card-compact {
-    padding: 0.6rem;
-  }
-  
-  .job-header-compact {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .job-actions-small {
-    align-self: flex-end;
-  }
-  
-  .job-title-small {
-    font-size: 0.9rem;
-  }
-  
-  .job-company-small {
-    font-size: 0.75rem;
-  }
-  
-  .btn-sm {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.8rem;
-  }
 }

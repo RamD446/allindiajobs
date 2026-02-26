@@ -32,6 +32,8 @@ export const DEFAULT_JOB_CATEGORIES = [
   'IT Jobs',
   'Pharmaceutical Jobs',
   'Sales and Marketing Jobs',
+  'Health and Career Tips',
+  'Motivation Stories',
 ] as const;
 
 export type JobCategory = typeof DEFAULT_JOB_CATEGORIES[number];
@@ -41,14 +43,6 @@ export interface JobCareer {
   company: string;
   jobType: string;
   careerOfficeUrl: string;
-  createdDate: string;
-}
-
-export interface News {
-  id: string;
-  title: string;
-  newsType: string;
-  description: string;
   createdDate: string;
 }
 

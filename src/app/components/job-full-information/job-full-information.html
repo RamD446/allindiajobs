@@ -34,15 +34,16 @@
           </div>
         </div>
 
-        <!-- Job Title -->
-        <div class="info-card" [ngClass]="getCategoryClass(job.category)">
+        <!-- Job Full Information Card -->
+        <div class="info-card" [ngClass]="[getCategoryClass(job.category), 'desc-card']">
           <h1 class="job-title-main">{{ job.title }}</h1>
-          <div class="title-divider"></div>
+          <div class="full-line-divider"></div>
+          
           <div class="job-meta-row">
             <div class="meta-info-left">
-              <span class="meta-item">By Admin</span>
+              <span class="meta-item">Posted By: Admin</span>
               <span class="meta-separator">|</span>
-              <span class="meta-item">{{ formatDate(job.createdDate) }}</span>
+              <span class="meta-item">Date: {{ formatDate(job.createdDate) }}</span>
             </div>
             
             <div class="quick-share-row">
@@ -57,12 +58,9 @@
               </button>
             </div>
           </div>
-        </div>
+          <div class="full-line-divider"></div>
 
-        <!-- Job Description -->
-        <div class="info-card desc-card">
-          <h1 class="card-section-title">Job Description</h1>
-          <div class="job-desc-content" [innerHTML]="getSafeHtml(job.description)"></div>
+          <div class="job-desc-content mt-2" [innerHTML]="getSafeHtml(job.description)"></div>
           <div class="info-link-wrapper" *ngIf="job.applicationUrl">
             <div class="info-link-label">
               <i class="bi bi-info-circle-fill"></i>
@@ -168,14 +166,17 @@
                   <i class="bi bi-star-fill star-icon"></i>
                   {{ latestJob.title }}
                 </span>
-                <span class="jc-sep">|</span>
-                <span class="jc-job-cat">{{ latestJob.category }}</span>
-                <span class="jc-sep">|</span>
-                <span class="jc-job-time">{{ getTimeAgo(latestJob.createdDate) }}</span>
+                <div class="jc-job-meta">
+                  <div class="jc-job-meta-left">
+                    <span class="jc-job-cat">{{ latestJob.category }}</span>
+                    <span class="jc-sep">|</span>
+                    <span class="jc-job-time">{{ getTimeAgo(latestJob.createdDate) }}</span>
+                  </div>
+                  <button class="jc-job-btn" (click)="viewJobDetails(latestJob); $event.stopPropagation()">
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
               </div>
-              <button class="jc-job-btn" (click)="viewJobDetails(latestJob); $event.stopPropagation()">
-                <i class="bi bi-arrow-right"></i>
-              </button>
             </div>
           </div>
           <div *ngIf="!isLoading && (!latestJobs || latestJobs.length === 0)" class="p-3 text-center">No jobs available</div>

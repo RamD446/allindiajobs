@@ -92,16 +92,19 @@
               <div class="jc-job-info">
                 <span class="jc-job-title">
                   <i class="bi bi-star-fill star-icon"></i>
-                  {{ job.title }}
+                   {{ job.title }}
                 </span>
-                <span class="jc-sep">|</span>
-                <span class="jc-job-cat">{{ job.category }}</span>
-                <span class="jc-sep">|</span>
-                <span class="jc-job-time">{{ getTimeAgo(job.createdDate) }}</span>
+                <div class="jc-job-meta">
+                  <div class="jc-job-meta-left">
+                    <span class="jc-job-cat">{{ job.category }}</span>
+                    <span class="jc-sep">|</span>
+                    <span class="jc-job-time">{{ getTimeAgo(job.createdDate) }}</span>
+                  </div>
+                  <button class="jc-job-btn" (click)="viewJobDetails(job); $event.stopPropagation()">
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
               </div>
-              <button class="jc-job-btn" (click)="viewJobDetails(job); $event.stopPropagation()">
-                <i class="bi bi-arrow-right"></i>
-              </button>
             </div>
           </div>
 
@@ -139,22 +142,22 @@
             <!-- Career Links Display based on selected Job Type -->
             <div class="occ-links-container mt-3" *ngIf="selectedCareerType">
               <div class="occ-links-header d-flex justify-content-between align-items-center mb-2">
-                <small class="text-primary fw-bold">{{ selectedCareerType }} Career Links</small>
-                <button class="btn btn-sm btn-link p-0 text-decoration-none text-muted" (click)="selectedCareerType = ''">
+                <small class="fw-bold" style="color: #000000;">{{ selectedCareerType }} Career Links</small>
+                <button class="btn btn-sm btn-link p-0 text-decoration-none fw-bold" (click)="selectedCareerType = ''" style="color: #000000; font-size: 0.75rem;">
                   <i class="bi bi-x-circle"></i> Close
                 </button>
               </div>
               <div class="row g-2">
                 <div class="col-12" *ngFor="let career of filteredCareers">
                   <div class="occ-link-card">
-                    <span class="occ-company-name">{{ career.company }}</span>
-                    <a [href]="career.careerOfficeUrl" target="_blank" class="occ-action-link">
+                    <span class="occ-company-name" style="color: #000000;">{{ career.company }}</span>
+                    <a [href]="career.careerOfficeUrl" target="_blank" class="occ-action-link" style="color: #000000;">
                       Click here <i class="bi bi-box-arrow-up-right"></i>
                     </a>
                   </div>
                 </div>
                 <div class="col-12" *ngIf="filteredCareers.length === 0">
-                  <p class="text-muted small mb-0 p-2 text-center border rounded bg-light">No career links available for this category yet.</p>
+                  <p class="small mb-0 p-2 text-center border rounded bg-light" style="color: #000000; font-weight: 600;">No career links available for this category yet.</p>
                 </div>
               </div>
             </div>
@@ -164,7 +167,7 @@
             <div class="d-flex justify-content-between align-items-center mb-2 px-1">
               <h6 class="jc-filter-title mb-0 p-0">
                 <i class="bi bi-funnel"></i>
-                <span>Quick Filters</span>
+                <span>Quick Filters by Company name</span>
               </h6>
               <button class="btn btn-sm btn-link text-danger p-0 text-decoration-none" style="font-size: 0.85rem;" (click)="clearAllFilters()" *ngIf="hasActiveFilters()">
                 Clear All
@@ -174,27 +177,15 @@
             
             <!-- Company Filter -->
             <div class="jc-filter-group mb-2">
-              <p class="jc-filter-label fw-bold mb-1">Company</p>
-              <div class="jc-filter-options-scroll">
+                 <div class="jc-filter-options-scroll">
                 <label class="jc-filter-option" *ngFor="let company of getUniqueCompanies()" [class.active]="selectedCompanies.includes(company)">
                   <input type="checkbox" [value]="company" [checked]="selectedCompanies.includes(company)" (change)="filterByCompany($event)">
-                  <span class="jc-filter-text">{{ company }}</span>
-                  <span class="jc-filter-count">({{ getJobCountByCompany(company) }})</span>
+                  <span class="jc-filter-text">{{ company }}({{ getJobCountByCompany(company) }})</span>
                 </label>
               </div>
             </div>
 
-            <!-- Category Filter -->
-            <div class="jc-filter-group mb-2">
-              <p class="jc-filter-label fw-bold mb-1">Category</p>
-              <div class="jc-filter-options-scroll">
-                <label class="jc-filter-option" *ngFor="let cat of getUniqueCategories()" [class.active]="selectedCategories.includes(cat)">
-                  <input type="checkbox" [value]="cat" [checked]="selectedCategories.includes(cat)" (change)="filterByCategory($event)">
-                  <span class="jc-filter-text">{{ cat }}</span>
-                  <span class="jc-filter-count">({{ getJobCountByCategory(cat) }})</span>
-                </label>
-              </div>
-            </div>
+            
 
           </div>
         </div>

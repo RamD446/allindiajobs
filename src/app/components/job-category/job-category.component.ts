@@ -13,7 +13,7 @@ import { Job, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
   styleUrl: './job-category.component.css'
 })
 export class JobCategoryComponent implements OnInit {
-    jobsPerPage: number = 30;
+    jobsPerPage: number = 20;
     currentPage: number = 1;
   jobs: Job[] = [];
   filteredJobs: Job[] = [];

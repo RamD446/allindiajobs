@@ -273,9 +273,10 @@
 
 /* Description Card */
 .desc-card .job-desc-content {
-  font-size: 13px;
-  line-height: 1.6;
-  color: #495057;
+  font-family: 'Nirmala UI', 'Gautami', 'Inter', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #333d47;
   word-wrap: break-word;
   overflow-wrap: break-word;
   margin: 0;
@@ -283,14 +284,14 @@
 }
 
 .job-desc-content * {
-  color: #495057 !important;
-  font-size: 12px !important;
-  line-height: 1.5 !important;
-  margin: 2px 0 !important;
+  color: #333d47 !important;
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  margin: 4px 0 !important;
 }
 
 .job-desc-content p {
-  margin-bottom: 5px !important;
+  margin-bottom: 8px !important;
 }
 
 .job-desc-content p:first-child {
@@ -299,10 +300,10 @@
 
 .job-desc-content h1, .job-desc-content h2, .job-desc-content h3, 
 .job-desc-content h4, .job-desc-content h5, .job-desc-content h6 {
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  color: #2c3e50 !important;
-  margin: 10px 0 5px 0 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #1e3c72 !important;
+  margin: 15px 0 8px 0 !important;
 }
 
 /* Summary Grid Layout */

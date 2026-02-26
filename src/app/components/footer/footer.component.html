@@ -67,21 +67,29 @@
         </ul>
       </div>
 
-      <!-- Section 4: Contact -->
+      <!-- Section 4: Contact & Actions -->
       <div class="footer-section">
         <h6 class="footer-title">
           <i class="bi bi-envelope-paper-fill"></i>
-          Contact Us
+          Connect With Us
         </h6>
         <div class="contact-details">
           <p class="contact-info">
             <i class="bi bi-envelope-fill me-3"></i>
             <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a>
           </p>
-          <p class="contact-info">
-            <i class="bi bi-globe me-3"></i>
-            <a href="https://allindajobs.com">allindajobs.com</a>
-          </p>
+          
+          <div class="footer-action-buttons mt-3">
+            <button class="footer-btn share-btn" (click)="shareWebsite()">
+              <i class="bi bi-share-fill"></i>
+              <span>Share App</span>
+            </button>
+            <button *ngIf="showInstallBtn" class="footer-btn install-btn" (click)="installApp()">
+              <i class="bi bi-cloud-arrow-down-fill"></i>
+              <span>Download App</span>
+            </button>
+          </div>
+
           <div class="mt-4 pt-2">
             <p class="small text-muted mb-0">Independent job information portal.</p>
             <p class="small text-muted">Stay updated with latest jobs.</p>

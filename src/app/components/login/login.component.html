@@ -97,9 +97,6 @@
           <button class="btn btn-info me-2 text-white" (click)="showCareerCreateForm()">
             <i class="bi bi-briefcase me-1"></i>Create Job Careers
           </button>
-          <button class="btn btn-warning me-2 text-white" (click)="showNewsCreateForm()">
-            <i class="bi bi-newspaper me-1"></i>Create News
-          </button>
           <button class="btn btn-outline-danger" (click)="logout()">
             <i class="bi bi-box-arrow-right me-1"></i>Logout
           </button>
@@ -114,55 +111,7 @@
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'careers'" (click)="activeTab = 'careers'" href="javascript:void(0)">All Latest Job Careers</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'news'" (click)="activeTab = 'news'" href="javascript:void(0)">All Latest News</a>
-        </li>
       </ul>
-
-      <!-- News Form Modal -->
-      <div *ngIf="showNewsForm" class="job-form-modal">
-        <div class="job-form-content">
-          <div class="job-form-header">
-            <h4 class="mb-0">{{ editingNews ? 'Edit News' : 'Create New News' }}</h4>
-            <button class="btn-close" (click)="cancelNewsForm()"></button>
-          </div>
-          
-          <form (ngSubmit)="saveNews()" #newsFormRef="ngForm" class="job-form-body">
-            <div class="row g-2">
-              <div class="col-md-6 mb-2">
-                <label class="form-label">News Title *</label>
-                <input type="text" class="form-control" [(ngModel)]="newsForm.title" name="title" required placeholder="e.g. New Government Job Opening">
-              </div>
-              
-              <div class="col-md-6 mb-2">
-                <label class="form-label">News Type *</label>
-                <input type="text" class="form-control" [(ngModel)]="newsForm.newsType" name="newsType" required placeholder="e.g. Breaking News, Alert">
-              </div>
-
-              <div class="col-12 mb-0">
-                <label class="form-label mb-1">Description *</label>
-                <quill-editor 
-                  [(ngModel)]="newsForm.description" 
-                  name="description" 
-                  [modules]="quillModules"
-                  [styles]="{height: '500px', width: '100%'}"
-                  placeholder="Detailed news description..."
-                  required>
-                </quill-editor>
-              </div>
-            </div>
-            
-            <div class="job-form-footer mt-3">
-              <button type="button" class="btn btn-secondary me-2" (click)="cancelNewsForm()" [disabled]="isSaving">Cancel</button>
-              <button type="submit" class="btn btn-primary" [disabled]="!newsFormRef.valid || isSaving">
-                <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                <span *ngIf="isSaving">{{ editingNews ? 'Updating...' : 'Creating...' }}</span>
-                <span *ngIf="!isSaving">{{ editingNews ? 'Save News' : 'Create News' }}</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
 
       <!-- Career Form Modal -->
       <div *ngIf="showCareerForm" class="job-form-modal">
@@ -223,8 +172,8 @@
                 <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Software Engineer">
               </div>
               
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Company Name *</label>
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories'">
+                <label class="form-label">Company Name</label>
                 <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" placeholder="e.g. Tech Solutions">
               </div>
               
@@ -237,14 +186,14 @@
 
               
 
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs'">
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories'">
                 <label class="form-label">Experience *</label>
                 <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
                   <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>
                 </select>
               </div>
 
-              <div class="col-md-4 mb-3" *ngIf="editingJob">
+              <div class="col-md-4 mb-3" *ngIf="editingJob && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories'">
                 <label class="form-label">Created Date & Time *</label>
                 <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" required>
               </div>
@@ -269,7 +218,7 @@
               </ng-container>
 
               <!-- Application URL - Full Row for visibility -->
-              <div class="col-12 mb-3">
+              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories'">
                 <label class="form-label">Application URL (Registration Link)</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
@@ -414,56 +363,6 @@
           <i class="bi bi-briefcase display-4 text-muted"></i>
           <h5 class="mt-3 text-muted">No Career Links Available</h5>
           <p class="text-muted">Add your first job career link to get started.</p>
-        </div>
-      </div>
-
-      <!-- Latest News List (Tab 3) -->
-      <div class="jobs-section" *ngIf="activeTab === 'news'">
-        <div class="jobs-header mb-3 d-flex justify-content-between align-items-center">
-          <h4 class="text-primary mb-0">Latest News ({{ newsList.length }})</h4>
-        </div>
-        
-        <div class="row" *ngIf="newsList.length > 0">
-          <div class="col-12 mb-3" *ngFor="let news of newsList">
-            <div class="job-card-compact" [class.expanded]="isNewsExpanded(news.id)">
-              <div class="job-header-compact" (click)="toggleNewsExpand(news.id)" style="cursor: pointer;">
-                <div class="job-info">
-                  <div class="d-flex align-items-center gap-2">
-                    <i class="bi" [class.bi-chevron-right]="!isNewsExpanded(news.id)" [class.bi-chevron-down]="isNewsExpanded(news.id)"></i>
-                    <div>
-                      <h6 class="job-title-small mb-0">{{ news.title }}</h6>
-                      <small class="job-company-small text-muted">
-                        <span class="badge bg-warning text-white badge-sm">{{ news.newsType }}</span>
-                      </small>
-                    </div>
-                  </div>
-                </div>
-                <div class="job-actions-small" (click)="$event.stopPropagation()">
-                  <button class="btn btn-sm btn-outline-primary me-1" (click)="editNews(news)" title="Edit">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" (click)="deleteNews(news.id)" title="Delete">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </div>
-              
-              <div class="job-body-compact" *ngIf="isNewsExpanded(news.id)">
-                <div class="job-meta-info mb-2">
-                  <div class="mb-2"><strong>Title:</strong> {{ news.title }}</div>
-                  <div class="mb-2"><strong>News Type:</strong> {{ news.newsType }}</div>
-                  <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>Posted: {{ news.createdDate | date:'yyyy-MM-dd HH:mm' }}</small>
-                </div>
-                <div class="job-desc-small" [innerHTML]="news.description"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div *ngIf="newsList.length === 0" class="text-center py-4">
-          <i class="bi bi-newspaper display-4 text-muted"></i>
-          <h5 class="mt-3 text-muted">No News Items Available</h5>
-          <p class="text-muted">Create your first news alert to get started.</p>
         </div>
       </div>
     </div>

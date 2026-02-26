@@ -16,6 +16,8 @@ export const routes: Routes = [
   { path: 'today-jobs', component: JobCategoryComponent },
   { path: 'today-walkins', component: JobCategoryComponent },
   { path: 'today-expired-gov-jobs', component: JobCategoryComponent },
+  { path: 'health-and-career-tips', component: JobCategoryComponent },
+  { path: 'motivation-stories', component: JobCategoryComponent },
   { path: 'about-us', component: InfoPageComponent },
   { path: 'contact-us', component: InfoPageComponent },
   { path: 'privacy-policy', component: InfoPageComponent },

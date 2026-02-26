@@ -40,7 +40,9 @@ export class JobCategoryComponent implements OnInit {
     'fresher-jobs': { title: 'Fresher Jobs', category: 'Fresher Jobs' },
     'today-jobs': { title: 'Today Posted Jobs', category: 'Today Posted Jobs' },
     'today-walkins': { title: 'Today Walk-in Drives', category: 'Today Walk-in Drives' },
-    'today-expired-gov-jobs': { title: 'Today Expired Gov Jobs', category: 'Today Expired Gov Jobs' }
+    'today-expired-gov-jobs': { title: 'Today Expired Gov Jobs', category: 'Today Expired Gov Jobs' },
+    'health-and-career-tips': { title: 'Health and Career Tips', category: 'Health and Career Tips' },
+    'motivation-stories': { title: 'Motivation Stories', category: 'Motivation Stories' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -92,13 +94,19 @@ export class JobCategoryComponent implements OnInit {
           
           // Filter jobs by category
           if (category === 'All Latest Jobs') {
-            this.filteredJobs = this.jobs;
+            this.filteredJobs = this.jobs.filter(job => 
+              job.category !== 'Health and Career Tips' && 
+              job.category !== 'Motivation Stories'
+            );
           } else if (category === 'All Private Jobs') {
             // Include Private Jobs, Walk-in Drives, and all Bank-related jobs
+            // EXCLUDE Health Tips and Motivation Stories
             this.filteredJobs = this.jobs.filter(job => 
-              job.category === 'All Private Jobs' || 
+              (job.category === 'All Private Jobs' || 
               job.category === 'Walk-in Drives' ||
-              (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
+              (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))) &&
+              job.category !== 'Health and Career Tips' && 
+              job.category !== 'Motivation Stories'
             );
           } else if (category === 'Banking Jobs') {
             // Include all bank-related categories
@@ -258,6 +266,10 @@ export class JobCategoryComponent implements OnInit {
         return 'badge-danger';
       case 'IT Jobs':
         return 'badge-primary';
+      case 'Health and Career Tips':
+        return 'badge-info';
+      case 'Motivation Stories':
+        return 'badge-warning';
       default:
         return 'badge-primary';
     }
@@ -352,7 +364,9 @@ export class JobCategoryComponent implements OnInit {
       'All Private Jobs': 'private-jobs',
       'Walk-in Drives': 'walk-in-drives',
       'Banking Jobs': 'banking-jobs',
-      'IT Jobs': 'it-jobs'
+      'IT Jobs': 'it-jobs',
+      'Health and Career Tips': 'health-and-career-tips',
+      'Motivation Stories': 'motivation-stories'
     };
 
     const route = routeMapping[category];

@@ -89,6 +89,60 @@
   color: #6366f1;
 }
 
+/* Footer Action Buttons */
+.footer-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.footer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  max-width: 200px;
+}
+
+.share-btn {
+  background: #6366f1;
+  color: white;
+}
+
+.share-btn:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+}
+
+.install-btn {
+  background: #10b981;
+  color: white;
+}
+
+.install-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 576px) {
+  .footer-action-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .footer-btn {
+    flex: 1;
+    min-width: 140px;
+  }
+}
+
 .footer-bottom {
   background-color: rgba(0, 0, 0, 0.2);
   padding: 1.5rem 0;

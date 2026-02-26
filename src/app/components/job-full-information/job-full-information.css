@@ -8,10 +8,10 @@
     font-weight: 700 !important;
   }
   .job-desc-content {
-    border-left: 1px solid #ff69b4;
-    border-right: 1px solid #ff69b4;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+    border: 1px solid #ff69b4 !important;
+    border-radius: 8px;
+    padding: 10px !important;
+    margin: 10px 0;
   }
 }
 /* Job Full Information - Mobile First Design */
@@ -25,11 +25,26 @@
 .ultra-compact-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
-  padding: 44px 4px 8px 4px;
+  padding: 44px 4px 8px 0px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 767px) {
+  .ultra-compact-page {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .info-card {
+    border-radius: 8px !important;
+    margin-left: 4px !important;
+    margin-right: 4px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    border: 1px solid #ff69b4 !important;
+  }
 }
 
 /* Ultra Loading */
@@ -77,7 +92,7 @@
 .info-card {
   background: #ffffff;
   border-radius: 12px;
-  padding: 15px;
+  padding: 15px 15px 15px 5px;
   margin-bottom: 12px;
   box-shadow: 0 4px 15px rgba(255, 105, 180, 0.15); /* Soft pink shadow */
   border: 1px solid #ff69b4; /* Pink border like category page */
@@ -120,10 +135,10 @@
 }
 
 .full-line-divider {
-  height: 2px;
-  background: #ff69b4; /* Pink solid line */
+  height: 1px;
+  background: #ff69b4;
   width: 100%;
-  margin: 8px 0;
+  margin: 4px 0;
   border-radius: 2px;
 }
 
@@ -131,12 +146,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 4px;
   flex-wrap: wrap;
   color: #000000;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  padding: 4px 0;
+  padding: 2px 0;
 }
 
 .meta-info-left {
@@ -373,22 +388,58 @@
   }
 }
 
-/* Sidebar Job Items - Clean white cards */
-.sidebar-card {
-  max-height: none;
-  overflow: visible;
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-
+/* Related Jobs - Sidebar Styling */
 .sidebar-card .card-section-title {
-  padding-left: 0 !important;
-  padding-top: 0 !important;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #000000;
+  padding: 10px 0;
+  border-bottom: 2px solid #ff69b4;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.sidebar-card .jc-jobs {
-  border-radius: 0;
+.jc-jobs {
+  background: #ffffff;
+  border: 1px solid #ff69b4;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.jc-job {
+  padding: 12px 10px;
+  border-bottom: 1px solid #fce4ec;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.jc-job:last-child {
+  border-bottom: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.jc-job:hover {
+  background: #fff5f8;
+  padding-left: 15px;
+}
+
+.jc-job-title {
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  color: #333 !important;
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.star-icon {
+  color: #ff69b4 !important;
+  font-size: 0.75rem !important;
+  margin-top: 3px;
 }
 
 /* Sidebar Column Spacing */

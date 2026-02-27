@@ -17,20 +17,9 @@
               <span class="jc-category-name">{{ job.category }}</span>
             </div>
             <div class="jc-follow-mini">
-              <span class="follow-text">Follow:</span>
-              <button class="mini-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')">
-                <i class="bi bi-youtube"></i>
-              </button>
-              <button class="mini-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
-                <i class="bi bi-whatsapp"></i>
-              </button>
-              <button class="mini-social-btn mini-fb" (click)="openExternalChannel('https://www.facebook.com/share/17yHma5rhP/')">
-                <i class="bi bi-facebook"></i>
-              </button>
-              <button class="mini-social-btn mini-ig" (click)="openExternalChannel('https://www.instagram.com/allindajobs?igsh=MXJxeWl4NXdmeDVtdg==')">
-                <i class="bi bi-instagram"></i>
-              </button>
-            </div>
+              <span class="follow-text">Share Job:</span>
+              <button class="share-icon-btn wa" (click)="shareOnWhatsApp(job)" title="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+               <button class="share-icon-btn share" (click)="shareJob(job)" title="Share Job"><i class="bi bi-share"></i></button>            </div>
           </div>
         </div>
 
@@ -40,11 +29,7 @@
           <div class="job-meta-header mt-2 mb-3">
             <span class="meta-badge"><i class="bi bi-person-circle"></i> Admin</span>
             <span class="meta-badge"><i class="bi bi-calendar-event"></i> {{ formatDate(job.createdDate) }}</span>
-            <div class="ms-auto d-flex align-items-center gap-1 gap-md-2">
-              <span class="share-label">Share:</span>
-              <button class="share-icon-btn wa" (click)="shareOnWhatsApp(job)" title="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
-              <button class="share-icon-btn share" (click)="shareJob(job)" title="Share Job"><i class="bi bi-share"></i></button>
-            </div>
+         
           </div>
 
           <hr class="jc-filter-divider mb-3">

@@ -60,7 +60,15 @@
           </div>
           <div class="full-line-divider d-none d-md-block"></div>
 
-          <div class="job-desc-content" [innerHTML]="getSafeHtml(job.description)"></div>
+          <div class="job-desc-content">
+            <div *ngIf="isRichText(job.description)" [innerHTML]="getSafeHtml(job.description)"></div>
+            <div *ngIf="!isRichText(job.description)" class="plain-desc-list">
+              <div *ngFor="let sentence of getDescriptionList(job.description)" class="desc-item">
+                <i class="bi bi-patch-check-fill text-primary"></i>
+                <span>{{ sentence }}</span>
+              </div>
+            </div>
+          </div>
           <div class="info-link-wrapper" *ngIf="job.applicationUrl">
             <div class="info-link-label">
               <i class="bi bi-info-circle-fill"></i>

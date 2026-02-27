@@ -189,6 +189,20 @@ export class JobFullInformation implements OnInit {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
+  isRichText(description: string): boolean {
+    if (!description) return false;
+    return description.includes('&nbsp;');
+  }
+
+  getDescriptionList(description: string): string[] {
+    if (!description) return [];
+    // Split the description by dots. Each segment between dots is a list item.
+    return description
+      .split('.')
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
+  }
+
   shareJob(job: Job) {
     const jobUrl = window.location.href;
     

@@ -306,6 +306,42 @@
   margin: 15px 0 8px 0 !important;
 }
 
+/* Plain Description List Styles */
+.plain-desc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+
+.desc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
+  margin: 0 !important;
+}
+
+.desc-item i {
+  font-size: 1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.desc-item span {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+
+
+
+
+
+
+
+
 /* Summary Grid Layout */
 .summary-grid {
   display: grid;

@@ -54,10 +54,10 @@
                 <i class="bi bi-person-walking"></i>
                 <span>Today Walk-ins</span>
               </button>
-              <button class="jc-pill jc-pill-it" routerLink="/it-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+              <!-- <button class="jc-pill jc-pill-it" routerLink="/it-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-laptop-fill"></i>
                 <span>IT Jobs</span>
-              </button>
+              </button> -->
               <button class="jc-pill jc-pill-fresher" routerLink="/fresher-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e8f5e9; color: #2e7d32;">
                 <i class="bi bi-mortarboard-fill"></i>
                 <span>Fresher Jobs</span>
@@ -75,21 +75,21 @@
                 <i class="bi bi-person-walking"></i>
                 <span> Walk-ins</span>
               </button>
-              <button class="jc-pill jc-pill-bank" routerLink="/banking-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+              <!-- <button class="jc-pill jc-pill-bank" routerLink="/banking-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-piggy-bank-fill"></i>
                 <span>Banking Jobs</span>
-              </button> 
+              </button>  -->
               <button class="jc-pill" routerLink="/health-and-career-tips" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e1f5fe; color: #0288d1;">
                 <i class="bi bi-heart-pulse-fill"></i>
-                <span>Health Tips</span>
+                <span>Health and Career Tips</span>
               </button>
-              <button class="jc-pill" routerLink="/motivation-stories" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff8e1; color: #ffa000;">
+              <!-- <button class="jc-pill" routerLink="/motivation-stories" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff8e1; color: #ffa000;">
                 <i class="bi bi-lightning-charge-fill"></i>
                 <span>Motivation</span>
-              </button>
+              </button> -->
               <button *ngIf="getTodayExpiredGovJobsCount() > 0" class="jc-pill jc-pill-today-expired" routerLink="/today-expired-gov-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #ffebee; color: #b71c1c;">
                 <i class="bi bi-calendar-x-fill"></i>
-                <span>Today Expired Gov Jobs</span>
+                <span> Expired Gov Jobs</span>
               </button>
             </div>
           </div>

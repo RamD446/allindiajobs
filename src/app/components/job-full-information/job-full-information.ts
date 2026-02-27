@@ -196,11 +196,26 @@ export class JobFullInformation implements OnInit {
 
   getDescriptionList(description: string): string[] {
     if (!description) return [];
-    // Split the description by dots. Each segment between dots is a list item.
-    return description
+    
+    // Split the description by dots and trim segments
+    const segments = description
       .split('.')
       .map(s => s.trim())
       .filter(s => s.length > 0);
+    
+    // Group segments in pairs (two sentences per item)
+    const grouped: string[] = [];
+    for (let i = 0; i < segments.length; i += 2) {
+      if (i + 1 < segments.length) {
+        // Two sentences together, with dots added back
+        grouped.push(`${segments[i]}. ${segments[i + 1]}.`);
+      } else {
+        // Single remaining sentence
+        grouped.push(`${segments[i]}.`);
+      }
+    }
+    
+    return grouped;
   }
 
   shareJob(job: Job) {

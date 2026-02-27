@@ -63,15 +63,15 @@
                 <span>Fresher Jobs</span>
               </button>
              
-              <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+              <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
                 <i class="bi bi-building-fill"></i>
                 <span>Govt Jobs</span>
               </button>
-              <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+              <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e8f5e9; color: #2e7d32;">
                 <i class="bi bi-briefcase-fill"></i>
                 <span>Private Jobs</span>
               </button>
-              <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+              <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fce4ec; color: #c2185b;">
                 <i class="bi bi-person-walking"></i>
                 <span> Walk-ins</span>
               </button>
@@ -109,7 +109,7 @@
                     <span class="jc-job-time">{{ getTimeAgo(job.createdDate) }}</span>
                     <ng-container *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
                       <span class="jc-sep">|</span>
-                      <span class="jc-job-last-date text-danger fw-bold">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                      <span class="jc-job-last-date text-danger fw-bold">Apply Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
                     </ng-container>
                     <ng-container *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate">
                       <span class="jc-sep">|</span>

@@ -258,7 +258,7 @@ export class JobFullInformation implements OnInit {
     }
     
     messageParts.push(``);
-    messageParts.push(`📺 Subscribe YouTube: https://www.youtube.com/@allindajobs`);
+  
     messageParts.push(`_Amazing job opportunity for you!_`);
     
     const message = messageParts.join('\n');

@@ -194,8 +194,18 @@ export class JobFullInformation implements OnInit {
     return description.includes('&nbsp;');
   }
 
+  hasDots(description: string): boolean {
+    if (!description) return false;
+    return description.includes('.');
+  }
+
   getDescriptionList(description: string): string[] {
     if (!description) return [];
+    
+    // If no full stop exists, return the description as a single item
+    if (!description.includes('.')) {
+      return [description.trim()];
+    }
     
     // Split the description by dots and trim segments
     const segments = description

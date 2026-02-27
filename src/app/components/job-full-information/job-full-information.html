@@ -62,12 +62,17 @@
 
           <div class="job-desc-content">
             <div *ngIf="isRichText(job.description)" [innerHTML]="getSafeHtml(job.description)"></div>
-            <div *ngIf="!isRichText(job.description)" class="plain-desc-list">
-              <div *ngFor="let sentence of getDescriptionList(job.description)" class="desc-item">
-                <i class="bi bi-patch-check-fill text-primary"></i>
-                <span>{{ sentence }}</span>.
+            <ng-container *ngIf="!isRichText(job.description)">
+              <div *ngIf="hasDots(job.description)" class="plain-desc-list">
+                <div *ngFor="let sentence of getDescriptionList(job.description)" class="desc-item">
+                  <i class="bi bi-patch-check-fill text-primary"></i>
+                  <span>{{ sentence }}</span>
+                </div>
               </div>
-            </div>
+              <div *ngIf="!hasDots(job.description)" class="plain-desc-text">
+                {{ job.description }}
+              </div>
+            </ng-container>
           </div>
           <div class="info-link-wrapper" *ngIf="job.applicationUrl">
             <div class="info-link-label">

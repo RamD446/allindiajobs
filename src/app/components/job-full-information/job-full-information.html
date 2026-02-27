@@ -46,8 +46,15 @@
                   <span class="ms-1">{{ sentence }}</span>
                 </div>
               </div>
-              <div *ngIf="!hasDots(job.description)" class="plain-desc-text">
+              <div *ngIf="job.description && !hasDots(job.description)" class="plain-desc-text">
                 {{ job.description }}
+              </div>
+             
+             
+              <div *ngIf="job.applicationUrl" class="desc-item mt-1">
+                <i class="bi bi-patch-check-fill text-primary"></i>
+                <span class="ms-1 fw-bold"> అధికారిక అప్లై లింక్ /fficial Apply Link :- </span>
+                <a [href]="job.applicationUrl" target="_blank" class="ms-1 text-primary text-decoration-none text-break">{{ job.applicationUrl }}</a>
               </div>
             </ng-container>
           </div>

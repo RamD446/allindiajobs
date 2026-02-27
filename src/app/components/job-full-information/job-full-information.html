@@ -50,10 +50,10 @@
                 {{ job.description }}
               </div>
              
-             
-              <div *ngIf="job.applicationUrl" class="desc-item mt-1">
+          
+              <div *ngIf="job.category === 'Government Jobs' && job.applicationUrl" class="desc-item mt-1">
                 <i class="bi bi-patch-check-fill text-primary"></i>
-                <span class="ms-1 fw-bold"> అధికారిక అప్లై లింక్ /fficial Apply Link :- </span>
+                <span class="ms-1 fw-bold">అధికారిక అప్లై లింక్ / Official Apply Link :- </span>
                 <a [href]="job.applicationUrl" target="_blank" class="ms-1 text-primary text-decoration-none text-break">{{ job.applicationUrl }}</a>
               </div>
             </ng-container>

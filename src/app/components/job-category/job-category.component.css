@@ -767,3 +767,148 @@
     margin: 0.2rem;
   }
 }
+
+/* Job Tables Styling */
+.jc-tables-container {
+  padding: 0.15rem;
+}
+
+.jc-table-section {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255, 105, 180, 0.3);
+  margin: 0.2rem;
+  margin-bottom: 12px;
+}
+
+.jc-table-header {
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.gov-bg {
+  background: linear-gradient(135deg, #e65100 0%, #ff9800 100%);
+}
+
+.prv-bg {
+  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+}
+
+.jc-custom-table {
+  margin-bottom: 0;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.jc-custom-table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #495057;
+  padding: 0.75rem;
+  font-weight: 700;
+}
+
+.jc-custom-table tbody tr {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.jc-custom-table tbody tr:hover {
+  background-color: #fff5f7;
+}
+
+.jc-custom-table td {
+  padding: 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.date-col { width: 120px; }
+.action-col { width: 100px; }
+
+.date-badge {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.time-ago {
+  font-size: 0.65rem;
+  color: #718096;
+  font-weight: 600;
+}
+
+.job-main-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a202c;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+.job-sub-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.btn-view-job {
+  background: linear-gradient(135deg, #ff69b4 0%, #e0569a 100%);
+  color: white;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(255, 105, 180, 0.3);
+}
+
+.btn-view-job:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 105, 180, 0.4);
+  color: white;
+}
+
+/* Mobile Specific Table Adjustments */
+@media (max-width: 768px) {
+  .date-col { width: 90px; }
+  .action-col { width: 70px; }
+  
+  .jc-custom-table td {
+    padding: 0.5rem 0.4rem;
+  }
+  
+  .jc-custom-table thead th {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.65rem;
+  }
+
+  .date-badge {
+    font-size: 0.65rem;
+  }
+
+  .job-main-title {
+    font-size: 0.75rem;
+  }
+  
+  .btn-view-job {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
+  }
+
+  .jc-table-header {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}

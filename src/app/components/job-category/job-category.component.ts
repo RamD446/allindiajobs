@@ -329,11 +329,20 @@ export class JobCategoryComponent implements OnInit {
   // Get new jobs (created in last 7 days)
   getNewJobs(): Job[] {
     // Return jobs for the current page, sorted by newest first
-    const sorted = this.filteredJobs.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+    const sorted = [...this.filteredJobs].sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
     const start = (this.currentPage - 1) * this.jobsPerPage;
     const end = start + this.jobsPerPage;
     return sorted.slice(start, end);
+  }
 
+  getGovJobs(): Job[] {
+    const jobs = this.getNewJobs();
+    return jobs.filter(job => job.category === 'Government Jobs');
+  }
+
+  getPrivateJobs(): Job[] {
+    const jobs = this.getNewJobs();
+    return jobs.filter(job => job.category !== 'Government Jobs');
   }
 
   getTotalPages(): number {

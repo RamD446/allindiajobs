@@ -126,7 +126,73 @@
   background: #667eea;
 }
 
-/* Visitor Stats Dashboard REMOVED */
+/* Category Sub-tabs Styling */
+.category-tabs-container {
+  overflow-x: auto;
+  padding-bottom: 5px;
+  margin-bottom: 1.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: #667eea #f1f5f9;
+}
+
+.category-tabs-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.category-tabs-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.category-tabs-container::-webkit-scrollbar-thumb {
+  background-color: #667eea;
+  border-radius: 10px;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.category-tab {
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.category-tab:hover {
+  border-color: #667eea;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.category-tab.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+}
+
+.category-tab .badge {
+  background: rgba(0, 0, 0, 0.1);
+  color: inherit;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 10px;
+}
+
+.category-tab.active .badge {
+  background: rgba(255, 255, 255, 0.2);
+}
 
 /* Job Management Section */
 .job-management-section {

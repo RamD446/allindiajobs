@@ -255,13 +255,34 @@
 
       <!-- Jobs List (Tab 1) -->
       <div class="jobs-section" *ngIf="activeTab === 'jobs'">
-        <div class="jobs-header mb-3 d-flex justify-content-between align-items-center">
-          <h4 class="text-primary mb-0">All Jobs ({{ jobs.length }})</h4>
-          <small class="text-muted">Compact View</small>
+        <div class="jobs-header mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="text-primary mb-0">Jobs Management</h4>
+            <small class="text-muted">{{ getFilteredJobs().length }} jobs displayed</small>
+          </div>
+          
+          <!-- Category Sub-tabs -->
+          <div class="category-tabs-container">
+            <div class="category-tabs">
+              <button 
+                class="category-tab" 
+                [class.active]="selectedJobCategory === 'All'"
+                (click)="selectedJobCategory = 'All'">
+                All <span class="badge">{{ getCategoryCount('All') }}</span>
+              </button>
+              <button 
+                *ngFor="let category of jobCategories"
+                class="category-tab" 
+                [class.active]="selectedJobCategory === category"
+                (click)="selectedJobCategory = category">
+                {{ category }} <span class="badge">{{ getCategoryCount(category) }}</span>
+              </button>
+            </div>
+          </div>
         </div>
         
-        <div class="row" *ngIf="jobs.length > 0">
-          <div class="col-12 mb-3" *ngFor="let job of jobs">
+        <div class="row" *ngIf="getFilteredJobs().length > 0">
+          <div class="col-12 mb-3" *ngFor="let job of getFilteredJobs()">
             <div class="job-card-compact" [class.expanded]="isJobExpanded(job.id)">
               <div class="job-header-compact" (click)="toggleJobExpand(job.id)" style="cursor: pointer;">
                 <div class="job-info">
@@ -305,10 +326,10 @@
           </div>
         </div>
         
-        <div *ngIf="jobs.length === 0" class="text-center py-4">
+        <div *ngIf="getFilteredJobs().length === 0" class="text-center py-4">
           <i class="bi bi-inbox display-4 text-muted"></i>
-          <h5 class="mt-3 text-muted">No Jobs Available</h5>
-          <p class="text-muted">Create your first job posting to get started.</p>
+          <h5 class="mt-3 text-muted">No {{ selectedJobCategory !== 'All' ? selectedJobCategory : '' }} Jobs Available</h5>
+          <p class="text-muted">No jobs found in this category.</p>
         </div>
       </div>
 

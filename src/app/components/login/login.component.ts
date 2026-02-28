@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   jobs: Job[] = [];
   jobCareers: JobCareer[] = [];
   activeTab: 'jobs' | 'careers' = 'jobs';
+  selectedJobCategory: string = 'All';
   showJobForm: boolean = false;
   showCareerForm: boolean = false;
   editingJob: Job | null = null;
@@ -219,6 +220,18 @@ export class LoginComponent implements OnInit {
 
   isJobExpanded(jobId: string): boolean {
     return this.expandedJobIds.has(jobId);
+  }
+
+  getFilteredJobs(): Job[] {
+    if (this.selectedJobCategory === 'All') {
+      return this.jobs;
+    }
+    return this.jobs.filter(job => job.category === this.selectedJobCategory);
+  }
+
+  getCategoryCount(category: string): number {
+    if (category === 'All') return this.jobs.length;
+    return this.jobs.filter(job => job.category === category).length;
   }
 
   toggleCareerExpand(careerId: string) {

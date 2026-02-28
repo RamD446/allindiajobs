@@ -351,9 +351,9 @@
 
 @media (max-width: 768px) {
   .sidebar-wa-card {
-    padding: 8px 12px;
+    padding: 10px 15px;
     border-radius: 12px;
-    margin: 10px 0;
+    margin: 15px 6px;
   }
   
   .wa-icon-box {

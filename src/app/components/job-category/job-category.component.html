@@ -125,7 +125,7 @@
                         <div class="job-main-title">{{ job.title }}</div>
                         <div class="job-sub-meta">
                           <!-- <span class="badge bg-success-subtle text-success border border-success-subtle me-1">{{ job.category }}</span> -->
-                          <span *ngIf="job.lastDateToApply" class="text-danger small fw-bold ms-1">Last Date: {{ job.lastDateToApply | date:'dd MMM' }}</span>
+                          <span *ngIf="job.lastDateToApply" class="text-danger small fw-bold ms-1"> Last Date: {{ job.lastDateToApply | date:'dd MMM' }}</span>
                         </div>
                       </td>
                       <td class="action-cell text-center">
@@ -167,7 +167,7 @@
                         <div class="job-main-title">{{ job.title }}</div>
                         <div class="job-sub-meta">
                          
-                          <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="text-danger small fw-bold ms-1">Date: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
+                          <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="text-danger small fw-bold ms-1">walk-In Date: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
                         </div>
                       </td>
                       <td class="action-cell text-center">

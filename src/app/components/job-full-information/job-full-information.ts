@@ -140,6 +140,29 @@ export class JobFullInformation implements OnInit {
     return job.id;
   }
 
+  getRelatedJobs(): Job[] {
+    if (!this.job || !this.latestJobs) return [];
+    
+    const isGov = this.job.category === 'Government Jobs';
+    
+    return this.latestJobs
+      .filter(j => {
+        if (isGov) {
+          return j.category === 'Government Jobs';
+        } else {
+          return j.category !== 'Government Jobs' && j.category !== 'Health and Career Tips' && j.category !== 'Motivation Stories';
+        }
+      })
+      .slice(0, 10);
+  }
+
+  getTopJobs(): Job[] {
+    if (!this.latestJobs) return [];
+    return this.latestJobs
+      .filter(j => j.category !== 'Health and Career Tips' && j.category !== 'Motivation Stories')
+      .slice(0, 10);
+  }
+
   getTimeAgo(dateString: string): string {
     const now = new Date();
     const date = new Date(dateString);

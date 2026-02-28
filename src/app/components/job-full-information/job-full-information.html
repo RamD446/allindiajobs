@@ -122,25 +122,76 @@
         </div>
 
         <!-- Related Jobs Sidebar -->
-        <div class="jc-top-card p-0 overflow-hidden">
+        <div class="jc-top-card p-0 overflow-hidden mb-3">
           <div class="sidebar-header p-3 pb-0">
-            <h5 class="sidebar-title"><i class="bi bi-fire text-danger me-2"></i>Related Jobs</h5>
+            <h5 class="sidebar-title"><i class="bi bi-fire text-danger me-2"></i>Related Jobs (సంబంధిత ఉద్యోగాలు)</h5>
           </div>
-          <div class="jc-jobs" *ngIf="latestJobs && latestJobs.length > 0">
-            <div class="jc-job" *ngFor="let latestJob of latestJobs.slice(0, 10); trackBy: trackByJobId" (click)="viewJobDetails(latestJob)">
-              <div class="jc-job-info">
-                <span class="jc-job-title">
-                  <i class="bi bi-chevron-right star-icon"></i>
-                  {{ latestJob.title }}
-                </span>
-                <div class="jc-job-meta">
-                  <div class="jc-job-meta-left">
-                    <span class="jc-job-cat">{{ latestJob.category }}</span>
-                    <span class="jc-sep">|</span>
-                    <span class="jc-job-time">{{ getTimeAgo(latestJob.createdDate) }}</span>
-                  </div>
-                </div>
-              </div>
+          <div class="jc-tables-container" *ngIf="getRelatedJobs().length > 0">
+            <div class="table-responsive">
+              <table class="table jc-custom-table">
+                <thead>
+                  <tr>
+                    <th class="date-col">Posted</th>
+                    <th class="title-col">Job Title</th>
+                    <th class="action-col text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let relJob of getRelatedJobs()" (click)="viewJobDetails(relJob)">
+                    <td class="date-cell">
+                      <span class="date-badge">{{ relJob.createdDate | date:'dd-MMM' }}</span>
+                      <div class="time-ago">{{ getTimeAgo(relJob.createdDate) }}</div>
+                    </td>
+                    <td class="title-cell">
+                      <div class="job-main-title">{{ relJob.title }}</div>
+                    </td>
+                    <td class="action-cell text-center">
+                      <button class="btn btn-view-job" (click)="viewJobDetails(relJob); $event.stopPropagation()">
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Jobs Sidebar -->
+        <div class="jc-top-card p-0 overflow-hidden mb-3">
+          <div class="sidebar-header p-3 pb-0">
+            <h5 class="sidebar-title"><i class="bi bi-stars text-warning me-2"></i>Latest Top Jobs (తాజా తాజా ఉద్యోగాలు)</h5>
+          </div>
+          <div class="jc-tables-container" *ngIf="getTopJobs().length > 0">
+            <div class="table-responsive">
+              <table class="table jc-custom-table">
+                <thead>
+                  <tr>
+                    <th class="date-col">Posted</th>
+                    <th class="title-col">Job Title</th>
+                    <th class="action-col text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let topJob of getTopJobs()" (click)="viewJobDetails(topJob)">
+                    <td class="date-cell">
+                      <span class="date-badge">{{ topJob.createdDate | date:'dd-MMM' }}</span>
+                      <div class="time-ago">{{ getTimeAgo(topJob.createdDate) }}</div>
+                    </td>
+                    <td class="title-cell">
+                      <div class="job-main-title">{{ topJob.title }}</div>
+                      <div class="job-sub-meta">
+                        <span class="badge bg-light text-muted small border" style="font-size: 0.6rem;">{{ topJob.category }}</span>
+                      </div>
+                    </td>
+                    <td class="action-cell text-center">
+                      <button class="btn btn-view-job" (click)="viewJobDetails(topJob); $event.stopPropagation()">
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

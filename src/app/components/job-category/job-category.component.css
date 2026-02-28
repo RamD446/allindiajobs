@@ -784,36 +784,34 @@
 }
 
 .jc-table-header {
-  padding: 0.75rem 1rem;
-  font-weight: 700;
-  font-size: 0.95rem;
+  padding: 1rem 1.25rem 0.75rem;
   display: flex;
   align-items: center;
-  color: #fff;
+  border-bottom: 1px solid rgba(255, 105, 180, 0.1);
 }
 
 .header-text-container {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
+  gap: 6px;
 }
 
 .header-main-text {
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #000;
 }
 
 .header-sub-text {
-  font-size: 0.75rem;
-  font-weight: 500;
-  opacity: 0.9;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6c757d;
 }
 
-.gov-bg {
-  background: linear-gradient(135deg, #e65100 0%, #ff9800 100%);
-}
-
-.prv-bg {
-  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+.jc-table-header i {
+  font-size: 1.2rem;
+  color: #ff69b4 !important;
 }
 
 .jc-custom-table {
@@ -924,12 +922,19 @@
   }
 
   .jc-table-header {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .header-main-text {
+    font-size: 0.9rem;
   }
 
   .header-sub-text {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     opacity: 0.85;
+  }
+
+  .jc-table-header i {
+    font-size: 1rem;
   }
 }

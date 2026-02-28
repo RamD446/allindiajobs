@@ -1,4 +1,18 @@
-/* Job Full Information - Legacy UI (Reverted from Modern Redesign) */
+.small-telugu-text {
+  font-size: 0.85rem !important;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .desc-item.flex-column {
+    align-items: flex-start !important;
+  }
+  .desc-item.flex-column a, 
+  .desc-item.flex-column span.ms-md-1 {
+    margin-left: 26px !important;
+    margin-top: 2px;
+  }
+}
 
 .jc {
   min-height: 100vh;

@@ -51,10 +51,20 @@
               </div>
              
           
-              <div *ngIf="job.category === 'Government Jobs' && job.applicationUrl" class="desc-item mt-1">
-                <i class="bi bi-patch-check-fill text-primary"></i>
-                <span class="ms-1 fw-bold"> Official Apply Link :- </span>
-                <a [href]="job.applicationUrl" target="_blank" class="ms-1 text-primary text-decoration-none text-break">{{ job.applicationUrl }}</a>
+              <div *ngIf="job.category === 'Government Jobs' && job.applicationUrl" class="desc-item mt-1 d-flex flex-column flex-md-row align-items-md-center">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-patch-check-fill text-primary"></i>
+                  <span class="ms-1 fw-bold small-telugu-text"> అధికారిక అప్లై లింక్ / Official Apply Link :- </span>
+                </div>
+                <a [href]="job.applicationUrl" target="_blank" class="ms-md-1 text-primary text-decoration-none text-break small">{{ job.applicationUrl }}</a>
+              </div>
+              
+              <div *ngIf="job.category === 'Government Jobs' && job.lastDateToApply" class="desc-item mt-1 d-flex flex-column flex-md-row align-items-md-center">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-patch-check-fill text-primary"></i>
+                  <span class="ms-1 fw-bold small-telugu-text"> అప్లై చేయడానికి చివరి తేదీ / Last Date to Apply </span>
+                </div>
+                <span class="ms-md-1 text-danger fw-bold small">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</span>
               </div>
             </ng-container>
           </div>
@@ -124,7 +134,11 @@
         <!-- Related Jobs Sidebar -->
         <div class="jc-top-card p-0 overflow-hidden mb-3">
           <div class="sidebar-header p-3 pb-0">
-            <h5 class="sidebar-title"><i class="bi bi-fire text-danger me-2"></i>Related Jobs (సంబంధిత ఉద్యోగాలు)</h5>
+            <h5 class="sidebar-title d-flex align-items-baseline flex-wrap gap-1">
+              <i class="bi bi-fire text-danger me-1"></i>
+              <span class="header-main-text">Related Jobs</span>
+              <span class="header-sub-text small text-muted font-weight-normal">(సంబంధిత ఉద్యోగాలు)</span>
+            </h5>
           </div>
           <div class="jc-tables-container" *ngIf="getRelatedJobs().length > 0">
             <div class="table-responsive">
@@ -160,7 +174,11 @@
         <!-- Top Jobs Sidebar -->
         <div class="jc-top-card p-0 overflow-hidden mb-3">
           <div class="sidebar-header p-3 pb-0">
-            <h5 class="sidebar-title"><i class="bi bi-stars text-warning me-2"></i>Latest Top Jobs (తాజా తాజా ఉద్యోగాలు)</h5>
+            <h5 class="sidebar-title d-flex align-items-baseline flex-wrap gap-1">
+              <i class="bi bi-stars text-warning me-1"></i>
+              <span class="header-main-text">Latest Top Jobs</span>
+              <span class="header-sub-text small text-muted font-weight-normal">(తాజా తాజా ఉద్యోగాలు)</span>
+            </h5>
           </div>
           <div class="jc-tables-container" *ngIf="getTopJobs().length > 0">
             <div class="table-responsive">

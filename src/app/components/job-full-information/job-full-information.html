@@ -176,13 +176,10 @@
                   <tr *ngFor="let topJob of getTopJobs()" (click)="viewJobDetails(topJob)">
                     <td class="date-cell">
                       <span class="date-badge">{{ topJob.createdDate | date:'dd-MMM' }}</span>
-                      <div class="time-ago">{{ getTimeAgo(topJob.createdDate) }}</div>
+                   
                     </td>
                     <td class="title-cell">
                       <div class="job-main-title">{{ topJob.title }}</div>
-                      <div class="job-sub-meta">
-                        <span class="badge bg-light text-muted small border" style="font-size: 0.6rem;">{{ topJob.category }}</span>
-                      </div>
                     </td>
                     <td class="action-cell text-center">
                       <button class="btn btn-view-job" (click)="viewJobDetails(topJob); $event.stopPropagation()">

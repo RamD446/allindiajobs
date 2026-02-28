@@ -722,9 +722,9 @@
   }
 
   .sidebar-wa-card {
-    padding: 10px 15px;
+    padding: 12px 15px;
     border-radius: 12px;
-    margin: 15px 6px;
+    margin: 20px 12px 20px 12px;
   }
   
   .wa-icon-box {
@@ -784,10 +784,29 @@
 }
 
 .jc-table-header {
-  padding: 1rem 1.25rem 0.75rem;
+  padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 105, 180, 0.1);
+  border-bottom: 1px solid rgba(255, 105, 180, 0.2);
+  background-color: #f8f9fa;
+}
+
+.gov-header {
+  background-color: #fff3e0 !important;
+  border-bottom-color: rgba(230, 81, 0, 0.1) !important;
+}
+
+.gov-header i {
+  color: #e65100 !important;
+}
+
+.pvt-header {
+  background-color: #fce4ec !important;
+  border-bottom-color: rgba(194, 24, 91, 0.1) !important;
+}
+
+.pvt-header i {
+  color: #c2185b !important;
 }
 
 .header-text-container {

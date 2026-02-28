@@ -10,7 +10,7 @@
     <div class="container-fluid px-0">
       <div class="row g-0">
         <!-- Left Column -->
-        <div [ngClass]="categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories' ? 'col-12' : 'col-12 col-md-9 pe-md-1'">
+        <div [ngClass]="categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories' ? 'col-12' : 'col-12 col-md-8 pe-md-1'">
           <!-- Header Card -->
           <div class="jc-top-card mb-1">
             <div class="jc-header-row">
@@ -204,7 +204,7 @@
         </div>
 
         <!-- Right Column - Filters -->
-        <div class="col-12 col-md-3" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories'">
+        <div class="col-12 col-md-4" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories'">
           <!-- WhatsApp Sidebar Card -->
          
 

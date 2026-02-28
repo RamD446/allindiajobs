@@ -154,7 +154,6 @@
                   <tr *ngFor="let relJob of getRelatedJobs()" (click)="viewJobDetails(relJob)">
                     <td class="date-cell">
                       <span class="date-badge">{{ relJob.createdDate | date:'dd-MMM' }}</span>
-                      <div class="time-ago">{{ getTimeAgo(relJob.createdDate) }}</div>
                     </td>
                     <td class="title-cell">
                       <div class="job-main-title">{{ relJob.title }}</div>

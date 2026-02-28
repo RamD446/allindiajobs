@@ -46,10 +46,14 @@
                 <i class="bi bi-grid-3x3-gap-fill"></i>
                 <span>All Jobs</span>
               </button>
-                 <button *ngIf="getTodayJobsCount() > 0" class="jc-pill jc-pill-today" routerLink="/today-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
+                  <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
+                <i class="bi bi-building-fill"></i>
+                <span>All Govt Jobs</span>
+              </button>
+                 <!-- <button *ngIf="getTodayJobsCount() > 0" class="jc-pill jc-pill-today" routerLink="/today-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
                 <i class="bi bi-clock-history"></i>
                 <span>Today Posted ({{ getTodayJobsCount() }})</span>
-              </button>
+              </button> -->
               <button *ngIf="getTodayWalkinsCount() > 0" class="jc-pill jc-pill-today-walkin" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fce4ec; color: #c2185b;">
                 <i class="bi bi-person-walking"></i>
                 <span>Today Walk-ins</span>
@@ -60,20 +64,17 @@
               </button> -->
               <button class="jc-pill jc-pill-fresher" routerLink="/fresher-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e8f5e9; color: #2e7d32;">
                 <i class="bi bi-mortarboard-fill"></i>
-                <span>Fresher Jobs</span>
+                <span>All Fresher Jobs</span>
               </button>
              
-              <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
-                <i class="bi bi-building-fill"></i>
-                <span>Govt Jobs</span>
-              </button>
+          
               <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e8f5e9; color: #2e7d32;">
                 <i class="bi bi-briefcase-fill"></i>
-                <span>Private Jobs</span>
+                <span>All Private Jobs</span>
               </button>
               <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fce4ec; color: #c2185b;">
                 <i class="bi bi-person-walking"></i>
-                <span> Walk-ins</span>
+                <span> All Walk-ins</span>
               </button>
               <!-- <button class="jc-pill jc-pill-bank" routerLink="/banking-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="bi bi-piggy-bank-fill"></i>
@@ -124,8 +125,10 @@
                       <td class="title-cell">
                         <div class="job-main-title">{{ job.title }}</div>
                         <div class="job-sub-meta">
-                          <!-- <span class="badge bg-success-subtle text-success border border-success-subtle me-1">{{ job.category }}</span> -->
-                          <span *ngIf="job.lastDateToApply" class="text-danger small fw-bold ms-1"> Last Date: {{ job.lastDateToApply | date:'dd MMM' }}</span>
+                          <span class="badge rounded-pill me-1 jc-meta-badge">
+                            {{ job.company }}
+                          </span>
+                          <span *ngIf="job.lastDateToApply" class="text-danger jc-meta-text fw-bold ms-1"> Last Date: {{ job.lastDateToApply | date:'dd MMM' }}</span>
                         </div>
                       </td>
                       <td class="action-cell text-center">
@@ -166,8 +169,10 @@
                       <td class="title-cell">
                         <div class="job-main-title">{{ job.title }}</div>
                         <div class="job-sub-meta">
-                         
-                          <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="text-danger small fw-bold ms-1">walk-In Date: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
+                          <span class="badge rounded-pill me-1 jc-meta-badge">
+                            {{ job.category }}
+                          </span>
+                          <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="text-danger jc-meta-text fw-bold ms-1">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? '-' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
                         </div>
                       </td>
                       <td class="action-cell text-center">

@@ -5,7 +5,7 @@ import { JobFullInformation } from './components/job-full-information/job-full-i
 import { InfoPageComponent } from './components/info-page/info-page.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/all-latest-jobs', pathMatch: 'full' },
+  { path: '', redirectTo: '/government-jobs', pathMatch: 'full' },
   { path: 'all-latest-jobs', component: JobCategoryComponent },
   { path: 'government-jobs', component: JobCategoryComponent },
   { path: 'private-jobs', component: JobCategoryComponent },
@@ -26,5 +26,5 @@ export const routes: Routes = [
   { path: 'job/:id/:title', component: JobFullInformation },
   { path: 'job-details/:id/:title', component: JobFullInformation }, // Legacy route support
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '/all-latest-jobs' }
+  { path: '**', redirectTo: '/government-jobs' }
 ];

@@ -62,6 +62,54 @@
   }
 }
 
+/* Floating WhatsApp Button */
+.floating-wa-btn {
+  position: fixed;
+  right: 15px;
+  bottom: 85px;
+  z-index: 1000;
+  background: #25D366;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  animation: slideInRight 0.3s ease-out;
+  border: 2px solid white;
+}
+
+.wa-float-icon {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.wa-float-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .floating-wa-btn {
+    padding: 5px 10px;
+    bottom: 80px;
+    right: 10px;
+  }
+  .wa-float-text {
+    font-size: 0.7rem;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .title {

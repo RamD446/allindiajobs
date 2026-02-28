@@ -16,13 +16,13 @@ export class FooterComponent {
   constructor(private router: Router) {}
 
   jobTypes = [
-    { name: 'ప్రభుత్వ ఉద్యోగాలు (Govt Jobs)', route: '/government-jobs' },
-    { name: 'ప్రైవేట్ ఉద్యోగాలు (Private Jobs)', route: '/private-jobs' },
-    { name: 'వాక్-ఇన్స్ (Walk-ins)', route: '/walk-in-drives' },
-    { name: 'బ్యాంక్ ఉద్యోగాలు (Bank Jobs)', route: '/banking-jobs' },
-    { name: 'ఐటి ఉద్యోగాలు (IT Jobs)', route: '/it-jobs' },
-    { name: 'ఆరోగ్య చిట్కాలు (Health Tips)', route: '/health-and-career-tips' },
-    { name: 'ప్రేరణాత్మక కథలు (Motivation)', route: '/motivation-stories' }
+    { name: 'అన్ని ఉద్యోగాలు (All Jobs)', route: '/all-latest-jobs' },
+    { name: 'అన్ని ప్రభుత్వ ఉద్యోగాలు (All Govt Jobs)', route: '/government-jobs' },
+    { name: 'ఈరోజు వాక్-ఇన్స్ (Today Walk-ins)', route: '/today-walkins' },
+    { name: 'అన్ని ఫ్రెషర్ ఉద్యోగాలు (All Fresher Jobs)', route: '/fresher-jobs' },
+    { name: 'అన్ని ప్రైవేట్ ఉద్యోగాలు (All Private Jobs)', route: '/private-jobs' },
+    { name: 'అన్ని వాక్-ఇన్ డ్రైవ్స్ (All Walk-ins)', route: '/walk-in-drives' },
+    { name: 'కెరీర్ చిట్కాలు (Career Tips)', route: '/health-and-career-tips' }
   ];
 
   careerTypes = [

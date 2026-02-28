@@ -150,6 +150,23 @@
   }
 }
 
+.social-header-wrapper {
+  gap: 2px;
+}
+
+.header-tagline {
+  font-size: 0.65rem;
+  color: #ffd700;
+  font-weight: 700;
+  margin-bottom: -2px;
+}
+
+@media (max-width: 576px) {
+  .header-tagline {
+    font-size: 0.55rem;
+  }
+}
+
 /* Header Social Buttons */
 .follow-text {
   font-size: 0.65rem;

@@ -1,3 +1,11 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
 <app-footer></app-footer>
+
+<!-- Floating WhatsApp Button -->
+<div class="floating-wa-btn" *ngIf="showWhatsAppBtn" (click)="joinWhatsAppGroup()">
+  <div class="wa-float-icon">
+    <i class="bi bi-whatsapp"></i>
+  </div>
+  <span class="wa-float-text">Join Jobs Group</span>
+</div>

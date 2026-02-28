@@ -1,19 +1,30 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { CommonModule } from '@angular/common';
 import { ref, get, update } from 'firebase/database';
 import { db } from '../config/firebase.config';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit {
   protected readonly title = signal('allindianjobs');
+  showWhatsAppBtn = false;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.showWhatsAppBtn = window.pageYOffset > 300;
+  }
+
+  joinWhatsAppGroup() {
+    window.open('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p', '_blank');
+  }
 
   ngOnInit() {
     this.trackVisitor();

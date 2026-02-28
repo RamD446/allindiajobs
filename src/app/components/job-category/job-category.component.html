@@ -101,7 +101,10 @@
             <div class="jc-table-section" *ngIf="getGovJobs().length > 0">
               <div class="jc-table-header gov-bg">
                 <i class="bi bi-building-fill me-2"></i>
-                <span>Latest Government Jobs (అధికారిక ప్రభుత్వ ఉద్యోగాలు)</span>
+                <div class="header-text-container">
+                  <span class="header-main-text">Latest Government Jobs</span>
+                  <span class="header-sub-text ms-1">(అధికారిక ప్రభుత్వ ఉద్యోగాలు)</span>
+                </div>
               </div>
               <div class="table-responsive">
                 <table class="table jc-custom-table">
@@ -116,12 +119,12 @@
                     <tr *ngFor="let job of getGovJobs()" (click)="viewJobDetails(job)">
                       <td class="date-cell">
                         <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
-                        <div class="time-ago">{{ getTimeAgo(job.createdDate) }}</div>
+                        <!-- <div class="time-ago">{{ getTimeAgo(job.createdDate) }}</div> -->
                       </td>
                       <td class="title-cell">
                         <div class="job-main-title">{{ job.title }}</div>
                         <div class="job-sub-meta">
-                          <span class="badge bg-success-subtle text-success border border-success-subtle me-1">{{ job.category }}</span>
+                          <!-- <span class="badge bg-success-subtle text-success border border-success-subtle me-1">{{ job.category }}</span> -->
                           <span *ngIf="job.lastDateToApply" class="text-danger small fw-bold ms-1">Last Date: {{ job.lastDateToApply | date:'dd MMM' }}</span>
                         </div>
                       </td>
@@ -140,7 +143,10 @@
             <div class="jc-table-section" *ngIf="getPrivateJobs().length > 0">
               <div class="jc-table-header prv-bg">
                 <i class="bi bi-briefcase-fill me-2"></i>
-                <span>Latest Private Jobs & Walk-ins (ప్రైవేట్ ఉద్యోగాలు & వాక్-ఇన్ డ్రైవ్స్)</span>
+                <div class="header-text-container">
+                  <span class="header-main-text">Latest Private Jobs & Walk-ins</span>
+                  <span class="header-sub-text ms-1">(ప్రైవేట్ ఉద్యోగాలు & వాక్-ఇన్ డ్రైవ్స్)</span>
+                </div>
               </div>
               <div class="table-responsive">
                 <table class="table jc-custom-table">
@@ -155,12 +161,12 @@
                     <tr *ngFor="let job of getPrivateJobs()" (click)="viewJobDetails(job)">
                       <td class="date-cell">
                         <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
-                        <div class="time-ago">{{ getTimeAgo(job.createdDate) }}</div>
+                     
                       </td>
                       <td class="title-cell">
                         <div class="job-main-title">{{ job.title }}</div>
                         <div class="job-sub-meta">
-                          <span class="badge bg-primary-subtle text-primary border border-primary-subtle me-1">{{ job.category }}</span>
+                         
                           <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="text-danger small fw-bold ms-1">Date: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
                         </div>
                       </td>
@@ -195,18 +201,7 @@
         <!-- Right Column - Filters -->
         <div class="col-12 col-md-3" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories'">
           <!-- WhatsApp Sidebar Card -->
-          <div class="sidebar-wa-card mt-0 mb-2" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
-            <div class="d-flex align-items-center">
-              <div class="wa-icon-box me-2">
-                <i class="bi bi-whatsapp"></i>
-              </div>
-              <div class="wa-content">
-                <span class="wa-title">Join WhatsApp</span>
-                <span class="wa-subtitle">Get Instant Job Alerts</span>
-              </div>
-              <i class="bi bi-arrow-right-short ms-auto"></i>
-            </div>
-          </div>
+         
 
           <!-- Official Company Careers (Quick Filter Section) -->
           <div class="occ-section">
@@ -220,6 +215,7 @@
                 </div>
               </div>
             </div>
+            
 
             <!-- Career Links Display based on selected Job Type -->
             <div class="occ-links-container mt-3" *ngIf="selectedCareerType">
@@ -244,7 +240,18 @@
               </div>
             </div>
           </div>
-
+ <div class="sidebar-wa-card mt-0 mb-2" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
+            <div class="d-flex align-items-center">
+              <div class="wa-icon-box me-2">
+                <i class="bi bi-whatsapp"></i>
+              </div>
+              <div class="wa-content">
+                <span class="wa-title">Join WhatsApp</span>
+                <span class="wa-subtitle">Get Instant Job Alerts</span>
+              </div>
+              <i class="bi bi-arrow-right-short ms-auto"></i>
+            </div>
+          </div>
           <div class="jc-filters">
             <div class="d-flex justify-content-between align-items-center mb-2 px-1">
               <h6 class="jc-filter-title mb-0 p-0">

@@ -786,10 +786,26 @@
 .jc-table-header {
   padding: 0.75rem 1rem;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
   color: #fff;
+}
+
+.header-text-container {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.header-main-text {
+  font-weight: 700;
+}
+
+.header-sub-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.9;
 }
 
 .gov-bg {
@@ -909,6 +925,11 @@
 
   .jc-table-header {
     padding: 0.5rem 0.75rem;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .header-sub-text {
+    font-size: 0.6rem;
+    opacity: 0.85;
   }
 }

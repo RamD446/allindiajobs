@@ -23,7 +23,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid rgba(0,0,0,0.1);
-  border-top: 3px solid #667eea;
+  border-top: 3px solid #ff69b4;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -103,7 +103,7 @@
 
 .jc-breadcrumb i {
   font-size: 0.6rem;
-  color: #667eea;
+  color: #ff69b4;
 }
 
 .jc-breadcrumb .bi-chevron-right {
@@ -123,6 +123,7 @@
   margin: 0.15rem;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255, 105, 180, 0.3);
 }
 
 .jc-header-row {
@@ -209,7 +210,7 @@
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid #ff69b4;
+  border: 1px solid rgba(255, 105, 180, 0.3);
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
@@ -217,7 +218,7 @@
 
 .jc-job {
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid #ff69b4;
+  border-bottom: 1px solid rgba(255, 105, 180, 0.3);
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -270,7 +271,7 @@
 }
 
 .star-icon {
-  color: #007bff;
+  color: #ff69b4;
   font-size: 0.8rem;
   flex-shrink: 0;
 }
@@ -284,7 +285,7 @@
 
 .jc-job-cat {
   font-size: 0.7rem;
-  color: #667eea;
+  color: #ff69b4;
   font-weight: 600;
   flex-shrink: 0;
   white-space: nowrap;
@@ -309,7 +310,7 @@
   height: 26px;
   min-width: 26px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff69b4 0%, #e0569a 100%);
   border: none;
   display: flex;
   align-items: center;
@@ -317,7 +318,7 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
 }
 
 .jc-job-btn i {
@@ -332,7 +333,7 @@
   margin: 0.15rem;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 2px solid #667eea;
+  border: 1px solid rgba(255, 105, 180, 0.3);
   position: relative;
 }
 
@@ -343,9 +344,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #ff69b4;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 2px solid #ff69b4;
 }
 
 .occ-type-card {
@@ -363,7 +364,7 @@
 }
 
 .occ-type-card.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff69b4 0%, #e0569a 100%);
   border-color: transparent;
   color: white;
 }
@@ -395,7 +396,7 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  border: 1px solid #dee2e6;
+  border: 1px solid rgba(255, 105, 180, 0.3);
   transition: all 0.2s;
   margin-bottom: 4px;
 }
@@ -432,6 +433,7 @@
   border-radius: 6px;
   padding: 0.5rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255, 105, 180, 0.3);
 }
 
 .jc-filter-title {
@@ -446,7 +448,7 @@
 }
 
 .jc-filter-title i {
-  color: #3b82f6;
+  color: #ff69b4;
   font-size: 0.85rem;
 }
 
@@ -526,7 +528,8 @@
 
 .jc-filter-divider {
   border: none;
-  border-top: 2px solid #e2e8f0;
+  border-top: 2px solid #ff69b4;
+  opacity: 0.2;
   margin: 0.5rem 0;
   width: 100%;
 }
@@ -534,7 +537,7 @@
 .jc-filter-label {
   color: #1e293b;
   font-weight: 700 !important;
-  border-left: 3px solid #3b82f6;
+  border-left: 3px solid #ff69b4;
   padding-left: 0.5rem;
   margin-top: 0.4rem;
   font-size: 0.85rem;
@@ -551,7 +554,7 @@
 
 .jc-empty-icon {
   font-size: 2.5rem;
-  color: #667eea;
+  color: #ff69b4;
   margin-bottom: 0.5rem;
 }
 
@@ -569,7 +572,7 @@
 }
 
 .jc-back-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff69b4 0%, #e0569a 100%);
   color: #fff;
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
@@ -582,6 +585,70 @@
   transition: all 0.2s;
 }
 
+/* WhatsApp Sidebar Card */
+.sidebar-wa-card {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.sidebar-wa-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+}
+
+.wa-icon-box {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  color: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.wa-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 12px;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.wa-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.wa-subtitle {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-wa-card i.bi-arrow-right-short {
+  font-size: 1.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-left: auto;
+}
+
 /* Responsive */
 @media (max-width: 576px) {
   .jc {
@@ -592,6 +659,7 @@
     padding: 0.4rem;
     margin: 0.2rem;
     border-radius: 10px;
+    border: 1px solid rgba(255, 105, 180, 0.3);
   }
   
   .jc-breadcrumb {
@@ -621,10 +689,12 @@
     margin: 0.2rem;
     border-radius: 10px;
     grid-template-columns: 1fr;
+    border: 1px solid rgba(255, 105, 180, 0.3);
   }
   
   .jc-job {
     padding: 0.75rem 0.85rem;
+    border-bottom: 1px solid rgba(255, 105, 180, 0.3);
   }
   
   .jc-job-title {
@@ -636,7 +706,7 @@
 
   .jc-job-cat {
     font-size: 0.6rem;
-    color: #667eea;
+    color: #ff69b4;
     font-weight: 600;
   }
 
@@ -648,6 +718,39 @@
     margin: 0.2rem;
     padding: 0.5rem;
     border-radius: 6px;
+    border: 1px solid rgba(255, 105, 180, 0.3);
+  }
+
+  .sidebar-wa-card {
+    padding: 8px 12px;
+    border-radius: 12px;
+    margin: 10px 0;
+  }
+  
+  .wa-icon-box {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+  }
+  
+  .wa-content {
+    margin-left: 8px;
+  }
+
+  .wa-title {
+    font-size: 0.85rem;
+    margin-bottom: 1px;
+  }
+  
+  .wa-subtitle {
+    font-size: 0.65rem;
+    opacity: 0.95;
+  }
+
+  .sidebar-wa-card i.bi-arrow-right-short {
+    font-size: 1.4rem;
+    margin-left: auto;
   }
 }
 

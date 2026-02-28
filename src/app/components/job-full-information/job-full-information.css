@@ -216,6 +216,15 @@
   color: #333;
 }
 
+@media (max-width: 768px) {
+  .job-desc-content {
+    font-size: 1.09rem;
+  }
+  .desc-item span {
+    font-size: 1rem;
+  }
+}
+
 /* Phase 1 Description Styles */
 .plain-desc-list {
   display: flex;
@@ -342,32 +351,35 @@
 
 @media (max-width: 768px) {
   .sidebar-wa-card {
-    padding: 10px 12px;
-    border-radius: 10px;
-    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    margin: 10px 0;
   }
   
   .wa-icon-box {
-    width: 34px;
-    height: 34px;
-    font-size: 1.2rem;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
     border-radius: 8px;
   }
   
   .wa-content {
-    margin-left: 10px;
+    margin-left: 8px;
   }
 
   .wa-title {
     font-size: 0.85rem;
+    margin-bottom: 1px;
   }
   
   .wa-subtitle {
     font-size: 0.65rem;
+    opacity: 0.95;
   }
 
   .sidebar-wa-card i.bi-arrow-right-short {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    margin-left: auto;
   }
 }
 
@@ -466,6 +478,5 @@
   .jc { padding-top: 45px; }
   .job-title-display { font-size: 1.1rem; }
   .desc-item span { font-size: 0.8rem; }
-  .ms-auto { width: 100%; margin-top: 10px; }
   .col-md-9 { padding-right: 0 !important; }
 }

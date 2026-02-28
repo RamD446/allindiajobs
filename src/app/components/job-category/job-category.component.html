@@ -142,6 +142,20 @@
 
         <!-- Right Column - Filters -->
         <div class="col-12 col-md-3" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories'">
+          <!-- WhatsApp Sidebar Card -->
+          <div class="sidebar-wa-card mt-0 mb-2" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
+            <div class="d-flex align-items-center">
+              <div class="wa-icon-box me-2">
+                <i class="bi bi-whatsapp"></i>
+              </div>
+              <div class="wa-content">
+                <span class="wa-title">Join WhatsApp</span>
+                <span class="wa-subtitle">Get Instant Job Alerts</span>
+              </div>
+              <i class="bi bi-arrow-right-short ms-auto"></i>
+            </div>
+          </div>
+
           <!-- Official Company Careers (Quick Filter Section) -->
           <div class="occ-section">
             <h6 class="occ-title">

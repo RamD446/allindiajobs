@@ -6,7 +6,7 @@
 
   <div *ngIf="!isLoading && job" class="container-fluid px-0">
     <div class="row g-0">
-      <div class="col-12 col-md-9 pe-md-1">
+      <div class="col-12 col-md-7 pe-md-1">
         <!-- Breadcrumb / Header -->
         <div class="jc-top-card mb-1">
           <div class="jc-header-row">
@@ -53,7 +53,7 @@
           
               <div *ngIf="job.category === 'Government Jobs' && job.applicationUrl" class="desc-item mt-1">
                 <i class="bi bi-patch-check-fill text-primary"></i>
-                <span class="ms-1 fw-bold">అధికారిక అప్లై లింక్ / Official Apply Link :- </span>
+                <span class="ms-1 fw-bold"> Official Apply Link :- </span>
                 <a [href]="job.applicationUrl" target="_blank" class="ms-1 text-primary text-decoration-none text-break">{{ job.applicationUrl }}</a>
               </div>
             </ng-container>
@@ -72,16 +72,13 @@
             </a>
           </div>
 
-          <!-- Note -->
-          <div class="note-box mt-3">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            <span><strong>Note:</strong> Before applying for a job, make sure to double-check the job information.</span>
-          </div>
+  
+        
         </div>
       </div>
 
       <!-- Right Column Sidebar -->
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-md-5">
         <!-- Highlights Sidebar Card -->
         <div class="jc-top-card p-3 mb-2">
           <h5 class="sidebar-title mb-3">Quick Highlights</h5>

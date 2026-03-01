@@ -314,7 +314,9 @@ export class JobCategoryComponent implements OnInit {
     } catch (e) { console.error('Error tracking job click:', e); }
 
     const titleSlug = this.createSlug(job.title);
-    this.router.navigate(['/job', job.id, titleSlug], { state: { job: job } });
+    this.router.navigate(['/job', job.id, titleSlug], { state: { job: job } }).then(() => {
+      window.scrollTo(0, 0);
+    });
   }
 
   // Save/bookmark job functionality

@@ -800,7 +800,7 @@
 }
 
 .jc-table-header {
-  padding: 1rem;
+  padding: 0.4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -865,7 +865,7 @@
   font-size: 0.75rem;
   text-transform: none;
   color: #495057;
-  padding: 0.75rem;
+  padding: 0.4rem 0.5rem;
   font-weight: 700;
 }
 
@@ -879,7 +879,7 @@
 }
 
 .jc-custom-table td {
-  padding: 0.75rem;
+  padding: 0.4rem 0.5rem;
   vertical-align: middle;
   border-bottom: 1px solid #edf2f7;
 }
@@ -969,11 +969,11 @@
   .action-col { width: 70px; }
   
   .jc-custom-table td {
-    padding: 0.5rem 0.4rem;
+    padding: 0.3rem 0.4rem;
   }
   
   .jc-custom-table thead th {
-    padding: 0.5rem 0.4rem;
+    padding: 0.3rem 0.4rem;
     font-size: 0.65rem;
   }
 
@@ -991,7 +991,7 @@
   }
 
   .jc-table-header {
-    padding: 0.75rem 1rem;
+    padding: 0.4rem 0.6rem;
   }
 
   .header-main-text {

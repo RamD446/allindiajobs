@@ -275,12 +275,12 @@ export class JobFullInformation implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: job.title,
-        text: `Check out this amazing job opportunity!\n\nFollow our WhatsApp Channel: https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p\n\nSubscribe YouTube: https://www.youtube.com/@allindajobs`,
+        text: `${job.title}\n\nCheck out this amazing job opportunity!\n\nShare this who searching the job\n\nTelugu Job Updated Job Portal`,
         url: jobUrl
       });
     } else {
       // Fallback for browsers that don't support Web Share API
-      const shareText = `📌 ${job.title}\n\n🔗 ${jobUrl}\n\nCheck out this amazing job opportunity!\n\n📢 Follow our WhatsApp Channel: https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p Subscribe YouTube: https://www.youtube.com/@allindajobs`;
+      const shareText = `${job.title}\n\nLink: ${jobUrl}\n\nCheck out this amazing job opportunity!\n\nShare this who searching the job\n\nTelugu Job Updated Job Portal`;
       navigator.clipboard.writeText(shareText).then(() => {
         alert('Job details copied to clipboard!');
       });
@@ -291,26 +291,26 @@ export class JobFullInformation implements OnInit {
     const jobUrl = window.location.href;
     
     let messageParts: string[] = [
-      `📌 *${job.title}*`,
-      `🏢 *Company:* ${job.company}`,
+      `*${job.title.toUpperCase()}*`,
       ``,
-      `🔗 ${jobUrl}`
+      `Link : ${jobUrl}`
     ];
     
     // Add interview dates if they exist
     if (job.walkInStartDate) {
-      messageParts.push(`📅 *Interview Start:* ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
+      messageParts.push(`Interview Start : ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
     }
     if (job.walkInEndDate) {
-      messageParts.push(`📅 *Interview End:* ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
+      messageParts.push(`Interview End : ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
     }
     if (job.lastDateToApply) {
-      messageParts.push(`📅 *Last Date to Apply:* ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
+      messageParts.push(`Last date apply : ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
     }
     
     messageParts.push(``);
-  
-    messageParts.push(`_Amazing job opportunity for you!_`);
+    messageParts.push(`Share this who searching the job`);
+    messageParts.push(``);
+    messageParts.push(`*Telugu Job Updated Job Portal*`);
     
     const message = messageParts.join('\n');
     const encodedMessage = encodeURIComponent(message);

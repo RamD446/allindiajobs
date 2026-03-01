@@ -310,7 +310,7 @@ export class JobFullInformation implements OnInit {
     messageParts.push(``);
     messageParts.push(`Share this who searching the job`);
     messageParts.push(``);
-    messageParts.push(`*Telugu Job Updated Job Portal*`);
+    messageParts.push(`*Telugu Job Updates Portal*`);
     
     const message = messageParts.join('\n');
     const encodedMessage = encodeURIComponent(message);

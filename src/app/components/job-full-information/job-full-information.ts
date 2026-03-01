@@ -251,6 +251,24 @@ export class JobFullInformation implements OnInit {
     return grouped;
   }
 
+  getImportantNotesList(notes: string): string[] {
+    if (!notes) return [];
+
+    const normalized = notes
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\u00a0/g, ' ')
+      .trim();
+
+    if (!normalized) return [];
+
+    return normalized
+      .split(/\n+|\.(?=\s|$)/)
+      .map(item => item.trim())
+      .filter(item => item.length > 0);
+  }
+
   shareJob(job: Job) {
     const jobUrl = window.location.href;
     

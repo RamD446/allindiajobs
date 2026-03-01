@@ -265,6 +265,19 @@
   font-weight: 500;
 }
 
+.important-notes-wrap {
+  border-top: 1px dashed #cfe2ff;
+  padding-top: 12px;
+}
+
+.important-notes-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0d6efd;
+  display: flex;
+  align-items: center;
+}
+
 /* Apply Link Box */
 .official-links-box {
   background: #f8f9fa;

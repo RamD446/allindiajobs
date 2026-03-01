@@ -239,6 +239,18 @@
                   required>
                 </textarea>
               </div>
+
+              <div class="col-12 mt-3" *ngIf="editingJob">
+                <label class="form-label d-flex justify-content-between">
+                  <span>Important Notes</span>
+                </label>
+                <textarea
+                  [(ngModel)]="jobForm.importantNotes"
+                  name="importantNotes"
+                  class="form-control description-textarea"
+                  placeholder="Add important notes...">
+                </textarea>
+              </div>
             </div>
             
             <div class="job-form-footer">

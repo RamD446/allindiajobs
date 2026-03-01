@@ -49,22 +49,38 @@
               <div *ngIf="job.description && !hasDots(job.description)" class="plain-desc-text">
                 {{ job.description }}
               </div>
+
+              <div *ngIf="job.importantNotes" class="important-notes-wrap mt-3">
+                <h5 class="important-notes-title mb-1">
+                  <i class="bi bi-exclamation-circle-fill text-primary"></i>
+                  <span class="ms-2 text-danger fw-bold">Important Notes</span>
+                </h5>
+
+                <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
+
+                <div *ngIf="!isRichText(job.importantNotes)" class="plain-desc-list">
+                  <div *ngFor="let note of getImportantNotesList(job.importantNotes)" class="desc-item mt-1">
+                    <i class="bi bi-patch-check-fill text-primary"></i>
+                    <span class="ms-1">{{ note }}</span>
+                  </div>
+                </div>
+              </div>
              
           
-              <div *ngIf="job.category === 'Government Jobs' && job.applicationUrl" class="desc-item mt-1 d-flex flex-column flex-md-row align-items-md-center">
+              <div *ngIf="job.category === 'Government Jobs' && job.applicationUrl" class="desc-item mt-1 d-flex flex-row align-items-center flex-wrap">
                 <div class="d-flex align-items-center">
                   <i class="bi bi-patch-check-fill text-primary"></i>
-                  <span class="ms-1 fw-bold small-telugu-text"> అధికారిక అప్లై లింక్ / Official Apply Link :- </span>
+                  <span class="ms-2 fw-bold small-telugu-text">  Official Apply Link :- </span>
                 </div>
-                <a [href]="job.applicationUrl" target="_blank" class="ms-md-1 text-primary text-decoration-none text-break small">{{ job.applicationUrl }}</a>
+                <a [href]="job.applicationUrl" target="_blank" class="ms-1 text-primary text-decoration-none text-break small">{{ job.applicationUrl }}</a>
               </div>
               
-              <div *ngIf="job.category === 'Government Jobs' && job.lastDateToApply" class="desc-item mt-1 d-flex flex-column flex-md-row align-items-md-center">
+              <div *ngIf="job.category === 'Government Jobs' && job.lastDateToApply" class="desc-item mt-1 d-flex flex-row align-items-center flex-wrap">
                 <div class="d-flex align-items-center">
                   <i class="bi bi-patch-check-fill text-primary"></i>
-                  <span class="ms-1 fw-bold small-telugu-text"> అప్లై చేయడానికి చివరి తేదీ / Last Date to Apply </span>
+                  <span class="ms-2 fw-bold small-telugu-text"> Last Date to Apply :-</span>
                 </div>
-                <span class="ms-md-1 text-danger fw-bold small">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</span>
+                <span class="ms-2 text-danger fw-bold small">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</span>
               </div>
             </ng-container>
           </div>

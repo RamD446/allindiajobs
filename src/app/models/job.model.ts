@@ -21,6 +21,7 @@ export interface Job {
   walkInStartDate?: string;
   walkInEndDate?: string;
   lastDateToApply?: string;
+  importantNotes?: string;
 }
 
 // Job Categories - simplified list as requested

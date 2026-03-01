@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
     company: '',
     category: '',
     description: '',
+    importantNotes: '',
     createdDate: '', // Will be set in constructor or reset
     experience: 'Fresher',
     walkInStartDate: '',
@@ -276,6 +277,7 @@ export class LoginComponent implements OnInit {
     
     this.jobForm = { 
       ...job,
+      importantNotes: job.importantNotes || '',
       createdDate: formattedDate || this.toLocalIsoString(new Date())
     };
   }
@@ -413,6 +415,7 @@ export class LoginComponent implements OnInit {
       company: '',
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       description: '',
+      importantNotes: '',
       createdDate: this.toLocalIsoString(new Date()),
       experience: this.experienceOptions[0],
       walkInStartDate: '',

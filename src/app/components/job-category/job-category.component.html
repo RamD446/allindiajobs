@@ -11,32 +11,7 @@
       <div class="row g-0">
         <!-- Left Column -->
         <div [ngClass]="categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories' ? 'col-12' : 'col-12 col-md-8 pe-md-1'">
-          <!-- Header Card -->
-          <div class="jc-top-card mb-1">
-            <div class="jc-header-row">
-              <div class="jc-breadcrumb">
-                <i class="bi bi-house-fill"></i>
-                <span routerLink="/all-latest-jobs" style="cursor: pointer;">Home</span>
-                <i class="bi bi-chevron-right"></i>
-                <span class="jc-category-name">{{ categoryTitle }}</span>
-              </div>
-              <!-- <div class="jc-follow-mini">
-                <span class="follow-text">Follow:</span>
-                <button class="mini-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')" title="YouTube">
-                  <i class="bi bi-youtube"></i>
-                </button>
-                <button class="mini-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')" title="WhatsApp">
-                  <i class="bi bi-whatsapp"></i>
-                </button>
-                <button class="mini-social-btn mini-fb" (click)="openExternalChannel('https://www.facebook.com/share/17yHma5rhP/')" title="Facebook">
-                  <i class="bi bi-facebook"></i>
-                </button>
-                <button class="mini-social-btn mini-ig" (click)="openExternalChannel('https://www.instagram.com/allindajobs?igsh=MXJxeWl4NXdmeDVtdg==')" title="Instagram">
-                  <i class="bi bi-instagram"></i>
-                </button>
-              </div> -->
-            </div>
-          </div>
+        
 
           <!-- Category Pills Card -->
           <div class="jc-top-card mb-1">
@@ -119,8 +94,11 @@
                   <tbody>
                     <tr *ngFor="let job of getGovJobs()" (click)="viewJobDetails(job)">
                       <td class="date-cell">
-                        <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
-                        <!-- <div class="time-ago">{{ getTimeAgo(job.createdDate) }}</div> -->
+                        <div class="d-flex align-items-center">
+                          <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
+                          <i *ngIf="!isExpired(job)" class="bi bi-patch-check-fill text-success ms-1 small" title="Job Active"></i>
+                          <i *ngIf="isExpired(job)" class="bi bi-x-circle-fill text-danger ms-1 small" title="Job Expired"></i>
+                        </div>
                       </td>
                       <td class="title-cell">
                         <div class="job-main-title">{{ job.title }}</div>
@@ -163,8 +141,11 @@
                   <tbody>
                     <tr *ngFor="let job of getPrivateJobs()" (click)="viewJobDetails(job)">
                       <td class="date-cell">
-                        <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
-                     
+                        <div class="d-flex align-items-center">
+                          <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
+                          <i *ngIf="!isExpired(job)" class="bi bi-patch-check-fill text-success ms-1 small" title="Job Active"></i>
+                          <i *ngIf="isExpired(job)" class="bi bi-x-circle-fill text-danger ms-1 small" title="Job Expired"></i>
+                        </div>
                       </td>
                       <td class="title-cell">
                         <div class="job-main-title">{{ job.title }}</div>

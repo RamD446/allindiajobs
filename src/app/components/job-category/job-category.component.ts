@@ -253,6 +253,23 @@ export class JobCategoryComponent implements OnInit {
   });
 }
 
+  isExpired(job: Job): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (job.category === 'Government Jobs' && job.lastDateToApply) {
+      const lastDate = new Date(job.lastDateToApply);
+      lastDate.setHours(0, 0, 0, 0);
+      return lastDate.getTime() < today.getTime();
+    }
+    if (job.category === 'Walk-in Drives' && job.walkInEndDate) {
+      const endDate = new Date(job.walkInEndDate);
+      endDate.setHours(0, 0, 0, 0);
+      return endDate.getTime() < today.getTime();
+    }
+    return false;
+  }
+
   // Method to get color class for job category badge
   getCategoryClass(category: string): string {
     switch (category) {

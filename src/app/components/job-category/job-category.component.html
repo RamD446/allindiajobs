@@ -10,7 +10,7 @@
     <div class="container-fluid px-0">
       <div class="row g-0">
         <!-- Left Column -->
-        <div [ngClass]="categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories' ? 'col-12' : 'col-12 col-md-8 pe-md-1'">
+        <div class="col-12 col-md-8 pe-md-1">
         
 
           <!-- Category Pills Card -->
@@ -58,6 +58,10 @@
               <button class="jc-pill" routerLink="/health-and-career-tips" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #e1f5fe; color: #0288d1;">
                 <i class="bi bi-heart-pulse-fill"></i>
                 <span>Career Tips</span>
+              </button>
+              <button class="jc-pill" routerLink="/telugu-to-english-learning" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #f3e5f5; color: #7b1fa2;">
+                <i class="bi bi-translate"></i>
+                <span>TeluguToEnglish</span>
               </button>
               <!-- <button class="jc-pill" routerLink="/motivation-stories" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff8e1; color: #ffa000;">
                 <i class="bi bi-lightning-charge-fill"></i>
@@ -125,10 +129,10 @@
             <!-- Private Jobs Table -->
             <div class="jc-table-section" *ngIf="getPrivateJobs().length > 0">
               <div class="jc-table-header pvt-header">
-                <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill mb-2' : (categoryParam === 'motivation-stories' ? 'bi bi-lightning-charge-fill mb-2' : 'bi bi-briefcase-fill mb-2')"></i>
+                <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill mb-2' : (categoryParam === 'motivation-stories' ? 'bi bi-lightning-charge-fill mb-2' : (categoryParam === 'telugu-to-english-learning' ? 'bi bi-translate mb-2' : 'bi bi-briefcase-fill mb-2'))"></i>
               <div class="header-text-container">
-                  <span class="header-main-text">{{ (categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories') ? categoryTitle : 'Latest Private Jobs & Walk-ins' }}</span>
-                  <span class="header-sub-text" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories'">(ప్రైవేట్ ఉద్యోగాలు)</span>
+                  <span class="header-main-text">{{ (categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories' || categoryParam === 'telugu-to-english-learning') ? categoryTitle : 'Latest Private Jobs & Walk-ins' }}</span>
+                  <span class="header-sub-text" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories' && categoryParam !== 'telugu-to-english-learning'">(ప్రైవేట్ ఉద్యోగాలు)</span>
                 </div>  
               </div>
               <div class="table-responsive">
@@ -189,7 +193,7 @@
         </div>
 
         <!-- Right Column - Filters -->
-        <div class="col-12 col-md-4" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories'">
+        <div class="col-12 col-md-4">
           <!-- WhatsApp Sidebar Card -->
          
 
@@ -216,13 +220,18 @@
                 </button>
               </div>
               <div class="row g-2">
-                <div class="col-12" *ngFor="let career of filteredCareers">
+                <div class="col-12" *ngFor="let career of filteredCareers.slice(0, 5)">
                   <div class="occ-link-card">
                     <span class="occ-company-name" style="color: #000000;">{{ career.company }}</span>
                     <a [href]="career.careerOfficeUrl" target="_blank" class="occ-action-link" style="color: #000000;">
                       Click here <i class="bi bi-box-arrow-up-right"></i>
                     </a>
                   </div>
+                </div>
+                <div class="col-12 mt-2 text-center" *ngIf="filteredCareers.length > 5">
+                   <a routerLink="/official-company-careers" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold" style="font-size: 0.75rem;">
+                     See More <i class="bi bi-arrow-right-circle ms-1"></i>
+                   </a>
                 </div>
                 <div class="col-12" *ngIf="filteredCareers.length === 0">
                   <p class="small mb-0 p-2 text-center border rounded bg-light" style="color: #000000; font-weight: 600;">No career links available for this category yet.</p>
@@ -242,7 +251,7 @@
               <i class="bi bi-arrow-right-short ms-auto"></i>
             </div>
           </div>
-          <div class="jc-filters">
+          <div class="jc-filters" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories' && categoryParam !== 'telugu-to-english-learning'">
             <div class="d-flex justify-content-between align-items-center mb-2 px-1">
               <h6 class="jc-filter-title mb-0 p-0">
                 <i class="bi bi-funnel"></i>

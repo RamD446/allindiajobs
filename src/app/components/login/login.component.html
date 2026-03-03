@@ -172,7 +172,7 @@
                 <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Software Engineer">
               </div>
               
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories'">
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning'">
                 <label class="form-label">Company Name</label>
                 <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" placeholder="e.g. Tech Solutions">
               </div>
@@ -186,7 +186,7 @@
 
               
 
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories'">
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning'">
                 <label class="form-label">Experience *</label>
                 <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
                   <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>

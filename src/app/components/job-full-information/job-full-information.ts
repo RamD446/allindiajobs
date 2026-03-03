@@ -150,7 +150,7 @@ export class JobFullInformation implements OnInit {
         if (isGov) {
           return j.category === 'Government Jobs';
         } else {
-          return j.category !== 'Government Jobs' && j.category !== 'Health and Career Tips' && j.category !== 'Motivation Stories';
+          return j.category !== 'Government Jobs' && j.category !== 'Health and Career Tips' && j.category !== 'Motivation Stories' && j.category !== 'TeluguToEnglishLearning';
         }
       })
       .slice(0, 10);
@@ -159,7 +159,7 @@ export class JobFullInformation implements OnInit {
   getTopJobs(): Job[] {
     if (!this.latestJobs) return [];
     return this.latestJobs
-      .filter(j => j.category !== 'Health and Career Tips' && j.category !== 'Motivation Stories')
+      .filter(j => j.category !== 'Health and Career Tips' && j.category !== 'Motivation Stories' && j.category !== 'TeluguToEnglishLearning')
       .slice(0, 10);
   }
 

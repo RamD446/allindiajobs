@@ -20,7 +20,7 @@ export class JobCategoryComponent implements OnInit {
   jobCareers: JobCareer[] = [];
   filteredCareers: JobCareer[] = [];
   careerJobTypes: string[] = [...CAREER_JOB_TYPES];
-  selectedCareerType: string = '';
+  selectedCareerType: string = 'IT Services MNC';
   categoryTitle: string = '';
   categoryParam: string = '';
   isLoading: boolean = true;
@@ -42,7 +42,8 @@ export class JobCategoryComponent implements OnInit {
     'today-walkins': { title: 'Today Walk-in Drives', category: 'Today Walk-in Drives' },
     'today-expired-gov-jobs': { title: 'Today Expired Gov Jobs', category: 'Today Expired Gov Jobs' },
     'health-and-career-tips': { title: 'Health and Career Tips', category: 'Health and Career Tips' },
-    'motivation-stories': { title: 'Motivation Stories', category: 'Motivation Stories' }
+    'motivation-stories': { title: 'Motivation Stories', category: 'Motivation Stories' },
+    'telugu-to-english-learning': { title: 'Telugu To English Learning', category: 'TeluguToEnglishLearning' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -96,7 +97,8 @@ export class JobCategoryComponent implements OnInit {
           if (category === 'All Latest Jobs') {
             this.filteredJobs = this.jobs.filter(job => 
               job.category !== 'Health and Career Tips' && 
-              job.category !== 'Motivation Stories'
+              job.category !== 'Motivation Stories' &&
+              job.category !== 'TeluguToEnglishLearning'
             );
           } else if (category === 'All Private Jobs') {
             // Include Private Jobs, Walk-in Drives, and all Bank-related jobs
@@ -106,7 +108,8 @@ export class JobCategoryComponent implements OnInit {
               job.category === 'Walk-in Drives' ||
               (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))) &&
               job.category !== 'Health and Career Tips' && 
-              job.category !== 'Motivation Stories'
+              job.category !== 'Motivation Stories' &&
+              job.category !== 'TeluguToEnglishLearning'
             );
           } else if (category === 'Banking Jobs') {
             // Include all bank-related categories
@@ -287,6 +290,8 @@ export class JobCategoryComponent implements OnInit {
         return 'badge-info';
       case 'Motivation Stories':
         return 'badge-warning';
+      case 'TeluguToEnglishLearning':
+        return 'badge-secondary';
       default:
         return 'badge-primary';
     }
@@ -394,7 +399,8 @@ export class JobCategoryComponent implements OnInit {
       'Banking Jobs': 'banking-jobs',
       'IT Jobs': 'it-jobs',
       'Health and Career Tips': 'health-and-career-tips',
-      'Motivation Stories': 'motivation-stories'
+      'Motivation Stories': 'motivation-stories',
+      'TeluguToEnglishLearning': 'telugu-to-english-learning'
     };
 
     const route = routeMapping[category];
@@ -572,7 +578,9 @@ export class JobCategoryComponent implements OnInit {
           job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
         );
       } else {
-        filtered = filtered.filter(job => job.category === this.categoryTitle);
+        const mapping = this.categoryMappings[this.categoryParam];
+        const categoryToFilter = mapping ? mapping.category : this.categoryTitle;
+        filtered = filtered.filter(job => job.category === categoryToFilter);
       }
     }
 

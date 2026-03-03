@@ -35,6 +35,7 @@ export const DEFAULT_JOB_CATEGORIES = [
   'Sales and Marketing Jobs',
   'Health and Career Tips',
   'Motivation Stories',
+  'TeluguToEnglishLearning',
 ] as const;
 
 export type JobCategory = typeof DEFAULT_JOB_CATEGORIES[number];

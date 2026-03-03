@@ -3,6 +3,7 @@ import { JobCategoryComponent } from './components/job-category/job-category.com
 import { LoginComponent } from './components/login/login.component';
 import { JobFullInformation } from './components/job-full-information/job-full-information';
 import { InfoPageComponent } from './components/info-page/info-page.component';
+import { OfficialCompanyCareersComponent } from './components/official-company-careers/official-company-careers.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/all-latest-jobs', pathMatch: 'full' },
@@ -18,6 +19,8 @@ export const routes: Routes = [
   { path: 'today-expired-gov-jobs', component: JobCategoryComponent },
   { path: 'health-and-career-tips', component: JobCategoryComponent },
   { path: 'motivation-stories', component: JobCategoryComponent },
+  { path: 'telugu-to-english-learning', component: JobCategoryComponent },
+  { path: 'official-company-careers', component: OfficialCompanyCareersComponent },
   { path: 'about-us', component: InfoPageComponent },
   { path: 'contact-us', component: InfoPageComponent },
   { path: 'privacy-policy', component: InfoPageComponent },

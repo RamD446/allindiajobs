@@ -1,0 +1,91 @@
+.occ-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  padding-top: 40px;
+}
+
+.occ-header-section {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+}
+
+.occ-main-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.occ-subtitle {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.occ-type-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #334155;
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
+}
+
+.occ-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.occ-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  border-color: #3b82f6;
+}
+
+.occ-card-body {
+  padding: 1.25rem;
+}
+
+.occ-company-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.occ-btn {
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3b82f6;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: #eff6ff;
+  transition: all 0.2s ease;
+}
+
+.occ-btn:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+.occ-loading {
+  padding: 4rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .occ-main-title {
+    font-size: 1.5rem;
+  }
+  .occ-type-title {
+    font-size: 1.2rem;
+  }
+}

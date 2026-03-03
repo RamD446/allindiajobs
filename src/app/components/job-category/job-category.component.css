@@ -896,6 +896,10 @@
   color: #2d3748;
 }
 
+.very-small {
+  font-size: 0.6rem !important;
+}
+
 .time-ago {
   font-size: 0.65rem;
   color: #718096;

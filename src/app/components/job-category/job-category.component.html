@@ -100,9 +100,15 @@
                       <td class="date-cell">
                         <div class="d-flex flex-column align-items-center">
                           <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
-                          <div class="mt-1">
-                            <i *ngIf="!isExpired(job)" class="bi bi-patch-check-fill text-success small" title="Job Active"></i>
-                            <i *ngIf="isExpired(job)" class="bi bi-x-circle-fill text-danger small" title="Job Expired"></i>
+                          <div class="mt-1 d-flex align-items-center gap-1" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">
+                            <ng-container *ngIf="!isExpired(job)">
+                              <i class="bi bi-patch-check-fill text-success very-small"></i>
+                              <span class="very-small text-success fw-bold">Active</span>
+                            </ng-container>
+                            <ng-container *ngIf="isExpired(job)">
+                              <i class="bi bi-x-circle-fill text-danger very-small"></i>
+                              <span class="very-small text-danger fw-bold">Expired</span>
+                            </ng-container>
                           </div>
                         </div>
                       </td>
@@ -149,9 +155,15 @@
                       <td class="date-cell">
                         <div class="d-flex flex-column align-items-center">
                           <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
-                          <div class="mt-1">
-                            <i *ngIf="!isExpired(job)" class="bi bi-patch-check-fill text-success small" title="Job Active"></i>
-                            <i *ngIf="isExpired(job)" class="bi bi-x-circle-fill text-danger small" title="Job Expired"></i>
+                          <div class="mt-1 d-flex align-items-center gap-1" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">
+                            <ng-container *ngIf="!isExpired(job)">
+                              <i class="bi bi-patch-check-fill text-success very-small"></i>
+                              <span class="very-small text-success fw-bold">Active</span>
+                            </ng-container>
+                            <ng-container *ngIf="isExpired(job)">
+                              <i class="bi bi-x-circle-fill text-danger very-small"></i>
+                              <span class="very-small text-danger fw-bold">Expired</span>
+                            </ng-container>
                           </div>
                         </div>
                       </td>

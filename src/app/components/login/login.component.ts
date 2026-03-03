@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   // Job management
   jobs: Job[] = [];
   jobCareers: JobCareer[] = [];
-  activeTab: 'jobs' | 'careers' = 'jobs';
+  activeTab: 'jobs' | 'careers' | 'teluguToEnglish' = 'jobs';
   selectedJobCategory: string = 'All';
   showJobForm: boolean = false;
   showCareerForm: boolean = false;
@@ -230,6 +230,14 @@ export class LoginComponent implements OnInit {
     return this.jobs.filter(job => job.category === this.selectedJobCategory);
   }
 
+  getTeluguToEnglishJobs(): Job[] {
+    return this.jobs.filter(job => job.category === 'TeluguToEnglishLearning').sort((a, b) => {
+      const dateA = new Date(a.createdDate || '1970-01-01').getTime();
+      const dateB = new Date(b.createdDate || '1970-01-01').getTime();
+      return dateB - dateA;
+    });
+  }
+
   getCategoryCount(category: string): number {
     if (category === 'All') return this.jobs.length;
     return this.jobs.filter(job => job.category === category).length;
@@ -251,6 +259,12 @@ export class LoginComponent implements OnInit {
     this.showJobForm = true;
     this.editingJob = null;
     this.resetJobForm();
+    
+    // Auto-select category if on Telugu To English tab
+    if (this.activeTab === 'teluguToEnglish') {
+      this.jobForm.category = 'TeluguToEnglishLearning';
+      this.jobForm.createdDate = this.toLocalIsoString(new Date());
+    }
   }
 
   showCareerCreateForm() {

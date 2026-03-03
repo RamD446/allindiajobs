@@ -111,6 +111,9 @@
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'careers'" (click)="activeTab = 'careers'" href="javascript:void(0)">All Latest Job Careers</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'teluguToEnglish'" (click)="activeTab = 'teluguToEnglish'" href="javascript:void(0)">Telugu To English Learning</a>
+        </li>
       </ul>
 
       <!-- Career Form Modal -->
@@ -168,7 +171,7 @@
             <div class="row">
               <!-- Basic Info - 3 Columns for compact view -->
               <div class="col-md-4 mb-3">
-                <label class="form-label">Job Title *</label>
+                <label class="form-label">{{ jobForm.category === 'TeluguToEnglishLearning' ? 'Title *' : 'Job Title *' }}</label>
                 <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Software Engineer">
               </div>
               
@@ -178,7 +181,7 @@
               </div>
               
               <div class="col-md-4 mb-3">
-                <label class="form-label">Job Category *</label>
+                <label class="form-label">Category *</label>
                 <select class="form-control" [(ngModel)]="jobForm.category" name="category" required>
                   <option *ngFor="let category of jobCategories" [value]="category">{{ category }}</option>
                 </select>
@@ -193,7 +196,7 @@
                 </select>
               </div>
 
-              <div class="col-md-4 mb-3" *ngIf="editingJob && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories'">
+              <div class="col-md-4 mb-3" *ngIf="editingJob || jobForm.category === 'TeluguToEnglishLearning'">
                 <label class="form-label">Created Date & Time *</label>
                 <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" required>
               </div>
@@ -218,7 +221,7 @@
               </ng-container>
 
               <!-- Application URL - Full Row for visibility -->
-              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories'">
+              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning'">
                 <label class="form-label">Application URL (Registration Link)</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
@@ -228,19 +231,18 @@
               <!-- Description - Full Row -->
               <div class="col-12 ">
                 <label class="form-label d-flex justify-content-between">
-                  <span>Job Description *</span>
-            
+                  <span>{{ jobForm.category === 'TeluguToEnglishLearning' ? 'Description *' : 'Job Description *' }}</span>
                 </label>
                 <textarea 
                   [(ngModel)]="jobForm.description" 
                   name="description" 
                   class="form-control description-textarea"
-                  placeholder="Detailed job description..."
+                  [placeholder]="jobForm.category === 'TeluguToEnglishLearning' ? 'Add telugu to english learning content...' : 'Detailed job description...'"
                   required>
                 </textarea>
               </div>
 
-              <div class="col-12 mt-3" *ngIf="editingJob">
+              <div class="col-12 mt-3" *ngIf="editingJob && jobForm.category !== 'TeluguToEnglishLearning'">
                 <label class="form-label d-flex justify-content-between">
                   <span>Important Notes</span>
                 </label>
@@ -395,6 +397,53 @@
           <i class="bi bi-briefcase display-4 text-muted"></i>
           <h5 class="mt-3 text-muted">No Career Links Available</h5>
           <p class="text-muted">Add your first job career link to get started.</p>
+        </div>
+      </div>
+
+      <!-- Telugu To English Section (Tab 3) -->
+      <div class="jobs-section" *ngIf="activeTab === 'teluguToEnglish'">
+        <div class="jobs-header mb-3 d-flex justify-content-between align-items-center">
+          <h4 class="text-primary mb-0">Telugu To English Learning ({{ getTeluguToEnglishJobs().length }})</h4>
+        </div>
+        
+        <div class="row" *ngIf="getTeluguToEnglishJobs().length > 0">
+          <div class="col-12 mb-3" *ngFor="let job of getTeluguToEnglishJobs()">
+            <div class="job-card-compact" [class.expanded]="isJobExpanded(job.id)">
+              <div class="job-header-compact" (click)="toggleJobExpand(job.id)" style="cursor: pointer;">
+                <div class="job-info">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="bi" [class.bi-chevron-right]="!isJobExpanded(job.id)" [class.bi-chevron-down]="isJobExpanded(job.id)"></i>
+                    <div>
+                      <h6 class="job-title-small mb-0">{{ job.title }}</h6>
+                      <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>Created: {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="job-actions-small" (click)="$event.stopPropagation()">
+                  <button class="btn btn-sm btn-outline-primary me-1" (click)="editJob(job)" title="Edit">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteJob(job.id)" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="job-body-compact" *ngIf="isJobExpanded(job.id)">
+                <div class="job-meta-info mb-2">
+                  <div class="mb-2"><strong>Title:</strong> {{ job.title }}</div>
+                  <div class="mb-2"><strong>Description:</strong></div>
+                  <div class="p-2 bg-light rounded" style="white-space: pre-wrap;">{{ job.description }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="getTeluguToEnglishJobs().length === 0" class="text-center py-4">
+          <i class="bi bi-translate display-4 text-muted"></i>
+          <h5 class="mt-3 text-muted">No Learning Content Available</h5>
+          <p class="text-muted">Add your first telugu to english learning content to get started.</p>
         </div>
       </div>
     </div>

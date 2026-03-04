@@ -29,5 +29,5 @@ export const routes: Routes = [
   { path: 'job/:id/:title', component: JobFullInformation },
   { path: 'job-details/:id/:title', component: JobFullInformation }, // Legacy route support
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '/all-latest-jobs' }
+  { path: '**', redirectTo: '' }
 ];

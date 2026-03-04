@@ -169,9 +169,9 @@
                       </td>
                       <td class="title-cell">
                         <div class="job-main-title">{{ job.title }}</div>
-                        <div class="job-sub-meta">
+                        <div class="job-sub-meta" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">
                           <span class="badge rounded-pill me-1 jc-meta-badge">
-                            {{ job.category }}
+                            {{ job.company }}
                           </span>
                           <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="text-danger jc-meta-text fw-bold ms-1">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? '-' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
                         </div>

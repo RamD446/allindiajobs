@@ -6,7 +6,7 @@ import { InfoPageComponent } from './components/info-page/info-page.component';
 import { OfficialCompanyCareersComponent } from './components/official-company-careers/official-company-careers.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/all-latest-jobs', pathMatch: 'full' },
+  { path: '', component: JobCategoryComponent },
   { path: 'all-latest-jobs', component: JobCategoryComponent },
   { path: 'government-jobs', component: JobCategoryComponent },
   { path: 'private-jobs', component: JobCategoryComponent },

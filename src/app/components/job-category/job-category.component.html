@@ -145,14 +145,14 @@
                 <table class="table jc-custom-table">
                   <thead>
                     <tr>
-                      <th class="date-col">Posted Date</th>
-                      <th class="title-col">Job Title</th>
+                      <th class="date-col" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">Posted Date</th>
+                      <th class="title-col">{{ (categoryParam === 'health-and-career-tips' || categoryParam === 'telugu-to-english-learning') ? 'Title' : 'Job Title' }}</th>
                       <th class="action-col text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let job of getPrivateJobs()" (click)="viewJobDetails(job)">
-                      <td class="date-cell">
+                      <td class="date-cell" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">
                         <div class="d-flex flex-column align-items-center">
                           <span class="date-badge">{{ job.createdDate | date:'dd-MMM-yyyy' }}</span>
                           <div class="mt-1 d-flex align-items-center gap-1" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">

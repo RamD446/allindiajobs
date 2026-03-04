@@ -35,7 +35,10 @@
           <hr class="jc-filter-divider mb-3">
 
           <div class="job-description-container">
-            <h4 class="info-section-title"><i class="bi bi-file-text-fill"></i> Job Description</h4>
+            <h4 class="info-section-title">
+              <i class="bi bi-file-text-fill"></i> 
+              {{ (job.category === 'Health and Career Tips' || job.category === 'TeluguToEnglishLearning') ? 'Description' : 'Job Description' }}
+            </h4>
             <div class="job-desc-content">
               <!-- Phase 1 Description Logic -->
               <div *ngIf="isRichText(job.description)" [innerHTML]="getSafeHtml(job.description)"></div>
@@ -116,7 +119,7 @@
             <small class="text-muted">Category</small>
             <strong class="text-end ms-2">{{ job.category }}</strong>
           </div>
-          <div class="highlight-item mb-2 d-flex justify-content-between align-items-center">
+          <div class="highlight-item mb-2 d-flex justify-content-between align-items-center" *ngIf="job.category !== 'Health and Career Tips' && job.category !== 'TeluguToEnglishLearning'">
             <small class="text-muted">Posted On</small>
             <strong class="text-end ms-2">{{ formatDate(job.createdDate) }}</strong>
           </div>

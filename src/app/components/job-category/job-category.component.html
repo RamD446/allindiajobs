@@ -168,7 +168,11 @@
                         </div>
                       </td>
                       <td class="title-cell">
-                        <div class="job-main-title">{{ job.title }}</div>
+                        <div class="job-main-title">
+                          <i *ngIf="job.category === 'Health and Career Tips'" class="bi bi-heart-pulse-fill text-primary me-1"></i>
+                          <i *ngIf="job.category === 'TeluguToEnglishLearning'" class="bi bi-translate text-primary me-1"></i>
+                          {{ job.title }}
+                        </div>
                         <div class="job-sub-meta" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">
                           <span class="badge rounded-pill me-1 jc-meta-badge">
                             {{ job.company }}

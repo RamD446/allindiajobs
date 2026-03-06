@@ -1,3 +1,146 @@
+/* Menu Toggle Button */
+.menu-toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-icon-wrapper {
+  font-size: 1.6rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.menu-toggle-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.menu-toggle-btn:hover {
+  border-color: #ffd700;
+  color: #ffd700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.menu-toggle-btn:hover::before {
+  width: 150%;
+  height: 150%;
+}
+
+.menu-toggle-btn:active {
+  transform: scale(0.92);
+}
+
+@media (max-width: 576px) {
+  .menu-toggle-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .menu-icon-wrapper {
+    font-size: 1.4rem;
+  }
+}
+
+/* Mobile Offcanvas Menu */
+.mobile-offcanvas {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 85%;
+  max-width: 350px;
+  height: 100vh;
+  background: #0f172a;
+  z-index: 2000;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-offcanvas.active {
+  left: 0;
+}
+
+.offcanvas-header-nav {
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.offcanvas-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.offcanvas-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1999;
+}
+
+.btn-close-custom {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Ensure app-footer in offcanvas fits */
+.offcanvas-body ::ng-deep app-footer .site-footer {
+  padding-top: 1.5rem;
+  background: transparent !important;
+  border-top: none !important;
+}
+
+.offcanvas-body ::ng-deep app-footer .footer-container {
+  padding: 0 1.25rem;
+}
+
+.offcanvas-body ::ng-deep app-footer .footer-grid {
+  grid-template-columns: 1fr !important;
+  gap: 1.5rem;
+}
+
+.offcanvas-body ::ng-deep app-footer .footer-bottom {
+  display: none;
+}
+
 /* Navbar */
 .navbar {
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
@@ -21,6 +164,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 /* Logo Styles */

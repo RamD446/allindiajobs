@@ -1,34 +1,57 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container-fluid">
-      <a routerLink="/" class="navbar-brand logo">
+    <div class="container-fluid px-2">
+      <!-- Logo on the Far Left -->
+      <a routerLink="/" class="navbar-brand logo me-auto">
         <div class="logo-container">
           <i class="bi bi-lightning-charge-fill logo-icon"></i>
           <div class="logo-text-wrapper">
             <span class="logo-main">AllIndia</span>
             <span class="logo-sub">Jobs.com</span>
-            <span class="logo-telugu">Telugu Updates Job Portal</span>
+            <span class="logo-telugu">Telugu Jobs Portal</span>
           </div>
         </div>
       </a>
-      <div class="ms-auto d-flex flex-column align-items-end social-header-wrapper">
-       
-        <div class="d-flex align-items-center gap-2 social-header-icons">
-           <span class="follow-text">Follow:</span>
+
+      <!-- Right Side Actions -->
+      <div class="d-flex align-items-center gap-2">
+        <!-- Social Icons -->
+        <div class="d-none d-sm-flex align-items-center gap-2 social-header-icons">
           <button class="header-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')" title="YouTube">
             <i class="bi bi-youtube"></i>
           </button>
           <button class="header-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')" title="WhatsApp">
             <i class="bi bi-whatsapp"></i>
           </button>
-          <button class="header-social-btn mini-fb" (click)="openExternalChannel('https://www.facebook.com/share/17yHma5rhP/')" title="Facebook">
-            <i class="bi bi-facebook"></i>
-          </button>
-          <button class="header-social-btn mini-ig" (click)="openExternalChannel('https://www.instagram.com/allindajobs?igsh=MXJxeWl4NXdmeDVtdg==')" title="Instagram">
-            <i class="bi bi-instagram"></i>
-          </button>
         </div>
+
+        <!-- Enhanced Menu Button on the Far Right -->
+        <button class="menu-toggle-btn ms-2" (click)="toggleNav($event)" aria-label="Toggle Navigation">
+          <div class="menu-icon-wrapper">
+            <i class="bi bi-list"></i>
+          </div>
+        </button>
       </div>
     </div>
   </nav>
+
+  <!-- Mobile Offcanvas Menu -->
+  <div class="mobile-offcanvas" [class.active]="isNavActive">
+    <div class="offcanvas-header-nav">
+      <div class="logo-container">
+        <i class="bi bi-lightning-charge-fill logo-icon"></i>
+        <div class="logo-text-wrapper">
+          <span class="logo-main text-white">AllIndia</span>
+          <span class="logo-telugu">Telugu Jobs Portal</span>
+        </div>
+      </div>
+      <button type="button" class="btn-close-custom" (click)="closeNav()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="offcanvas-body">
+      <app-footer></app-footer>
+    </div>
+  </div>
+  <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
 </header>

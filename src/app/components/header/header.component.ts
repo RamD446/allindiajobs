@@ -5,10 +5,12 @@ import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 import { Job } from '../../models/job.model';
 
+import { FooterComponent } from '../footer/footer.component';
+
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FooterComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })

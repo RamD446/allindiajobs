@@ -4,7 +4,7 @@
 /* Main Container */
 .jc {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
+  background: #ffffff;
   padding-top: 40px; /* Reduced space below fixed header */
   margin: 0;
   overflow-x: hidden;
@@ -129,7 +129,7 @@
   margin: 0.15rem;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid rgba(255, 105, 180, 0.3);
+  border: 1px solid #e2e8f0;
 }
 
 .jc-header-row {
@@ -146,13 +146,16 @@
   flex-wrap: nowrap;
   overflow-x: auto;
   padding: 0.4rem 0.2rem;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
 }
 
 .jc-pills-row::-webkit-scrollbar {
-  display: none;
+  height: 4px;
+}
+
+.jc-pills-row::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
 @media (min-width: 769px) {
@@ -226,7 +229,7 @@
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid rgba(255, 105, 180, 0.3);
+  border: 1px solid #e2e8f0;
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
@@ -234,7 +237,7 @@
 
 .jc-job {
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid rgba(255, 105, 180, 0.3);
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -344,33 +347,35 @@
 
 /* Official Company Careers Section */
 .occ-section {
-  background: #fff;
+  background: #ffffff;
   padding: 0.75rem;
-  margin: 0.15rem;
+  margin: 0.5rem 0.15rem;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid rgba(255, 105, 180, 0.3);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   position: relative;
 }
 
 @media (max-width: 768px) {
   .occ-section {
     margin: 12px 12px;
-    padding: 1rem;
-    border-radius: 12px;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #ffffff;
   }
 }
 
 .occ-title {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: 800;
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #ff69b4;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #ff69b4;
+  color: #c2185b;
+  padding-bottom: 0.4rem;
+  border-bottom: 1.5px solid #e2e8f0;
 }
 
 .occ-type-card {
@@ -399,12 +404,11 @@
 }
 
 .occ-links-container {
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 0.5rem;
-  border: 2px solid #ff69b4;
+  background: transparent;
+  padding: 0;
+  border: none;
   animation: slideDown 0.3s ease-out;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: none;
 }
 
 @keyframes slideDown {
@@ -413,16 +417,15 @@
 }
 
 .occ-link-card {
-  background: #f8f9fa;
-  border-radius: 6px;
-  padding: 0.35rem 0.6rem;
+  background: #f8fafc;
+  padding: 0.5rem 0.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  border: 1px solid rgba(255, 105, 180, 0.3);
+  border: 1px solid #f1f5f9;
+  border-radius: 6px;
   transition: all 0.2s;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .occ-link-card:last-child {
@@ -430,8 +433,10 @@
 }
 
 .occ-link-card:hover {
-  border-color: #ff69b4;
-  background: #fff5f7;
+  background: #ffffff;
+  border-color: #e2e8f0;
+  transform: translateX(3px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .occ-company-name {
@@ -457,7 +462,7 @@
   border-radius: 6px;
   padding: 0.5rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid rgba(255, 105, 180, 0.3);
+  border: 1px solid #e2e8f0;
 }
 
 @media (max-width: 768px) {
@@ -691,7 +696,7 @@
     padding: 0.4rem;
     margin: 0.2rem;
     border-radius: 10px;
-    border: 1px solid rgba(255, 105, 180, 0.3);
+    border: 1px solid #e2e8f0;
   }
   
   .jc-breadcrumb {
@@ -704,8 +709,6 @@
     padding: 0.2rem 0.3rem;
     flex-wrap: nowrap;
     overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
   }
   
@@ -727,12 +730,12 @@
     margin: 0.2rem;
     border-radius: 10px;
     grid-template-columns: 1fr;
-    border: 1px solid rgba(255, 105, 180, 0.3);
+    border: 1px solid #e2e8f0;
   }
   
   .jc-job {
     padding: 0.75rem 0.85rem;
-    border-bottom: 1px solid rgba(255, 105, 180, 0.3);
+    border-bottom: 1px solid #e2e8f0;
   }
   
   .jc-job-title {
@@ -756,7 +759,7 @@
     margin: 0.2rem;
     padding: 0.5rem;
     border-radius: 6px;
-    border: 1px solid rgba(255, 105, 180, 0.3);
+    border: 1px solid #e2e8f0;
   }
 
   .sidebar-wa-card {
@@ -798,13 +801,24 @@
   }
   
   .jc-top-card {
-    margin: 0.2rem;
-  }
-  
-  .jc-filters {
-    margin: 0.2rem;
+    margin-top: 12px;
   }
 }
+
+.jc-jobs {
+  margin: 0.2rem;
+  border-radius: 10px;
+  grid-template-columns: 1fr;
+  border: 1px solid #e2e8f0;
+}
+
+.jc-filters {
+  margin: 0.2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
 
 /* Job Tables Styling */
 .jc-tables-container {
@@ -816,7 +830,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid rgba(255, 105, 180, 0.3);
+  border: 1px solid #e2e8f0;
   margin: 0.2rem;
   margin-bottom: 12px;
 }
@@ -827,7 +841,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid #fce4ec;
+  border-bottom: 1px solid #e2e8f0;
   background: #ffffff;
 }
 
@@ -849,7 +863,7 @@
 
 .gov-header {
   background-color: #ffffff !important;
-  border-bottom: 2px solid #c2185b;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .gov-header i {
@@ -859,7 +873,7 @@
 
 .pvt-header {
   background-color: #ffffff !important;
-  border-bottom: 2px solid #c2185b;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .pvt-header i {
@@ -900,7 +914,7 @@
 
 .jc-custom-table thead th {
   background-color: #f8f9fa;
-  border-bottom: 2px solid #dee2e6;
+  border-bottom: 1px solid #e2e8f0;
   font-size: 0.75rem;
   text-transform: none;
   color: #495057;
@@ -920,7 +934,7 @@
 .jc-custom-table td {
   padding: 0.45rem 0.5rem;
   vertical-align: middle;
-  border-bottom: 1.5px solid #cbd5e1;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .date-col { width: 120px; }

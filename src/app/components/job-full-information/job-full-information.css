@@ -16,7 +16,7 @@
 
 .jc {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   padding-top: 50px;
   padding-bottom: 20px;
 }
@@ -55,7 +55,7 @@
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   margin-bottom: 10px;
-  border: 1px solid rgba(255, 105, 180, 0.3);
+  border: 1px solid #e2e8f0;
 }
 
 /* Header Row / Breadcrumbs */
@@ -209,8 +209,8 @@
 
 .jc-filter-divider {
   border: 0;
-  border-top: 1px solid #ff69b4;
-  opacity: 0.2;
+  border-top: 1px solid #e2e8f0;
+  opacity: 1;
 }
 
 /* Description Section */
@@ -266,7 +266,7 @@
 }
 
 .important-notes-wrap {
-  border-top: 1px dashed #cfe2ff;
+  border-top: 1px dashed #e2e8f0;
   padding-top: 12px;
 }
 
@@ -283,7 +283,7 @@
   background: #f8f9fa;
   padding: 15px;
   border-radius: 8px;
-  border: 1px dashed #ff69b4;
+  border: 1px dashed #e2e8f0;
 }
 
 .apply-btn-legacy {

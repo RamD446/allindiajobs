@@ -98,7 +98,7 @@ export class JobFullInformation implements OnInit {
   private async loadLatestJobs(): Promise<void> {
     try {
       const jobsRef = ref(db, 'jobs');
-      const recentJobsQuery = query(jobsRef, orderByChild('createdDate'), limitToLast(25));
+      const recentJobsQuery = query(jobsRef, orderByChild('createdDate'), limitToLast(50));
       const snapshot = await get(recentJobsQuery);
       
       if (snapshot.exists()) {
@@ -107,7 +107,7 @@ export class JobFullInformation implements OnInit {
           .map(key => ({ id: key, ...jobsData[key] }))
           .filter(job => job.id !== this.job?.id) // Exclude current job
           .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
-          .slice(0, 20) as Job[];
+          .slice(0, 40) as Job[];
         
         console.log('Latest jobs loaded:', this.latestJobs.length);
       } else {

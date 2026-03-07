@@ -85,7 +85,7 @@
 
 .offcanvas-header-nav {
   padding: 1rem 1.25rem;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: #000000;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -228,9 +228,9 @@
 
 /* Navbar */
 .navbar {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: #000000;
   padding: 0;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
   height: 44px;
   width: 100%;
   z-index: 1050;
@@ -239,6 +239,9 @@
 @media (max-width: 576px) {
   .navbar {
     height: 40px;
+  }
+  .container-fluid {
+    padding: 0 0.75rem !important;
   }
 }
 
@@ -285,7 +288,7 @@
 }
 
 .logo-sub {
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
   font-size: 0.6rem;
   font-weight: 600;
   margin-top: -2px;
@@ -312,7 +315,7 @@
 }
 
 .nav-link-short {
-  color: rgba(255, 255, 255, 0.85);
+  color: #ffffff;
   text-decoration: none;
   display: flex;
   flex-direction: column;
@@ -362,7 +365,7 @@
     gap: 0;
   }
   .nav-link-short {
-    padding: 0 0.15rem;
+    padding: 0 0.35rem;
     min-width: 38px;
   }
   .nav-link-short i {
@@ -408,7 +411,7 @@
 .follow-text {
   font-size: 0.65rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }

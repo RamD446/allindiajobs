@@ -822,14 +822,29 @@
 }
 
 .jc-table-header {
-  padding: 0.3rem 0.5rem;
+  padding: 0.5rem 0.8rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: space-between;
   border-bottom: 2px solid #fce4ec;
   background: #ffffff;
+}
+
+.company-select {
+  max-width: 180px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid #c2185b;
+  color: #c2185b;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+}
+
+.company-select:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 0.1rem rgba(255, 105, 180, 0.25);
 }
 
 .gov-header {
@@ -839,7 +854,7 @@
 
 .gov-header i {
   color: #c2185b !important;
-  margin-bottom: 2px !important;
+  margin-bottom: 0 !important;
 }
 
 .pvt-header {
@@ -849,25 +864,25 @@
 
 .pvt-header i {
   color: #c2185b !important;
-  margin-bottom: 2px !important;
+  margin-bottom: 0 !important;
 }
 
 .header-text-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 0;
+  gap: 0.4rem;
 }
 
 .header-main-text {
   font-weight: 800;
   font-size: 0.9rem;
   color: #1a202c;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
 }
 
 .header-sub-text {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #c2185b;
 }
@@ -1020,15 +1035,32 @@
 
   .jc-table-header {
     padding: 0.4rem 0.6rem;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  .company-select {
+    max-width: 120px;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.3rem;
+  }
+
+  .header-text-container {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
   }
 
   .header-main-text {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+    line-height: 1.1;
   }
 
   .header-sub-text {
     font-size: 0.65rem;
-    opacity: 0.85;
+    opacity: 0.95;
+    line-height: 1.1;
   }
 
   .jc-table-header i {

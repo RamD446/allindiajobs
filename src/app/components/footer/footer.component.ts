@@ -16,7 +16,6 @@ export class FooterComponent {
   constructor(private router: Router) {}
 
   jobTypes = [
-    { name: 'అన్ని ఉద్యోగాలు (All Jobs)', route: '/all-latest-jobs' },
     { name: 'అన్ని ప్రభుత్వ ఉద్యోగాలు (All Govt Jobs)', route: '/government-jobs' },
     { name: 'ఈరోజు వాక్-ఇన్స్ (Today Walk-ins)', route: '/today-walkins' },
     { name: 'అన్ని ఫ్రెషర్ ఉద్యోగాలు (All Fresher Jobs)', route: '/fresher-jobs' },
@@ -65,7 +64,7 @@ export class FooterComponent {
   }
 
   navigateToCareer(type: string) {
-    this.router.navigate(['/all-latest-jobs'], { queryParams: { careerType: type } });
+    this.router.navigate(['/government-jobs'], { queryParams: { careerType: type } });
     window.scrollTo(0, 0);
   }
 

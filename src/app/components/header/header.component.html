@@ -15,15 +15,7 @@
 
       <!-- Right Side Actions -->
       <div class="d-flex align-items-center gap-2">
-        <!-- Social Icons -->
-        <div class="d-none d-sm-flex align-items-center gap-2 social-header-icons">
-          <button class="header-social-btn mini-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')" title="YouTube">
-            <i class="bi bi-youtube"></i>
-          </button>
-          <button class="header-social-btn mini-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')" title="WhatsApp">
-            <i class="bi bi-whatsapp"></i>
-          </button>
-        </div>
+       
 
         <!-- Enhanced Menu Button on the Far Right -->
         <button class="menu-toggle-btn ms-2" (click)="toggleNav($event)" aria-label="Toggle Navigation">
@@ -41,7 +33,7 @@
       <div class="logo-container">
         <i class="bi bi-lightning-charge-fill logo-icon"></i>
         <div class="logo-text-wrapper">
-          <span class="logo-main text-white">AllIndia</span>
+          <span class="logo-main text-white">AllIndiaJobs</span>
           <span class="logo-telugu">Telugu Jobs Portal</span>
         </div>
       </div>
@@ -49,8 +41,48 @@
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
+    
     <div class="offcanvas-body">
-      <app-footer></app-footer>
+      <!-- Social Follow Section -->
+      <div class="offcanvas-social-section p-3">
+        <h6 class="section-label">Follow Us</h6>
+        <div class="social-icons-grid">
+          <button class="social-btn btn-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')">
+            <i class="bi bi-youtube"></i>
+          </button>
+          <button class="social-btn btn-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
+            <i class="bi bi-whatsapp"></i>
+          </button>
+          <button class="social-btn btn-fb" (click)="openExternalChannel('https://www.facebook.com/allindiajobs')">
+            <i class="bi bi-facebook"></i>
+          </button>
+          <button class="social-btn btn-ig" (click)="openExternalChannel('https://www.instagram.com/allindiajobs')">
+            <i class="bi bi-instagram"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Job Categories List -->
+      <div class="offcanvas-menu-list p-3">
+        <h6 class="section-label">Browse Jobs</h6>
+        <div class="menu-items">
+          <a *ngFor="let cat of navCategories" 
+             [routerLink]="cat.route" 
+             (click)="closeNav()"
+             class="menu-item"
+             routerLinkActive="active">
+            <div class="menu-item-icon" [style.background-color]="cat.color + '15'" [style.color]="cat.color">
+              <i class="bi" [ngClass]="cat.icon"></i>
+            </div>
+            <span class="menu-item-text">{{ cat.name }}</span>
+            <i class="bi bi-chevron-right ms-auto chevron"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="offcanvas-footer p-3">
+      <p class="copyright-text mb-0">&copy; 2026 AllIndiaJobs.com</p>
     </div>
   </div>
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>

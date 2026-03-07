@@ -15,11 +15,20 @@ import { db } from '../config/firebase.config';
 })
 export class App implements OnInit {
   protected readonly title = signal('allindianjobs');
-  showWhatsAppBtn = false;
+  showWhatsAppBtn = true;
+  private lastScrollTop = 0;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    this.showWhatsAppBtn = window.pageYOffset > 300;
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    if (st > this.lastScrollTop) {
+      // Scroll Down - Hide button
+      this.showWhatsAppBtn = false;
+    } else {
+      // Scroll Up - Show button
+      this.showWhatsAppBtn = true;
+    }
+    this.lastScrollTop = st <= 0 ? 0 : st;
   }
 
   joinWhatsAppGroup() {

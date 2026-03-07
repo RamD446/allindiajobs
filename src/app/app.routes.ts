@@ -7,7 +7,6 @@ import { OfficialCompanyCareersComponent } from './components/official-company-c
 
 export const routes: Routes = [
   { path: '', component: JobCategoryComponent },
-  { path: 'all-latest-jobs', component: JobCategoryComponent },
   { path: 'government-jobs', component: JobCategoryComponent },
   { path: 'private-jobs', component: JobCategoryComponent },
   { path: 'walk-in-drives', component: JobCategoryComponent },

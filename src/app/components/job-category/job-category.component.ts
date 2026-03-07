@@ -31,7 +31,6 @@ export class JobCategoryComponent implements OnInit {
   selectedSalaries: string[] = [];
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
-    'all-latest-jobs': { title: 'All Latest Jobs', category: 'All Latest Jobs' },
     'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
     'private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' },
     'walk-in-drives': { title: 'Walk-in Drives', category: 'Walk-in Drives' },
@@ -60,8 +59,8 @@ export class JobCategoryComponent implements OnInit {
         this.categoryTitle = mapping.title;
         this.loadJobs(mapping.category);
       } else {
-        this.categoryTitle = 'All Latest Jobs';
-        this.loadJobs('All Latest Jobs');
+        this.categoryTitle = 'Government Jobs';
+        this.loadJobs('Government Jobs');
       }
       this.loadJobCareers();
     });
@@ -94,13 +93,7 @@ export class JobCategoryComponent implements OnInit {
           console.log('All jobs loaded:', this.jobs); // Debug log
           
           // Filter jobs by category
-          if (category === 'All Latest Jobs') {
-            this.filteredJobs = this.jobs.filter(job => 
-              job.category !== 'Health and Career Tips' && 
-              job.category !== 'Motivation Stories' &&
-              job.category !== 'TeluguToEnglishLearning'
-            );
-          } else if (category === 'All Private Jobs') {
+          if (category === 'All Private Jobs') {
             // Include Private Jobs, Walk-in Drives, and all Bank-related jobs
             // EXCLUDE Health Tips and Motivation Stories
             this.filteredJobs = this.jobs.filter(job => 
@@ -176,6 +169,12 @@ export class JobCategoryComponent implements OnInit {
     this.selectedCareerType = type;
     this.filteredCareers = this.jobCareers.filter(career => career.jobType === type);
     this.cdr.detectChanges();
+  }
+
+  getTopCareersByType(type: string, limit: number = 5): JobCareer[] {
+    return this.jobCareers
+      .filter(career => career.jobType === type)
+      .slice(0, limit);
   }
 
   formatDate(dateString: string): string {
@@ -557,6 +556,16 @@ export class JobCategoryComponent implements OnInit {
       this.selectedJobTypes = this.selectedJobTypes.filter(type => type !== jobType);
     }
     
+    this.applyFilters();
+  }
+
+  onCompanyChange(event: any) {
+    const company = event.target.value;
+    if (company) {
+      this.selectedCompanies = [company];
+    } else {
+      this.selectedCompanies = [];
+    }
     this.applyFilters();
   }
 

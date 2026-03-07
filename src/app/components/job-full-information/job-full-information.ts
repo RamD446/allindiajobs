@@ -37,7 +37,7 @@ export class JobFullInformation implements OnInit {
     if (!jobId) {
       console.log('No job ID found, redirecting...');
       this.isLoading = false;
-      this.router.navigate(['/all-latest-jobs']);
+      this.router.navigate(['/']);
       return;
     }
 
@@ -143,24 +143,27 @@ export class JobFullInformation implements OnInit {
   getRelatedJobs(): Job[] {
     if (!this.job || !this.latestJobs) return [];
     
-    const isGov = this.job.category === 'Government Jobs';
-    
+    // Filter by the exact same category as the current job
     return this.latestJobs
-      .filter(j => {
-        if (isGov) {
-          return j.category === 'Government Jobs';
-        } else {
-          return j.category !== 'Government Jobs' && j.category !== 'Health and Career Tips' && j.category !== 'Motivation Stories' && j.category !== 'TeluguToEnglishLearning';
-        }
-      })
+      .filter(j => j.category === this.job?.category)
       .slice(0, 10);
   }
 
   getTopJobs(): Job[] {
     if (!this.latestJobs) return [];
-    return this.latestJobs
-      .filter(j => j.category !== 'Health and Career Tips' && j.category !== 'Motivation Stories' && j.category !== 'TeluguToEnglishLearning')
-      .slice(0, 10);
+    
+    // Get 5 Government Jobs
+    const govJobs = this.latestJobs
+      .filter(j => j.category === 'Government Jobs')
+      .slice(0, 5);
+      
+    // Get 5 Walk-in Drives
+    const walkinJobs = this.latestJobs
+      .filter(j => j.category === 'Walk-in Drives')
+      .slice(0, 5);
+      
+    // Combine them (Total 10)
+    return [...govJobs, ...walkinJobs];
   }
 
   getTimeAgo(dateString: string): string {
@@ -366,7 +369,7 @@ export class JobFullInformation implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/all-latest-jobs']);
+    this.router.navigate(['/']);
   }
 
   navigateToCategory(category: string) {

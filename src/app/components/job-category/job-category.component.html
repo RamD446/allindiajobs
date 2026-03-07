@@ -17,10 +17,7 @@
           <div class="jc-top-card mb-1">
             <div class="jc-pills-row">
             
-              <button class="jc-pill jc-pill-all" routerLink="/all-latest-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-                <i class="bi bi-grid-3x3-gap-fill"></i>
-                <span>All Jobs</span>
-              </button>
+
                   <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" style="background-color: #fff3e0; color: #e65100;">
                 <i class="bi bi-building-fill"></i>
                 <span>All Govt Jobs</span>
@@ -79,11 +76,19 @@
             
             <!-- Government Jobs Table -->
             <div class="jc-table-section" *ngIf="getGovJobs().length > 0">
-              <div class="jc-table-header gov-header">
-                <i class="bi bi-building-fill me-2"></i>
-                <div class="header-text-container">
-                  <span class="header-main-text">Latest Government Jobs</span>
-                  <span class="header-sub-text">( ప్రభుత్వ ఉద్యోగాలు)</span>
+              <div class="jc-table-header gov-header d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center flex-grow-1">
+                  <i class="bi bi-building-fill me-2"></i>
+                  <div class="header-text-container">
+                    <span class="header-main-text">Latest Government Jobs</span>
+                    
+                  </div>
+                </div>
+                <div class="quick-filter-container ms-2">
+                  <select class="form-select form-select-sm company-select" (change)="onCompanyChange($event)" [value]="selectedCompanies[0] || ''">
+                    <option value="">Filter by Company</option>
+                    <option *ngFor="let company of getUniqueCompanies()" [value]="company">{{ company }} ({{ getJobCountByCompany(company) }})</option>
+                  </select>
                 </div>
               </div>
               <div class="table-responsive">
@@ -91,7 +96,12 @@
                   <thead>
                     <tr>
                       <th class="date-col">Posted Date</th>
-                      <th class="title-col">Job Title</th>
+                      <th class="title-col">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <span>Job Title</span>
+                          <i class="bi bi-funnel-fill text-muted" style="font-size: 0.7rem;"></i>
+                        </div>
+                      </th>
                       <th class="action-col text-center">Action</th>
                     </tr>
                   </thead>
@@ -134,19 +144,32 @@
 
             <!-- Private Jobs Table -->
             <div class="jc-table-section" *ngIf="getPrivateJobs().length > 0">
-              <div class="jc-table-header pvt-header">
-                <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill mb-2' : (categoryParam === 'motivation-stories' ? 'bi bi-lightning-charge-fill mb-2' : (categoryParam === 'telugu-to-english-learning' ? 'bi bi-translate mb-2' : 'bi bi-briefcase-fill mb-2'))"></i>
-              <div class="header-text-container">
-                  <span class="header-main-text">{{ (categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories' || categoryParam === 'telugu-to-english-learning') ? categoryTitle : 'Latest Private Jobs & Walk-ins' }}</span>
-                  <span class="header-sub-text" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories' && categoryParam !== 'telugu-to-english-learning'">(ప్రైవేట్ ఉద్యోగాలు)</span>
-                </div>  
+              <div class="jc-table-header pvt-header d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center flex-grow-1">
+                  <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill me-2' : (categoryParam === 'motivation-stories' ? 'bi bi-lightning-charge-fill me-2' : (categoryParam === 'telugu-to-english-learning' ? 'bi bi-translate me-2' : 'bi bi-briefcase-fill me-2'))"></i>
+                  <div class="header-text-container">
+                    <span class="header-main-text">{{ (categoryParam === 'health-and-career-tips' || categoryParam === 'motivation-stories' || categoryParam === 'telugu-to-english-learning') ? categoryTitle : 'All Private Jobs & Walk-ins' }}</span>
+                    
+                  </div>
+                </div>
+                <div class="quick-filter-container ms-2" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories' && categoryParam !== 'telugu-to-english-learning'">
+                  <select class="form-select form-select-sm company-select" (change)="onCompanyChange($event)" [value]="selectedCompanies[0] || ''">
+                    <option value="">Filter by Company</option>
+                    <option *ngFor="let company of getUniqueCompanies()" [value]="company">{{ company }} ({{ getJobCountByCompany(company) }})</option>
+                  </select>
+                </div>
               </div>
               <div class="table-responsive">
                 <table class="table jc-custom-table">
                   <thead>
                     <tr>
                       <th class="date-col" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">Posted Date</th>
-                      <th class="title-col">{{ (categoryParam === 'health-and-career-tips' || categoryParam === 'telugu-to-english-learning') ? 'Title' : 'Job Title' }}</th>
+                      <th class="title-col">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <span>{{ (categoryParam === 'health-and-career-tips' || categoryParam === 'telugu-to-english-learning') ? 'Title' : 'Job Title' }}</span>
+                          <i *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'" class="bi bi-funnel-fill text-muted" style="font-size: 0.7rem;"></i>
+                        </div>
+                      </th>
                       <th class="action-col text-center">Action</th>
                     </tr>
                   </thead>
@@ -213,85 +236,35 @@
           <!-- WhatsApp Sidebar Card -->
          
 
-          <!-- Official Company Careers (Quick Filter Section) -->
-          <div class="occ-section">
-            <h6 class="occ-title">
-              <i class="bi bi-building-check text-primary"></i> Official Company Careers
-            </h6>
-            <div class="occ-types row g-2">
-              <div class="col-6 col-md-6" *ngFor="let type of careerJobTypes">
-                <div class="occ-type-card" [class.active]="selectedCareerType === type" (click)="filterCareersByType(type)">
-                  <span class="occ-type-name">{{ type }}</span>
-                </div>
-              </div>
-            </div>
-            
 
-            <!-- Career Links Display based on selected Job Type -->
-            <div class="occ-links-container mt-3" *ngIf="selectedCareerType">
-              <div class="occ-links-header d-flex justify-content-between align-items-center mb-2">
-                <small class="fw-bold" style="color: #000000;">{{ selectedCareerType }} Career Links</small>
-                <button class="btn btn-sm btn-link p-0 text-decoration-none fw-bold" (click)="selectedCareerType = ''" style="color: #000000; font-size: 0.75rem;">
-                  <i class="bi bi-x-circle"></i> Close
-                </button>
-              </div>
-              <div class="row g-2">
-                <div class="col-12" *ngFor="let career of filteredCareers.slice(0, 5)">
-                  <div class="occ-link-card">
-                    <span class="occ-company-name" style="color: #000000;">{{ career.company }}</span>
-                    <a [href]="career.careerOfficeUrl" target="_blank" class="occ-action-link" style="color: #000000;">
-                      Click here <i class="bi bi-box-arrow-up-right"></i>
-                    </a>
+          <!-- Official Company Careers (By Type) -->
+          <div class="occ-section-wrapper" *ngFor="let type of careerJobTypes">
+            <div class="occ-section" *ngIf="getTopCareersByType(type).length > 0">
+              <h6 class="occ-title">
+                <i class="bi bi-building-check text-primary"></i> {{ type }} Careers
+              </h6>
+              
+              <div class="occ-links-container mt-2">
+                <div class="row g-2">
+                  <div class="col-12" *ngFor="let career of getTopCareersByType(type)">
+                    <div class="occ-link-card">
+                      <span class="occ-company-name" style="color: #000000;">{{ career.company }}</span>
+                      <a [href]="career.careerOfficeUrl" target="_blank" class="occ-action-link" style="color: #000000;">
+                        Click here <i class="bi bi-box-arrow-up-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2 text-center">
+                     <a [routerLink]="['/official-company-careers']" [queryParams]="{type: type}" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold" style="font-size: 0.75rem;">
+                       See More {{ type }} <i class="bi bi-arrow-right-circle ms-1"></i>
+                     </a>
                   </div>
                 </div>
-                <div class="col-12 mt-2 text-center" *ngIf="filteredCareers.length > 5">
-                   <a routerLink="/official-company-careers" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold" style="font-size: 0.75rem;">
-                     See More <i class="bi bi-arrow-right-circle ms-1"></i>
-                   </a>
-                </div>
-                <div class="col-12" *ngIf="filteredCareers.length === 0">
-                  <p class="small mb-0 p-2 text-center border rounded bg-light" style="color: #000000; font-weight: 600;">No career links available for this category yet.</p>
-                </div>
               </div>
             </div>
           </div>
- <div class="sidebar-wa-card mb-2" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
-            <div class="d-flex align-items-center">
-              <div class="wa-icon-box me-2">
-                <i class="bi bi-whatsapp"></i>
-              </div>
-              <div class="wa-content">
-                <span class="wa-title">Join WhatsApp</span>
-                <span class="wa-subtitle">Get Instant Job Alerts</span>
-              </div>
-              <i class="bi bi-arrow-right-short ms-auto"></i>
-            </div>
-          </div>
-          <div class="jc-filters" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'motivation-stories' && categoryParam !== 'telugu-to-english-learning'">
-            <div class="d-flex justify-content-between align-items-center mb-2 px-1">
-              <h6 class="jc-filter-title mb-0 p-0">
-                <i class="bi bi-funnel"></i>
-                <span>Quick Filters by Company name</span>
-              </h6>
-              <button class="btn btn-sm btn-link text-danger p-0 text-decoration-none" style="font-size: 0.85rem;" (click)="clearAllFilters()" *ngIf="hasActiveFilters()">
-                Clear All
-              </button>
-            </div>
-            <hr class="jc-filter-divider my-1">
-            
-            <!-- Company Filter -->
-            <div class="jc-filter-group mb-2">
-                 <div class="jc-filter-options-scroll">
-                <label class="jc-filter-option" *ngFor="let company of getUniqueCompanies()" [class.active]="selectedCompanies.includes(company)">
-                  <input type="checkbox" [value]="company" [checked]="selectedCompanies.includes(company)" (change)="filterByCompany($event)">
-                  <span class="jc-filter-text">{{ company }}({{ getJobCountByCompany(company) }})</span>
-                </label>
-              </div>
-            </div>
 
-            
-
-          </div>
+          
         </div>
       </div>
     </div>
@@ -305,7 +278,7 @@
       </div>
       <h3 class="jc-empty-title">No Jobs Found</h3>
       <p class="jc-empty-text">No jobs in {{ categoryTitle.toLowerCase() }} right now.</p>
-      <a routerLink="/all-latest-jobs" class="jc-back-btn">
+      <a routerLink="/" class="jc-back-btn">
         <i class="bi bi-arrow-left"></i>
         <span>Browse All Jobs</span>
       </a>

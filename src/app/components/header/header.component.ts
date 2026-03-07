@@ -5,18 +5,27 @@ import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 import { Job } from '../../models/job.model';
 
-import { FooterComponent } from '../footer/footer.component';
-
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FooterComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
   isNavActive = false;
   jobs: Job[] = [];
+
+  navCategories = [
+    { name: 'Government Jobs', route: '/government-jobs', icon: 'bi-building-fill', color: '#e65100' },
+    { name: 'Private Jobs', route: '/private-jobs', icon: 'bi-briefcase-fill', color: '#2e7d32' },
+    { name: 'Walk-in Drives', route: '/walk-in-drives', icon: 'bi-person-walking', color: '#c2185b' },
+    { name: 'Banking Jobs', route: '/banking-jobs', icon: 'bi-piggy-bank-fill', color: '#1565c0' },
+    { name: 'Fresher Jobs', route: '/fresher-jobs', icon: 'bi-mortarboard-fill', color: '#2e7d32' },
+    { name: 'IT Jobs', route: '/it-jobs', icon: 'bi-laptop-fill', color: '#0277bd' },
+    { name: 'Career Tips', route: '/health-and-career-tips', icon: 'bi-heart-pulse-fill', color: '#0288d1' },
+    { name: 'English Learning', route: '/telugu-to-english-learning', icon: 'bi-translate', color: '#7b1fa2' }
+  ];
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}
 

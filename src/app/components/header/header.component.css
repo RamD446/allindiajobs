@@ -69,14 +69,14 @@
   top: 0;
   left: -100%;
   width: 85%;
-  max-width: 350px;
+  max-width: 320px;
   height: 100vh;
-  background: #0f172a;
+  background: #ffffff;
   z-index: 2000;
-  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
 }
 
 .mobile-offcanvas.active {
@@ -84,18 +84,123 @@
 }
 
 .offcanvas-header-nav {
-  padding: 1.25rem;
+  padding: 1rem 1.25rem;
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .offcanvas-body {
   flex: 1;
   overflow-y: auto;
-  padding: 0;
+  background: #f8fafc;
+}
+
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+
+/* Social Section */
+.social-icons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.social-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: white;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.btn-yt { background: #FF0000; }
+.btn-wa { background: #25D366; }
+.btn-fb { background: #1877F2; }
+.btn-ig { background: linear-gradient(135deg, #E1306C 0%, #FD1D1D 25%, #F77737 50%, #FCAF45 100%); }
+
+.social-btn:active {
+  transform: scale(0.9);
+}
+
+/* Menu Items */
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #1e293b;
+  transition: all 0.2s;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.menu-item:active {
+  background: #f1f5f9;
+  transform: scale(0.98);
+}
+
+.menu-item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+
+.menu-item-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.menu-item-count {
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  margin-left: 0.5rem;
+}
+
+.chevron {
+  font-size: 0.75rem;
+  color: #cbd5e1;
+}
+
+.offcanvas-footer {
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+  background: white;
+}
+
+.copyright-text {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #94a3b8;
 }
 
 .offcanvas-overlay {
@@ -104,41 +209,21 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(4px);
   z-index: 1999;
 }
 
 .btn-close-custom {
-  background: none;
+  background: rgba(255,255,255,0.1);
   border: none;
   color: white;
-  font-size: 1.25rem;
-  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-}
-
-/* Ensure app-footer in offcanvas fits */
-.offcanvas-body ::ng-deep app-footer .site-footer {
-  padding-top: 1.5rem;
-  background: transparent !important;
-  border-top: none !important;
-}
-
-.offcanvas-body ::ng-deep app-footer .footer-container {
-  padding: 0 1.25rem;
-}
-
-.offcanvas-body ::ng-deep app-footer .footer-grid {
-  grid-template-columns: 1fr !important;
-  gap: 1.5rem;
-}
-
-.offcanvas-body ::ng-deep app-footer .footer-bottom {
-  display: none;
 }
 
 /* Navbar */

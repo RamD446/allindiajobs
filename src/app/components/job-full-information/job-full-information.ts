@@ -152,18 +152,8 @@ export class JobFullInformation implements OnInit {
   getTopJobs(): Job[] {
     if (!this.latestJobs) return [];
     
-    // Get 5 Government Jobs
-    const govJobs = this.latestJobs
-      .filter(j => j.category === 'Government Jobs')
-      .slice(0, 5);
-      
-    // Get 5 Walk-in Drives
-    const walkinJobs = this.latestJobs
-      .filter(j => j.category === 'Walk-in Drives')
-      .slice(0, 5);
-      
-    // Combine them (Total 10)
-    return [...govJobs, ...walkinJobs];
+    // Simply return the top 10 latest jobs
+    return this.latestJobs.slice(0, 10);
   }
 
   getTimeAgo(dateString: string): string {

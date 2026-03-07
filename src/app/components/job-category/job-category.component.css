@@ -5,14 +5,14 @@
 .jc {
   min-height: 100vh;
   background: #ffffff;
-  padding-top: 56px; /* Reduced space below fixed header */
+  padding-top: 64px; /* Reduced space below fixed header */
   margin: 0;
   overflow-x: hidden;
 }
 
 @media (min-width: 769px) {
   .jc {
-    padding-top: 56px;
+    padding-top: 64px;
   }
 }
 
@@ -129,7 +129,7 @@
   margin: 0.15rem;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid #e2e8f0;
+  border: 1.5px solid #f8bbd0;
 }
 
 .jc-header-row {
@@ -137,6 +137,16 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.1rem 0.2rem;
+}
+
+@media (max-width: 768px) {
+  .jc-top-card, 
+  .jc-header,
+  .jc-jobs,
+  .jc-table-section {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+  }
 }
 
 /* Category Pills */
@@ -229,7 +239,7 @@
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid #e2e8f0;
+  border: 1.5px solid #f8bbd0;
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
@@ -237,7 +247,7 @@
 
 .jc-job {
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #fce4ec;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -350,7 +360,7 @@
   background: #ffffff;
   padding: 0.75rem;
   margin: 0.5rem 0.15rem;
-  border: 1px solid #e2e8f0;
+  border: 1.5px solid #f8bbd0;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   position: relative;
@@ -358,9 +368,9 @@
 
 @media (max-width: 768px) {
   .occ-section {
-    margin: 12px 12px;
+    margin: 12px 10px;
     padding: 0.75rem;
-    border: 1px solid #e2e8f0;
+    border: 1.5px solid #f8bbd0;
     border-radius: 10px;
     background: #ffffff;
   }
@@ -422,7 +432,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #f1f5f9;
+  border: 1.5px solid #f8bbd0;
   border-radius: 6px;
   transition: all 0.2s;
   margin-bottom: 6px;
@@ -462,12 +472,12 @@
   border-radius: 6px;
   padding: 0.5rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid #e2e8f0;
+  border: 1px solid #fce4ec;
 }
 
 @media (max-width: 768px) {
   .jc-filters {
-    margin: 12px 12px !important;
+    margin: 12px 10px !important;
     padding: 1rem !important;
     border-radius: 12px !important;
   }
@@ -696,7 +706,7 @@
     padding: 0.4rem;
     margin: 0.2rem;
     border-radius: 10px;
-    border: 1px solid #e2e8f0;
+    border: 1.5px solid #f8bbd0;
   }
   
   .jc-breadcrumb {
@@ -730,12 +740,12 @@
     margin: 0.2rem;
     border-radius: 10px;
     grid-template-columns: 1fr;
-    border: 1px solid #e2e8f0;
+    border: 1.5px solid #f8bbd0;
   }
   
   .jc-job {
     padding: 0.75rem 0.85rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1.5px solid #f8bbd0;
   }
   
   .jc-job-title {
@@ -759,7 +769,7 @@
     margin: 0.2rem;
     padding: 0.5rem;
     border-radius: 6px;
-    border: 1px solid #e2e8f0;
+    border: 1.5px solid #f8bbd0;
   }
 
   .sidebar-wa-card {
@@ -809,12 +819,12 @@
   margin: 0.2rem;
   border-radius: 10px;
   grid-template-columns: 1fr;
-  border: 1px solid #e2e8f0;
+  border: 1.5px solid #f8bbd0;
 }
 
 .jc-filters {
   margin: 0.2rem;
-  border: 1px solid #e2e8f0;
+  border: 1.5px solid #f8bbd0;
   border-radius: 6px;
   padding: 0.5rem;
 }
@@ -830,7 +840,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid #e2e8f0;
+  border: 1.5px solid #f8bbd0;
   margin: 0.2rem;
   margin-bottom: 12px;
 }

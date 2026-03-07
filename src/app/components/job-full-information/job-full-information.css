@@ -55,7 +55,7 @@
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   margin-bottom: 10px;
-  border: 1px solid #e2e8f0;
+  border: 1.5px solid #f8bbd0;
 }
 
 /* Header Row / Breadcrumbs */
@@ -597,7 +597,11 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .jc { padding-top: 45px; }
+  .jc { padding-top: 56px; }
+  .jc-top-card {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+  }
   .job-title-display { font-size: 1.1rem; }
   .desc-item span { font-size: 0.8rem; }
   .col-md-9 { padding-right: 0 !important; }

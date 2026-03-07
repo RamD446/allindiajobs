@@ -5,14 +5,14 @@
 .jc {
   min-height: 100vh;
   background: #ffffff;
-  padding-top: 40px; /* Reduced space below fixed header */
+  padding-top: 56px; /* Reduced space below fixed header */
   margin: 0;
   overflow-x: hidden;
 }
 
 @media (min-width: 769px) {
   .jc {
-    padding-top: 40px;
+    padding-top: 56px;
   }
 }
 
@@ -689,7 +689,7 @@
 /* Responsive */
 @media (max-width: 576px) {
   .jc {
-    padding-top: 42px; /* Reduced space below fixed header */
+    padding-top: 48px; /* Reduced space below fixed header */
   }
   
   .jc-top-card {
@@ -797,7 +797,7 @@
 
 @media (min-width: 768px) {
   .jc {
-    padding-top: 40px;
+    padding-top: 56px;
   }
   
   .jc-top-card {

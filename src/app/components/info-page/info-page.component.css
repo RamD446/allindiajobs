@@ -1,7 +1,7 @@
 .info-page-bg {
   min-height: 100vh;
   background: #ffffff;
-  padding-top: 40px;
+  padding-top: 56px;
 }
 
 /* Category Page Shared Styles */
@@ -99,6 +99,6 @@
 
 @media (max-width: 768px) {
   .info-page-bg {
-    padding-top: 38px;
+    padding-top: 48px;
   }
 }

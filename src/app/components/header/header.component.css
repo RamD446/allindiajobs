@@ -231,14 +231,14 @@
   background: #000000;
   padding: 0;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-  height: 44px;
+  height: 56px;
   width: 100%;
   z-index: 1050;
 }
 
 @media (max-width: 576px) {
   .navbar {
-    height: 40px;
+    height: 48px;
   }
   .container-fluid {
     padding: 0 0.75rem !important;
@@ -282,7 +282,7 @@
 
 .logo-main {
   color: #ffffff;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.2px;
 }
@@ -329,12 +329,12 @@
 }
 
 .nav-link-short i {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   margin-bottom: 1px;
 }
 
 .nav-link-short span {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.1px;
 }

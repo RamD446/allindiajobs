@@ -205,18 +205,18 @@
               <ng-container *ngIf="jobForm.category === 'Walk-in Drives'">
                 <div class="col-md-4 mb-3">
                   <label class="form-label text-danger">Walk-in Start Date *</label>
-                  <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" required>
+                  <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" >
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="form-label text-danger">Walk-in End Date *</label>
-                  <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate" required>
+                  <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate" >
                 </div>
               </ng-container>
 
               <ng-container *ngIf="jobForm.category === 'Government Jobs'">
                 <div class="col-md-4 mb-3">
                   <label class="form-label text-primary">Last Date to Apply *</label>
-                  <input type="date" class="form-control border-primary" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply" required>
+                  <input type="date" class="form-control border-primary" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply">
                 </div>
               </ng-container>
 

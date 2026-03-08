@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
 import { JobCategoryComponent } from './components/job-category/job-category.component';
 import { LoginComponent } from './components/login/login.component';
 import { JobFullInformation } from './components/job-full-information/job-full-information';
@@ -6,7 +7,7 @@ import { InfoPageComponent } from './components/info-page/info-page.component';
 import { OfficialCompanyCareersComponent } from './components/official-company-careers/official-company-careers.component';
 
 export const routes: Routes = [
-  { path: '', component: JobCategoryComponent },
+  { path: '', component: HomeComponent },
   { path: 'government-jobs', component: JobCategoryComponent },
   { path: 'private-jobs', component: JobCategoryComponent },
   { path: 'walk-in-drives', component: JobCategoryComponent },

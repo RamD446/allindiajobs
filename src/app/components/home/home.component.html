@@ -1,0 +1,172 @@
+<div class="container-fluid">
+  <!-- Category Pills Card -->
+  <div class="jc-top-card mb-2" *ngIf="!isLoading">
+    <div class="jc-pills-row">
+      <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-building-fill"></i>
+        <span>All Govt Jobs</span>
+      </button>
+      
+      <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-briefcase-fill"></i>
+        <span>Private Jobs</span>
+      </button>
+
+      <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-person-walking"></i>
+        <span> All Walk-ins</span>
+      </button>
+
+      <button *ngIf="getTodayWalkinsCount() > 0" class="jc-pill jc-pill-today-walkin" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-person-walking"></i>
+        <span>Today Walk-ins</span>
+      </button>
+
+      <button class="jc-pill jc-pill-career" routerLink="/health-and-career-tips" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-heart-pulse-fill"></i>
+        <span>Career Tips</span>
+      </button>
+
+      <button class="jc-pill jc-pill-telugu" routerLink="/telugu-to-english-learning" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-translate"></i>
+        <span>TeluguToEnglish</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="text-center my-5 py-5">
+    <div class="spinner-border" role="status" style="color: #c2185b;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 fw-bold text-muted">Fetching latest opportunities...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="row g-4 g-md-3">
+    <!-- Row 1: col-md-6 for Gov Jobs and Walk-ins -->
+    <div class="col-12 col-md-6">
+      <div class="card home-job-card">
+        <div class="card-header gov-header">
+          <i class="bi bi-building-fill me-2 fs-header"></i>
+          <span>Gov Jobs</span>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let job of govJobs" class="job-item" (click)="viewJobDetails(job)">
+            <i class="bi bi-check2-circle job-tick"></i>
+            <div class="job-content">
+              <p class="job-title">{{ job.title }}</p>
+              <span *ngIf="job.lastDateToApply" class="badge last-date-badge">
+                Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a routerLink="/government-jobs" class="more-jobs-link">
+            <span>View All</span>
+            <i class="bi bi-arrow-right-short fs-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="card home-job-card">
+        <div class="card-header walk-header">
+          <i class="bi bi-person-walking me-2 fs-header"></i>
+          <span>Walk-ins</span>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let job of walkinJobs" class="job-item" (click)="viewJobDetails(job)">
+            <i class="bi bi-check2-circle job-tick"></i>
+            <div class="job-content">
+              <p class="job-title">{{ job.title }}</p>
+              <span *ngIf="job.walkInStartDate" class="badge walk-in-badge">
+                Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a routerLink="/walk-in-drives" class="more-jobs-link">
+            <span>View All</span>
+            <i class="bi bi-arrow-right-short fs-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: col-md-4 for Private, Career Tips, and TeluguToEnglish -->
+    <div class="col-12 col-md-4">
+      <div class="card home-job-card">
+        <div class="card-header pvt-header">
+          <i class="bi bi-briefcase-fill me-2 fs-header"></i>
+          <span>Private Jobs</span>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let job of privateJobs" class="job-item" (click)="viewJobDetails(job)">
+            <i class="bi bi-check2-circle job-tick"></i>
+            <div class="job-content">
+              <p class="job-title">{{ job.title }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a routerLink="/private-jobs" class="more-jobs-link">
+            <span>View All</span>
+            <i class="bi bi-arrow-right-short fs-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <div class="card home-job-card">
+        <div class="card-header tips-header">
+          <i class="bi bi-lightbulb-fill me-2 fs-header"></i>
+          <span>Tips & Info</span>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let job of tipsJobs" class="job-item" (click)="viewJobDetails(job)">
+            <i class="bi bi-check2-circle job-tick"></i>
+            <div class="job-content">
+              <p class="job-title">{{ job.title }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a routerLink="/health-and-career-tips" class="more-jobs-link">
+            <span>View All</span>
+            <i class="bi bi-arrow-right-short fs-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <div class="card home-job-card">
+        <div class="card-header telugu-header">
+          <i class="bi bi-translate me-2 fs-header"></i>
+          <span>Telugu To English</span>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let job of teluguJobs" class="job-item" (click)="viewJobDetails(job)">
+            <i class="bi bi-check2-circle job-tick"></i>
+            <div class="job-content">
+              <p class="job-title">
+                <span class="fw-bold" style="color: #c2185b;">Day {{ getDayNumber(job) }}: </span>
+                {{ job.title }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a routerLink="/telugu-to-english-learning" class="more-jobs-link">
+            <span>View All</span>
+            <i class="bi bi-arrow-right-short fs-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

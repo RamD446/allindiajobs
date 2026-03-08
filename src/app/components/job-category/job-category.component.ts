@@ -29,6 +29,8 @@ export class JobCategoryComponent implements OnInit {
   selectedCategories: string[] = [];
   selectedExperienceLevels: string[] = [];
   selectedSalaries: string[] = [];
+  topWalkins: Job[] = [];
+  topPrivateJobs: Job[] = [];
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
@@ -117,6 +119,23 @@ export class JobCategoryComponent implements OnInit {
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
           }
+
+          // Populate top 5 for sidebar
+          this.topWalkins = this.jobs
+            .filter(job => job.category === 'Walk-in Drives')
+            .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+            .slice(0, 5);
+
+          this.topPrivateJobs = this.jobs
+            .filter(job => 
+              job.category !== 'Government Jobs' && 
+              job.category !== 'Walk-in Drives' && 
+              job.category !== 'Health and Career Tips' && 
+              job.category !== 'TeluguToEnglishLearning' &&
+              job.category !== 'Motivation Stories'
+            )
+            .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+            .slice(0, 5);
           
           console.log('Filtered jobs for', category, ':', this.filteredJobs); // Debug log
         } else {

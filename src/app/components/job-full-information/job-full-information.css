@@ -1,13 +1,13 @@
 .jc {
   min-height: 100vh;
   background-color: #fdf2f5;
-  padding-top: 50px;
+  padding-top: 70px;
   padding-bottom: 30px;
 }
 
 @media (min-width: 769px) {
   .jc {
-    padding-top: 65px;
+    padding-top: 90px;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
@@ -94,6 +94,38 @@
   background: #f1f5f9;
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
+}
+
+.meta-share-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.meta-share-btn:hover {
+  background: #f1f5f9;
+  color: #c2185b;
+  border-color: #f8bbd0;
+  transform: scale(1.1);
+}
+
+.meta-share-btn.whatsapp {
+  color: #25D366;
+}
+
+.meta-share-btn.whatsapp:hover {
+  background: #e8f9ee;
+  border-color: #25D366;
+  color: #128C7E;
 }
 
 .section-title {

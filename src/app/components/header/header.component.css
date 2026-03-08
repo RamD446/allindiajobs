@@ -85,7 +85,7 @@
 
 .offcanvas-header-nav {
   padding: 1rem 1.25rem;
-  background: #000000;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -228,9 +228,9 @@
 
 /* Navbar */
 .navbar {
-  background: #000000;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   padding: 0;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
   height: 56px;
   width: 100%;
   z-index: 1050;

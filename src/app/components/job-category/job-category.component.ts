@@ -94,12 +94,9 @@ export class JobCategoryComponent implements OnInit {
           
           // Filter jobs by category
           if (category === 'All Private Jobs') {
-            // Include Private Jobs, Walk-in Drives, and all Bank-related jobs
-            // EXCLUDE Health Tips and Motivation Stories
+            // Include All Private Jobs, Walk-in Drives, IT Jobs, and Banking Jobs
             this.filteredJobs = this.jobs.filter(job => 
-              (job.category === 'All Private Jobs' || 
-              job.category === 'Walk-in Drives' ||
-              (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))) &&
+              job.category !== 'Government Jobs' && 
               job.category !== 'Health and Career Tips' && 
               job.category !== 'Motivation Stories' &&
               job.category !== 'TeluguToEnglishLearning'

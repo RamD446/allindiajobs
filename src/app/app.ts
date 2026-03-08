@@ -1,10 +1,11 @@
 import { Component, signal, OnInit, HostListener } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { ref, get, update } from 'firebase/database';
 import { db } from '../config/firebase.config';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,14 @@ export class App implements OnInit {
   protected readonly title = signal('allindianjobs');
   showWhatsAppBtn = true;
   private lastScrollTop = 0;
+
+  constructor(private router: Router) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      window.scrollTo(0, 0);
+    });
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

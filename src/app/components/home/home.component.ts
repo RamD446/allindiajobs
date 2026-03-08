@@ -113,8 +113,6 @@ export class HomeComponent implements OnInit {
 
   viewJobDetails(job: Job) {
     const titleSlug = this.createSlug(job.title);
-    this.router.navigate(['/job', job.id, titleSlug], { state: { job: job } }).then(() => {
-      window.scrollTo(0, 0);
-    });
+    this.router.navigate(['/job', job.id, titleSlug], { state: { job: job } });
   }
 }

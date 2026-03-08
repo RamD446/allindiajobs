@@ -131,7 +131,6 @@ export class JobFullInformation implements OnInit {
 
     const titleSlug = job.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     this.router.navigate(['/job', job.id, titleSlug], { state: { job } }).then(() => {
-      window.scrollTo(0, 0);
       this.ngOnInit(); // Reload the component
     });
   }

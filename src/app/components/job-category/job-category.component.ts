@@ -207,6 +207,18 @@ export class JobCategoryComponent implements OnInit {
     return today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime();
   }
 
+  getDayNumber(job: Job): number {
+    if (job.category !== 'TeluguToEnglishLearning') return 0;
+    
+    // Get all Telugu learning jobs sorted by date (oldest first)
+    const allTeluguJobs = this.jobs
+      .filter(j => j.category === 'TeluguToEnglishLearning')
+      .sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
+      
+    const index = allTeluguJobs.findIndex(j => j.id === job.id);
+    return index !== -1 ? index + 1 : 0;
+  }
+
   getTodayJobsCount(): number {
     return this.jobs.filter(job => this.isToday(job.createdDate)).length;
   }

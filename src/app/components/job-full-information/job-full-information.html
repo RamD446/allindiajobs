@@ -90,6 +90,23 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Quick Highlights -->
+                <div class="quick-highlights-section mt-4" *ngIf="job.lastDateToApply || job.walkInStartDate">
+                  <h5 class="section-title mb-3">
+                    <i class="bi bi-stars me-2"></i>Quick Highlights
+                  </h5>
+                  <div class="modern-desc-list">
+                    <div class="modern-desc-item" *ngIf="job.lastDateToApply">
+                      <i class="bi bi-calendar-x-fill job-tick mt-1 text-danger"></i>
+                      <span><strong>Apply Before:</strong> {{ job.lastDateToApply | date:'dd-MM-yyyy' }}</span>
+                    </div>
+                    <div class="modern-desc-item" *ngIf="job.walkInStartDate">
+                      <i class="bi bi-calendar-check-fill job-tick mt-1 text-success"></i>
+                      <span><strong>Walkin Date:</strong> {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -99,49 +116,6 @@
       <!-- Sidebar Column (col-4 on desktop) -->
       <div class="col-12 col-md-4 ps-md-4">
         
-        <!-- Highlights Card -->
-        <div class="card home-job-card mb-3">
-          <div class="card-header gov-header">
-            <i class="bi bi-stars me-2"></i>Quick Highlights
-          </div>
-          <div class="card-body p-0">
-            <div class="highlight-list">
-              <div class="h-item border-bottom p-3 d-flex justify-content-between align-items-center">
-                <span class="text-muted small fw-bold text-uppercase">Company</span>
-                <span class="fw-bold text-end">{{ job.company }}</span>
-              </div>
-              <div class="h-item border-bottom p-3 d-flex justify-content-between align-items-center">
-                <span class="text-muted small fw-bold text-uppercase">Category</span>
-                <span class="fw-bold text-end">{{ job.category }}</span>
-              </div>
-              <div class="h-item border-bottom p-3 d-flex justify-content-between align-items-center" *ngIf="job.lastDateToApply">
-                <span class="text-muted small fw-bold text-uppercase">Apply Before</span>
-                <span class="text-danger fw-bold text-end">{{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
-              </div>
-              <div class="h-item p-3 d-flex justify-content-between align-items-center" *ngIf="job.walkInStartDate">
-                <span class="text-muted small fw-bold text-uppercase">Walk-in Date</span>
-                <span class="text-success fw-bold text-end">{{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- WhatsApp Channel Card -->
-        <div class="card sidebar-wa-card-modern mb-3" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
-          <div class="card-body p-3">
-            <div class="d-flex align-items-center">
-              <div class="wa-icon-circle me-3">
-                <i class="bi bi-whatsapp"></i>
-              </div>
-              <div class="wa-text-box">
-                <h6 class="mb-0 fw-bold">Join WhatsApp</h6>
-                <small>Get Instant Job Alerts</small>
-              </div>
-              <i class="bi bi-arrow-right-circle-fill ms-auto fs-4"></i>
-            </div>
-          </div>
-        </div>
-
         <!-- Top Jobs List Card -->
         <div class="card home-job-card mb-3">
           <div class="card-header walk-header">

@@ -200,6 +200,7 @@
 .sidebar-job-item {
   cursor: pointer;
   transition: all 0.2s;
+  padding: 0.5rem 0.75rem !important;
 }
 
 .sidebar-job-item:hover {

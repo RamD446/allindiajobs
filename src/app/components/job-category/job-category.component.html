@@ -66,10 +66,12 @@
               <div *ngFor="let job of getGovJobs()" class="job-item" (click)="viewJobDetails(job)">
                 <i class="bi bi-check2-circle job-tick"></i>
                 <div class="job-content">
-                  <p class="job-title">{{ job.title }}</p>
-                  <span *ngIf="job.lastDateToApply" class="badge last-date-badge">
-                    Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}
-                  </span>
+                  <p class="job-title">
+                    {{ job.title }}
+                    <span *ngIf="job.lastDateToApply" class="last-date-text">
+                      || Apply Before: {{ job.lastDateToApply | date:'dd-MM-yyyy' }}
+                    </span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -96,10 +98,10 @@
                   <p class="job-title">
                     <span *ngIf="job.category === 'TeluguToEnglishLearning'" class="fw-bold" style="color: #c2185b;">Day {{ getDayNumber(job) }}: </span>
                     {{ job.title }}
+                    <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="walk-in-text">
+                      || Walkin Date: {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}
+                    </span>
                   </p>
-                  <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="badge walk-in-badge">
-                    Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd MMM') : '' }}
-                  </span>
                 </div>
               </div>
             </div>

@@ -232,6 +232,13 @@
   margin: 0;
 }
 
+.last-date-text, .walk-in-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #dc2626;
+  margin-left: 0.3rem;
+}
+
 .last-date-badge {
   background-color: #fef2f2;
   color: #dc2626;

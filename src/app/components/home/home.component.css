@@ -135,8 +135,9 @@
   }
 
   .job-title {
-    font-size: 0.8rem !important;
+    font-size: 0.95rem !important;
     line-height: 1.2 !important;
+    color: #334155 !important;
   }
 
   .job-tick {
@@ -225,8 +226,8 @@
 }
 
 .job-title {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: #334155;
   line-height: 1.4;
   margin: 0;

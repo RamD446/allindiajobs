@@ -52,13 +52,13 @@
 
                 <!-- Important Notes -->
                 <div *ngIf="job.importantNotes" class="important-notes-card mt-4 p-3">
-                  <h5 class="notes-title text-danger fw-bold mb-3">
+                  <h5 class="notes-title text-primary fw-bold mb-3">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>Important Notes
                   </h5>
                   <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
                   <div *ngIf="!isRichText(job.importantNotes)" class="modern-desc-list">
                     <div *ngFor="let note of getImportantNotesList(job.importantNotes)" class="modern-desc-item">
-                      <i class="bi bi-info-circle-fill text-danger mt-1"></i>
+                      <i class="bi bi-info-circle-fill text-primary mt-1"></i>
                       <span>{{ note }}</span>
                     </div>
                   </div>
@@ -68,7 +68,7 @@
                 <div class="official-links-wrapper mt-4" *ngIf="job.applicationUrl">
                   <div class="card border-primary">
                     <div class="card-header bg-primary text-white py-2 fw-bold">
-                      Official Information & Links
+                      Job Full Information
                     </div>
                     <div class="card-body p-0">
                       <table class="table table-bordered mb-0">
@@ -78,10 +78,10 @@
                             <td class="text-danger fw-bold">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
                           </tr>
                           <tr>
-                            <th class="bg-light">Official Notification</th>
+                            <th class="bg-light">Apply Online</th>
                             <td>
                               <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary py-1 px-3 rounded-pill fw-bold">
-                                <i class="bi bi-box-arrow-up-right me-1"></i> Visit Official Link
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Apply Online
                               </a>
                             </td>
                           </tr>

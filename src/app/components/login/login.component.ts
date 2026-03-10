@@ -366,8 +366,19 @@ export class LoginComponent implements OnInit {
       this.isSaving = false;
       this.cdr.detectChanges();
       
-      // Close modal after successful save
-      this.cancelJobForm();
+      // If it's a new job, reset form and keep modal open as requested
+      if (!this.editingJob) {
+        this.resetJobForm();
+        // Auto-select category if on Telugu To English tab
+        if (this.activeTab === 'teluguToEnglish') {
+          this.jobForm.category = 'TeluguToEnglishLearning';
+          this.jobForm.createdDate = this.toLocalIsoString(new Date());
+        }
+        alert('Job created successfully! You can add another one.');
+      } else {
+        // Close modal after successful edit
+        this.cancelJobForm();
+      }
     } catch (error) {
       console.error('Error saving job:', error);
       this.isSaving = false;
@@ -400,7 +411,13 @@ export class LoginComponent implements OnInit {
       
       this.isSaving = false;
       this.cdr.detectChanges();
-      this.cancelCareerForm();
+      
+      if (!this.editingCareer) {
+        this.resetCareerForm();
+        alert('Career created successfully! You can add another one.');
+      } else {
+        this.cancelCareerForm();
+      }
     } catch (error) {
       console.error('Error saving career:', error);
       this.isSaving = false;

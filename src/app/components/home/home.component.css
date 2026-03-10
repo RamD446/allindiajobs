@@ -57,12 +57,13 @@
   }
 
   .jc-pill i {
-    font-size: 0.75rem !important;
+    font-size: 0.9rem !important;
   }
 
   .jc-pill span {
-    font-size: 0.55rem !important;
-    letter-spacing: -0.2px;
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.1px;
   }
 }
 
@@ -86,13 +87,13 @@
 }
 
 .jc-pill i {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #c2185b;
 }
 
 .jc-pill span {
-  font-size: 0.62rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 800;
   color: #475569;
   text-align: center;
 }

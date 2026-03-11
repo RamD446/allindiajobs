@@ -20,7 +20,7 @@
             <div class="job-meta-row mb-4 d-flex align-items-center flex-wrap gap-2">
               <span class="badge date-badge-mini"><i class="bi bi-person-circle me-1"></i> Admin</span>
               <span class="badge date-badge-mini" *ngIf="!job.updatedDate"><i class="bi bi-calendar-event me-1"></i> {{ formatDate(job.createdDate) }}</span>
-              <span class="badge date-badge-mini text-primary border border-primary-subtle" *ngIf="job.updatedDate">
+              <span class="badge updated-badge-mini text-primary border border-primary-subtle" *ngIf="job.updatedDate">
                 <i class="bi bi-pencil-square me-1"></i> Updated: {{ formatDate(job.updatedDate) }}
               </span>
               <div class="ms-auto d-flex gap-2">

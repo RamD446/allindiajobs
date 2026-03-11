@@ -157,6 +157,10 @@
   margin-bottom: 0.75rem;
 }
 
+.important-notes-list .modern-desc-item {
+  margin-bottom: 0.4rem;
+}
+
 .job-tick {
   color: #c2185b;
   font-size: 1.1rem;
@@ -169,17 +173,6 @@
   border-radius: 8px;
   border-left: 4px solid #c2185b;
   white-space: pre-wrap;
-}
-
-.important-notes-card {
-  background-color: #ffffff;
-  border: 1px solid #b2d7ff;
-  border-radius: 10px;
-}
-
-.important-notes-card .modern-desc-item span,
-.important-notes-card div[innerHTML] {
-  font-weight: 600;
 }
 
 /* Sidebar WhatsApp */

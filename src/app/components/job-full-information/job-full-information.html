@@ -54,16 +54,15 @@
                 </ng-container>
 
                 <!-- Important Notes -->
-                <div *ngIf="job.importantNotes" class="important-notes-card mt-4 p-3">
-                  <h5 class="notes-title text-primary fw-bold mb-2">
+                <div *ngIf="job.importantNotes" class="mt-4">
+                  <h5 class="section-title mb-3">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>Important Notes
                   </h5>
-                  <hr class="mt-0 mb-3 border-primary opacity-25">
                   <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
-                  <div *ngIf="!isRichText(job.importantNotes)" class="modern-desc-list">
+                  <div *ngIf="!isRichText(job.importantNotes)" class="modern-desc-list important-notes-list">
                     <div *ngFor="let note of getImportantNotesList(job.importantNotes)" class="modern-desc-item">
-                      <i class="bi bi-info-circle-fill text-primary mt-1"></i>
-                      <span>{{ note }}</span>
+                      <i class="bi bi-check2-circle job-tick mt-1"></i>
+                      <span class="fw-semibold">{{ note }}</span>
                     </div>
                   </div>
                 </div>

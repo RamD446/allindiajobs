@@ -66,7 +66,7 @@
 .floating-wa-btn {
   position: fixed;
   right: 15px;
-  bottom: 65px;
+  bottom: 100px;
   z-index: 1000;
   background: #25D366;
   color: white;
@@ -102,7 +102,7 @@
 @media (max-width: 480px) {
   .floating-wa-btn {
     padding: 5px 10px;
-    bottom: 60px;
+    bottom: 90px;
     right: 10px;
   }
   .wa-float-text {

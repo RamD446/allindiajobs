@@ -348,7 +348,14 @@ export class LoginComponent implements OnInit {
         // Update existing job
         const jobRef = ref(db, `jobs/${this.editingJob.id}`);
         const { id, ...jobData } = this.jobForm;
-        await update(jobRef, jobData);
+        
+        // Add or update updatedDate
+        const updatedJobData = {
+          ...jobData,
+          updatedDate: new Date().toISOString()
+        };
+        
+        await update(jobRef, updatedJobData);
         console.log('Job updated successfully');
       } else {
         // Create new job

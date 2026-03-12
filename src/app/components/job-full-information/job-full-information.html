@@ -32,9 +32,11 @@
                 </div>
               </div>
               
-              <hr class="title-divider mb-4">
+              <hr class="title-divider">
+               <h4 class="job-title-display">{{ job.title }}</h4>
+              
               <div class="job-desc-content">
-                  <h1 class="job-title-display mb-3">{{ job.title }}</h1>
+                 
                 <div *ngIf="isRichText(job.description)" [innerHTML]="getSafeHtml(job.description)"></div>
                 
                 <ng-container *ngIf="!isRichText(job.description)">

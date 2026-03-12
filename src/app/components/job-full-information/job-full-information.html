@@ -100,8 +100,8 @@
                           <tr *ngIf="job.walkInStartDate">
                             <th class="bg-light w-40">Walk-in Dates</th>
                             <td class="text-success fw-bold">
-                              {{ job.walkInStartDate | date:'dd MMMM yyyy' }}
-                              <span *ngIf="job.walkInEndDate"> to {{ job.walkInEndDate | date:'dd MMMM yyyy' }}</span>
+                              {{ job.walkInStartDate | date:'dd MMMM' }}
+                              <span *ngIf="job.walkInEndDate"> - {{ job.walkInEndDate | date:'dd MMMM' }}</span>
                             </td>
                           </tr>
                           <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
@@ -120,7 +120,7 @@
                             <th class="bg-light"> Official Site</th>
                             <td>
                               <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary py-1 px-3 rounded-pill fw-bold">
-                                <i class="bi bi-box-arrow-up-right me-1"></i> Visit Official Site
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Click Here to Visit
                               </a>
                             </td>
                           </tr>

@@ -93,15 +93,34 @@
                     <div class="card-body p-0">
                       <table class="table table-bordered mb-0">
                         <tbody>
+                          <tr *ngIf="job.company">
+                            <th class="bg-light w-40">Company Name</th>
+                            <td class="fw-bold text-primary">{{ job.company }}</td>
+                          </tr>
+                          <tr *ngIf="job.walkInStartDate">
+                            <th class="bg-light w-40">Walk-in Dates</th>
+                            <td class="text-success fw-bold">
+                              {{ job.walkInStartDate | date:'dd MMMM yyyy' }}
+                              <span *ngIf="job.walkInEndDate"> to {{ job.walkInEndDate | date:'dd MMMM yyyy' }}</span>
+                            </td>
+                          </tr>
                           <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
                             <th class="bg-light w-40">Last Date to Apply</th>
                             <td class="text-danger fw-bold">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
                           </tr>
+                          <tr *ngIf="job.location">
+                            <th class="bg-light w-40">Job Location</th>
+                            <td>{{ job.location }}</td>
+                          </tr>
+                          <tr *ngIf="job.addressAndContact">
+                            <th class="bg-light w-40">Address & Contact</th>
+                            <td>{{ job.addressAndContact }}</td>
+                          </tr>
                           <tr>
-                            <th class="bg-light">Apply Online</th>
+                            <th class="bg-light"> Official Site</th>
                             <td>
                               <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary py-1 px-3 rounded-pill fw-bold">
-                                <i class="bi bi-box-arrow-up-right me-1"></i> Apply Online
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Visit Official Site
                               </a>
                             </td>
                           </tr>
@@ -111,18 +130,7 @@
                   </div>
                 </div>
 
-                <!-- Quick Highlights -->
-                <div class="quick-highlights-section mt-4" *ngIf="job.walkInStartDate">
-                  <h5 class="section-title mb-3">
-                    <i class="bi bi-stars me-2"></i>Quick Highlights
-                  </h5>
-                  <div class="modern-desc-list">
-                    <div class="modern-desc-item" *ngIf="job.walkInStartDate">
-                      <i class="bi bi-calendar-check-fill job-tick mt-1 text-success"></i>
-                      <span><strong>Walkin Date:</strong> {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>

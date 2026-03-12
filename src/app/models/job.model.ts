@@ -23,6 +23,8 @@ export interface Job {
   lastDateToApply?: string;
   importantNotes?: string;
   updatedDate?: string;
+  addressAndContact?: string;
+  location?: string;
 }
 
 // Job Categories - simplified list as requested

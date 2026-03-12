@@ -47,7 +47,9 @@ export class LoginComponent implements OnInit {
     experience: 'Fresher',
     walkInStartDate: '',
     walkInEndDate: '',
-    lastDateToApply: ''
+    lastDateToApply: '',
+    addressAndContact: '',
+    location: ''
   };
 
   jobCategories: string[] = [];
@@ -292,6 +294,8 @@ export class LoginComponent implements OnInit {
     this.jobForm = { 
       ...job,
       importantNotes: job.importantNotes || '',
+      addressAndContact: job.addressAndContact || '',
+      location: job.location || '',
       createdDate: formattedDate || this.toLocalIsoString(new Date())
     };
   }
@@ -458,7 +462,9 @@ export class LoginComponent implements OnInit {
       experience: this.experienceOptions[0],
       walkInStartDate: '',
       walkInEndDate: '',
-      lastDateToApply: ''
+      lastDateToApply: '',
+      addressAndContact: '',
+      location: ''
     };
   }
 

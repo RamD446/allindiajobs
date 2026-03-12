@@ -216,6 +216,23 @@
                 </div>
               </ng-container>
 
+              <ng-container *ngIf="jobForm.category === 'All Private Jobs' || jobForm.category === 'Walk-in Drives'">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Location</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                    <input type="text" class="form-control" [(ngModel)]="jobForm.location" name="location" placeholder="e.g. Hyderabad, Telangana">
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Address and Contact</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                    <input type="text" class="form-control" [(ngModel)]="jobForm.addressAndContact" name="addressAndContact" placeholder="Full address or contact info">
+                  </div>
+                </div>
+              </ng-container>
+
               <!-- Application URL - Full Row for visibility -->
               <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning'">
                 <label class="form-label">Application URL (Registration Link)</label>

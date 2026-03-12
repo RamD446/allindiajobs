@@ -15,7 +15,7 @@
         <!-- Main Job Detail Card -->
         <div class="card home-job-card mb-4">
           <div class="card-body p-3 p-md-4">
-            <h1 class="job-title-display mb-3">{{ job.title }}</h1>
+          
             
             <div class="job-description-section">
               <div class="d-flex align-items-center justify-content-between mb-3">
@@ -32,7 +32,9 @@
                 </div>
               </div>
               
+              <hr class="title-divider mb-4">
               <div class="job-desc-content">
+                  <h1 class="job-title-display mb-3">{{ job.title }}</h1>
                 <div *ngIf="isRichText(job.description)" [innerHTML]="getSafeHtml(job.description)"></div>
                 
                 <ng-container *ngIf="!isRichText(job.description)">
@@ -78,14 +80,7 @@
                   </div>
                 </div>
 
-                <!-- Meta info before job information display -->
-                <div class="job-meta-row mb-3 d-flex align-items-center flex-wrap gap-2">
-                  <span class="badge date-badge-mini"><i class="bi bi-person-circle me-1"></i> Posted by Yalla Ramana</span>
-                  <span class="badge date-badge-mini" *ngIf="!job.updatedDate"><i class="bi bi-calendar-event me-1"></i> {{ formatDate(job.createdDate) }}</span>
-                  <span class="badge updated-badge-mini text-primary border border-primary-subtle" *ngIf="job.updatedDate">
-                    <i class="bi bi-pencil-square me-1"></i> Updated: {{ formatDate(job.updatedDate) }}
-                  </span>
-                </div>
+                
 
                 <!-- Official Links Table Style -->
                 <div class="official-links-wrapper mt-4" *ngIf="job.applicationUrl">
@@ -120,7 +115,7 @@
                             <th class="bg-light"> Official Site</th>
                             <td>
                               <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary py-1 px-3 rounded-pill fw-bold">
-                                <i class="bi bi-box-arrow-up-right me-1"></i> Click Here to Visit
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Click Here
                               </a>
                             </td>
                           </tr>
@@ -130,7 +125,27 @@
                   </div>
                 </div>
 
-                
+                <hr class="section-divider my-4">
+
+                <!-- Meta info display after job information -->
+                <div class="posted-by-box">
+                  <div class="author-avatar">
+                    <img src="assets/images/YallaRamana.jpg" alt="Yalla Ramana">
+                  </div>
+                  <div class="posted-content">
+                    <span class="posted-author">Posted by :- Yalla Ramana</span>
+                    <div class="posted-date">
+                      <ng-container *ngIf="!job.updatedDate">
+                        <i class="bi bi-calendar-check-fill text-success"></i>
+                        <span>{{ formatDate(job.createdDate) }}</span>
+                      </ng-container>
+                      <ng-container *ngIf="job.updatedDate">
+                        <i class="bi bi-pencil-fill text-primary"></i>
+                        <span>Updated on {{ formatDate(job.updatedDate) }}</span>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

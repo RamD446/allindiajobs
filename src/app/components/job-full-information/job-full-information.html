@@ -52,14 +52,14 @@
                 </ng-container>
 
                 <!-- Important Notes -->
-                <div *ngIf="job.importantNotes" class="mt-4">
-                  <h5 class="section-title mb-3">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Important Notes
+                <div *ngIf="job.importantNotes" class="important-notes-section">
+                  <h5 class="important-notes-header">
+                    Important Notes
                   </h5>
                   <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
                   <div *ngIf="!isRichText(job.importantNotes)" class="modern-desc-list important-notes-list">
-                    <div *ngFor="let note of getImportantNotesList(job.importantNotes)" class="modern-desc-item">
-                      <i class="bi bi-check2-circle job-tick mt-1"></i>
+                    <div *ngFor="let note of getImportantNotesList(job.importantNotes); let i = index" class="modern-desc-item">
+                      <span class="note-serial">{{ i + 1 }}.</span>
                       <span class="fw-semibold">{{ note }}</span>
                     </div>
                   </div>

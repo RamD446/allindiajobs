@@ -55,7 +55,7 @@
               <p class="job-title mb-1">{{ job.title }}</p>
               <div class="d-flex flex-wrap gap-2 align-items-center">
                 <p *ngIf="job.lastDateToApply" class="last-date-text mb-0 small text-danger">Apply Before: {{ job.lastDateToApply | date:'dd-MM-yyyy' }}</p>
-                <p *ngIf="job.updatedDate" class="mb-0 small text-info"><i class="bi bi-pencil-square me-1"></i>Updated</p>
+                
               </div>
             </div>
           </div>
@@ -82,7 +82,7 @@
               <p class="job-title mb-1">{{ job.title }}</p>
               <div class="d-flex flex-wrap gap-2 align-items-center">
                 <p *ngIf="job.walkInStartDate" class="walk-in-text mb-0 small text-success">Walkin Date: {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</p>
-                <p *ngIf="job.updatedDate" class="mb-0 small text-info"><i class="bi bi-pencil-square me-1"></i>Updated</p>
+          
               </div>
             </div>
           </div>
@@ -108,7 +108,7 @@
             <i class="bi bi-check2-circle job-tick"></i>
             <div class="job-content">
               <p class="job-title">{{ job.title }}</p>
-              <p *ngIf="job.updatedDate" class="mb-0 small text-info"><i class="bi bi-pencil-square me-1"></i>Updated</p>
+             
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@
             <i class="bi bi-check2-circle job-tick"></i>
             <div class="job-content">
               <p class="job-title">{{ job.title }}</p>
-              <p *ngIf="job.updatedDate" class="mb-0 small text-info"><i class="bi bi-pencil-square me-1"></i>Updated</p>
+           
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@
                 <span class="fw-bold" style="color: #c2185b;">Day {{ getDayNumber(job) }}: </span>
                 {{ job.title }}
               </p>
-              <p *ngIf="job.updatedDate" class="mb-0 small text-info"><i class="bi bi-pencil-square me-1"></i>Updated</p>
+           
             </div>
           </div>
         </div>

@@ -54,7 +54,7 @@
                 <!-- Important Notes -->
                 <div *ngIf="job.importantNotes" class="important-notes-section">
                   <h5 class="important-notes-header">
-                    Important Notes
+                    How to Apply & Important Notes
                   </h5>
                   <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
                   <div *ngIf="!isRichText(job.importantNotes)" class="modern-desc-list important-notes-list">

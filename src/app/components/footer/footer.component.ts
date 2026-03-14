@@ -16,19 +16,19 @@ export class FooterComponent {
   constructor(private router: Router) {}
 
   jobTypes = [
-    { name: 'అన్ని ప్రభుత్వ ఉద్యోగాలు (All Govt Jobs)', route: '/government-jobs' },
-    { name: 'ఈరోజు వాక్-ఇన్స్ (Today Walk-ins)', route: '/today-walkins' },
-    { name: 'అన్ని ఫ్రెషర్ ఉద్యోగాలు (All Fresher Jobs)', route: '/fresher-jobs' },
-    { name: 'అన్ని ప్రైవేట్ ఉద్యోగాలు (All Private Jobs)', route: '/private-jobs' },
-    { name: 'అన్ని వాక్-ఇన్ డ్రైవ్స్ (All Walk-ins)', route: '/walk-in-drives' },
-    { name: 'కెరీర్ చిట్కాలు (Career Tips)', route: '/health-and-career-tips' }
+    { name: 'All Government Jobs', route: '/government-jobs' },
+    { name: 'Today Walk-ins', route: '/today-walkins' },
+    { name: 'All Fresher Jobs', route: '/fresher-jobs' },
+    { name: 'All Private Jobs', route: '/private-jobs' },
+    { name: 'All Walk-in Drives', route: '/walk-in-drives' },
+    { name: 'Career Tips', route: '/health-and-career-tips' }
   ];
 
   careerTypes = [
-    { name: 'ఐటి సేవలు (IT Services MNC)', type: 'IT Services MNC' },
-    { name: 'గ్లోబల్ టెక్ (Global Tech)', type: 'Global Tech' },
-    { name: 'ప్రభుత్వం (Government)', type: 'Government' },
-    { name: 'కేంద్ర ప్రభుత్వం (Central Govt)', type: 'Central Government' }
+    { name: 'IT Services MNC', type: 'IT Services MNC' },
+    { name: 'Global Tech', type: 'Global Tech' },
+    { name: 'Government', type: 'Government' },
+    { name: 'Central Government', type: 'Central Government' }
   ];
 
   @HostListener('window:beforeinstallprompt', ['$event'])

@@ -267,12 +267,12 @@ export class JobFullInformation implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: job.title,
-        text: `${job.title}\n\nCheck out this amazing job opportunity!\n\nShare this who searching the job\n\nTelugu Job Updated Job Portal`,
+        text: `${job.title}\n\nCheck out this amazing job opportunity!\n\nShare this with those searching for jobs\n\nAllIndiaJobs Portal`,
         url: jobUrl
       });
     } else {
       // Fallback for browsers that don't support Web Share API
-      const shareText = `${job.title}\n\nLink: ${jobUrl}\n\nCheck out this amazing job opportunity!\n\nShare this who searching the job\n\nTelugu Job Updated Job Portal`;
+      const shareText = `${job.title}\n\nLink: ${jobUrl}\n\nCheck out this amazing job opportunity!\n\nShare this with those searching for jobs\n\nAllIndiaJobs Portal`;
       navigator.clipboard.writeText(shareText).then(() => {
         alert('Job details copied to clipboard!');
       });
@@ -300,9 +300,9 @@ export class JobFullInformation implements OnInit {
     }
     
     messageParts.push(``);
-    messageParts.push(`Share this who searching the job`);
+    messageParts.push(`Share this with those searching for jobs`);
     messageParts.push(``);
-    messageParts.push(`*Telugu Job Updates Portal*`);
+    messageParts.push(`*AllIndiaJobs Portal*`);
     
     const message = messageParts.join('\n');
     const encodedMessage = encodeURIComponent(message);

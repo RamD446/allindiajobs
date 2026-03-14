@@ -21,82 +21,82 @@ export class InfoPageComponent implements OnInit {
 
   private pageContents: { [key: string]: { title: string; content: string } } = {
     'about-us': {
-      title: 'మా గురించి (About Us)',
+      title: 'About Us',
       content: `
-        <h3>All India Jobs గురించి</h3>
-        <p>All India Jobs ఒక స్వతంత్ర ఉద్యోగ సమాచార వెబ్‌సైట్. మేము అధికారిక కంపెనీ వెబ్‌సైట్ల నుండి బహిరంగంగా అందుబాటులో ఉన్న ఉద్యోగ సమాచారాన్ని సేకరించి, నిరుద్యోగులకు సులభంగా అర్థమయ్యే రీతిలో ఇక్కడ అందిస్తాము.</p>
+        <h3>About All India Jobs</h3>
+        <p>All India Jobs is an independent job information website. We collect publicly available job information from official company websites and present it here in an easily understandable format for job seekers.</p>
         
-        <h4>మేము ఏమి చేస్తాము:</h4>
+        <h4>What We Do:</h4>
         <ul>
-          <li>మేము ఎటువంటి రుసుము (Fees) వసూలు చేయము.</li>
-          <li>మేము రిక్రూట్‌మెంట్ సేవలను అందించము.</li>
-          <li>ఉద్యోగ గ్యారెంటీ (Placement) ఇవ్వము.</li>
-          <li>మేము మీ రెజ్యూమెలను సేకరించము.</li>
+          <li>We do not collect any fees.</li>
+          <li>We do not provide recruitment services.</li>
+          <li>We do not guarantee job placement.</li>
+          <li>We do not collect your resumes.</li>
         </ul>
-        <p>మా ప్రధాన లక్ష్యం నిజమైన ఉద్యోగ సమాచారాన్ని (Job Updates) అందించి, మిమ్మల్ని అధికారిక దరఖాస్తు పేజీలకు మార్గనిర్దేశం చేయడం మాత్రమే.</p>
-        <p><strong>ఈమెయిల్:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
+        <p>Our main goal is to provide genuine job information (Job Updates) and guide you to official application pages only.</p>
+        <p><strong>Email:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     },
 
     'contact-us': {
-      title: 'మమ్మల్ని సంప్రదించండి (Contact Us)',
+      title: 'Contact Us',
       content: `
-        <p>మీకు ఏవైనా ప్రశ్నలు ఉన్నా, ఉద్యోగ సమాచారంలో ఏవైనా సవరణలు అవసరమన్నా లేదా ఇతర విచారణల కోసం మమ్మల్ని సంప్రదించండి:</p>
-        <p><strong>📧 ఈమెయిల్:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
-        <p><strong>🌐 వెబ్‌సైట్:</strong> <a href="https://allindajobs.com">https://allindajobs.com</a></p>
-        <p>మేము మీ ఈమెయిల్‌కు 24–48 గంటల్లో స్పందిస్తాము.</p>
+        <p>If you have any questions, need corrections in job information, or have other inquiries, please contact us:</p>
+        <p><strong>📧 Email:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
+        <p><strong>🌐 Website:</strong> <a href="https://allindajobs.com">https://allindajobs.com</a></p>
+        <p>We will respond to your email within 24–48 hours.</p>
       `
     },
 
     'privacy-policy': {
-      title: 'గోప్యతా విధానం (Privacy Policy)',
+      title: 'Privacy Policy',
       content: `
-        <p><strong>తేదీ:</strong> ఫిబ్రవరి 17, 2026</p>
-        <p>All India Jobs వెబ్‌సైట్‌కు స్వాగతం. మీ గోప్యతను మేము గౌరవిస్తాము.</p>
+        <p><strong>Date:</strong> February 17, 2026</p>
+        <p>Welcome to the All India Jobs website. We respect your privacy.</p>
         
-        <h4>1. మేము సేకరించే సమాచారం</h4>
-        <p>మేము వీటిని సేకరించము:</p>
+        <h4>1. Information We Collect</h4>
+        <p>We do not collect:</p>
         <ul>
-          <li>యూజర్ అకౌంట్లు</li>
-          <li>వ్యక్తిగత లాగిన్ వివరాలు</li>
-          <li>చెల్లింపు వివరాలు</li>
-          <li>అప్‌లోడ్ చేసిన పత్రాలు (Documents)</li>
+          <li>User accounts</li>
+          <li>Personal login details</li>
+          <li>Payment details</li>
+          <li>Uploaded documents</li>
         </ul>
-        <p>ఈ వెబ్‌సైట్‌ను ఉపయోగించడానికి మీరు రిజిస్టర్ చేసుకోవాల్సిన లేదా వ్యక్తిగత సమాచారాన్ని అందించాల్సిన అవసరం లేదు.</p>
+        <p>You do not need to register or provide personal information to use this website.</p>
         
-        <h4>2. ఉద్యోగ సమాచారం</h4>
-        <p>ఈ వెబ్‌సైట్‌లో ప్రచురించబడిన అన్ని ఉద్యోగ వివరాలు అధికారిక కంపెనీల కెరీర్ పేజీల నుండి సేకరించబడినవి. వినియోగదారులు "Apply" బటన్ క్లిక్ చేసినప్పుడు, వారు నేరుగా ఆ కంపెనీ అధికారిక వెబ్‌సైట్‌కు వెళతారు.</p>
+        <h4>2. Job Information</h4>
+        <p>All job details published on this website are collected from official company career pages. When users click the "Apply" button, they are directed to that company's official website.</p>
         
-        <h4>3. థర్డ్-పార్టీ సేవలు</h4>
-        <p>మేము వెబ్‌సైట్ విశ్లేషణ కోసం గూగుల్ అనలిటిక్స్ (Google Analytics) మరియు ప్రకటనల కోసం గూగుల్ అడ్సెన్స్ (Google AdSense) ఉపయోగిస్తాము. ఇవి కుకీలను (Cookies) ఉపయోగించవచ్చు.</p>
+        <h4>3. Third-Party Services</h4>
+        <p>We use Google Analytics for website analysis and Google AdSense for advertising. These may use cookies.</p>
         
-        <h4>4. బాహ్య లింకులు (External Links)</h4>
-        <p>మా వెబ్‌సైట్ ఇతర అధికారిక ఉద్యోగ పేజీల లింకులను కలిగి ఉంటుంది. ఆ వెబ్‌సైట్ల గోప్యతా విధానాలకు మేము బాధ్యులం కాదు.</p>
+        <h4>4. External Links</h4>
+        <p>Our website contains links to other official job pages. We are not responsible for the privacy policies of those websites.</p>
         
-        <p>సంప్రదించండి: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
+        <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     },
 
     'disclaimer': {
-      title: 'నిరాకరణ (Disclaimer)',
+      title: 'Disclaimer',
       content: `
-        <p>All India Jobs ఒక రిక్రూట్‌మెంట్ ఏజెన్సీ కాదు. మేము నేరుగా ఉద్యోగాలు ఇవ్వము, ఇంటర్వ్యూలు నిర్వహించము, లేదా దరఖాస్తులను ప్రాసెస్ చేయము. మేము ఎప్పుడూ ఉద్యోగం కోసం డబ్బు అడగము.</p>
-        <p>మేము కేవలం సమాచారాన్ని మాత్రమే అందిస్తాము. అభ్యర్థులు ఏదైనా ఉద్యోగానికి దరఖాస్తు చేసుకునే ముందు అధికారిక వెబ్‌సైట్‌లో వివరాలను సరిచూసుకోవాలి. ఉద్యోగ ఎంపిక ప్రక్రియలో జరిగే ఎటువంటి పరిణామాలకు మేము బాధ్యులం కాదు.</p>
-        <p>సంప్రదించండి: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
+        <p>All India Jobs is not a recruitment agency. We do not directly provide jobs, conduct interviews, or process applications. We never ask for money for jobs.</p>
+        <p>We only provide information. Candidates should verify details on official websites before applying for any job. We are not responsible for any consequences in the job selection process.</p>
+        <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     },
 
     'terms-and-conditions': {
-      title: 'నిబంధనలు మరియు షరతులు (Terms & Conditions)',
+      title: 'Terms & Conditions',
       content: `
-        <p><a href="https://allindajobs.com">https://allindajobs.com</a> ఉపయోగించడం ద్వారా మీరు ఈ క్రింది వాటికి అంగీకరిస్తున్నారు:</p>
+        <p>By using <a href="https://allindajobs.com">https://allindajobs.com</a>, you agree to the following:</p>
         <ul>
-          <li>వెబ్‌సైట్‌ను కేవలం చట్టబద్ధమైన ప్రయోజనాల కోసం మాత్రమే ఉపయోగించాలి.</li>
-          <li>ఉద్యోగ సమాచారాన్ని మోసపూరిత కార్యకలాపాల కోసం ఉపయోగించకూడదు.</li>
-          <li>వెబ్‌సైట్ కంటెంట్‌ను అనుమతి లేకుండా కాపీ చేయకూడదు లేదా తిరిగి ప్రచురించకూడదు.</li>
+          <li>Use the website for legal purposes only.</li>
+          <li>Do not use job information for fraudulent activities.</li>
+          <li>Do not copy or republish website content without permission.</li>
         </ul>
-        <p>ముందస్తు నోటీసు లేకుండా కంటెంట్‌ను నవీకరించే లేదా తొలగించే హక్కు మాకు ఉంది.</p>
-        <p>సంప్రదించండి: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
+        <p>We reserve the right to update or remove content without prior notice.</p>
+        <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     }
   };

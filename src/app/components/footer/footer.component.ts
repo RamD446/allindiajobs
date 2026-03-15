@@ -16,12 +16,12 @@ export class FooterComponent {
   constructor(private router: Router) {}
 
   jobTypes = [
-    { name: 'All Government Jobs', route: '/government-jobs' },
+    { name: 'All Govt Jobs', route: '/government-jobs' },
+    { name: 'Private Jobs', route: '/private-jobs' },
+    { name: 'All Walk-ins', route: '/walk-in-drives' },
     { name: 'Today Walk-ins', route: '/today-walkins' },
-    { name: 'All Fresher Jobs', route: '/fresher-jobs' },
-    { name: 'All Private Jobs', route: '/private-jobs' },
-    { name: 'All Walk-in Drives', route: '/walk-in-drives' },
-    { name: 'Career Tips', route: '/health-and-career-tips' }
+    { name: 'Career Tips', route: '/health-and-career-tips' },
+    { name: 'TeluguToEnglish', route: '/telugu-to-english-learning' }
   ];
 
   careerTypes = [

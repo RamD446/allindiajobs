@@ -17,14 +17,12 @@ export class HeaderComponent implements OnInit {
   jobs: Job[] = [];
 
   navCategories = [
-    { name: 'Government Jobs', route: '/government-jobs', icon: 'bi-building-fill', color: '#e65100' },
+    { name: 'All Govt Jobs', route: '/government-jobs', icon: 'bi-building-fill', color: '#e65100' },
     { name: 'Private Jobs', route: '/private-jobs', icon: 'bi-briefcase-fill', color: '#2e7d32' },
-    { name: 'Walk-in Drives', route: '/walk-in-drives', icon: 'bi-person-walking', color: '#c2185b' },
-    { name: 'Banking Jobs', route: '/banking-jobs', icon: 'bi-piggy-bank-fill', color: '#1565c0' },
-    { name: 'Fresher Jobs', route: '/fresher-jobs', icon: 'bi-mortarboard-fill', color: '#2e7d32' },
-    { name: 'IT Jobs', route: '/it-jobs', icon: 'bi-laptop-fill', color: '#0277bd' },
+    { name: 'All Walk-ins', route: '/walk-in-drives', icon: 'bi-person-walking', color: '#c2185b' },
+    { name: 'Today Walk-ins', route: '/today-walkins', icon: 'bi-person-walking', color: '#c2185b' },
     { name: 'Career Tips', route: '/health-and-career-tips', icon: 'bi-heart-pulse-fill', color: '#0288d1' },
-    { name: 'English Learning', route: '/telugu-to-english-learning', icon: 'bi-translate', color: '#7b1fa2' }
+    { name: 'TeluguToEnglish', route: '/telugu-to-english-learning', icon: 'bi-translate', color: '#7b1fa2' }
   ];
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}
@@ -61,7 +59,7 @@ export class HeaderComponent implements OnInit {
     if (category === 'All Private Jobs') {
        return this.jobs.filter(job => 
         job.category === 'All Private Jobs' || 
-        job.category === 'Walk-in Drives' ||
+        job.walkInDrive === true ||
         (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
       ).length;
     }

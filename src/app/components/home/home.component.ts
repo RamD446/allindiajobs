@@ -43,13 +43,13 @@ export class HomeComponent implements OnInit {
           
           this.privateJobs = this.jobs.filter(job => 
             job.category !== 'Government Jobs' && 
-            job.category !== 'Walk-in Drives' && 
             job.category !== 'Health and Career Tips' && 
             job.category !== 'TeluguToEnglishLearning' &&
             job.category !== 'Motivation Stories'
           ).slice(0, 10);
 
-          this.walkinJobs = this.jobs.filter(job => job.category === 'Walk-in Drives').slice(0, 10);
+          // Get all jobs with walkInDrive flag set to true
+          this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 10);
 
           this.tipsJobs = this.jobs.filter(job => job.category === 'Health and Career Tips').slice(0, 10);
           
@@ -86,7 +86,8 @@ export class HomeComponent implements OnInit {
   }
 
   isWalkInToday(job: Job): boolean {
-    if (job.category !== 'Walk-in Drives') return false;
+    // Check if job has walkInDrive flag set to true
+    if (job.walkInDrive !== true) return false;
     if (!job.walkInStartDate || !job.walkInEndDate) return false;
 
     const today = new Date();

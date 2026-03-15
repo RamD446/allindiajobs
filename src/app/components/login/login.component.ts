@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { ref, push, get, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
-import { Job, DEFAULT_JOB_CATEGORIES, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
+import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
 
 @Component({
   selector: 'app-login',
@@ -49,10 +49,13 @@ export class LoginComponent implements OnInit {
     walkInEndDate: '',
     lastDateToApply: '',
     addressAndContact: '',
-    location: ''
+    location: '',
+    walkInDrive: false,
+    jobType: ''
   };
 
   jobCategories: string[] = [];
+  privateJobTypes: string[] = [...PRIVATE_JOB_TYPES];
   careerJobTypes: string[] = [...CAREER_JOB_TYPES];
   experienceOptions: string[] = ['Fresher', 'Experience'];
 
@@ -464,7 +467,9 @@ export class LoginComponent implements OnInit {
       walkInEndDate: '',
       lastDateToApply: '',
       addressAndContact: '',
-      location: ''
+      location: '',
+      walkInDrive: false,
+      jobType: ''
     };
   }
 

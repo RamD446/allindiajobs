@@ -35,9 +35,11 @@ export class JobCategoryComponent implements OnInit {
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
     'private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' },
-    'walk-in-drives': { title: 'Walk-in Drives', category: 'Walk-in Drives' },
+    'walk-in-drives': { title: 'All Walk-in Drives', category: 'Walk-in Drives' },
     'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' },
     'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' },
+    'non-it-jobs': { title: 'Non-IT Jobs', category: 'Non-IT Jobs' },
+    'pharmaceutical-jobs': { title: 'Pharmaceutical Jobs', category: 'Pharmaceutical Jobs' },
     'fresher-jobs': { title: 'Fresher Jobs', category: 'Fresher Jobs' },
     'today-jobs': { title: 'Today Posted Jobs', category: 'Today Posted Jobs' },
     'today-walkins': { title: 'Today Walk-in Drives', category: 'Today Walk-in Drives' },
@@ -53,8 +55,6 @@ export class JobCategoryComponent implements OnInit {
     this.route.url.subscribe(urlSegments => {
       const path = urlSegments.map(segment => segment.path).join('/');
       this.categoryParam = path;
-      
-      console.log('Current route path:', path); // Debug log
       
       const mapping = this.categoryMappings[path];
       if (mapping) {
@@ -84,7 +84,6 @@ export class JobCategoryComponent implements OnInit {
       const jobsRef = ref(db, 'jobs');
       onValue(jobsRef, (snapshot) => {
         const data = snapshot.val();
-        console.log('Firebase data received:', data); // Debug log
         
         if (data) {
           this.jobs = Object.keys(data).map(key => ({
@@ -92,11 +91,9 @@ export class JobCategoryComponent implements OnInit {
             ...data[key]
           }));
           
-          console.log('All jobs loaded:', this.jobs); // Debug log
-          
           // Filter jobs by category
           if (category === 'All Private Jobs') {
-            // Include All Private Jobs, Walk-in Drives, IT Jobs, and Banking Jobs
+            // Include All Private Jobs, IT Jobs, and Banking Jobs with walk-in flag
             this.filteredJobs = this.jobs.filter(job => 
               job.category !== 'Government Jobs' && 
               job.category !== 'Health and Career Tips' && 
@@ -116,20 +113,22 @@ export class JobCategoryComponent implements OnInit {
             this.filteredJobs = this.jobs.filter(job => this.isWalkInToday(job));
           } else if (category === 'Today Expired Gov Jobs') {
             this.filteredJobs = this.jobs.filter(job => job.category === 'Government Jobs' && job.lastDateToApply && this.isToday(job.lastDateToApply));
+          } else if (category === 'Walk-in Drives') {
+            // Include all jobs with walkInDrive flag true
+            this.filteredJobs = this.jobs.filter(job => job.walkInDrive === true);
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
           }
 
           // Populate top 5 for sidebar
           this.topWalkins = this.jobs
-            .filter(job => job.category === 'Walk-in Drives')
+            .filter(job => job.walkInDrive === true)
             .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
             .slice(0, 5);
 
           this.topPrivateJobs = this.jobs
             .filter(job => 
               job.category !== 'Government Jobs' && 
-              job.category !== 'Walk-in Drives' && 
               job.category !== 'Health and Career Tips' && 
               job.category !== 'TeluguToEnglishLearning' &&
               job.category !== 'Motivation Stories'
@@ -137,14 +136,11 @@ export class JobCategoryComponent implements OnInit {
             .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
             .slice(0, 5);
           
-          console.log('Filtered jobs for', category, ':', this.filteredJobs); // Debug log
         } else {
-          console.log('No data found in Firebase'); // Debug log
           this.jobs = [];
           this.filteredJobs = [];
         }
         
-        console.log('Setting isLoading to false'); // Debug log
         this.isLoading = false;
         this.cdr.detectChanges(); // Force change detection
       }, (error) => {
@@ -211,7 +207,8 @@ export class JobCategoryComponent implements OnInit {
   }
 
   isWalkInToday(job: Job): boolean {
-    if (job.category !== 'Walk-in Drives') return false;
+    // Check if job has walkInDrive flag set to true
+    if (job.walkInDrive !== true) return false;
     if (!job.walkInStartDate || !job.walkInEndDate) return false;
 
     const today = new Date();
@@ -292,7 +289,8 @@ export class JobCategoryComponent implements OnInit {
       lastDate.setHours(0, 0, 0, 0);
       return lastDate.getTime() < today.getTime();
     }
-    if (job.category === 'Walk-in Drives' && job.walkInEndDate) {
+    // Check if any job with walkInDrive flag has expired
+    if (job.walkInDrive === true && job.walkInEndDate) {
       const endDate = new Date(job.walkInEndDate);
       endDate.setHours(0, 0, 0, 0);
       return endDate.getTime() < today.getTime();
@@ -313,6 +311,10 @@ export class JobCategoryComponent implements OnInit {
         return 'badge-danger';
       case 'IT Jobs':
         return 'badge-primary';
+      case 'Non-IT Jobs':
+        return 'badge-secondary';
+      case 'Pharmaceutical Jobs':
+        return 'badge-info';
       case 'Health and Career Tips':
         return 'badge-info';
       case 'Motivation Stories':
@@ -353,15 +355,12 @@ export class JobCategoryComponent implements OnInit {
 
   // Save/bookmark job functionality
   saveJob(job: Job) {
-    console.log('Job saved/bookmarked:', job.title);
     // Here you can implement save functionality to local storage or Firebase
-    // For now, we'll just show console log
     alert(`Job "${job.title}" has been saved to your bookmarks!`);
   }
 
   // Share job functionality
   shareJob(job: Job) {
-    console.log('Sharing job:', job.title);
     if (navigator.share) {
       navigator.share({
         title: job.title,
@@ -425,6 +424,8 @@ export class JobCategoryComponent implements OnInit {
       'Walk-in Drives': 'walk-in-drives',
       'Banking Jobs': 'banking-jobs',
       'IT Jobs': 'it-jobs',
+      'Non-IT Jobs': 'non-it-jobs',
+      'Pharmaceutical Jobs': 'pharmaceutical-jobs',
       'Health and Career Tips': 'health-and-career-tips',
       'Motivation Stories': 'motivation-stories',
       'TeluguToEnglishLearning': 'telugu-to-english-learning'
@@ -485,7 +486,7 @@ export class JobCategoryComponent implements OnInit {
     if (category === 'All Private Jobs') {
        return this.jobs.filter(job => 
         job.category === 'All Private Jobs' || 
-        job.category === 'Walk-in Drives' ||
+        job.walkInDrive === true ||
         (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
       ).length;
     }
@@ -500,6 +501,10 @@ export class JobCategoryComponent implements OnInit {
     }
     if (category === 'Today Expired Gov Jobs') {
       return this.getTodayExpiredGovJobsCount();
+    }
+    if (category === 'Walk-in Drives') {
+      // Count all jobs with walkInDrive flag true
+      return this.jobs.filter(job => job.walkInDrive === true).length;
     }
     return this.jobs.filter(job => job.category === category).length;
   }
@@ -604,16 +609,18 @@ export class JobCategoryComponent implements OnInit {
     // Apply category filter
     if (this.categoryTitle !== 'All Latest Jobs') {
       if (this.categoryTitle === 'All Private Jobs') {
-        // Include Private Jobs, Walk-in Drives, and all Bank-related jobs
+        // Include Private Jobs and all Bank-related jobs
         filtered = filtered.filter(job => 
           job.category === 'All Private Jobs' || 
-          job.category === 'Walk-in Drives' ||
           (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
         );
       } else if (this.categoryTitle === 'Banking Jobs') {
         filtered = filtered.filter(job => 
           job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
         );
+      } else if (this.categoryTitle === 'Walk-in Drives') {
+        // Include all jobs with walkInDrive flag true
+        filtered = filtered.filter(job => job.walkInDrive === true);
       } else {
         const mapping = this.categoryMappings[this.categoryParam];
         const categoryToFilter = mapping ? mapping.category : this.categoryTitle;

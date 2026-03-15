@@ -298,3 +298,116 @@
     font-size: 0.65rem;
   }
 }
+
+/* Table Styles for Govt Jobs and Walk-ins */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead {
+  background: linear-gradient(135deg, #f8bbd0 0%, #fce4ec 100%);
+}
+
+.table thead th {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #c2185b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 2px solid #f06292;
+  white-space: nowrap;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #fff5f8;
+  transform: scale(1.01);
+}
+
+.table tbody td {
+  padding: 0.65rem 0.75rem;
+  vertical-align: middle;
+  font-size: 0.95rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.job-title-cell {
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.last-date-cell .badge,
+.walkin-date-cell .badge {
+  font-size: 0.7rem;
+  padding: 0.35rem 0.5rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.last-date-cell .badge {
+  background-color: #dc2626 !important;
+}
+
+.walkin-date-cell .badge {
+  background-color: #16a34a !important;
+}
+
+.category-indicator {
+  color: #0277bd;
+  font-weight: 600;
+  font-size: 0.85em;
+  margin-left: 0.3rem;
+}
+
+.walk-in-indicator {
+  color: #c2185b;
+  font-weight: 700;
+  font-size: 0.85em;
+  margin-left: 0.3rem;
+}
+
+@media (max-width: 768px) {
+  .table thead th {
+    font-size: 0.65rem;
+    padding: 0.5rem 0.4rem;
+  }
+
+  .table tbody td {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .job-title-cell {
+    font-size: 0.8rem;
+  }
+
+  .last-date-cell .badge,
+  .walkin-date-cell .badge {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.35rem;
+  }
+
+  .category-indicator {
+    font-size: 0.7em;
+  }
+
+  .walk-in-indicator {
+    font-size: 0.7em;
+    display: block;
+    margin-top: 0.2rem;
+    margin-left: 0;
+  }
+}

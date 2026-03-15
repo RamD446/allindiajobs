@@ -51,16 +51,16 @@
                   </div>
                 </ng-container>
 
-                <!-- Important Notes -->
-                <div *ngIf="job.importantNotes" class="important-notes-section">
-                  <h5 class="important-notes-header">
-                    How to Apply & Important Notes
+                <!-- How to Apply -->
+                <div *ngIf="job.importantNotes" class="mt-4">
+                  <h5 class="section-title mb-3">
+                    <i class="bi bi-clipboard-check-fill me-2"></i>How to Apply
                   </h5>
                   <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
-                  <div *ngIf="!isRichText(job.importantNotes)" class="modern-desc-list important-notes-list">
-                    <div *ngFor="let note of getImportantNotesList(job.importantNotes); let i = index" class="modern-desc-item">
-                      <span class="note-serial">{{ i + 1 }}.</span>
-                      <span class="fw-semibold">{{ note }}</span>
+                  <div *ngIf="!isRichText(job.importantNotes)" class="how-to-apply-list">
+                    <div *ngFor="let note of getImportantNotesList(job.importantNotes); let i = index" class="how-to-apply-item">
+                      <span class="apply-number">{{ i + 1 }}.</span>
+                      <span>{{ note }}</span>
                     </div>
                   </div>
                 </div>

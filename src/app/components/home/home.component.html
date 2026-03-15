@@ -48,16 +48,25 @@
           <i class="bi bi-building-fill me-2 fs-header"></i>
           <span>All Govt Notifications</span>
         </div>
-        <div class="card-body">
-          <div *ngFor="let job of govJobs" class="job-item" (click)="viewJobDetails(job)">
-            <i class="bi bi-check2-circle job-tick"></i>
-            <div class="job-content">
-              <p class="job-title mb-1">{{ job.title }}</p>
-              <div class="d-flex flex-wrap gap-2 align-items-center">
-                <p *ngIf="job.lastDateToApply" class="last-date-text mb-0 small text-danger">Apply Before: {{ job.lastDateToApply | date:'dd-MM-yyyy' }}</p>
-                
-              </div>
-            </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th class="text-start">Job Title</th>
+                  <th class="text-center">Last Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let job of govJobs" (click)="viewJobDetails(job)" class="cursor-pointer">
+                  <td class="job-title-cell">{{ job.title }}</td>
+                  <td class="text-center last-date-cell">
+                    <span *ngIf="job.lastDateToApply" class="badge bg-danger">{{ job.lastDateToApply | date:'dd-MM-yyyy' }}</span>
+                    <span *ngIf="!job.lastDateToApply" class="text-muted">-</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="card-footer">
@@ -75,16 +84,28 @@
           <i class="bi bi-person-walking me-2 fs-header"></i>
           <span>Walk-ins</span>
         </div>
-        <div class="card-body">
-          <div *ngFor="let job of walkinJobs" class="job-item" (click)="viewJobDetails(job)">
-            <i class="bi bi-check2-circle job-tick"></i>
-            <div class="job-content">
-              <p class="job-title mb-1">{{ job.title }}</p>
-              <div class="d-flex flex-wrap gap-2 align-items-center">
-                <p *ngIf="job.walkInStartDate" class="walk-in-text mb-0 small text-success">Walkin Date: {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</p>
-          
-              </div>
-            </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th class="text-start">Job Title</th>
+                  <th class="text-center">Walk-in Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let job of walkinJobs" (click)="viewJobDetails(job)" class="cursor-pointer">
+                  <td class="job-title-cell">
+                    {{ job.title }}
+                    <span class="category-indicator"> || {{ job.category }}</span>
+                  </td>
+                  <td class="text-center walkin-date-cell">
+                    <span *ngIf="job.walkInStartDate" class="badge bg-success">{{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>
+                    <span *ngIf="!job.walkInStartDate" class="text-muted">-</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="card-footer">

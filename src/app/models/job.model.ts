@@ -25,20 +25,32 @@ export interface Job {
   updatedDate?: string;
   addressAndContact?: string;
   location?: string;
+  walkInDrive?: boolean;
+  jobType?: string;
 }
 
 // Job Categories - simplified list as requested
 export const DEFAULT_JOB_CATEGORIES = [
   'Government Jobs',
   'All Private Jobs',
-  'Walk-in Drives',
   'Bank Jobs',
   'IT Jobs',
+  'Non-IT Jobs',
   'Pharmaceutical Jobs',
   'Sales and Marketing Jobs',
   'Health and Career Tips',
   'Motivation Stories',
   'TeluguToEnglishLearning',
+] as const;
+
+// Job Types for Private Jobs with Walk-In Drive
+export const PRIVATE_JOB_TYPES = [
+  'IT Jobs',
+  'Non-IT Jobs',
+  'Pharmaceutical Jobs',
+  'Sales and Marketing Jobs',
+  'Bank Jobs',
+  'Other'
 ] as const;
 
 export type JobCategory = typeof DEFAULT_JOB_CATEGORIES[number];

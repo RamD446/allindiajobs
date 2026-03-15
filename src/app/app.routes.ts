@@ -13,6 +13,8 @@ export const routes: Routes = [
   { path: 'walk-in-drives', component: JobCategoryComponent },
   { path: 'banking-jobs', component: JobCategoryComponent },
   { path: 'it-jobs', component: JobCategoryComponent },
+  { path: 'non-it-jobs', component: JobCategoryComponent },
+  { path: 'pharmaceutical-jobs', component: JobCategoryComponent },
   { path: 'fresher-jobs', component: JobCategoryComponent },
   { path: 'today-jobs', component: JobCategoryComponent },
   { path: 'today-walkins', component: JobCategoryComponent },

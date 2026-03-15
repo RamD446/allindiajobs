@@ -69,7 +69,7 @@
   top: 0;
   left: -100%;
   width: 85%;
-  max-width: 320px;
+  max-width: 300px;
   height: 100vh;
   background: #ffffff;
   z-index: 2000;
@@ -84,7 +84,7 @@
 }
 
 .offcanvas-header-nav {
-  padding: 1rem 1.25rem;
+  padding: 0.6rem 0.85rem;
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   display: flex;
   align-items: center;
@@ -103,25 +103,25 @@
   text-transform: uppercase;
   color: #64748b;
   letter-spacing: 1px;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.35rem;
 }
 
 /* Social Section */
 .social-icons-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  gap: 0.3rem;
 }
 
 .social-btn {
-  width: 45px;
-  height: 45px;
-  border-radius: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 0.95rem;
   color: white;
   transition: all 0.2s;
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
@@ -140,15 +140,15 @@
 .menu-items {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 0.75rem;
+  padding: 0.5rem 0.65rem;
   background: white;
-  border-radius: 12px;
+  border-radius: 8px;
   text-decoration: none;
   color: #1e293b;
   transition: all 0.2s;
@@ -161,14 +161,14 @@
 }
 
 .menu-item-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  margin-right: 1rem;
+  font-size: 0.85rem;
+  margin-right: 0.65rem;
 }
 
 .menu-item-text {
@@ -187,7 +187,7 @@
 }
 
 .chevron {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #cbd5e1;
 }
 
@@ -218,12 +218,13 @@
   background: rgba(255,255,255,0.1);
   border: none;
   color: white;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.9rem;
 }
 
 /* Navbar */

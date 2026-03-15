@@ -98,7 +98,7 @@
                 <tr *ngFor="let job of walkinJobs" (click)="viewJobDetails(job)" class="cursor-pointer">
                   <td class="job-title-cell">
                     {{ job.title }}
-                    <span class="category-indicator"> || {{ job.category }}</span>
+                    <span class="category-indicator"> {{ job.category }}</span>
                   </td>
                   <td class="text-center walkin-date-cell">
                     <span *ngIf="job.walkInStartDate" class="badge bg-success">{{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ (job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate) ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>

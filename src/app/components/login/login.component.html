@@ -171,7 +171,7 @@
                 <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Software Engineer">
               </div>
               
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning'">
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs'">
                 <label class="form-label">Company Name</label>
                 <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" placeholder="e.g. Tech Solutions">
               </div>
@@ -185,7 +185,7 @@
 
               
 
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning'">
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs'">
                 <label class="form-label">Experience *</label>
                 <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
                   <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>
@@ -237,7 +237,7 @@
               </ng-container>
 
               <!-- Qualification field - Only visible when editing -->
-              <div class="col-md-12 mb-3" *ngIf="editingJob">
+              <div class="col-md-12 mb-3" *ngIf="editingJob && jobForm.category !== 'Current Affairs'">
                 <label class="form-label">Qualification</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
@@ -246,7 +246,7 @@
               </div>
 
               <!-- Application URL - Full Row for visibility -->
-              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning'">
+              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs'">
                 <label class="form-label">Application URL (Registration Link)</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
@@ -267,7 +267,7 @@
                 </textarea>
               </div>
 
-              <div class="col-12 mt-3" *ngIf="editingJob && jobForm.category !== 'TeluguToEnglishLearning'">
+              <div class="col-12 mt-3" *ngIf="editingJob && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs'">
                 <label class="form-label d-flex justify-content-between">
                   <span>Important Notes</span>
                 </label>
@@ -280,7 +280,7 @@
               </div>
 
               <!-- How To Apply field - Only visible when editing -->
-              <div class="col-12 mt-3" *ngIf="editingJob">
+              <div class="col-12 mt-3" *ngIf="editingJob && jobForm.category !== 'Current Affairs'">
                 <label class="form-label d-flex justify-content-between">
                   <span>How To Apply</span>
                 </label>

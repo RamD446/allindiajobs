@@ -17,11 +17,12 @@ export class HeaderComponent implements OnInit {
   jobs: Job[] = [];
 
   navCategories = [
-    { name: 'All Govt Jobs', route: '/government-jobs', icon: 'bi-building-fill', color: '#e65100' },
+    { name: 'All Govt Jobs', route: '/government-jobs', icon: 'bi-building-fill', color: '#1565c0' },
     { name: 'Private Jobs', route: '/private-jobs', icon: 'bi-briefcase-fill', color: '#2e7d32' },
-    { name: 'All Walk-ins', route: '/walk-in-drives', icon: 'bi-person-walking', color: '#c2185b' },
-    { name: 'Today Walk-ins', route: '/today-walkins', icon: 'bi-person-walking', color: '#c2185b' },
-    { name: 'Career Tips', route: '/health-and-career-tips', icon: 'bi-heart-pulse-fill', color: '#0288d1' },
+    { name: 'All Walk-ins', route: '/walk-in-drives', icon: 'bi-person-walking', color: '#0288d1' },
+    { name: 'Today Walk-ins', route: '/today-walkins', icon: 'bi-person-walking', color: '#0288d1' },
+    { name: 'Current Affairs', route: '/current-affairs', icon: 'bi-newspaper', color: '#e65100' },
+    { name: 'Career Tips', route: '/health-and-career-tips', icon: 'bi-heart-pulse-fill', color: '#7b1fa2' },
     { name: 'TeluguToEnglish', route: '/telugu-to-english-learning', icon: 'bi-translate', color: '#7b1fa2' }
   ];
 
@@ -47,6 +48,19 @@ export class HeaderComponent implements OnInit {
     } catch (error) {
       console.error('Error loading jobs for header:', error);
     }
+  }
+
+  getTodayWalkinsCount(): number {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return this.jobs.filter(job => {
+      if (!job.walkInStartDate) return false;
+      const start = new Date(job.walkInStartDate);
+      start.setHours(0, 0, 0, 0);
+      const end = job.walkInEndDate ? new Date(job.walkInEndDate) : start;
+      end.setHours(0, 0, 0, 0);
+      return today >= start && today <= end;
+    }).length;
   }
 
   getJobCountByCategory(category: string): number {

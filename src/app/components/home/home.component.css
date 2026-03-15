@@ -1,13 +1,13 @@
 .container-fluid {
   padding: 0.5rem;
-  background-color: #fdf2f5;
+  background-color: #ffffff;
   min-height: 100vh;
-  padding-top: 50px; /* Reduced mobile spacing */
+  padding-top: 96px;
 }
 
 @media (min-width: 769px) {
   .container-fluid {
-    padding-top: 65px; /* Reduced desktop spacing */
+    padding-top: 100px;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
@@ -15,11 +15,11 @@
 
 /* Category Pills Styling */
 .jc-top-card {
-  background: #fff5f8;
+  background: #e3f2fd;
   padding: 0.15rem; /* Reduced padding */
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(194, 24, 91, 0.05);
-  border: 1px solid #f8bbd0;
+  box-shadow: 0 2px 10px rgba(21, 101, 192, 0.05);
+  border: 1px solid #90caf9;
 }
 
 .jc-pills-row {
@@ -69,7 +69,7 @@
 
 .jc-pill {
   background: #fff;
-  border: 1px solid #f8bbd0;
+  border: 1px solid #90caf9;
   padding: 0.35rem 0.5rem;
   border-radius: 8px;
   display: flex;
@@ -81,14 +81,14 @@
   transition: all 0.3s ease;
   white-space: nowrap;
   flex-shrink: 0;
-  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.05);
+  box-shadow: 0 2px 5px rgba(21, 101, 192, 0.05);
   text-decoration: none;
   min-width: 0;
 }
 
 .jc-pill i {
   font-size: 1rem;
-  color: #c2185b;
+  color: #1565c0;
 }
 
 .jc-pill span {
@@ -100,12 +100,12 @@
 
 .jc-pill:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(194, 24, 91, 0.1);
-  border-color: #f06292;
+  box-shadow: 0 4px 12px rgba(21, 101, 192, 0.1);
+  border-color: #42a5f5;
 }
 
 .jc-pill-active {
-  background: linear-gradient(135deg, #c2185b 0%, #f06292 100%) !important;
+  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%) !important;
   border-color: transparent !important;
 }
 
@@ -119,21 +119,21 @@
 
 @media (max-width: 768px) {
   .fs-header {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
 
   .card-header {
-    padding: 0.5rem 0.6rem !important;
+    padding: 0.35rem 0.4rem !important;
     font-weight: 800 !important;
   }
 
   .card-header span {
-    font-size: 0.9rem !important;
+    font-size: 0.75rem !important;
     font-weight: 800 !important;
   }
 
   .card-header i {
-    font-size: 0.9rem !important;
+    font-size: 0.75rem !important;
     font-weight: 800 !important;
   }
 
@@ -167,7 +167,6 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
   height: 100%;
   background: #fff;
   display: flex;
@@ -175,8 +174,6 @@
 }
 
 .home-job-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(194, 24, 91, 0.12);
 }
 
 .card-header {
@@ -201,7 +198,11 @@
 }
 
 .gov-header, .pvt-header, .walk-header, .tips-header, .telugu-header {
-  background: linear-gradient(135deg, #c2185b 0%, #f06292 100%);
+  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
+}
+
+.ca-header {
+  background: linear-gradient(135deg, #e65100 0%, #ff9800 100%);
 }
 
 .card-body {
@@ -211,21 +212,17 @@
 
 .job-item {
   cursor: pointer;
-  padding: 0.4rem 0.75rem; /* Reduced vertical space */
-  transition: all 0.2s;
+  padding: 0.4rem 0.75rem;
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  border: 1px solid #f1f5f9; /* Added light full border */
+  border: 1px solid #f1f5f9;
   border-radius: 6px;
-  margin: 0.2rem 0.5rem; /* Space between items */
+  margin: 0.2rem 0.5rem;
   background-color: #ffffff;
 }
 
 .job-item:hover {
-  background-color: #fff5f8;
-  border-color: #f8bbd0;
-  transform: translateX(3px);
 }
 
 .job-content {
@@ -236,7 +233,7 @@
 }
 
 .job-tick {
-  color: #c2185b;
+  color: #1565c0;
   font-size: 0.85rem;
   margin-top: 2px;
   flex-shrink: 0;
@@ -286,31 +283,31 @@
 }
 
 .more-jobs-link {
-  color: #c2185b;
+  color: #1565c0;
   font-weight: 700;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.5rem;
+  padding: 0.4rem;
   border-radius: 6px;
-  background: #fff5f8;
+  background: #e3f2fd;
   transition: all 0.2s;
 }
 
 .more-jobs-link:hover {
-  background: #c2185b;
+  background: #1565c0;
   color: #ffffff !important;
   text-decoration: none;
 }
 
 @media (max-width: 768px) {
   .container-fluid {
-    padding-top: 75px;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    padding-top: 92px;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
   }
 }
 
@@ -324,29 +321,26 @@
 }
 
 .table thead {
-  background: linear-gradient(135deg, #f8bbd0 0%, #fce4ec 100%);
+  background: linear-gradient(135deg, #90caf9 0%, #dbeafe 100%);
 }
 
 .table thead th {
   font-size: 0.75rem;
   font-weight: 800;
-  color: #c2185b;
+  color: #1565c0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 0.65rem 0.75rem;
-  border-bottom: 2px solid #f06292;
+  border-bottom: 2px solid #42a5f5;
   white-space: normal;
   word-wrap: break-word;
 }
 
 .table tbody tr {
   border-bottom: 1px solid #f1f5f9;
-  transition: all 0.2s ease;
 }
 
 .table tbody tr:hover {
-  background-color: #fff5f8;
-  transform: scale(1.01);
 }
 
 .table tbody td {
@@ -360,13 +354,13 @@
 }
 
 .btn-view-pink {
-  background: linear-gradient(135deg, #c2185b, #f06292);
+  background: linear-gradient(135deg, #1565c0, #1e88e5);
   color: #fff;
   border: none;
   border-radius: 20px;
-  padding: 0.18rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.16rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
   white-space: nowrap;
   transition: opacity 0.2s;
 }
@@ -379,19 +373,26 @@
   cursor: pointer;
 }
 .clickable-row:hover {
-  background-color: #fff5f8 !important;
 }
 
 .jfi-sidebar-icon {
-  color: #c2185b;
+  color: #1565c0;
   font-size: 1rem;
   flex-shrink: 0;
 }
 
 .job-title-cell {
   font-weight: 700;
-  color: #334155;
+  color: #111111;
   line-height: 1.4;
+}
+
+.job-meta-info {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1565c0;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .last-date-cell .badge,
@@ -426,7 +427,7 @@
 }
 
 .walk-in-indicator {
-  color: #c2185b;
+  color: #1565c0;
   font-weight: 700;
   font-size: 0.85em;
   margin-left: 0.3rem;
@@ -434,17 +435,17 @@
 
 @media (max-width: 768px) {
   .table thead th {
-    font-size: 0.65rem;
-    padding: 0.5rem 0.4rem;
+    font-size: 0.6rem;
+    padding: 0.35rem 0.3rem;
   }
 
   .table tbody td {
-    padding: 0.5rem 0.4rem;
-    font-size: 0.85rem;
+    padding: 0.35rem 0.3rem;
+    font-size: 0.75rem;
   }
 
   .job-title-cell {
-    font-size: 0.8rem;
+    font-size: 0.73rem;
   }
 
   .last-date-cell .badge,
@@ -465,5 +466,20 @@
     display: block;
     margin-top: 0.2rem;
     margin-left: 0;
+  }
+
+  /* Hide thead on mobile to save space in 2-col layout */
+  .table thead {
+    display: none;
+  }
+
+  /* Make View button smaller on mobile */
+  .btn-view-pink {
+    padding: 0.12rem 0.4rem !important;
+    font-size: 0.62rem !important;
+  }
+
+  .home-date-badge {
+    font-size: 0.58em !important;
   }
 }

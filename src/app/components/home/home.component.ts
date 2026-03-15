@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   walkinJobs: Job[] = [];
   tipsJobs: Job[] = [];
   teluguJobs: Job[] = [];
+  currentAffairsJobs: Job[] = [];
   isLoading: boolean = true;
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
@@ -54,6 +55,8 @@ export class HomeComponent implements OnInit {
           this.tipsJobs = this.jobs.filter(job => job.category === 'Health and Career Tips').slice(0, 10);
           
           this.teluguJobs = this.jobs.filter(job => job.category === 'TeluguToEnglishLearning').slice(0, 10);
+
+          this.currentAffairsJobs = this.jobs.filter(job => job.category === 'Current Affairs').slice(0, 10);
 
         }
         this.isLoading = false;

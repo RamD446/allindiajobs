@@ -46,6 +46,7 @@ export class JobCategoryComponent implements OnInit {
     'today-expired-gov-jobs': { title: 'Today Expired Gov Jobs', category: 'Today Expired Gov Jobs' },
     'health-and-career-tips': { title: 'Health and Career Tips', category: 'Health and Career Tips' },
     'motivation-stories': { title: 'Motivation Stories', category: 'Motivation Stories' },
+    'current-affairs': { title: 'Current Affairs', category: 'Current Affairs' },
     'telugu-to-english-learning': { title: 'Telugu To English Learning', category: 'TeluguToEnglishLearning' }
   };
 

@@ -1,38 +1,5 @@
 <div class="container-fluid">
-  <!-- Category Pills Card -->
-  <div class="jc-top-card mb-2" *ngIf="!isLoading">
-    <div class="jc-pills-row">
-      <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-building-fill"></i>
-        <span>All Govt Jobs</span>
-      </button>
-      
-      <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-briefcase-fill"></i>
-        <span>Private Jobs</span>
-      </button>
-
-      <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-person-walking"></i>
-        <span> All Walk-ins</span>
-      </button>
-
-      <button *ngIf="getTodayWalkinsCount() > 0" class="jc-pill jc-pill-today-walkin" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-person-walking"></i>
-        <span>Today Walk-ins</span>
-      </button>
-
-      <button class="jc-pill jc-pill-career" routerLink="/health-and-career-tips" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-heart-pulse-fill"></i>
-        <span>Career Tips</span>
-      </button>
-
-      <button class="jc-pill jc-pill-telugu" routerLink="/telugu-to-english-learning" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-translate"></i>
-        <span>TeluguToEnglish</span>
-      </button>
-    </div>
-  </div>
+  
 
   <!-- Loading -->
   <div *ngIf="isLoading" class="text-center my-5 py-5">
@@ -42,9 +9,9 @@
     <p class="mt-3 text-muted">Loading jobs...</p>
   </div>
 
-  <div *ngIf="!isLoading" class="row g-4 g-md-3">
-    <!-- Row 1: col-md-6 for Gov Jobs and Walk-ins -->
-    <div class="col-12 col-md-6">
+  <div *ngIf="!isLoading" class="row g-3">
+    <!-- Row 1: Government, Walk-ins, Private Jobs -->
+    <div class="col-12 col-md-4">
       <div class="card home-job-card">
         <div class="card-header gov-header">
           <i class="bi bi-building-fill me-2 fs-header"></i>
@@ -57,11 +24,11 @@
                 <tr *ngFor="let job of govJobs" class="clickable-row" (click)="viewJobDetails(job)">
                   <td>
                     <div class="d-flex align-items-start justify-content-between gap-2">
-                      <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                      <span class="job-title-cell">
+                        <i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}
+                        <span *ngIf="job.lastDateToApply" class="job-meta-info d-block">Last Date:- {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                      </span>
                       <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
-                    </div>
-                    <div *ngIf="job.lastDateToApply" class="mt-1">
-                      <span class="badge home-date-badge">Last Date: {{ job.lastDateToApply | date:'dd-MM-yyyy' }}</span>
                     </div>
                   </td>
                 </tr>
@@ -78,7 +45,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-4">
       <div class="card home-job-card">
         <div class="card-header walk-header">
           <i class="bi bi-person-walking me-2 fs-header"></i>
@@ -91,12 +58,16 @@
                 <tr *ngFor="let job of walkinJobs" class="clickable-row" (click)="viewJobDetails(job)">
                   <td>
                     <div class="d-flex align-items-start justify-content-between gap-2">
-                      <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                      <span class="job-title-cell">
+                        <i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}
+                        <span *ngIf="job.walkInStartDate" class="job-meta-info d-block">
+                          Walk-in:-&nbsp;
+                          <ng-container *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate">{{ job.walkInStartDate | date:'dd MMM' }} to {{ job.walkInEndDate | date:'dd MMM' }}</ng-container>
+                          <ng-container *ngIf="!job.walkInEndDate || job.walkInStartDate === job.walkInEndDate">{{ job.walkInStartDate | date:'dd MMM' }}</ng-container>
+                          &nbsp;||&nbsp;{{ job.category }}
+                        </span>
+                      </span>
                       <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
-                    </div>
-                    <div *ngIf="job.walkInStartDate" class="mt-1 d-flex align-items-center gap-2">
-                      <span class="category-indicator">{{ job.category }}</span>
-                      <span class="badge home-date-badge">Walk-in: {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ (job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate) ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>
                     </div>
                   </td>
                 </tr>
@@ -113,7 +84,6 @@
       </div>
     </div>
 
-    <!-- Row 2: col-md-4 for Private, Career Tips, and TeluguToEnglish -->
     <div class="col-12 col-md-4">
       <div class="card home-job-card">
         <div class="card-header pvt-header">
@@ -123,17 +93,13 @@
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table mb-0">
-              <thead>
-                <tr>
-                  <th class="text-start">Job Title</th>
-                  <th class="text-center">Action</th>
-                </tr>
-              </thead>
               <tbody>
                 <tr *ngFor="let job of privateJobs" class="clickable-row" (click)="viewJobDetails(job)">
-                  <td class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</td>
-                  <td class="text-center">
-                    <button class="btn btn-view-pink" (click)="viewJobDetails(job)">View</button>
+                  <td>
+                    <div class="d-flex align-items-start justify-content-between gap-2">
+                      <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                      <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -142,6 +108,41 @@
         </div>
         <div class="card-footer">
           <a routerLink="/private-jobs" class="more-jobs-link">
+            <span>View All</span>
+            <i class="bi bi-arrow-right-short fs-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Current Affairs, Career Tips, Telugu To English -->
+    <div class="col-12 col-md-4">
+      <div class="card home-job-card">
+        <div class="card-header ca-header">
+          <i class="bi bi-newspaper me-2 fs-header"></i>
+          <span>Current Affairs</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <tbody>
+                <tr *ngFor="let job of currentAffairsJobs" class="clickable-row" (click)="viewJobDetails(job)">
+                  <td>
+                    <div class="d-flex align-items-start justify-content-between gap-2">
+                      <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                      <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="currentAffairsJobs.length === 0">
+                  <td class="text-center text-muted py-3" style="font-size:0.8rem">Coming soon...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a routerLink="/current-affairs" class="more-jobs-link">
             <span>View All</span>
             <i class="bi bi-arrow-right-short fs-5"></i>
           </a>
@@ -158,17 +159,13 @@
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table mb-0">
-              <thead>
-                <tr>
-                  <th class="text-start">Job Title</th>
-                  <th class="text-center">Action</th>
-                </tr>
-              </thead>
               <tbody>
                 <tr *ngFor="let job of tipsJobs" class="clickable-row" (click)="viewJobDetails(job)">
-                  <td class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</td>
-                  <td class="text-center">
-                    <button class="btn btn-view-pink" (click)="viewJobDetails(job)">View</button>
+                  <td>
+                    <div class="d-flex align-items-start justify-content-between gap-2">
+                      <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                      <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -193,20 +190,13 @@
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table mb-0">
-              <thead>
-                <tr>
-                  <th class="text-start">Job Title</th>
-                  <th class="text-center">Action</th>
-                </tr>
-              </thead>
               <tbody>
                 <tr *ngFor="let job of teluguJobs" class="clickable-row" (click)="viewJobDetails(job)">
-                  <td class="job-title-cell">
-                    <i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i><span class="fw-bold" style="color: #c2185b;">Day {{ getDayNumber(job) }}: </span>
-                    {{ job.title }}
-                  </td>
-                  <td class="text-center">
-                    <button class="btn btn-view-pink" (click)="viewJobDetails(job)">View</button>
+                  <td>
+                    <div class="d-flex align-items-start justify-content-between gap-2">
+                      <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i><span class="fw-bold" style="color: #1565c0;">Day {{ getDayNumber(job) }}: </span>{{ job.title }}</span>
+                      <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
+                    </div>
                   </td>
                 </tr>
               </tbody>

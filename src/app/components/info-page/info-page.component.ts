@@ -16,8 +16,8 @@ export class InfoPageComponent implements OnInit {
   title = '';
   content = '';
   sanitizedContent: SafeHtml = '' as any;
-  showCombined = false;
-  combinedSections: any[] = [];
+  pageIcon = 'bi-info-circle-fill';
+  pageIconColor = '#667eea';
 
   private pageContents: { [key: string]: { title: string; content: string } } = {
     'about-us': {
@@ -103,40 +103,32 @@ export class InfoPageComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer) {}
 
+  private iconMap: { [key: string]: { icon: string; color: string } } = {
+    'about-us':             { icon: 'bi-people-fill',            color: '#1565c0' },
+    'disclaimer':           { icon: 'bi-exclamation-triangle-fill', color: '#f59e0b' },
+    'privacy-policy':       { icon: 'bi-shield-lock-fill',       color: '#16a34a' },
+    'terms-and-conditions': { icon: 'bi-file-earmark-text-fill', color: '#0891b2' },
+    'contact-us':           { icon: 'bi-envelope-fill',          color: '#dc2626' }
+  };
+
   ngOnInit() {
-    // derive the page key from the route path
     const path = this.route.snapshot.url.map(s => s.path).join('/');
     this.pageKey = path || this.route.snapshot.routeConfig?.path || '';
 
-    // Check if we should show combined view (About, Disclaimer, Privacy, Terms, Contact)
-    let combinedKeys = ['about-us', 'disclaimer', 'privacy-policy', 'terms-and-conditions', 'contact-us'];
-    if (combinedKeys.includes(this.pageKey)) {
-      this.showCombined = true;
-      
-      // Reorder: move the clicked page key to the first position
-      const otherKeys = combinedKeys.filter(key => key !== this.pageKey);
-      const reorderedKeys = [this.pageKey, ...otherKeys];
-      
-      this.combinedSections = reorderedKeys.map(key => {
-        const data = this.pageContents[key];
-        return {
-          key,
-          title: data.title,
-          content: this.sanitizer.bypassSecurityTrustHtml(data.content)
-        };
-      });
-      this.title = 'Site Information';
+    const data = this.pageContents[this.pageKey];
+    if (data) {
+      this.title = data.title;
+      this.content = data.content;
     } else {
-      this.showCombined = false;
-      const data = this.pageContents[this.pageKey];
-      if (data) {
-        this.title = data.title;
-        this.content = data.content;
-      } else {
-        this.title = 'Info';
-        this.content = 'Information about this site.';
-      }
-      this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.content);
+      this.title = 'Info';
+      this.content = 'Information about this site.';
+    }
+    this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.content);
+
+    const iconData = this.iconMap[this.pageKey];
+    if (iconData) {
+      this.pageIcon = iconData.icon;
+      this.pageIconColor = iconData.color;
     }
   }
 }

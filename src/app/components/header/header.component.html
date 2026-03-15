@@ -78,4 +78,38 @@
     </div>
   </div>
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
+
+  <!-- Category Pills Bar (fixed below navbar) -->
+  <div class="pills-bar">
+    <div class="pills-scroll-row">
+      <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-building-fill"></i>
+        <span>All Govt Jobs</span>
+      </button>
+      <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-briefcase-fill"></i>
+        <span>Private Jobs</span>
+      </button>
+      <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-person-walking"></i>
+        <span>All Walk-ins</span>
+      </button>
+      <button *ngIf="getTodayWalkinsCount() > 0" class="jc-pill jc-pill-today-walkin" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-person-walking"></i>
+        <span>Today Walk-ins</span>
+      </button>
+      <button class="jc-pill jc-pill-career" routerLink="/health-and-career-tips" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-heart-pulse-fill"></i>
+        <span>Career Tips</span>
+      </button>
+      <button class="jc-pill jc-pill-ca" routerLink="/current-affairs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-newspaper"></i>
+        <span>Current Affairs</span>
+      </button>
+      <button class="jc-pill jc-pill-telugu" routerLink="/telugu-to-english-learning" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-translate"></i>
+        <span>Telugu-English</span>
+      </button>
+    </div>
+  </div>
 </header>

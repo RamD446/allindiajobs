@@ -10,41 +10,7 @@
   <!-- Content -->
   <div *ngIf="!isLoading && filteredJobs.length > 0">
     <div class="container-fluid">
-      
-      <!-- Category Pills Card -->
-      <div class="jc-top-card mb-3">
-        <div class="jc-pills-row">
-          <button class="jc-pill jc-pill-gov" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-            <i class="bi bi-building-fill"></i>
-            <span>All Govt Jobs</span>
-          </button>
-          
-          <button class="jc-pill jc-pill-prv" routerLink="/private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-            <i class="bi bi-briefcase-fill"></i>
-            <span>Private Jobs</span>
-          </button>
-
-          <button class="jc-pill jc-pill-walk" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-            <i class="bi bi-person-walking"></i>
-            <span> All Walk-ins</span>
-          </button>
-
-          <button *ngIf="getTodayWalkinsCount() > 0" class="jc-pill jc-pill-today-walkin" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-            <i class="bi bi-person-walking"></i>
-            <span>Today Walk-ins</span>
-          </button>
-
-          <button class="jc-pill jc-pill-career" routerLink="/health-and-career-tips" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-            <i class="bi bi-heart-pulse-fill"></i>
-            <span>Career Tips</span>
-          </button>
-
-          <button class="jc-pill jc-pill-telugu" routerLink="/telugu-to-english-learning" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-            <i class="bi bi-translate"></i>
-            <span>TeluguToEnglish</span>
-          </button>
-        </div>
-      </div>
+  
 
       <div class="row g-3">
         <!-- Main Column (col-8) -->
@@ -73,9 +39,6 @@
                         <div class="d-flex align-items-start justify-content-between gap-2">
                           <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
                           <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
-                        </div>
-                        <div *ngIf="job.lastDateToApply" class="mt-1">
-                          <span class="badge home-date-badge">Last Date: {{ job.lastDateToApply | date:'dd-MM-yyyy' }}</span>
                         </div>
                       </td>
                     </tr>
@@ -110,10 +73,6 @@
                           <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
                           <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
                         </div>
-                        <div *ngIf="job.walkInStartDate" class="mt-1 d-flex align-items-center gap-2">
-                          <span class="category-indicator">{{ job.category }}</span>
-                          <span class="badge home-date-badge">Walk-in: {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>
-                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -128,7 +87,7 @@
                         <td>
                           <div class="d-flex align-items-start justify-content-between gap-2">
                             <span class="job-title-cell">
-                              <i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i><span *ngIf="job.category === 'TeluguToEnglishLearning'" class="fw-bold" style="color: #c2185b;">Day {{ getDayNumber(job) }}: </span>
+                              <i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i><span *ngIf="job.category === 'TeluguToEnglishLearning'" class="fw-bold" style="color: #1565c0;">Day {{ getDayNumber(job) }}: </span>
                               {{ job.title }}
                             </span>
                             <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
@@ -217,11 +176,11 @@
   <!-- Empty State -->
   <div *ngIf="!isLoading && filteredJobs.length === 0" class="text-center my-5 py-5">
     <div class="mb-3">
-      <i class="bi bi-search" style="font-size: 3rem; color: #f8bbd0;"></i>
+      <i class="bi bi-search" style="font-size: 3rem; color: #90caf9;"></i>
     </div>
-    <h3 class="fw-bold" style="color: #c2185b;">No Jobs Found</h3>
+    <h3 class="fw-bold" style="color: #1565c0;">No Jobs Found</h3>
     <p class="text-muted">No opportunities found in {{ categoryTitle.toLowerCase() }}.</p>
-    <a routerLink="/" class="btn btn-primary rounded-pill px-4 mt-2" style="background: #c2185b; border: none;">
+    <a routerLink="/" class="btn btn-primary rounded-pill px-4 mt-2" style="background: #1565c0; border: none;">
       Browse All Jobs
     </a>
   </div>

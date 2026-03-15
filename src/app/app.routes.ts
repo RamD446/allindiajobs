@@ -21,6 +21,7 @@ export const routes: Routes = [
   { path: 'today-expired-gov-jobs', component: JobCategoryComponent },
   { path: 'health-and-career-tips', component: JobCategoryComponent },
   { path: 'motivation-stories', component: JobCategoryComponent },
+  { path: 'current-affairs', component: JobCategoryComponent },
   { path: 'telugu-to-english-learning', component: JobCategoryComponent },
   { path: 'official-company-careers', component: OfficialCompanyCareersComponent },
   { path: 'about-us', component: InfoPageComponent },

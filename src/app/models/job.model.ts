@@ -42,6 +42,7 @@ export const DEFAULT_JOB_CATEGORIES = [
   'Health and Career Tips',
   'Motivation Stories',
   'TeluguToEnglishLearning',
+  'Current Affairs',
 ] as const;
 
 // Job Types for Private Jobs with Walk-In Drive

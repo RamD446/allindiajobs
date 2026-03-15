@@ -132,6 +132,21 @@
 
 .jfi-info-value { color: #1e293b; }
 
+.jfi-info-tbl { font-size: 0.92rem; }
+.jfi-info-tbl th.jfi-th {
+  background-color: #fff0f4 !important;
+  color: #c2185b;
+  font-weight: 600;
+  width: 38%;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-right: 2px solid #f8bbd0;
+}
+.jfi-info-tbl td {
+  vertical-align: middle;
+  color: #1e293b;
+}
+
 .jfi-apply-btn {
   display: inline-block;
   background: linear-gradient(135deg, #c2185b, #f06292);

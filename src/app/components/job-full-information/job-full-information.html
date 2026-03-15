@@ -119,34 +119,38 @@
               <i class="bi bi-info-circle-fill"></i>
               <span>Job information</span>
             </div>
-            <div class="jfi-info-table">
-              <div *ngIf="job.company" class="jfi-info-row">
-                <span class="jfi-info-label"><i class="bi bi-building me-1"></i>Company</span>
-                <span class="jfi-info-value text-primary fw-bold">{{ job.company }}</span>
-              </div>
-              <div *ngIf="job.walkInStartDate" class="jfi-info-row">
-                <span class="jfi-info-label"><i class="bi bi-calendar-event me-1"></i>Walk-in dates</span>
-                <span class="jfi-info-value text-success fw-bold">
-                  {{ job.walkInStartDate | date:'dd MMMM' }}
-                  <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
-                </span>
-              </div>
-              <div *ngIf="job.category === 'Government Jobs' && job.lastDateToApply" class="jfi-info-row">
-                <span class="jfi-info-label"><i class="bi bi-clock me-1"></i>Last date to apply</span>
-                <span class="jfi-info-value text-danger fw-bold">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</span>
-              </div>
-              <div *ngIf="job.qualification" class="jfi-info-row">
-                <span class="jfi-info-label"><i class="bi bi-mortarboard me-1"></i>Qualification</span>
-                <span class="jfi-info-value fw-bold">{{ job.qualification }}</span>
-              </div>
-              <div class="jfi-info-row">
-                <span class="jfi-info-label"><i class="bi bi-globe me-1"></i>Official site</span>
-                <span class="jfi-info-value">
-                  <a [href]="job.applicationUrl" target="_blank" class="jfi-apply-btn">
-                    <i class="bi bi-box-arrow-up-right me-1"></i> Apply Now
-                  </a>
-                </span>
-              </div>
+            <div class="p-0">
+              <table class="table table-bordered mb-0 jfi-info-tbl">
+                <tbody>
+                  <tr *ngIf="job.company">
+                    <th class="jfi-th"><i class="bi bi-building me-1"></i>Company</th>
+                    <td class="fw-bold text-primary">{{ job.company }}</td>
+                  </tr>
+                  <tr *ngIf="job.walkInStartDate">
+                    <th class="jfi-th"><i class="bi bi-calendar-event me-1"></i>Walk-in dates</th>
+                    <td class="text-success fw-bold">
+                      {{ job.walkInStartDate | date:'dd MMMM' }}
+                      <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
+                    <th class="jfi-th"><i class="bi bi-clock me-1"></i>Last date to apply</th>
+                    <td class="text-danger fw-bold">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
+                  </tr>
+                  <tr *ngIf="job.qualification">
+                    <th class="jfi-th"><i class="bi bi-mortarboard me-1"></i>Qualification</th>
+                    <td class="fw-bold">{{ job.qualification }}</td>
+                  </tr>
+                  <tr>
+                    <th class="jfi-th"><i class="bi bi-globe me-1"></i>Official site</th>
+                    <td>
+                      <a [href]="job.applicationUrl" target="_blank" class="jfi-apply-btn">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> Apply Now
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 

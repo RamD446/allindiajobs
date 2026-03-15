@@ -359,6 +359,35 @@
   cursor: pointer;
 }
 
+.btn-view-pink {
+  background: linear-gradient(135deg, #c2185b, #f06292);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 0.18rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.btn-view-pink:hover {
+  opacity: 0.85;
+  color: #fff;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+.clickable-row:hover {
+  background-color: #fff5f8 !important;
+}
+
+.jfi-sidebar-icon {
+  color: #c2185b;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
 .job-title-cell {
   font-weight: 700;
   color: #334155;
@@ -379,6 +408,14 @@
 
 .walkin-date-cell .badge {
   background-color: #16a34a !important;
+}
+
+.home-date-badge {
+  background-color: #e3f2fd !important;
+  color: #0277bd;
+  font-size: 0.68em;
+  font-weight: 500;
+  border: 1px solid #90caf9;
 }
 
 .category-indicator {

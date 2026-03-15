@@ -66,18 +66,17 @@
             </div>
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-start">Job Title</th>
-                      <th class="text-center">Last Date</th>
-                    </tr>
-                  </thead>
+                <table class="table mb-0">
                   <tbody>
-                    <tr *ngFor="let job of getGovJobs()" (click)="viewJobDetails(job)" class="cursor-pointer">
-                      <td class="job-title-cell">{{ job.title }}</td>
-                      <td class="text-center last-date-cell">
-                        <span *ngIf="job.lastDateToApply" class="badge bg-danger">{{ job.lastDateToApply | date:'dd-MM-yyyy' }}</span>
+                    <tr *ngFor="let job of getGovJobs()" class="clickable-row" (click)="viewJobDetails(job)">
+                      <td>
+                        <div class="d-flex align-items-start justify-content-between gap-2">
+                          <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                          <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
+                        </div>
+                        <div *ngIf="job.lastDateToApply" class="mt-1">
+                          <span class="badge home-date-badge">Last Date: {{ job.lastDateToApply | date:'dd-MM-yyyy' }}</span>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -100,40 +99,44 @@
                 </select>
               </div>
             </div>
-            <div class="card-body" [class.p-0]="categoryTitle === 'Walk-in Drives' || categoryTitle === 'All Walk-in Drives' || categoryTitle === 'Today Walk-in Drives'">
+            <div class="card-body p-0">
               <!-- Table format for Walk-in categories -->
               <div *ngIf="categoryTitle === 'Walk-in Drives' || categoryTitle === 'All Walk-in Drives' || categoryTitle === 'Today Walk-in Drives'" class="table-responsive">
-                <table class="table table-hover mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-start">Job Title</th>
-                      <th class="text-center">Walk-in Date</th>
-                    </tr>
-                  </thead>
+                <table class="table mb-0">
                   <tbody>
-                    <tr *ngFor="let job of getPrivateJobs()" (click)="viewJobDetails(job)" class="cursor-pointer">
-                      <td class="job-title-cell">
-                        {{ job.title }}
-                        <span class="category-indicator"> || {{ job.category }}</span>
-                      </td>
-                      <td class="text-center walkin-date-cell">
-                        <span *ngIf="job.walkInStartDate" class="badge bg-success">{{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>
+                    <tr *ngFor="let job of getPrivateJobs()" class="clickable-row" (click)="viewJobDetails(job)">
+                      <td>
+                        <div class="d-flex align-items-start justify-content-between gap-2">
+                          <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                          <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
+                        </div>
+                        <div *ngIf="job.walkInStartDate" class="mt-1 d-flex align-items-center gap-2">
+                          <span class="category-indicator">{{ job.category }}</span>
+                          <span class="badge home-date-badge">Walk-in: {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <!-- Regular format for other categories -->
+              <!-- Table format for other categories -->
               <ng-container *ngIf="categoryTitle !== 'Walk-in Drives' && categoryTitle !== 'All Walk-in Drives' && categoryTitle !== 'Today Walk-in Drives'">
-                <div *ngFor="let job of getPrivateJobs()" class="job-item" (click)="viewJobDetails(job)">
-                  <i class="bi bi-check2-circle job-tick"></i>
-                  <div class="job-content">
-                    <p class="job-title mb-1">
-                      <span *ngIf="job.category === 'TeluguToEnglishLearning'" class="fw-bold" style="color: #c2185b;">Day {{ getDayNumber(job) }}: </span>
-                      {{ job.title }}
-                    </p>
-                    <p *ngIf="job.walkInDrive === true && job.walkInStartDate" class="walk-in-text mb-0 small text-success">Walkin Date: {{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</p>
-                  </div>
+                <div class="table-responsive">
+                  <table class="table mb-0">
+                    <tbody>
+                      <tr *ngFor="let job of getPrivateJobs()" class="clickable-row" (click)="viewJobDetails(job)">
+                        <td>
+                          <div class="d-flex align-items-start justify-content-between gap-2">
+                            <span class="job-title-cell">
+                              <i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i><span *ngIf="job.category === 'TeluguToEnglishLearning'" class="fw-bold" style="color: #c2185b;">Day {{ getDayNumber(job) }}: </span>
+                              {{ job.title }}
+                            </span>
+                            <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </ng-container>
             </div>
@@ -165,15 +168,10 @@
             </div>
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-start">Job Title</th>
-                    </tr>
-                  </thead>
+                <table class="table mb-0">
                   <tbody>
-                    <tr *ngFor="let job of topWalkins" (click)="viewJobDetails(job)" class="cursor-pointer">
-                      <td class="job-title-cell">{{ job.title }}</td>
+                    <tr *ngFor="let job of topWalkins" class="clickable-row" (click)="viewJobDetails(job)">
+                      <td class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -193,12 +191,15 @@
               <i class="bi bi-briefcase-fill me-2 fs-header"></i>
               <span>Top 5 Private Jobs</span>
             </div>
-            <div class="card-body">
-              <div *ngFor="let job of topPrivateJobs" class="job-item" (click)="viewJobDetails(job)">
-                <i class="bi bi-check2-circle job-tick"></i>
-                <div class="job-content">
-                  <p class="job-title">{{ job.title }}</p>
-                </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <tbody>
+                    <tr *ngFor="let job of topPrivateJobs" class="clickable-row" (click)="viewJobDetails(job)">
+                      <td class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
             <div class="card-footer">

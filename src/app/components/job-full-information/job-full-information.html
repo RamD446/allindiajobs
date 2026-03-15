@@ -70,13 +70,13 @@
                   <h5 class="section-title mb-3">
                     <i class="bi bi-geo-alt-fill me-2"></i>Job Location & Address
                   </h5>
-                  <div class="modern-desc-list">
-                    <div class="modern-desc-item" *ngIf="job.location">
-                      <i class="bi bi-geo-alt job-tick mt-1"></i>
+                  <div class="how-to-apply-list">
+                    <div class="how-to-apply-item" *ngIf="job.location">
+                      <span class="apply-number">1.</span>
                       <span><strong>Location:</strong> {{ job.location }}</span>
                     </div>
-                    <div class="modern-desc-item" *ngIf="job.addressAndContact">
-                      <i class="bi bi-card-text job-tick mt-1"></i>
+                    <div class="how-to-apply-item" *ngIf="job.addressAndContact">
+                      <span class="apply-number">{{ job.location ? '2.' : '1.' }}</span>
                       <span><strong>Address & Contact:</strong> {{ job.addressAndContact }}</span>
                     </div>
                   </div>

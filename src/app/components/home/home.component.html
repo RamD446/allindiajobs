@@ -62,7 +62,6 @@
                   <td class="job-title-cell">{{ job.title }}</td>
                   <td class="text-center last-date-cell">
                     <span *ngIf="job.lastDateToApply" class="badge bg-danger">{{ job.lastDateToApply | date:'dd-MM-yyyy' }}</span>
-                    <span *ngIf="!job.lastDateToApply" class="text-muted">-</span>
                   </td>
                 </tr>
               </tbody>
@@ -101,7 +100,6 @@
                   </td>
                   <td class="text-center walkin-date-cell">
                     <span *ngIf="job.walkInStartDate" class="badge bg-success">{{ job.walkInStartDate | date:'dd-MM-yyyy' }}{{ job.walkInEndDate ? ' - ' + (job.walkInEndDate | date:'dd-MM-yyyy') : '' }}</span>
-                    <span *ngIf="!job.walkInStartDate" class="text-muted">-</span>
                   </td>
                 </tr>
               </tbody>

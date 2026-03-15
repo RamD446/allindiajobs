@@ -119,15 +119,22 @@
 
 @media (max-width: 768px) {
   .fs-header {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
   .card-header {
     padding: 0.5rem 0.6rem !important;
+    font-weight: 800 !important;
   }
 
   .card-header span {
-    font-size: 0.75rem !important;
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+  }
+
+  .card-header i {
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
   }
 
   .job-item {
@@ -173,7 +180,7 @@
 }
 
 .card-header {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.9rem;
   color: white;
   padding: 0.8rem 1rem;
@@ -182,6 +189,15 @@
   border-bottom: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.card-header span {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.card-header i {
+  font-weight: 800;
 }
 
 .gov-header, .pvt-header, .walk-header, .tips-header, .telugu-header {
@@ -300,7 +316,7 @@
 
 /* Table Styles for Govt Jobs and Walk-ins */
 .table-responsive {
-  overflow-x: auto;
+  overflow-x: visible;
 }
 
 .table {
@@ -319,7 +335,8 @@
   letter-spacing: 0.5px;
   padding: 0.65rem 0.75rem;
   border-bottom: 2px solid #f06292;
-  white-space: nowrap;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .table tbody tr {
@@ -343,7 +360,7 @@
 }
 
 .job-title-cell {
-  font-weight: 600;
+  font-weight: 700;
   color: #334155;
   line-height: 1.4;
 }
@@ -366,7 +383,7 @@
 
 .category-indicator {
   color: #0277bd;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.85em;
   margin-left: 0.3rem;
 }
@@ -401,6 +418,9 @@
 
   .category-indicator {
     font-size: 0.7em;
+    display: block;
+    margin-top: 0.2rem;
+    margin-left: 0;
   }
 
   .walk-in-indicator {

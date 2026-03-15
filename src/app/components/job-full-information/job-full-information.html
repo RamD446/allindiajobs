@@ -12,12 +12,16 @@
       <!-- Main Content Column (col-8 on desktop) -->
       <div class="col-12 col-md-8">
         
-       
+        <!-- Job Title Card -->
+        <div class="card home-job-card mb-3">
+          <div class="card-body p-3 p-md-4">
+            <h4 class="job-title-display mb-0">{{ job.title }}</h4>
+          </div>
+        </div>
 
         <!-- Main Job Detail Card -->
         <div class="card home-job-card mb-4">
           <div class="card-body p-3 p-md-4">
-          
             
             <div class="job-description-section">
               <div class="d-flex align-items-center justify-content-between mb-3">
@@ -35,11 +39,9 @@
               </div>
               
               <hr class="title-divider">
-              <h4 class="job-title-display mb-3">{{ job.title }}</h4>
               
-              
-              <div class="job-desc-content">
-                 
+              <!-- 2. Job Description -->
+              <div class="job-desc-content mb-4">
                 <div *ngIf="isRichText(job.description)" [innerHTML]="getSafeHtml(job.description)"></div>
                 
                 <ng-container *ngIf="!isRichText(job.description)">
@@ -53,122 +55,118 @@
                     {{ job.description }}
                   </div>
                 </ng-container>
+              </div>
 
-                <!-- Qualification -->
-                <div *ngIf="job.qualification" class="mt-4">
-                  <h5 class="section-title mb-3">
-                    <i class="bi bi-mortarboard-fill me-2"></i>Qualification
-                  </h5>
-                  <div class="alert alert-info">
-                    {{ job.qualification }}
+              <!-- 3. How to Apply -->
+              <div *ngIf="job.howToApply" class="mt-4">
+                <h5 class="section-title mb-3">
+                  <i class="bi bi-clipboard-check-fill me-2"></i>How to Apply
+                </h5>
+                <div *ngIf="isRichText(job.howToApply)" [innerHTML]="getSafeHtml(job.howToApply)"></div>
+                <div *ngIf="!isRichText(job.howToApply)" class="how-to-apply-list">
+                  <div *ngFor="let note of getHowToApplyList(job.howToApply); let i = index" class="how-to-apply-item">
+                    <span class="apply-number">{{ i + 1 }}.</span>
+                    <span>{{ note }}</span>
                   </div>
                 </div>
+              </div>
 
-                <!-- How to Apply -->
-                <div *ngIf="job.howToApply" class="mt-4">
-                  <h5 class="section-title mb-3">
-                    <i class="bi bi-clipboard-check-fill me-2"></i>How to Apply
-                  </h5>
-                  <div *ngIf="isRichText(job.howToApply)" [innerHTML]="getSafeHtml(job.howToApply)"></div>
-                  <div *ngIf="!isRichText(job.howToApply)" class="how-to-apply-list">
-                    <div *ngFor="let note of getHowToApplyList(job.howToApply); let i = index" class="how-to-apply-item">
-                      <span class="apply-number">{{ i + 1 }}.</span>
-                      <span>{{ note }}</span>
-                    </div>
+              <!-- 4. Qualification -->
+              <div *ngIf="job.qualification" class="mt-4">
+                <h5 class="section-title mb-3">
+                  <i class="bi bi-mortarboard-fill me-2"></i>Qualification
+                </h5>
+                <div class="alert alert-info">
+                  {{ job.qualification }}
+                </div>
+              </div>
+
+              <!-- 5. Important Notes -->
+              <div *ngIf="job.importantNotes" class="mt-4">
+                <h5 class="section-title mb-3">
+                  <i class="bi bi-sticky-fill me-2"></i>Important Notes
+                </h5>
+                <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
+                <div *ngIf="!isRichText(job.importantNotes)" class="how-to-apply-list">
+                  <div *ngFor="let note of getImportantNotesList(job.importantNotes); let i = index" class="how-to-apply-item">
+                    <span class="apply-number">{{ i + 1 }}.</span>
+                    <span>{{ note }}</span>
                   </div>
                 </div>
+              </div>
 
-                <!-- Important Notes -->
-                <div *ngIf="job.importantNotes" class="mt-4">
-                  <h5 class="section-title mb-3">
-                    <i class="bi bi-sticky-fill me-2"></i>Important Notes
-                  </h5>
-                  <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
-                  <div *ngIf="!isRichText(job.importantNotes)" class="how-to-apply-list">
-                    <div *ngFor="let note of getImportantNotesList(job.importantNotes); let i = index" class="how-to-apply-item">
-                      <span class="apply-number">{{ i + 1 }}.</span>
-                      <span>{{ note }}</span>
-                    </div>
+              <!-- 6. Address -->
+              <div *ngIf="job.addressAndContact" class="mt-4">
+                <h5 class="section-title mb-3">
+                  <i class="bi bi-pin-map-fill me-2"></i>Job Contact and Address
+                </h5>
+                <div class="how-to-apply-list">
+                  <div class="how-to-apply-item">
+                    <span>{{ job.addressAndContact }}</span>
                   </div>
                 </div>
+              </div>
 
-                <!-- Address -->
-                <div *ngIf="job.addressAndContact" class="mt-4">
-                  <h5 class="section-title mb-3">
-                    <i class="bi bi-pin-map-fill me-2"></i>Job Contact and Address
-                  </h5>
-                  <div class="how-to-apply-list">
-                    <div class="how-to-apply-item">
-                      
-                      <span>{{ job.addressAndContact }}</span>
-                    </div>
+              <!-- 7. Full Job Information Table -->
+              <div class="official-links-wrapper mt-4" *ngIf="job.applicationUrl">
+                <div class="card border-primary">
+                  <div class="card-header bg-primary text-white py-2 fw-bold">
+                    Job Full Information
+                  </div>
+                  <div class="card-body p-0">
+                    <table class="table table-bordered mb-0">
+                      <tbody>
+                        <tr *ngIf="job.company">
+                          <th class="bg-light w-40">Company Name</th>
+                          <td class="fw-bold text-primary">{{ job.company }}</td>
+                        </tr>
+                        <tr *ngIf="job.walkInStartDate">
+                          <th class="bg-light w-40">Walk-in Dates</th>
+                          <td class="text-success fw-bold">
+                            {{ job.walkInStartDate | date:'dd MMMM' }}
+                            <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> - {{ job.walkInEndDate | date:'dd MMMM' }}</span>
+                          </td>
+                        </tr>
+                        <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
+                          <th class="bg-light w-40">Last Date to Apply</th>
+                          <td class="text-danger fw-bold">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
+                        </tr>
+                        <tr *ngIf="job.qualification">
+                          <th class="bg-light w-40">Qualification</th>
+                          <td class="fw-bold">{{ job.qualification }}</td>
+                        </tr>
+                        <tr>
+                          <th class="bg-light">Official Site</th>
+                          <td>
+                            <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary py-1 px-3 rounded-pill fw-bold">
+                              <i class="bi bi-box-arrow-up-right me-1"></i> Click Here
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
+              </div>
 
-                
+              <hr class="section-divider my-4">
 
-                <!-- Official Links Table Style -->
-                <div class="official-links-wrapper mt-4" *ngIf="job.applicationUrl">
-                  <div class="card border-primary">
-                    <div class="card-header bg-primary text-white py-2 fw-bold">
-                      Job Full Information
-                    </div>
-                    <div class="card-body p-0">
-                      <table class="table table-bordered mb-0">
-                        <tbody>
-                          <tr *ngIf="job.company">
-                            <th class="bg-light w-40">Company Name</th>
-                            <td class="fw-bold text-primary">{{ job.company }}</td>
-                          </tr>
-                          <tr *ngIf="job.walkInStartDate">
-                            <th class="bg-light w-40">Walk-in Dates</th>
-                            <td class="text-success fw-bold">
-                              {{ job.walkInStartDate | date:'dd MMMM' }}
-                              <span *ngIf="job.walkInEndDate"> - {{ job.walkInEndDate | date:'dd MMMM' }}</span>
-                            </td>
-                          </tr>
-                          <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
-                            <th class="bg-light w-40">Last Date to Apply</th>
-                            <td class="text-danger fw-bold">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
-                          </tr>
-                          <tr *ngIf="job.qualification">
-                            <th class="bg-light w-40">Qualification</th>
-                            <td class="fw-bold">{{ job.qualification }}</td>
-                          </tr>
-                         
-                          <tr>
-                            <th class="bg-light"> Official Site</th>
-                            <td>
-                              <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary py-1 px-3 rounded-pill fw-bold">
-                                <i class="bi bi-box-arrow-up-right me-1"></i> Click Here
-                              </a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+              <!-- 8. Posted By -->
+              <div class="posted-by-box">
+                <div class="author-avatar">
+                  <img src="assets/images/YallaRamana.jpg" alt="Yalla Ramana">
                 </div>
-
-                <hr class="section-divider my-4">
-
-                <!-- Meta info display after job information -->
-                <div class="posted-by-box">
-                  <div class="author-avatar">
-                    <img src="assets/images/YallaRamana.jpg" alt="Yalla Ramana">
-                  </div>
-                  <div class="posted-content">
-                    <span class="posted-author">Posted by :- Yalla Ramana</span>
-                    <div class="posted-date">
-                      <ng-container *ngIf="!job.updatedDate">
-                        <i class="bi bi-calendar-check-fill text-success"></i>
-                        <span>{{ formatDate(job.createdDate) }}</span>
-                      </ng-container>
-                      <ng-container *ngIf="job.updatedDate">
-                        <i class="bi bi-pencil-fill text-primary"></i>
-                        <span>Updated on {{ formatDate(job.updatedDate) }}</span>
-                      </ng-container>
-                    </div>
+                <div class="posted-content">
+                  <span class="posted-author">Posted by :- Yalla Ramana</span>
+                  <div class="posted-date">
+                    <ng-container *ngIf="!job.updatedDate">
+                      <i class="bi bi-calendar-check-fill text-success"></i>
+                      <span>{{ formatDate(job.createdDate) }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="job.updatedDate">
+                      <i class="bi bi-pencil-fill text-primary"></i>
+                      <span>Updated on {{ formatDate(job.updatedDate) }}</span>
+                    </ng-container>
                   </div>
                 </div>
               </div>

@@ -24,9 +24,10 @@ export interface Job {
   importantNotes?: string;
   updatedDate?: string;
   addressAndContact?: string;
-  location?: string;
   walkInDrive?: boolean;
   jobType?: string;
+  qualification?: string;
+  howToApply?: string;
 }
 
 // Job Categories - simplified list as requested

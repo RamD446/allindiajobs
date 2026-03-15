@@ -28,18 +28,15 @@
 
   <!-- Mobile Offcanvas Menu -->
   <div class="mobile-offcanvas" [class.active]="isNavActive">
+    <!-- Offcanvas Header -->
     <div class="offcanvas-header-nav">
-      <div class="logo-container">
-        <i class="bi bi-lightning-charge-fill logo-icon"></i>
-        <div class="logo-text-wrapper">
-          <span class="logo-main text-white">AllIndiaJobs</span>
-        </div>
-      </div>
+      <h5 class="mb-0 text-white fw-bold">AllIndiaJobs.com</h5>
       <button type="button" class="btn-close-custom" (click)="closeNav()">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
     
+    <!-- Offcanvas Body -->
     <div class="offcanvas-body">
       <!-- Job Categories List -->
       <div class="offcanvas-menu-list px-2 py-1">
@@ -58,29 +55,26 @@
           </a>
         </div>
       </div>
-
-      <!-- Social Follow Section -->
-      <div class="offcanvas-social-section px-2 py-1">
-        <h6 class="section-label">Follow Us</h6>
-        <div class="social-icons-grid">
-          <button class="social-btn btn-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')">
-            <i class="bi bi-youtube"></i>
-          </button>
-          <button class="social-btn btn-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
-            <i class="bi bi-whatsapp"></i>
-          </button>
-          <button class="social-btn btn-fb" (click)="openExternalChannel('https://www.facebook.com/allindiajobs')">
-            <i class="bi bi-facebook"></i>
-          </button>
-          <button class="social-btn btn-ig" (click)="openExternalChannel('https://www.instagram.com/allindiajobs')">
-            <i class="bi bi-instagram"></i>
-          </button>
-        </div>
-      </div>
     </div>
     
+    <!-- Offcanvas Footer -->
     <div class="offcanvas-footer p-3">
-      <p class="copyright-text mb-0">&copy; 2026 AllIndiaJobs.com</p>
+      <h6 class="section-label mb-3">Follow Us</h6>
+      <div class="social-icons-grid mb-3">
+        <button class="social-btn btn-yt" (click)="openExternalChannel('https://www.youtube.com/@allindajobs')">
+          <i class="bi bi-youtube"></i>
+        </button>
+        <button class="social-btn btn-wa" (click)="openExternalChannel('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p')">
+          <i class="bi bi-whatsapp"></i>
+        </button>
+        <button class="social-btn btn-fb" (click)="openExternalChannel('https://www.facebook.com/allindiajobs')">
+          <i class="bi bi-facebook"></i>
+        </button>
+        <button class="social-btn btn-ig" (click)="openExternalChannel('https://www.instagram.com/allindiajobs')">
+          <i class="bi bi-instagram"></i>
+        </button>
+      </div>
+      <p class="copyright-text mb-0 text-center">&copy; 2026 AllIndiaJobs.com</p>
     </div>
   </div>
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>

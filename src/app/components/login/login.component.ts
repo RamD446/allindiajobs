@@ -49,9 +49,10 @@ export class LoginComponent implements OnInit {
     walkInEndDate: '',
     lastDateToApply: '',
     addressAndContact: '',
-    location: '',
     walkInDrive: false,
-    jobType: ''
+    jobType: '',
+    qualification: '',
+    howToApply: ''
   };
 
   jobCategories: string[] = [];
@@ -298,7 +299,8 @@ export class LoginComponent implements OnInit {
       ...job,
       importantNotes: job.importantNotes || '',
       addressAndContact: job.addressAndContact || '',
-      location: job.location || '',
+      qualification: job.qualification || '',
+      howToApply: job.howToApply || '',
       createdDate: formattedDate || this.toLocalIsoString(new Date())
     };
   }
@@ -467,9 +469,10 @@ export class LoginComponent implements OnInit {
       walkInEndDate: '',
       lastDateToApply: '',
       addressAndContact: '',
-      location: '',
       walkInDrive: false,
-      jobType: ''
+      jobType: '',
+      qualification: '',
+      howToApply: ''
     };
   }
 

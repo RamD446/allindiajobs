@@ -1,8 +1,10 @@
 <div class="jc">
   <!-- Loading -->
-  <div *ngIf="isLoading" class="text-center my-5 py-5 loading-fade-in">
-    <div class="modern-loader"></div>
-    <p class="loader-text">Loading jobs...</p>
+  <div *ngIf="isLoading" class="text-center my-5 py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading jobs...</p>
   </div>
 
   <div *ngIf="!isLoading && job" class="container-fluid">
@@ -33,7 +35,8 @@
               </div>
               
               <hr class="title-divider">
-               <h4 class="job-title-display">{{ job.title }}</h4>
+              <h4 class="job-title-display mb-3">{{ job.title }}</h4>
+              
               
               <div class="job-desc-content">
                  
@@ -51,10 +54,34 @@
                   </div>
                 </ng-container>
 
+                <!-- Qualification -->
+                <div *ngIf="job.qualification" class="mt-4">
+                  <h5 class="section-title mb-3">
+                    <i class="bi bi-mortarboard-fill me-2"></i>Qualification
+                  </h5>
+                  <div class="alert alert-info">
+                    {{ job.qualification }}
+                  </div>
+                </div>
+
                 <!-- How to Apply -->
-                <div *ngIf="job.importantNotes" class="mt-4">
+                <div *ngIf="job.howToApply" class="mt-4">
                   <h5 class="section-title mb-3">
                     <i class="bi bi-clipboard-check-fill me-2"></i>How to Apply
+                  </h5>
+                  <div *ngIf="isRichText(job.howToApply)" [innerHTML]="getSafeHtml(job.howToApply)"></div>
+                  <div *ngIf="!isRichText(job.howToApply)" class="how-to-apply-list">
+                    <div *ngFor="let note of getHowToApplyList(job.howToApply); let i = index" class="how-to-apply-item">
+                      <span class="apply-number">{{ i + 1 }}.</span>
+                      <span>{{ note }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Important Notes -->
+                <div *ngIf="job.importantNotes" class="mt-4">
+                  <h5 class="section-title mb-3">
+                    <i class="bi bi-sticky-fill me-2"></i>Important Notes
                   </h5>
                   <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
                   <div *ngIf="!isRichText(job.importantNotes)" class="how-to-apply-list">
@@ -65,19 +92,15 @@
                   </div>
                 </div>
 
-                <!-- Location and Address -->
-                <div *ngIf="job.location || job.addressAndContact" class="mt-4">
+                <!-- Address -->
+                <div *ngIf="job.addressAndContact" class="mt-4">
                   <h5 class="section-title mb-3">
-                    <i class="bi bi-geo-alt-fill me-2"></i>Job Location & Address
+                    <i class="bi bi-pin-map-fill me-2"></i>Job Contact and Address
                   </h5>
                   <div class="how-to-apply-list">
-                    <div class="how-to-apply-item" *ngIf="job.location">
-                      <span class="apply-number">1.</span>
-                      <span><strong>Location:</strong> {{ job.location }}</span>
-                    </div>
-                    <div class="how-to-apply-item" *ngIf="job.addressAndContact">
-                      <span class="apply-number">{{ job.location ? '2.' : '1.' }}</span>
-                      <span><strong>Address & Contact:</strong> {{ job.addressAndContact }}</span>
+                    <div class="how-to-apply-item">
+                      
+                      <span>{{ job.addressAndContact }}</span>
                     </div>
                   </div>
                 </div>
@@ -108,9 +131,9 @@
                             <th class="bg-light w-40">Last Date to Apply</th>
                             <td class="text-danger fw-bold">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
                           </tr>
-                          <tr *ngIf="job.location">
-                            <th class="bg-light w-40">Job Location</th>
-                            <td>{{ job.location }}</td>
+                          <tr *ngIf="job.qualification">
+                            <th class="bg-light w-40">Qualification</th>
+                            <td class="fw-bold">{{ job.qualification }}</td>
                           </tr>
                          
                           <tr>

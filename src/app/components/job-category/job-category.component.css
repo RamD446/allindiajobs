@@ -131,8 +131,8 @@
   display: flex;
   align-items: center;
   border-bottom: none;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
 }
 
 .card-header span {
@@ -260,16 +260,40 @@
 }
 
 .company-select {
-  max-width: 140px;
-  font-size: 0.7rem;
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.15rem 0.4rem;
+  flex: 1;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1565c0;
+  background-color: #fff;
+  border: 1px solid #90caf9;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.company-select:focus {
+  border-color: #1565c0;
+  box-shadow: 0 0 0 2px rgba(21,101,192,0.1);
 }
 
 .company-select option {
-  color: black;
+  color: #1e293b;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  background: #e3f2fd;
+  border-bottom: 1px solid #90caf9;
+}
+
+.filter-bar-icon {
+  color: #1565c0;
+  font-size: 0.8rem;
+  flex-shrink: 0;
 }
 
 .fs-header {
@@ -305,11 +329,6 @@
     font-size: 0.95rem !important;
     line-height: 1.2 !important;
     color: #334155 !important;
-  }
-
-  .company-select {
-    max-width: 100px;
-    font-size: 0.65rem;
   }
 }
 

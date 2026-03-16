@@ -33,7 +33,7 @@ export interface Job {
 // Job Categories - simplified list as requested
 export const DEFAULT_JOB_CATEGORIES = [
   'Government Jobs',
-  'All Private Jobs',
+  'GovernmentJobResults',
   'Bank Jobs',
   'IT Jobs',
   'Non-IT Jobs',

@@ -1,210 +1,209 @@
-<div class="jfi-page">
-
+<div class="jc">
   <!-- Loading -->
-  <div *ngIf="isLoading" class="jfi-loading">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+  <div *ngIf="isLoading" class="finding-jobs-loader">
+    <div class="loader-icon-wrap">
+      <i class="bi bi-briefcase-fill loader-briefcase"></i>
+      <div class="loader-dots">
+        <span></span><span></span><span></span>
+      </div>
     </div>
-    <p class="mt-3 text-muted">Loading job details...</p>
+    <p class="loader-title">Finding Jobs<span class="loader-ellipsis">...</span></p>
+    <p class="loader-sub">Please wait while we load the latest opportunities</p>
   </div>
 
-  <!-- Main Content -->
   <div *ngIf="!isLoading && job" class="jfi-container">
-
     <div class="row g-3">
 
-      <!-- 1: col-12 — Job Title Banner -->
-      <div class="col-12">
-        <div class="jfi-hero">
-          <div class="jfi-hero-label">
-            <i class="bi bi-briefcase-fill me-1"></i>Job Detail
+      <!-- ===== Main Content Column ===== -->
+      <div class="col-12 col-md-8">
+        <div class="card jfi-main-card mb-3">
+
+          <!-- Blue Gradient Header with Title + Share Buttons -->
+          <div class="card-header jfi-main-header">
+            <!-- Mobile: stacked | Desktop: side by side -->
+            <div class="d-flex align-items-center justify-content-between w-100">
+              <h5 class="mb-0 fw-bold jfi-title flex-grow-1">{{ job.title }}</h5>
+              
+            </div>
           </div>
-          <h1 class="jfi-hero-title">{{ job.title }}</h1>
-          <div class="jfi-hero-actions">
-            <button class="jfi-btn-wa" (click)="shareOnWhatsApp(job)">
-              <i class="bi bi-whatsapp me-1"></i>WhatsApp
-            </button>
-            <button class="jfi-btn-share" (click)="shareJob(job)">
-              <i class="bi bi-share me-1"></i>Share
-            </button>
+
+          <div class="card-body p-3">
+
+            <!-- 1. Job Description -->
+            <div class="jfi-section">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <h6 class="jfi-section-title mb-0 flex-grow-1">
+                  <i class="bi bi-file-text-fill me-2"></i>Job Description
+                </h6>
+                <button class="jfi-share-btn whatsapp flex-shrink-0" (click)="shareOnWhatsApp(job)" title="Share Job on WhatsApp">
+                  <span>Share </span>
+                  <i class="bi bi-whatsapp ms-1"></i>
+                </button>
+              </div>
+              <div *ngIf="isRichText(job.description)" class="jfi-rich-desc" [innerHTML]="getSafeHtml(job.description)"></div>
+              <div *ngIf="!isRichText(job.description)" class="jfi-desc-paragraphs">
+                <p *ngFor="let para of getParagraphs(job.description)" class="jfi-para">{{ para }}</p>
+              </div>
+            </div>
+
+            <!-- 2. How to Apply -->
+            <ng-container *ngIf="job.howToApply">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">
+                  <i class="bi bi-clipboard-check-fill me-2"></i>How to Apply
+                </h6>
+                <div *ngIf="isRichText(job.howToApply)" [innerHTML]="getSafeHtml(job.howToApply)"></div>
+                <div *ngIf="!isRichText(job.howToApply)" class="how-to-apply-list">
+                  <div *ngFor="let note of getHowToApplyList(job.howToApply); let i = index" class="how-to-apply-item">
+                    <span class="apply-number">{{ i + 1 }}.</span>
+                    <span>{{ note }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- 3. Qualification -->
+            <ng-container *ngIf="job.qualification">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">
+                  <i class="bi bi-mortarboard-fill me-2"></i>Qualification
+                </h6>
+                <p class="plain-text-box mb-0">{{ job.qualification }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 4. Apply Here -->
+            <ng-container *ngIf="job.applicationUrl">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <div class="d-flex align-items-center justify-content-between gap-2">
+                  <h6 class="jfi-section-title mb-0">
+                    <i class="bi bi-globe2 me-2"></i>Visit Official Website
+                  </h6>
+                  <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary rounded-pill fw-bold jfi-apply-btn">
+                    <i class="bi bi-box-arrow-up-right me-1"></i>Click Here
+                  </a>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- 5. Address & Contact -->
+            <ng-container *ngIf="job.addressAndContact">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">
+                  <i class="bi bi-pin-map-fill me-2"></i>Address & Contact
+                </h6>
+                <p class="plain-text-box mb-0">{{ job.addressAndContact }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 6. Job Information Table -->
+            <div class="jfi-info-table mt-4" *ngIf="job.applicationUrl">
+              <div class="card border-0 jfi-table-card">
+                <div class="card-header jfi-table-header">
+                  <i class="bi bi-info-circle-fill me-2"></i>Job Information
+                </div>
+                <div class="card-body p-0">
+                  <table class="table table-bordered mb-0 jfi-table">
+                    <tbody>
+                      <tr *ngIf="job.company">
+                        <th class="jfi-th">Company</th>
+                        <td class="fw-bold text-primary jfi-td">{{ job.company }}</td>
+                      </tr>
+                      <tr *ngIf="job.walkInStartDate">
+                        <th class="jfi-th">Walk-in Dates</th>
+                        <td class="text-success fw-bold jfi-td">
+                          {{ job.walkInStartDate | date:'dd MMMM' }}
+                          <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
+                        </td>
+                      </tr>
+                      <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
+                        <th class="jfi-th">Last Date</th>
+                        <td class="text-danger fw-bold jfi-td">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
+                      </tr>
+                      <tr *ngIf="job.qualification">
+                        <th class="jfi-th">Qualification</th>
+                        <td class="jfi-td">{{ job.qualification }}</td>
+                      </tr>
+                      <tr>
+                        <th class="jfi-th">Apply Here</th>
+                        <td class="jfi-td">
+                          <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary rounded-pill fw-bold jfi-apply-btn">
+                            <i class="bi bi-box-arrow-up-right me-1"></i>Official Site
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <hr class="jfi-divider mt-4">
+
+            <!-- 7. Posted By -->
+            <div class="posted-by-box">
+              <div class="author-avatar">
+                <img src="assets/images/YallaRamana.jpg" alt="Yalla Ramana">
+              </div>
+              <div class="posted-content">
+                <span class="posted-author">Posted by :- Yalla Ramana</span>
+                <div class="posted-date">
+                  <ng-container *ngIf="!job.updatedDate">
+                    <i class="bi bi-calendar-check-fill text-success"></i>
+                    <span>{{ formatDate(job.createdDate) }}</span>
+                  </ng-container>
+                  <ng-container *ngIf="job.updatedDate">
+                    <i class="bi bi-pencil-fill text-primary"></i>
+                    <span>Updated on {{ formatDate(job.updatedDate) }}</span>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
 
-      <!-- 2: col-md-9 — All Job Info in ONE card -->
-      <div class="col-12 col-md-9">
-        <div class="jfi-card">
-
-          <!-- Job Description -->
-          <div class="jfi-section">
-            <div class="jfi-card-header">
-              <i class="bi bi-file-text-fill"></i>
-              <span>Job Description</span>
-            </div>
-            <div class="jfi-card-body">
-              <div *ngIf="isRichText(job.description)" [innerHTML]="getSafeHtml(job.description)"></div>
-              <ng-container *ngIf="!isRichText(job.description)">
-                <div *ngIf="hasDots(job.description)" class="desc-list">
-                  <div *ngFor="let sentence of getDescriptionList(job.description)" class="desc-item">
-                    <i class="bi bi-check2-circle"></i>
-                    <span>{{ sentence }}</span>
-                  </div>
-                </div>
-                <p *ngIf="job.description && !hasDots(job.description)" class="mb-0">{{ job.description }}</p>
-              </ng-container>
-            </div>
-          </div>
-
-          <!-- How to Apply -->
-          <div *ngIf="job.howToApply" class="jfi-section">
-            <div class="jfi-card-header">
-              <i class="bi bi-clipboard-check-fill"></i>
-              <span>How to Apply</span>
-            </div>
-            <div class="jfi-card-body">
-              <div *ngIf="isRichText(job.howToApply)" [innerHTML]="getSafeHtml(job.howToApply)"></div>
-              <div *ngIf="!isRichText(job.howToApply)" class="step-list">
-                <div *ngFor="let note of getHowToApplyList(job.howToApply); let i = index" class="step-item">
-                  <span class="step-num">{{ i + 1 }}</span>
-                  <span>{{ note }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Important Notes -->
-          <div *ngIf="job.importantNotes" class="jfi-section">
-            <div class="jfi-card-header warn">
-              <i class="bi bi-sticky-fill"></i>
-              <span>Important Notes</span>
-            </div>
-            <div class="jfi-card-body">
-              <div *ngIf="isRichText(job.importantNotes)" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
-              <div *ngIf="!isRichText(job.importantNotes)" class="step-list">
-                <div *ngFor="let note of getImportantNotesList(job.importantNotes); let i = index" class="step-item">
-                  <span class="step-num warn">{{ i + 1 }}</span>
-                  <span>{{ note }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Qualification -->
-          <div *ngIf="job.qualification" class="jfi-section">
-            <div class="jfi-card-header">
-              <i class="bi bi-mortarboard-fill"></i>
-              <span>Qualification</span>
-            </div>
-            <div class="jfi-card-body">
-              <p class="mb-0">{{ job.qualification }}</p>
-            </div>
-          </div>
-
-          <!-- Contact & Address -->
-          <div *ngIf="job.addressAndContact" class="jfi-section">
-            <div class="jfi-card-header">
-              <i class="bi bi-pin-map-fill"></i>
-              <span>Contact &amp; Address</span>
-            </div>
-            <div class="jfi-card-body">
-              <p class="mb-0">{{ job.addressAndContact }}</p>
-            </div>
-          </div>
-
-          <!-- Job Information Table -->
-          <div *ngIf="job.applicationUrl" class="jfi-section">
-            <div class="jfi-card-header">
-              <i class="bi bi-info-circle-fill"></i>
-              <span>Job Information</span>
-            </div>
-            <div class="jfi-card-body p-0">
-              <table class="table mb-0 jfi-table">
-                <tbody>
-                  <tr *ngIf="job.company">
-                    <th>Company Name</th>
-                    <td class="text-primary fw-bold">{{ job.company }}</td>
-                  </tr>
-                  <tr *ngIf="job.walkInStartDate">
-                    <th>Walk-in Dates</th>
-                    <td class="text-success fw-bold">
-                      {{ job.walkInStartDate | date:'dd MMMM' }}
-                      <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
-                    </td>
-                  </tr>
-                  <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
-                    <th>Last Date to Apply</th>
-                    <td class="text-danger fw-bold">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
-                  </tr>
-                  <tr *ngIf="job.qualification">
-                    <th>Qualification</th>
-                    <td class="fw-bold">{{ job.qualification }}</td>
-                  </tr>
-                  <tr>
-                    <th>Official Site</th>
-                    <td>
-                      <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="jfi-apply-link">
-                        <i class="bi bi-box-arrow-up-right me-1"></i>Click Here
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Posted By -->
-          <div class="jfi-author-row">
-            <img src="assets/images/YallaRamana.jpg" alt="Yalla Ramana" class="jfi-author-avatar">
-            <div>
-              <div class="jfi-author-name">Yalla Ramana</div>
-              <div class="jfi-author-date">
-                <ng-container *ngIf="!job.updatedDate">
-                  <i class="bi bi-calendar-check-fill text-success me-1"></i>{{ formatDate(job.createdDate) }}
-                </ng-container>
-                <ng-container *ngIf="job.updatedDate">
-                  <i class="bi bi-pencil-fill text-primary me-1"></i>Updated on {{ formatDate(job.updatedDate) }}
-                </ng-container>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div><!-- /col-md-9 -->
-
-      <!-- 3: col-md-3 — Recent Posts (sticky sidebar) -->
-      <div class="col-12 col-md-3">
-        <div class="jfi-sidebar-card">
-          <div class="jfi-sidebar-head">
+      <!-- ===== Sidebar Column ===== -->
+      <div class="col-12 col-md-4">
+        <div class="card home-job-card">
+          <div class="card-header walk-header">
             <i class="bi bi-clock-history me-2"></i>Recent Posts
           </div>
-          <div class="jfi-sidebar-body">
-            <div *ngFor="let topJob of getTopJobs()" class="jfi-sidebar-item" (click)="viewJobDetails(topJob)">
-              <i class="bi bi-arrow-right-circle-fill"></i>
-              <span>{{ topJob.title }}</span>
-            </div>
-            <div *ngIf="getTopJobs().length === 0" class="jfi-sidebar-empty">
-              <i class="bi bi-clock me-1"></i>No recent posts
+          <div class="card-body p-0">
+            <div class="sidebar-list">
+              <div *ngFor="let topJob of getTopJobs()"
+                   class="sidebar-job-item border-bottom p-3"
+                   (click)="viewJobDetails(topJob)">
+                <div class="d-flex align-items-start gap-2">
+                  <i class="bi bi-check2-circle job-tick mt-1"></i>
+                  <p class="job-title-sidebar m-0">{{ topJob.title }}</p>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="jfi-sidebar-foot">
-            <a routerLink="/" class="jfi-sidebar-viewall">
-              View all jobs <i class="bi bi-arrow-right ms-1"></i>
+          <div class="card-footer bg-white border-0 text-center pb-3">
+            <a routerLink="/" class="more-jobs-link w-100 py-2">
+              View All Latest Jobs <i class="bi bi-arrow-right ms-1"></i>
             </a>
           </div>
         </div>
-      </div><!-- /col-md-3 -->
+      </div>
 
-    </div><!-- /row -->
-  </div><!-- /jfi-container -->
+    </div>
+  </div>
 
   <!-- Empty State -->
-  <div *ngIf="!isLoading && !job" class="jfi-empty">
-    <i class="bi bi-search-heart display-1 text-muted mb-3"></i>
-    <h3 class="fw-bold" style="color: #1565c0;">Oops! Job not found</h3>
+  <div *ngIf="!isLoading && !job" class="text-center my-5 py-5">
+    <i class="bi bi-search-heart display-1 text-muted mb-4"></i>
+    <h3 class="fw-bold text-danger">Oops! Job Not Found</h3>
     <p class="text-muted mb-4">The job posting you are looking for might have been removed.</p>
-    <button class="btn btn-primary rounded-pill px-5" (click)="goBack()" style="background: #1565c0; border: none;">
+    <button class="btn btn-primary rounded-pill px-5" (click)="goBack()">
       Back to Home
     </button>
   </div>
-
 </div>

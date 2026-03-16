@@ -13,7 +13,7 @@ import { Job, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
   styleUrl: './job-category.component.css'
 })
 export class JobCategoryComponent implements OnInit {
-    jobsPerPage: number = 20;
+    jobsPerPage: number = 10;
     currentPage: number = 1;
   jobs: Job[] = [];
   filteredJobs: Job[] = [];
@@ -34,7 +34,7 @@ export class JobCategoryComponent implements OnInit {
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
-    'private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' },
+    'government-job-results': { title: 'Govt Job Results', category: 'GovernmentJobResults' },
     'walk-in-drives': { title: 'All Walk-in Drives', category: 'Walk-in Drives' },
     'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' },
     'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' },
@@ -47,7 +47,8 @@ export class JobCategoryComponent implements OnInit {
     'health-and-career-tips': { title: 'Health and Career Tips', category: 'Health and Career Tips' },
     'motivation-stories': { title: 'Motivation Stories', category: 'Motivation Stories' },
     'current-affairs': { title: 'Current Affairs', category: 'Current Affairs' },
-    'telugu-to-english-learning': { title: 'Telugu To English Learning', category: 'TeluguToEnglishLearning' }
+    'telugu-to-english-learning': { title: 'Telugu To English Learning', category: 'TeluguToEnglishLearning' },
+    'all-private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -93,15 +94,7 @@ export class JobCategoryComponent implements OnInit {
           }));
           
           // Filter jobs by category
-          if (category === 'All Private Jobs') {
-            // Include All Private Jobs, IT Jobs, and Banking Jobs with walk-in flag
-            this.filteredJobs = this.jobs.filter(job => 
-              job.category !== 'Government Jobs' && 
-              job.category !== 'Health and Career Tips' && 
-              job.category !== 'Motivation Stories' &&
-              job.category !== 'TeluguToEnglishLearning'
-            );
-          } else if (category === 'Banking Jobs') {
+          if (category === 'Banking Jobs') {
             // Include all bank-related categories
             this.filteredJobs = this.jobs.filter(job => 
               job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
@@ -117,6 +110,14 @@ export class JobCategoryComponent implements OnInit {
           } else if (category === 'Walk-in Drives') {
             // Include all jobs with walkInDrive flag true
             this.filteredJobs = this.jobs.filter(job => job.walkInDrive === true);
+          } else if (category === 'All Private Jobs') {
+            // IT, Non-IT, Bank, Pharmaceutical - walkInDrive false/undefined only
+            this.filteredJobs = this.jobs.filter(job =>
+              job.walkInDrive !== true &&
+              ['IT Jobs', 'Non-IT Jobs', 'Bank Jobs', 'Pharmaceutical Jobs'].includes(job.category)
+            );
+          } else if (category === 'GovernmentJobResults') {
+            this.filteredJobs = this.jobs.filter(job => job.category === 'GovernmentJobResults');
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
           }
@@ -304,8 +305,7 @@ export class JobCategoryComponent implements OnInit {
     switch (category) {
       case 'Government Jobs':
         return 'badge-success';
-      case 'All Private Jobs':
-        return 'badge-warning';
+
       case 'Walk-in Drives':
         return 'badge-info';
       case 'Banking Jobs':
@@ -386,6 +386,15 @@ export class JobCategoryComponent implements OnInit {
     return sorted.slice(start, end);
   }
 
+  getRecentPosts(): Job[] {
+    return this.jobs
+      .filter(job =>
+        job.category !== 'Government Jobs'
+      )
+      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+      .slice(0, 10);
+  }
+
   getGovJobs(): Job[] {
     const jobs = this.getNewJobs();
     return jobs.filter(job => job.category === 'Government Jobs');
@@ -421,7 +430,7 @@ export class JobCategoryComponent implements OnInit {
   navigateToCategory(category: string) {
     const routeMapping: { [key: string]: string } = {
       'Government Jobs': 'government-jobs',
-      'All Private Jobs': 'private-jobs',
+      'GovernmentJobResults': 'government-job-results',
       'Walk-in Drives': 'walk-in-drives',
       'Banking Jobs': 'banking-jobs',
       'IT Jobs': 'it-jobs',
@@ -482,13 +491,6 @@ export class JobCategoryComponent implements OnInit {
     if (category === 'Banking Jobs') {
       return this.jobs.filter(job => 
         job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
-      ).length;
-    }
-    if (category === 'All Private Jobs') {
-       return this.jobs.filter(job => 
-        job.category === 'All Private Jobs' || 
-        job.walkInDrive === true ||
-        (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
       ).length;
     }
     if (category === 'Fresher Jobs') {
@@ -609,13 +611,7 @@ export class JobCategoryComponent implements OnInit {
 
     // Apply category filter
     if (this.categoryTitle !== 'All Latest Jobs') {
-      if (this.categoryTitle === 'All Private Jobs') {
-        // Include Private Jobs and all Bank-related jobs
-        filtered = filtered.filter(job => 
-          job.category === 'All Private Jobs' || 
-          (job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI')))
-        );
-      } else if (this.categoryTitle === 'Banking Jobs') {
+      if (this.categoryTitle === 'Banking Jobs') {
         filtered = filtered.filter(job => 
           job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
         );

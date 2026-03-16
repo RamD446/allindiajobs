@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   jobs: Job[] = [];
   govJobs: Job[] = [];
   privateJobs: Job[] = [];
+  allPrivateJobs: Job[] = [];
   walkinJobs: Job[] = [];
   tipsJobs: Job[] = [];
   teluguJobs: Job[] = [];
@@ -47,6 +48,12 @@ export class HomeComponent implements OnInit {
             job.category !== 'Health and Career Tips' && 
             job.category !== 'TeluguToEnglishLearning' &&
             job.category !== 'Motivation Stories'
+          ).slice(0, 10);
+
+          // All Private Jobs (walkInDrive false/undefined) - IT, Non-IT, Bank, Pharmaceutical
+          this.allPrivateJobs = this.jobs.filter(job =>
+            job.walkInDrive !== true &&
+            ['IT Jobs', 'Non-IT Jobs', 'Bank Jobs', 'Pharmaceutical Jobs'].includes(job.category)
           ).slice(0, 10);
 
           // Get all jobs with walkInDrive flag set to true

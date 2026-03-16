@@ -171,8 +171,7 @@
                 <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Software Engineer">
               </div>
               
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs'">
-                <label class="form-label">Company Name</label>
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs' && jobForm.category !== 'GovernmentJobResults'">
                 <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" placeholder="e.g. Tech Solutions">
               </div>
               
@@ -185,7 +184,7 @@
 
               
 
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs'">
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs' && jobForm.category !== 'GovernmentJobResults'">
                 <label class="form-label">Experience *</label>
                 <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
                   <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>
@@ -198,7 +197,7 @@
               </div>
 
               <!-- Walk-In Drive checkbox for Private, IT, Non-IT, Pharmaceutical, and Bank Jobs -->
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category === 'All Private Jobs' || jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs'">
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs'">
                 <div class="form-check mt-4">
                   <input type="checkbox" class="form-check-input" id="walkInDriveCheck" [(ngModel)]="jobForm.walkInDrive" name="walkInDrive">
                   <label class="form-check-label" for="walkInDriveCheck">
@@ -208,7 +207,7 @@
               </div>
 
               <!-- Conditional Fields - also responsive -->
-              <ng-container *ngIf="(jobForm.category === 'All Private Jobs' || jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs') && jobForm.walkInDrive">
+              <ng-container *ngIf="(jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs') && jobForm.walkInDrive">
                 <div class="col-md-4 mb-3">
                   <label class="form-label text-danger">Walk-in Start Date *</label>
                   <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" >
@@ -226,7 +225,7 @@
                 </div>
               </ng-container>
 
-              <ng-container *ngIf="jobForm.category === 'All Private Jobs' || jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs'">
+              <ng-container *ngIf="jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs'">
                 <div class="col-md-12 mb-3">
                   <label class="form-label">Address and Contact</label>
                   <div class="input-group">
@@ -237,7 +236,7 @@
               </ng-container>
 
               <!-- Qualification field - Only visible when editing -->
-              <div class="col-md-12 mb-3" *ngIf="editingJob && jobForm.category !== 'Current Affairs'">
+              <div class="col-md-12 mb-3" *ngIf="editingJob && jobForm.category !== 'Current Affairs' && jobForm.category !== 'GovernmentJobResults'">
                 <label class="form-label">Qualification</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
@@ -246,7 +245,7 @@
               </div>
 
               <!-- Application URL - Full Row for visibility -->
-              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs'">
+              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs' && jobForm.category !== 'GovernmentJobResults'">
                 <label class="form-label">Application URL (Registration Link)</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
@@ -264,18 +263,6 @@
                   class="form-control description-textarea"
                   [placeholder]="jobForm.category === 'TeluguToEnglishLearning' ? 'Add telugu to english learning content...' : 'Detailed job description...'"
                   required>
-                </textarea>
-              </div>
-
-              <div class="col-12 mt-3" *ngIf="editingJob && jobForm.category !== 'TeluguToEnglishLearning' && jobForm.category !== 'Current Affairs'">
-                <label class="form-label d-flex justify-content-between">
-                  <span>Important Notes</span>
-                </label>
-                <textarea
-                  [(ngModel)]="jobForm.importantNotes"
-                  name="importantNotes"
-                  class="form-control description-textarea"
-                  placeholder="Add important notes...">
                 </textarea>
               </div>
 

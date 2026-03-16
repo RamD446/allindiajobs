@@ -1,4 +1,16 @@
 /* Menu Toggle Button */
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .menu-toggle-btn {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -230,13 +242,15 @@
 }
 
 .chevron {
-  font-size: 0.75rem;
-  color: #cbd5e1;
+  font-size: 0.9rem;
+  color: #1565c0;
+  opacity: 0.5;
   transition: all 0.2s;
 }
 
 .menu-item.active .chevron {
   color: #1565c0;
+  opacity: 1;
   transform: translateX(2px);
 }
 
@@ -335,36 +349,32 @@
   padding: 0;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.logo-icon {
-  color: #ffd700;
-  font-size: 1.4rem;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-.logo-text-wrapper {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
 .logo-main {
-  color: #ffffff;
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.2px;
+  font-size: 1.2rem;
+  font-weight: 900;
+  white-space: nowrap;
+  letter-spacing: -0.3px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
 }
 
-.logo-sub {
+.logo-part1 {
   color: #ffffff;
-  font-size: 0.6rem;
-  font-weight: 600;
-  margin-top: -2px;
+  font-weight: 900;
+}
+
+.logo-part2 {
+  color: #ffd700;
+  font-weight: 900;
+  font-size: 1.25rem;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.logo-part3 {
+  color: #90caf9;
+  font-weight: 700;
+  font-size: 0.85rem;
 }
 
 /* Short Navigation Links */
@@ -442,9 +452,6 @@
   }
   .logo-main {
     font-size: 1rem;
-  }
-  .logo-icon {
-    font-size: 1.2rem;
   }
   .social-header-icons {
     gap: 0.35rem !important;
@@ -581,6 +588,19 @@
 .jc-pill:hover {
   border-color: #42a5f5;
   background: #e3f2fd;
+}
+
+.jc-pill-pvt i {
+  color: #6a1b9a;
+}
+
+.jc-pill-pvt span {
+  color: #6a1b9a;
+}
+
+.jc-pill-pvt:hover {
+  border-color: #ab47bc;
+  background: #f3e5f5;
 }
 
 .jc-pill-active {

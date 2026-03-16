@@ -1,10 +1,14 @@
 <div class="jc">
   <!-- Loading -->
-  <div *ngIf="isLoading" class="text-center my-5 py-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+  <div *ngIf="isLoading" class="finding-jobs-loader">
+    <div class="loader-icon-wrap">
+      <i class="bi bi-briefcase-fill loader-briefcase"></i>
+      <div class="loader-dots">
+        <span></span><span></span><span></span>
+      </div>
     </div>
-    <p class="mt-3 text-muted">Loading jobs...</p>
+    <p class="loader-title">Finding Jobs<span class="loader-ellipsis">...</span></p>
+    <p class="loader-sub">Please wait while we load the latest opportunities</p>
   </div>
 
   <!-- Content -->
@@ -18,17 +22,9 @@
           
           <!-- Latest Government Jobs (If applicable) -->
           <div class="card home-job-card mb-4" *ngIf="getGovJobs().length > 0">
-            <div class="card-header gov-header d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <i class="bi bi-building-fill me-2 fs-header"></i>
-                <span>Latest Government Jobs</span>
-              </div>
-              <div class="quick-filter-container">
-                <select class="form-select form-select-sm company-select" (change)="onCompanyChange($event)" [value]="selectedCompanies[0] || ''">
-                  <option value="">Filter Company</option>
-                  <option *ngFor="let company of getUniqueCompanies()" [value]="company">{{ company }}</option>
-                </select>
-              </div>
+            <div class="card-header gov-header">
+              <i class="bi bi-building-fill me-2 fs-header"></i>
+              <span>Latest Government Jobs</span>
             </div>
             <div class="card-body p-0">
               <div class="table-responsive">
@@ -37,7 +33,7 @@
                     <tr *ngFor="let job of getGovJobs()" class="clickable-row" (click)="viewJobDetails(job)">
                       <td>
                         <div class="d-flex align-items-start justify-content-between gap-2">
-                          <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                          <span class="job-title-cell"><i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
                           <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
                         </div>
                       </td>
@@ -50,17 +46,9 @@
 
           <!-- Main Category Jobs -->
           <div class="card home-job-card mb-4" *ngIf="getPrivateJobs().length > 0">
-            <div class="card-header pvt-header d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill me-2 fs-header' : (categoryParam === 'telugu-to-english-learning' ? 'bi bi-translate me-2 fs-header' : 'bi bi-briefcase-fill me-2 fs-header')"></i>
-                <span>{{ categoryTitle }}</span>
-              </div>
-              <div class="quick-filter-container" *ngIf="categoryParam !== 'health-and-career-tips' && categoryParam !== 'telugu-to-english-learning'">
-                <select class="form-select form-select-sm company-select" (change)="onCompanyChange($event)" [value]="selectedCompanies[0] || ''">
-                  <option value="">Filter Company</option>
-                  <option *ngFor="let company of getUniqueCompanies()" [value]="company">{{ company }}</option>
-                </select>
-              </div>
+            <div class="card-header pvt-header">
+              <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill me-2 fs-header' : (categoryParam === 'telugu-to-english-learning' ? 'bi bi-translate me-2 fs-header' : categoryParam === 'government-job-results' ? 'bi bi-trophy-fill me-2 fs-header' : 'bi bi-briefcase-fill me-2 fs-header')"></i>
+              <span>{{ categoryTitle }}</span>
             </div>
             <div class="card-body p-0">
               <!-- Table format for Walk-in categories -->
@@ -70,7 +58,7 @@
                     <tr *ngFor="let job of getPrivateJobs()" class="clickable-row" (click)="viewJobDetails(job)">
                       <td>
                         <div class="d-flex align-items-start justify-content-between gap-2">
-                          <span class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
+                          <span class="job-title-cell"><i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
                           <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
                         </div>
                       </td>
@@ -87,7 +75,7 @@
                         <td>
                           <div class="d-flex align-items-start justify-content-between gap-2">
                             <span class="job-title-cell">
-                              <i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i><span *ngIf="job.category === 'TeluguToEnglishLearning'" class="fw-bold" style="color: #1565c0;">Day {{ getDayNumber(job) }}: </span>
+                              <i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i><span *ngIf="job.category === 'TeluguToEnglishLearning'" class="fw-bold" style="color: #1565c0;">Day {{ getDayNumber(job) }}: </span>
                               {{ job.title }}
                             </span>
                             <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
@@ -119,53 +107,32 @@
 
         <!-- Sidebar Column (col-4) -->
         <div class="col-12 col-md-4">
-          <!-- Top 5 Walk-ins -->
-          <div class="card home-job-card mb-3" *ngIf="topWalkins.length > 0">
-            <div class="card-header walk-header">
-              <i class="bi bi-person-walking me-2 fs-header"></i>
-              <span>Top 5 Walk-ins</span>
-            </div>
-            <div class="card-body p-0">
-              <div class="table-responsive">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr *ngFor="let job of topWalkins" class="clickable-row" (click)="viewJobDetails(job)">
-                      <td class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="card-footer">
-              <a routerLink="/walk-in-drives" class="more-jobs-link">
-                <span>View All</span>
-                <i class="bi bi-arrow-right-short fs-5"></i>
-              </a>
-            </div>
-          </div>
-
-          <!-- Top 5 Private Jobs -->
-          <div class="card home-job-card mb-3" *ngIf="topPrivateJobs.length > 0">
+          <!-- Recent Posts -->
+          <div class="card home-job-card mb-3">
             <div class="card-header pvt-header">
-              <i class="bi bi-briefcase-fill me-2 fs-header"></i>
-              <span>Top 5 Private Jobs</span>
+              <i class="bi bi-clock-history me-2 fs-header"></i>
+              <span>Recent Posts</span>
             </div>
             <div class="card-body p-0">
               <div class="table-responsive">
                 <table class="table mb-0">
                   <tbody>
-                    <tr *ngFor="let job of topPrivateJobs" class="clickable-row" (click)="viewJobDetails(job)">
-                      <td class="job-title-cell"><i class="bi bi-arrow-right-circle-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</td>
+                    <tr *ngFor="let job of getRecentPosts()" class="clickable-row" (click)="viewJobDetails(job)">
+                      <td>
+                        <div class="d-flex align-items-start justify-content-between gap-2">
+                          <span class="job-title-cell">
+                            <i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>{{ job.title }}
+                          </span>
+                          <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="getRecentPosts().length === 0">
+                      <td class="text-center text-muted py-3" style="font-size:0.8rem">No recent posts</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-            </div>
-            <div class="card-footer">
-              <a routerLink="/private-jobs" class="more-jobs-link">
-                <span>View All</span>
-                <i class="bi bi-arrow-right-short fs-5"></i>
-              </a>
             </div>
           </div>
         </div>

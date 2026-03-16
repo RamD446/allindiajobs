@@ -209,6 +209,14 @@ export class JobFullInformation implements OnInit {
     return description.includes('&nbsp;');
   }
 
+  getParagraphs(text: string): string[] {
+    if (!text) return [];
+    return text
+      .split(/\n\n|\n/)
+      .map(p => p.trim())
+      .filter(p => p.length > 0);
+  }
+
   hasDots(description: string): boolean {
     if (!description) return false;
     return description.includes('.');
@@ -299,28 +307,39 @@ export class JobFullInformation implements OnInit {
 
   shareOnWhatsApp(job: Job) {
     const jobUrl = window.location.href;
-    
+
     let messageParts: string[] = [
-      `*${job.title.toUpperCase()}*`,
+      `🔔 *JOB OPPORTUNITY – RECRUITER ALERT*`,
       ``,
-      `Link : ${jobUrl}`
+      `📌 *Position :* ${job.title}`,
     ];
-    
-    // Add interview dates if they exist
-    if (job.walkInStartDate) {
-      messageParts.push(`Interview Start : ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
+
+    if (job.company) {
+      messageParts.push(`🏢 *Company :* ${job.company}`);
     }
-    if (job.walkInEndDate) {
-      messageParts.push(`Interview End : ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
+    if (job.qualification) {
+      messageParts.push(`🎓 *Qualification :* ${job.qualification}`);
+    }
+    if (job.walkInStartDate) {
+      messageParts.push(`📅 *Walk-in Start :* ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
+    }
+    if (job.walkInEndDate && job.walkInEndDate !== job.walkInStartDate) {
+      messageParts.push(`📅 *Walk-in End :* ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
     }
     if (job.lastDateToApply) {
-      messageParts.push(`Last date apply : ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
+      messageParts.push(`⏳ *Last Date to Apply :* ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
     }
-    
+    if (job.addressAndContact) {
+      messageParts.push(`📍 *Location :* ${job.addressAndContact}`);
+    }
+
     messageParts.push(``);
-    messageParts.push(`Share this with those searching for jobs`);
+    messageParts.push(`🔗 *Apply / Full Details :*`);
+    messageParts.push(jobUrl);
     messageParts.push(``);
-    messageParts.push(`*AllIndiaJobs Portal*`);
+    messageParts.push(`👉 Kindly forward to eligible candidates.`);
+    messageParts.push(``);
+    messageParts.push(`*🌐 AllIndiaJobs Portal*`);
     
     const message = messageParts.join('\n');
     const encodedMessage = encodeURIComponent(message);
@@ -382,7 +401,6 @@ export class JobFullInformation implements OnInit {
   navigateToCategory(category: string) {
     const routeMapping: { [key: string]: string } = {
       'Government Jobs': 'government-jobs',
-      'All Private Jobs': 'private-jobs',
       'Walk-in Drives': 'walk-in-drives',
       'Banking Jobs': 'banking-jobs',
       'IT Jobs': 'it-jobs'

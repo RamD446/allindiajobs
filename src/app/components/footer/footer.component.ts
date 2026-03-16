@@ -17,7 +17,6 @@ export class FooterComponent {
 
   jobTypes = [
     { name: 'All Govt Jobs', route: '/government-jobs' },
-    { name: 'Private Jobs', route: '/private-jobs' },
     { name: 'All Walk-ins', route: '/walk-in-drives' },
     { name: 'Today Walk-ins', route: '/today-walkins' },
     { name: 'Career Tips', route: '/health-and-career-tips' },

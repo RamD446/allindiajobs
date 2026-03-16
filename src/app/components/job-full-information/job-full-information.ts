@@ -309,37 +309,37 @@ export class JobFullInformation implements OnInit {
     const jobUrl = window.location.href;
 
     let messageParts: string[] = [
-      `🔔 *JOB OPPORTUNITY – RECRUITER ALERT*`,
+      `*JOB OPPORTUNITY*`,
       ``,
-      `📌 *Position :* ${job.title}`,
+      `*Position :* ${job.title}`,
     ];
 
     if (job.company) {
-      messageParts.push(`🏢 *Company :* ${job.company}`);
+      messageParts.push(`*Company :* ${job.company}`);
     }
     if (job.qualification) {
-      messageParts.push(`🎓 *Qualification :* ${job.qualification}`);
+      messageParts.push(`*Qualification :* ${job.qualification}`);
     }
     if (job.walkInStartDate) {
-      messageParts.push(`📅 *Walk-in Start :* ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
+      messageParts.push(`*Walk-in Start :* ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
     }
     if (job.walkInEndDate && job.walkInEndDate !== job.walkInStartDate) {
-      messageParts.push(`📅 *Walk-in End :* ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
+      messageParts.push(`*Walk-in End :* ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
     }
     if (job.lastDateToApply) {
-      messageParts.push(`⏳ *Last Date to Apply :* ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
+      messageParts.push(`*Last Date to Apply :* ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
     }
     if (job.addressAndContact) {
-      messageParts.push(`📍 *Location :* ${job.addressAndContact}`);
+      messageParts.push(`*Location :* ${job.addressAndContact}`);
     }
 
     messageParts.push(``);
-    messageParts.push(`🔗 *Apply / Full Details :*`);
+    messageParts.push(`*Apply / Full Details :*`);
     messageParts.push(jobUrl);
     messageParts.push(``);
-    messageParts.push(`👉 Kindly forward to eligible candidates.`);
+    messageParts.push(`Kindly forward to eligible candidates.`);
     messageParts.push(``);
-    messageParts.push(`*🌐 AllIndiaJobs Portal*`);
+    messageParts.push(`*AllIndiaJobs Portal*`);
     
     const message = messageParts.join('\n');
     const encodedMessage = encodeURIComponent(message);

@@ -1,12 +1,12 @@
 .jc {
   min-height: 100vh;
   background-color: #ffffff;
-  padding-top: 96px;
+  padding-top: 0.5rem;
 }
 
 @media (min-width: 769px) {
   .jc {
-    padding-top: 100px;
+    padding-top: 0.5rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
@@ -371,6 +371,7 @@
   padding: 0.65rem 0.75rem;
   vertical-align: middle;
   font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .cursor-pointer {
@@ -416,7 +417,7 @@
   background-color: #e3f2fd !important;
   color: #0277bd;
   font-size: 0.68em;
-  font-weight: 500;
+  font-weight: 700;
   border: 1px solid #90caf9;
 }
 
@@ -459,10 +460,12 @@
   .table tbody td {
     padding: 0.5rem 0.4rem;
     font-size: 0.85rem;
+    font-weight: 600;
   }
 
   .job-title-cell {
     font-size: 0.8rem;
+    font-weight: 700;
   }
 
   .last-date-cell .badge,

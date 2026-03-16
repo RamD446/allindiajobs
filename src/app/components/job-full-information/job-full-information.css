@@ -2,7 +2,7 @@
 .jc {
   min-height: 100vh;
   background: #f0f4f8;
-  padding-top: 90px;
+  padding-top: 0.5rem;
   padding-bottom: 48px;
 }
 
@@ -37,15 +37,23 @@
 }
 
 .jfi-title {
-  font-size: 0.98rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: #ffffff;
   line-height: 1.45;
 }
 
+.jfi-created-date {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+}
+
 @media (min-width: 768px) {
   .jfi-title {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 }
 
@@ -111,7 +119,7 @@
 }
 
 .jfi-section-title {
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: #1565c0;
   margin-bottom: 0.6rem;
@@ -140,7 +148,8 @@
 }
 
 .jfi-para {
-  font-size: 0.92rem;
+  font-size: 0.97rem;
+  font-weight: 500;
   color: #1e293b;
   line-height: 1.75;
   margin-bottom: 0.75rem;
@@ -151,7 +160,8 @@
 }
 
 .plain-text-box {
-  font-size: 0.92rem;
+  font-size: 0.97rem;
+  font-weight: 500;
   color: #334155;
   line-height: 1.75;
   white-space: pre-line;
@@ -168,7 +178,8 @@
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  font-size: 0.92rem;
+  font-size: 0.97rem;
+  font-weight: 500;
   color: #1e293b;
   line-height: 1.6;
 }
@@ -196,14 +207,14 @@
 }
 
 .jfi-table {
-  font-size: 0.83rem;
+  font-size: 0.88rem;
   margin: 0;
 }
 
 .jfi-th {
   background: #f8faff !important;
   font-weight: 700;
-  color: #475569;
+  color: #334155;
   width: 38%;
   padding: 0.55rem 0.75rem;
   border-color: #e8eef8;
@@ -211,6 +222,7 @@
 }
 
 .jfi-td {
+  font-weight: 600;
   padding: 0.55rem 0.75rem;
   border-color: #e8eef8;
   vertical-align: middle;
@@ -219,6 +231,30 @@
 .jfi-apply-btn {
   font-size: 0.78rem;
   padding: 0.25rem 0.85rem;
+}
+
+/* ===== Apply Here Button ===== */
+.jfi-apply-here-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 0.65rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(21, 101, 192, 0.35);
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+
+.jfi-apply-here-btn:hover {
+  background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(21, 101, 192, 0.45);
 }
 
 /* ===== Posted By Box ===== */
@@ -260,7 +296,8 @@
 }
 
 .posted-date {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: #64748b;
   display: flex;
   align-items: center;
@@ -331,8 +368,8 @@
 }
 
 .job-title-sidebar {
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
   color: #334155;
   line-height: 1.4;
 }
@@ -345,7 +382,7 @@
 .jfi-page {
   min-height: 100vh;
   background: #f0f4f8;
-  padding-top: 96px;
+  padding-top: 0.5rem;
 }
 
 .section-title { font-size: 0.92rem; font-weight: 800; color: #1565c0; }

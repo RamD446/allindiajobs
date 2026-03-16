@@ -11,7 +11,7 @@
     <p class="loader-sub">Please wait while we load the latest opportunities</p>
   </div>
 
-  <div *ngIf="!isLoading && job" class="jfi-container">
+  <div *ngIf="!isLoading && job" class="container-fluid">
     <div class="row g-3">
 
       <!-- ===== Main Content Column ===== -->
@@ -20,10 +20,15 @@
 
           <!-- Blue Gradient Header with Title + Share Buttons -->
           <div class="card-header jfi-main-header">
-            <!-- Mobile: stacked | Desktop: side by side -->
-            <div class="d-flex align-items-center justify-content-between w-100">
-              <h5 class="mb-0 fw-bold jfi-title flex-grow-1">{{ job.title }}</h5>
-              
+            <h5 class="mb-2 fw-bold jfi-title w-100">{{ job.title }}</h5>
+            <div class="d-flex align-items-center justify-content-between gap-2">
+              <span class="jfi-created-date">
+                <i class="bi bi-calendar3 me-1"></i>{{ formatDate(job.createdDate) }}
+              </span>
+              <button class="jfi-share-btn whatsapp" (click)="shareOnWhatsApp(job)" title="Share Job on WhatsApp">
+                <span>Share </span>
+                <i class="bi bi-whatsapp ms-1"></i>
+              </button>
             </div>
           </div>
 
@@ -35,10 +40,7 @@
                 <h6 class="jfi-section-title mb-0 flex-grow-1">
                   <i class="bi bi-file-text-fill me-2"></i>Job Description
                 </h6>
-                <button class="jfi-share-btn whatsapp flex-shrink-0" (click)="shareOnWhatsApp(job)" title="Share Job on WhatsApp">
-                  <span>Share </span>
-                  <i class="bi bi-whatsapp ms-1"></i>
-                </button>
+               
               </div>
               <div *ngIf="isRichText(job.description)" class="jfi-rich-desc" [innerHTML]="getSafeHtml(job.description)"></div>
               <div *ngIf="!isRichText(job.description)" class="jfi-desc-paragraphs">
@@ -77,15 +79,13 @@
             <!-- 4. Apply Here -->
             <ng-container *ngIf="job.applicationUrl">
               <hr class="jfi-divider">
-              <div class="jfi-section">
-                <div class="d-flex align-items-center justify-content-between gap-2">
-                  <h6 class="jfi-section-title mb-0">
-                    <i class="bi bi-globe2 me-2"></i>Visit Official Website
-                  </h6>
-                  <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary rounded-pill fw-bold jfi-apply-btn">
-                    <i class="bi bi-box-arrow-up-right me-1"></i>Click Here
-                  </a>
-                </div>
+              <div class="jfi-section text-center">
+                <h6 class="jfi-section-title justify-content-center mb-3">
+                  <i class="bi bi-globe2 me-2"></i>Visit Official Website
+                </h6>
+                <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="jfi-apply-here-btn">
+                  <i class="bi bi-box-arrow-up-right me-2"></i>Click Here
+                </a>
               </div>
             </ng-container>
 
@@ -117,7 +117,7 @@
                         <th class="jfi-th">Walk-in Dates</th>
                         <td class="text-success fw-bold jfi-td">
                           {{ job.walkInStartDate | date:'dd MMMM' }}
-                          <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
+                          <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> â€“ {{ job.walkInEndDate | date:'dd MMMM' }}</span>
                         </td>
                       </tr>
                       <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">

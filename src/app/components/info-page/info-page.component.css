@@ -2,7 +2,7 @@
 .info-page-bg {
   min-height: 100vh;
   background: #f0f4f8;
-  padding-top: 76px;
+  padding-top: 0.5rem;
 }
 
 /* Content area */
@@ -98,7 +98,7 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .info-page-bg { padding-top: 90px; }
+  .info-page-bg { padding-top: 0.5rem; }
   .info-card-header { padding: 0.9rem 1.1rem; }
   .info-card-title { font-size: 1.05rem; }
   .info-content { padding: 1.25rem 1.1rem; }
@@ -106,5 +106,5 @@
 }
 
 @media (max-width: 576px) {
-  .info-page-bg { padding-top: 86px; }
+  .info-page-bg { padding-top: 0.5rem; }
 }

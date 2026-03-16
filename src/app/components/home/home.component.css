@@ -2,14 +2,14 @@
   padding: 0.5rem;
   background-color: #ffffff;
   min-height: 100vh;
-  padding-top: 96px;
+  padding-top: 0.5rem;
 }
 
 
 
 @media (min-width: 769px) {
   .container-fluid {
-    padding-top: 100px;
+    padding-top: 0.5rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
@@ -305,7 +305,7 @@
 
 @media (max-width: 768px) {
   .container-fluid {
-    padding-top: 92px;
+    padding-top: 0.5rem;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
   }

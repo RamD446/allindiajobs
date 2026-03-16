@@ -520,12 +520,7 @@
 
 /* Category Pills Bar */
 .pills-bar {
-  position: fixed;
-  top: 56px;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1049;
+  margin-top: 56px;
   background: #e3f2fd;
   border-bottom: 1px solid #90caf9;
   padding: 0.2rem 0.5rem;
@@ -533,7 +528,7 @@
 
 @media (max-width: 576px) {
   .pills-bar {
-    top: 48px;
+    margin-top: 52px;
     padding: 0.15rem 0.4rem;
   }
 }
@@ -588,19 +583,6 @@
 .jc-pill:hover {
   border-color: #42a5f5;
   background: #e3f2fd;
-}
-
-.jc-pill-pvt i {
-  color: #6a1b9a;
-}
-
-.jc-pill-pvt span {
-  color: #6a1b9a;
-}
-
-.jc-pill-pvt:hover {
-  border-color: #ab47bc;
-  background: #f3e5f5;
 }
 
 .jc-pill-active {

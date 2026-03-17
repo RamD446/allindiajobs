@@ -101,7 +101,7 @@
             </ng-container>
 
             <!-- 6. Job Information Table -->
-            <div class="jfi-info-table mt-4" *ngIf="job.applicationUrl">
+            <div class="jfi-info-table mt-4" *ngIf="job.applicationUrl || job.otherLink">
               <div class="card border-0 jfi-table-card">
                 <div class="card-header jfi-table-header">
                   <i class="bi bi-info-circle-fill me-2"></i>Job Information
@@ -117,22 +117,42 @@
                         <th class="jfi-th">Walk-in Dates</th>
                         <td class="text-success fw-bold jfi-td">
                           {{ job.walkInStartDate | date:'dd MMMM' }}
-                          <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> â€“ {{ job.walkInEndDate | date:'dd MMMM' }}</span>
+                          <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
                         </td>
                       </tr>
                       <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
                         <th class="jfi-th">Last Date</th>
                         <td class="text-danger fw-bold jfi-td">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
                       </tr>
+                      <tr *ngIf="job.category === 'Government Jobs' && job.ageCriteria">
+                        <th class="jfi-th">Age Criteria</th>
+                        <td class="jfi-td">{{ job.ageCriteria }}</td>
+                      </tr>
+                      <tr *ngIf="job.category === 'Government Jobs' && job.salary">
+                        <th class="jfi-th">Salary</th>
+                        <td class="jfi-td">{{ job.salary }}</td>
+                      </tr>
+                      <tr *ngIf="job.category === 'Government Jobs' && job.totalPosts">
+                        <th class="jfi-th">Total Posts</th>
+                        <td class="jfi-td">{{ job.totalPosts }}</td>
+                      </tr>
                       <tr *ngIf="job.qualification">
                         <th class="jfi-th">Qualification</th>
                         <td class="jfi-td">{{ job.qualification }}</td>
                       </tr>
-                      <tr>
+                      <tr *ngIf="job.applicationUrl">
                         <th class="jfi-th">Apply Here</th>
                         <td class="jfi-td">
                           <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary rounded-pill fw-bold jfi-apply-btn">
                             <i class="bi bi-box-arrow-up-right me-1"></i>Official Site
+                          </a>
+                        </td>
+                      </tr>
+                      <tr *ngIf="job.otherLink">
+                        <th class="jfi-th">Notification Link</th>
+                        <td class="jfi-td">
+                          <a [href]="job.otherLink" target="_blank" class="btn btn-sm btn-info text-white rounded-pill fw-bold jfi-apply-btn">
+                            <i class="bi bi-link-45deg me-1"></i>View Notification
                           </a>
                         </td>
                       </tr>

@@ -329,6 +329,15 @@ export class JobFullInformation implements OnInit {
     if (job.lastDateToApply) {
       messageParts.push(`*Last Date to Apply :* ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
     }
+    if (job.ageCriteria) {
+      messageParts.push(`*Age Criteria :* ${job.ageCriteria}`);
+    }
+    if (job.salary) {
+      messageParts.push(`*Salary :* ${job.salary}`);
+    }
+    if (job.totalPosts) {
+      messageParts.push(`*Total Posts :* ${job.totalPosts}`);
+    }
     if (job.addressAndContact) {
       messageParts.push(`*Location :* ${job.addressAndContact}`);
     }

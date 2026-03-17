@@ -30,7 +30,10 @@
                     <div class="d-flex align-items-start justify-content-between gap-2">
                       <span class="job-title-cell">
                         <i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>{{ job.title }}
-                        <span *ngIf="job.lastDateToApply" class="job-meta-info d-block">Last Date:- {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                        <span *ngIf="job.lastDateToApply" class="job-meta-info d-block">
+                          Last Date:- {{ job.lastDateToApply | date:'dd MMM yyyy' }}
+                          <span *ngIf="job.totalPosts" class="ms-2">|| Total Posts:- {{ job.totalPosts }}</span>
+                        </span>
                       </span>
                       <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>
                     </div>

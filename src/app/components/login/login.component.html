@@ -219,9 +219,28 @@
               </ng-container>
 
               <ng-container *ngIf="jobForm.category === 'Government Jobs'">
+                <div class="col-md-2 mb-3">
+                  <label class="form-label text-primary">Last Date *</label>
+                  <input type="date" class="form-control border-primary px-1" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply">
+                </div>
+                <div class="col-md-2 mb-3">
+                  <label class="form-label text-primary">Age Criteria</label>
+                  <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.ageCriteria" name="ageCriteria" placeholder="Age e.g. 18-35">
+                </div>
+                <div class="col-md-2 mb-3">
+                  <label class="form-label text-primary">Salary</label>
+                  <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.salary" name="salary" placeholder="Salary e.g. 25k-45k">
+                </div>
+                <div class="col-md-2 mb-3">
+                  <label class="form-label text-primary">Total Posts</label>
+                  <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.totalPosts" name="totalPosts" placeholder="Total Posts">
+                </div>
                 <div class="col-md-4 mb-3">
-                  <label class="form-label text-primary">Last Date to Apply *</label>
-                  <input type="date" class="form-control border-primary" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply">
+                  <label class="form-label text-primary">Notification Link</label>
+                  <div class="input-group">
+                    <span class="input-group-text border-primary px-2"><i class="bi bi-link-45deg"></i></span>
+                    <input type="url" class="form-control border-primary" [(ngModel)]="jobForm.otherLink" name="otherLink" placeholder="Notification URL">
+                  </div>
                 </div>
               </ng-container>
 
@@ -353,8 +372,30 @@
                 <div class="job-meta-info mb-2">
                   <small class="text-muted me-3" *ngIf="!job.updatedDate"><i class="bi bi-calendar3 me-1"></i>Posted: {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}</small>
                   <small class="text-info me-3" *ngIf="job.updatedDate"><i class="bi bi-pencil-square me-1"></i>Updated: {{ job.updatedDate | date:'yyyy-MM-dd HH:mm' }}</small>
-                  <small class="text-muted"><i class="bi bi-telephone me-1"></i>{{ job.contactInfo }}</small>
+                  <small class="text-muted" *ngIf="job.addressAndContact"><i class="bi bi-geo-alt me-1"></i>{{ job.addressAndContact }}</small>
                 </div>
+
+                <!-- Gov Job Details Quick View -->
+                <div class="gov-details-compact mb-2 p-2 bg-light rounded border-start border-primary border-3" *ngIf="job.category === 'Government Jobs'">
+                  <div class="row g-2 small">
+                    <div class="col-6 col-md-3" *ngIf="job.lastDateToApply">
+                      <strong>Last Date:</strong> {{ job.lastDateToApply | date:'yyyy-MM-dd' }}
+                    </div>
+                    <div class="col-6 col-md-3" *ngIf="job.ageCriteria">
+                      <strong>Age:</strong> {{ job.ageCriteria }}
+                    </div>
+                    <div class="col-6 col-md-3" *ngIf="job.salary">
+                      <strong>Salary:</strong> {{ job.salary }}
+                    </div>
+                    <div class="col-6 col-md-3" *ngIf="job.totalPosts">
+                      <strong>Posts:</strong> {{ job.totalPosts }}
+                    </div>
+                    <div class="col-12" *ngIf="job.otherLink">
+                      <strong>Link:</strong> <a [href]="job.otherLink" target="_blank" class="text-truncate d-inline-block" style="max-width: 250px;">{{ job.otherLink }}</a>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="job-desc-small" [innerHTML]="job.description"></div>
                 <div *ngIf="job.applicationUrl" class="mt-3">
                   <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">

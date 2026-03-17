@@ -28,6 +28,9 @@ export interface Job {
   jobType?: string;
   qualification?: string;
   howToApply?: string;
+  ageCriteria?: string;
+  totalPosts?: string;
+  otherLink?: string;
 }
 
 // Job Categories - simplified list as requested

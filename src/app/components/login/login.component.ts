@@ -52,7 +52,11 @@ export class LoginComponent implements OnInit {
     walkInDrive: false,
     jobType: '',
     qualification: '',
-    howToApply: ''
+    howToApply: '',
+    ageCriteria: '',
+    salary: '',
+    totalPosts: '',
+    otherLink: ''
   };
 
   jobCategories: string[] = [];
@@ -301,6 +305,10 @@ export class LoginComponent implements OnInit {
       addressAndContact: job.addressAndContact || '',
       qualification: job.qualification || '',
       howToApply: job.howToApply || '',
+      ageCriteria: job.ageCriteria || '',
+      salary: job.salary || '',
+      totalPosts: job.totalPosts || '',
+      otherLink: job.otherLink || '',
       createdDate: formattedDate || this.toLocalIsoString(new Date())
     };
   }
@@ -472,7 +480,11 @@ export class LoginComponent implements OnInit {
       walkInDrive: false,
       jobType: '',
       qualification: '',
-      howToApply: ''
+      howToApply: '',
+      ageCriteria: '',
+      salary: '',
+      totalPosts: '',
+      otherLink: ''
     };
   }
 

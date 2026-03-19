@@ -37,6 +37,7 @@ export interface Job {
 export const DEFAULT_JOB_CATEGORIES = [
   'Government Jobs',
   'GovernmentJobResults',
+  'GovernmentAdmitCards',
   'Bank Jobs',
   'IT Jobs',
   'Non-IT Jobs',
@@ -44,7 +45,6 @@ export const DEFAULT_JOB_CATEGORIES = [
   'Sales and Marketing Jobs',
   'Health and Career Tips',
   'Motivation Stories',
-  'TeluguToEnglishLearning',
   'Current Affairs',
 ] as const;
 

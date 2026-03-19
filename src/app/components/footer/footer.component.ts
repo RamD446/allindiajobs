@@ -19,8 +19,7 @@ export class FooterComponent {
     { name: 'All Govt Jobs', route: '/government-jobs' },
     { name: 'All Walk-ins', route: '/walk-in-drives' },
     { name: 'Today Walk-ins', route: '/today-walkins' },
-    { name: 'Career Tips', route: '/health-and-career-tips' },
-    { name: 'TeluguToEnglish', route: '/telugu-to-english-learning' }
+    { name: 'Career Tips', route: '/health-and-career-tips' }
   ];
 
   careerTypes = [

@@ -201,7 +201,7 @@
   font-weight: 800;
 }
 
-.gov-header, .pvt-header, .walk-header, .tips-header, .telugu-header, .ca-header {
+.gov-header, .results-header, .pvt-header, .walk-header, .tips-header, .ca-header {
   background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
 }
 

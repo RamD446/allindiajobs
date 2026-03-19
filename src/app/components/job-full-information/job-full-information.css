@@ -147,12 +147,28 @@
   text-align: left;
 }
 
+.jfi-desc-paragraphs ol {
+  list-style: none;
+  padding-left: 0;
+}
+
 .jfi-para {
   font-size: 0.97rem;
   font-weight: 500;
   color: #1e293b;
   line-height: 1.75;
   margin-bottom: 0.75rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.jfi-para::before {
+  content: "✓";
+  color: #1565c0;
+  font-weight: 800;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .jfi-para:last-child {

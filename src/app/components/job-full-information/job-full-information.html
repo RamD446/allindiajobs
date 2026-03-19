@@ -44,7 +44,9 @@
               </div>
               <div *ngIf="isRichText(job.description)" class="jfi-rich-desc" [innerHTML]="getSafeHtml(job.description)"></div>
               <div *ngIf="!isRichText(job.description)" class="jfi-desc-paragraphs">
-                <p *ngFor="let para of getParagraphs(job.description)" class="jfi-para">{{ para }}</p>
+                <ol>
+                  <li *ngFor="let para of getParagraphs(job.description)" class="jfi-para">{{ para }}</li>
+                </ol>
               </div>
             </div>
 

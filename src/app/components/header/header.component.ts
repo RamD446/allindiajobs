@@ -21,8 +21,7 @@ export class HeaderComponent implements OnInit {
     { name: 'All Walk-ins', route: '/walk-in-drives', icon: 'bi-person-walking', color: '#0288d1' },
     { name: 'Today Walk-ins', route: '/today-walkins', icon: 'bi-person-walking', color: '#0288d1' },
     { name: 'Current Affairs', route: '/current-affairs', icon: 'bi-newspaper', color: '#e65100' },
-    { name: 'Career Tips', route: '/health-and-career-tips', icon: 'bi-heart-pulse-fill', color: '#7b1fa2' },
-    { name: 'TeluguToEnglish', route: '/telugu-to-english-learning', icon: 'bi-translate', color: '#7b1fa2' }
+    { name: 'Career Tips', route: '/health-and-career-tips', icon: 'bi-heart-pulse-fill', color: '#7b1fa2' }
   ];
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}

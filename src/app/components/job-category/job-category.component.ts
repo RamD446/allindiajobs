@@ -35,6 +35,7 @@ export class JobCategoryComponent implements OnInit {
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
     'government-job-results': { title: 'Govt Job Results', category: 'GovernmentJobResults' },
+    'government-admit-cards': { title: 'Govt Admit Cards', category: 'GovernmentAdmitCards' },
     'walk-in-drives': { title: 'All Walk-in Drives', category: 'Walk-in Drives' },
     'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' },
     'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' },
@@ -47,7 +48,6 @@ export class JobCategoryComponent implements OnInit {
     'health-and-career-tips': { title: 'Health and Career Tips', category: 'Health and Career Tips' },
     'motivation-stories': { title: 'Motivation Stories', category: 'Motivation Stories' },
     'current-affairs': { title: 'Current Affairs', category: 'Current Affairs' },
-    'telugu-to-english-learning': { title: 'Telugu To English Learning', category: 'TeluguToEnglishLearning' },
     'all-private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' }
   };
 
@@ -118,6 +118,8 @@ export class JobCategoryComponent implements OnInit {
             );
           } else if (category === 'GovernmentJobResults') {
             this.filteredJobs = this.jobs.filter(job => job.category === 'GovernmentJobResults');
+          } else if (category === 'GovernmentAdmitCards') {
+            this.filteredJobs = this.jobs.filter(job => job.category === 'GovernmentAdmitCards');
           } else {
             this.filteredJobs = this.jobs.filter(job => job.category === category);
           }
@@ -131,8 +133,9 @@ export class JobCategoryComponent implements OnInit {
           this.topPrivateJobs = this.jobs
             .filter(job => 
               job.category !== 'Government Jobs' && 
+              job.category !== 'GovernmentJobResults' &&
+              job.category !== 'GovernmentAdmitCards' &&
               job.category !== 'Health and Career Tips' && 
-              job.category !== 'TeluguToEnglishLearning' &&
               job.category !== 'Motivation Stories'
             )
             .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
@@ -225,18 +228,6 @@ export class JobCategoryComponent implements OnInit {
     return today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime();
   }
 
-  getDayNumber(job: Job): number {
-    if (job.category !== 'TeluguToEnglishLearning') return 0;
-    
-    // Get all Telugu learning jobs sorted by date (oldest first)
-    const allTeluguJobs = this.jobs
-      .filter(j => j.category === 'TeluguToEnglishLearning')
-      .sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
-      
-    const index = allTeluguJobs.findIndex(j => j.id === job.id);
-    return index !== -1 ? index + 1 : 0;
-  }
-
   getTodayJobsCount(): number {
     return this.jobs.filter(job => this.isToday(job.createdDate)).length;
   }
@@ -320,8 +311,6 @@ export class JobCategoryComponent implements OnInit {
         return 'badge-info';
       case 'Motivation Stories':
         return 'badge-warning';
-      case 'TeluguToEnglishLearning':
-        return 'badge-secondary';
       default:
         return 'badge-primary';
     }

@@ -15,11 +15,11 @@ import { Job } from '../../models/job.model';
 export class HomeComponent implements OnInit {
   jobs: Job[] = [];
   govJobs: Job[] = [];
+  govResultsJobs: Job[] = [];
   privateJobs: Job[] = [];
   allPrivateJobs: Job[] = [];
   walkinJobs: Job[] = [];
   tipsJobs: Job[] = [];
-  teluguJobs: Job[] = [];
   currentAffairsJobs: Job[] = [];
   isLoading: boolean = true;
 
@@ -43,10 +43,16 @@ export class HomeComponent implements OnInit {
 
           this.govJobs = this.jobs.filter(job => job.category === 'Government Jobs').slice(0, 10);
           
+          this.govResultsJobs = this.jobs.filter(job => 
+            job.category === 'GovernmentJobResults' || 
+            job.category === 'GovernmentAdmitCards'
+          ).slice(0, 10);
+
           this.privateJobs = this.jobs.filter(job => 
             job.category !== 'Government Jobs' && 
+            job.category !== 'GovernmentJobResults' &&
+            job.category !== 'GovernmentAdmitCards' &&
             job.category !== 'Health and Career Tips' && 
-            job.category !== 'TeluguToEnglishLearning' &&
             job.category !== 'Motivation Stories'
           ).slice(0, 10);
 
@@ -61,8 +67,6 @@ export class HomeComponent implements OnInit {
 
           this.tipsJobs = this.jobs.filter(job => job.category === 'Health and Career Tips').slice(0, 10);
           
-          this.teluguJobs = this.jobs.filter(job => job.category === 'TeluguToEnglishLearning').slice(0, 10);
-
           this.currentAffairsJobs = this.jobs.filter(job => job.category === 'Current Affairs').slice(0, 10);
 
         }
@@ -82,17 +86,6 @@ export class HomeComponent implements OnInit {
 
   getTodayWalkinsCount(): number {
     return this.jobs.filter(job => this.isWalkInToday(job)).length;
-  }
-
-  getDayNumber(job: Job): number {
-    if (job.category !== 'TeluguToEnglishLearning') return 0;
-    
-    const allTeluguJobs = this.jobs
-      .filter(j => j.category === 'TeluguToEnglishLearning')
-      .sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
-      
-    const index = allTeluguJobs.findIndex(j => j.id === job.id);
-    return index !== -1 ? index + 1 : 0;
   }
 
   isWalkInToday(job: Job): boolean {

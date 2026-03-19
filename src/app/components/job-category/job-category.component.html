@@ -47,7 +47,7 @@
           <!-- Main Category Jobs -->
           <div class="card home-job-card mb-4" *ngIf="getPrivateJobs().length > 0">
             <div class="card-header pvt-header">
-              <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill me-2 fs-header' : (categoryParam === 'telugu-to-english-learning' ? 'bi bi-translate me-2 fs-header' : categoryParam === 'government-job-results' ? 'bi bi-trophy-fill me-2 fs-header' : 'bi bi-briefcase-fill me-2 fs-header')"></i>
+              <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill me-2 fs-header' : (categoryParam === 'government-job-results' ? 'bi bi-trophy-fill me-2 fs-header' : 'bi bi-briefcase-fill me-2 fs-header')"></i>
               <span>{{ categoryTitle }}</span>
             </div>
             <div class="card-body p-0">
@@ -75,7 +75,7 @@
                         <td>
                           <div class="d-flex align-items-start justify-content-between gap-2">
                             <span class="job-title-cell">
-                              <i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i><span *ngIf="job.category === 'TeluguToEnglishLearning'" class="fw-bold" style="color: #1565c0;">Day {{ getDayNumber(job) }}: </span>
+                              <i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>
                               {{ job.title }}
                             </span>
                             <button class="btn btn-view-pink flex-shrink-0" (click)="viewJobDetails(job)">View</button>

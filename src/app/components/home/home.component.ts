@@ -19,7 +19,6 @@ export class HomeComponent implements OnInit {
   privateJobs: Job[] = [];
   allPrivateJobs: Job[] = [];
   walkinJobs: Job[] = [];
-  tipsJobs: Job[] = [];
   currentAffairsJobs: Job[] = [];
   isLoading: boolean = true;
 
@@ -65,8 +64,6 @@ export class HomeComponent implements OnInit {
           // Get all jobs with walkInDrive flag set to true
           this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 10);
 
-          this.tipsJobs = this.jobs.filter(job => job.category === 'Health and Career Tips').slice(0, 10);
-          
           this.currentAffairsJobs = this.jobs.filter(job => job.category === 'Current Affairs').slice(0, 10);
 
         }

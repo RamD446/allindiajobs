@@ -45,8 +45,6 @@ export class JobCategoryComponent implements OnInit {
     'today-jobs': { title: 'Today Posted Jobs', category: 'Today Posted Jobs' },
     'today-walkins': { title: 'Today Walk-in Drives', category: 'Today Walk-in Drives' },
     'today-expired-gov-jobs': { title: 'Today Expired Gov Jobs', category: 'Today Expired Gov Jobs' },
-    'health-and-career-tips': { title: 'Health and Career Tips', category: 'Health and Career Tips' },
-    'motivation-stories': { title: 'Motivation Stories', category: 'Motivation Stories' },
     'current-affairs': { title: 'Current Affairs', category: 'Current Affairs' },
     'all-private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' }
   };
@@ -134,9 +132,7 @@ export class JobCategoryComponent implements OnInit {
             .filter(job => 
               job.category !== 'Government Jobs' && 
               job.category !== 'GovernmentJobResults' &&
-              job.category !== 'GovernmentAdmitCards' &&
-              job.category !== 'Health and Career Tips' && 
-              job.category !== 'Motivation Stories'
+              job.category !== 'GovernmentAdmitCards'
             )
             .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
             .slice(0, 5);
@@ -307,10 +303,6 @@ export class JobCategoryComponent implements OnInit {
         return 'badge-secondary';
       case 'Pharmaceutical Jobs':
         return 'badge-info';
-      case 'Health and Career Tips':
-        return 'badge-info';
-      case 'Motivation Stories':
-        return 'badge-warning';
       default:
         return 'badge-primary';
     }
@@ -425,8 +417,6 @@ export class JobCategoryComponent implements OnInit {
       'IT Jobs': 'it-jobs',
       'Non-IT Jobs': 'non-it-jobs',
       'Pharmaceutical Jobs': 'pharmaceutical-jobs',
-      'Health and Career Tips': 'health-and-career-tips',
-      'Motivation Stories': 'motivation-stories',
       'TeluguToEnglishLearning': 'telugu-to-english-learning'
     };
 

@@ -78,6 +78,20 @@
               </div>
             </ng-container>
 
+            <!-- 4. FAQ / Important Notes -->
+            <ng-container *ngIf="job.importantNotes">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">
+                  <i class="bi bi-question-circle-fill me-2"></i>FAQ / Important Notes
+                </h6>
+                <div *ngIf="isRichText(job.importantNotes)" class="jfi-rich-desc" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
+                <div *ngIf="!isRichText(job.importantNotes)" class="jfi-desc-paragraphs">
+                  <p *ngFor="let note of getParagraphs(job.importantNotes)" class="jfi-para">{{ note }}</p>
+                </div>
+              </div>
+            </ng-container>
+
             <!-- 4. Apply Here -->
             <ng-container *ngIf="job.applicationUrl">
               <hr class="jfi-divider">
@@ -142,6 +156,7 @@
                         <th class="jfi-th">Qualification</th>
                         <td class="jfi-td">{{ job.qualification }}</td>
                       </tr>
+                    
                       <tr *ngIf="job.applicationUrl">
                         <th class="jfi-th">Apply Here</th>
                         <td class="jfi-td">

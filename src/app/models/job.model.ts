@@ -42,9 +42,6 @@ export const DEFAULT_JOB_CATEGORIES = [
   'IT Jobs',
   'Non-IT Jobs',
   'Pharmaceutical Jobs',
-  'Sales and Marketing Jobs',
-  'Health and Career Tips',
-  'Motivation Stories',
   'Current Affairs',
 ] as const;
 
@@ -53,7 +50,6 @@ export const PRIVATE_JOB_TYPES = [
   'IT Jobs',
   'Non-IT Jobs',
   'Pharmaceutical Jobs',
-  'Sales and Marketing Jobs',
   'Bank Jobs',
   'Other'
 ] as const;

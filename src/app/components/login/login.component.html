@@ -168,7 +168,7 @@
                 <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Software Engineer">
               </div>
               
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'Current Affairs' && jobForm.category !== 'GovernmentJobResults'">
+              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'GovernmentJobResults' && jobForm.category !== 'GovernmentAdmitCards' && jobForm.category !== 'Current Affairs'">
                 <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" placeholder="e.g. Tech Solutions">
               </div>
               
@@ -179,7 +179,7 @@
                 </select>
               </div>
 
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'Current Affairs' && jobForm.category !== 'GovernmentJobResults'">
+              <div class="col-md-4 mb-3" *ngIf="['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
                 <label class="form-label">Experience *</label>
                 <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
                   <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>
@@ -213,7 +213,7 @@
                 </div>
               </ng-container>
 
-              <ng-container *ngIf="jobForm.category === 'Government Jobs'">
+              <ng-container *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
                 <div class="col-md-2 mb-3">
                   <label class="form-label text-primary">Last Date *</label>
                   <input type="date" class="form-control border-primary px-1" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply">
@@ -259,7 +259,7 @@
               </div>
 
               <!-- Application URL - Full Row for visibility -->
-              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Health and Career Tips' && jobForm.category !== 'Motivation Stories' && jobForm.category !== 'Current Affairs' && jobForm.category !== 'GovernmentJobResults'">
+              <div class="col-12 mb-3" *ngIf="jobForm.category !== 'Current Affairs'">
                 <label class="form-label">Application URL (Registration Link)</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
@@ -280,8 +280,8 @@
                 </textarea>
               </div>
 
-              <!-- How To Apply field - Only visible when editing -->
-              <div class="col-12 mt-3" *ngIf="editingJob && jobForm.category !== 'Current Affairs'">
+              <!-- How To Apply field -->
+              <div class="col-12 mt-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
                 <label class="form-label d-flex justify-content-between">
                   <span>How To Apply</span>
                 </label>
@@ -290,6 +290,19 @@
                   name="howToApply"
                   class="form-control description-textarea"
                   placeholder="Add application instructions...">
+                </textarea>
+              </div>
+
+              <!-- FAQ / Important Notes -->
+              <div class="col-12 mt-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
+                <label class="form-label d-flex justify-content-between">
+                  <span>FAQ / Important Notes</span>
+                </label>
+                <textarea
+                  [(ngModel)]="jobForm.importantNotes"
+                  name="importantNotes"
+                  class="form-control description-textarea"
+                  placeholder="Add FAQ / important notes...">
                 </textarea>
               </div>
             </div>

@@ -206,6 +206,19 @@
   flex-shrink: 0;
 }
 
+.jfi-important-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.jfi-note-item {
+  font-size: 0.97rem;
+  font-weight: 500;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
 /* ===== Info Table Card ===== */
 .jfi-table-card {
   border-radius: 10px;

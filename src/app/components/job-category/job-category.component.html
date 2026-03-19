@@ -47,7 +47,7 @@
           <!-- Main Category Jobs -->
           <div class="card home-job-card mb-4" *ngIf="getPrivateJobs().length > 0">
             <div class="card-header pvt-header">
-              <i [class]="categoryParam === 'health-and-career-tips' ? 'bi bi-heart-pulse-fill me-2 fs-header' : (categoryParam === 'government-job-results' ? 'bi bi-trophy-fill me-2 fs-header' : 'bi bi-briefcase-fill me-2 fs-header')"></i>
+              <i [class]="categoryParam === 'government-job-results' ? 'bi bi-trophy-fill me-2 fs-header' : (categoryParam === 'current-affairs' ? 'bi bi-newspaper me-2 fs-header' : 'bi bi-briefcase-fill me-2 fs-header')"></i>
               <span>{{ categoryTitle }}</span>
             </div>
             <div class="card-body p-0">

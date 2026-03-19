@@ -211,8 +211,18 @@ export class JobFullInformation implements OnInit {
 
   getParagraphs(text: string): string[] {
     if (!text) return [];
-    return text
-      .split(/\n\n|\n/)
+
+    const normalized = text
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\u00a0/g, ' ')
+      .trim();
+
+    if (!normalized) return [];
+
+    return normalized
+      .split(/\r\n|\r|\n/)
       .map(p => p.trim())
       .filter(p => p.length > 0);
   }

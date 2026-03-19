@@ -20,8 +20,7 @@ export class HeaderComponent implements OnInit {
     { name: 'All Govt Jobs', route: '/government-jobs', icon: 'bi-building-fill', color: '#1565c0' },
     { name: 'All Walk-ins', route: '/walk-in-drives', icon: 'bi-person-walking', color: '#0288d1' },
     { name: 'Today Walk-ins', route: '/today-walkins', icon: 'bi-person-walking', color: '#0288d1' },
-    { name: 'Current Affairs', route: '/current-affairs', icon: 'bi-newspaper', color: '#e65100' },
-    { name: 'Career Tips', route: '/health-and-career-tips', icon: 'bi-heart-pulse-fill', color: '#7b1fa2' }
+    { name: 'Current Affairs', route: '/current-affairs', icon: 'bi-newspaper', color: '#e65100' }
   ];
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}

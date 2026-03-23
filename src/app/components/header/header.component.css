@@ -328,14 +328,14 @@
     height: 48px;
   }
   .container-fluid {
-    padding: 0 0.75rem !important;
+    padding: 0 0.5rem !important;
   }
 }
 
 .container-fluid {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 0.25rem;
+  padding: 0 0.1rem;
   height: 100%;
   display: flex;
   align-items: center;
@@ -521,15 +521,15 @@
 /* Category Pills Bar */
 .pills-bar {
   margin-top: 56px;
-  background: #e3f2fd;
-  border-bottom: 1px solid #90caf9;
-  padding: 0.2rem 0.5rem;
+  background: #fff;
+  border-bottom: none;
+  padding: 0.5rem 1rem;
 }
 
 @media (max-width: 576px) {
   .pills-bar {
     margin-top: 52px;
-    padding: 0.15rem 0.4rem;
+    padding: 0.5rem 0.5rem;
   }
 }
 
@@ -537,7 +537,7 @@
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  gap: 0.3rem;
+  gap: 1.5rem;
   scrollbar-width: none;
   align-items: center;
 }
@@ -552,11 +552,31 @@
   display: none;
 }
 
+@media (max-width: 768px) {
+  .pills-scroll-row::-webkit-scrollbar {
+    display: block;
+    height: 6px;
+  }
+  
+  .pills-scroll-row::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  .pills-scroll-row::-webkit-scrollbar-thumb {
+    background: #1565c0;
+    border-radius: 3px;
+  }
+  
+  .pills-scroll-row::-webkit-scrollbar-thumb:hover {
+    background: #0d47a1;
+  }
+}
+
 .jc-pill {
-  background: #fff;
-  border: 1px solid #90caf9;
-  padding: 0.25rem 0.5rem;
-  border-radius: 8px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -567,30 +587,40 @@
   white-space: nowrap;
   flex-shrink: 0;
   text-decoration: none;
-}
-
-.jc-pill i {
-  font-size: 0.85rem;
   color: #1565c0;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
 }
 
 .jc-pill span {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1565c0;
 }
 
 .jc-pill:hover {
-  border-color: #42a5f5;
-  background: #e3f2fd;
+  border-color: transparent;
+  background: transparent;
+  transform: none;
+  box-shadow: none;
+  color: #0d47a1;
+}
+
+.jc-pill:hover span {
+  color: #0d47a1;
+  border-bottom-color: #1565c0;
 }
 
 .jc-pill-active {
-  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%) !important;
+  background: transparent !important;
   border-color: transparent !important;
+  color: #0d47a1 !important;
+  font-weight: 700 !important;
+  border-bottom-color: #1565c0 !important;
 }
 
-.jc-pill-active i,
 .jc-pill-active span {
-  color: white !important;
+  color: #0d47a1 !important;
+  font-weight: 700 !important;
+  border-bottom-color: #1565c0 !important;
 }

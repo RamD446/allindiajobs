@@ -8,36 +8,32 @@
     </div>
   </nav>
 
-
-
   <!-- Category Pills Bar (fixed below navbar) -->
   <div class="pills-bar">
     <div class="pills-scroll-row">
-      <button class="jc-pill" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-building-fill"></i>
+      <a class="jc-pill" routerLink="/" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+        <span>Home</span>
+      </a>
+
+      <a class="jc-pill" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>All Govt Jobs</span>
-      </button>
+      </a>
     
-      <button class="jc-pill" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-person-walking"></i>
+      <a class="jc-pill" routerLink="/walk-in-drives" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>All Walk-in Interviews</span>
-      </button>
-      <button class="jc-pill" routerLink="/all-private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-briefcase-fill"></i>
+      </a>
+      <a class="jc-pill" routerLink="/all-private-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>All Private Jobs</span>
-      </button>
-      <button class="jc-pill" routerLink="/government-job-results" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-trophy-fill"></i>
+      </a>
+      <a class="jc-pill" routerLink="/government-job-results" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>Govt Job Results</span>
-      </button>
-      <button *ngIf="getTodayWalkinsCount() > 0" class="jc-pill" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-person-walking"></i>
+      </a>
+      <a *ngIf="getTodayWalkinsCount() > 0" class="jc-pill" routerLink="/today-walkins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>Today Walk-ins</span>
-      </button>
-      <button class="jc-pill" routerLink="/current-affairs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="bi bi-newspaper"></i>
+      </a>
+      <a class="jc-pill" routerLink="/current-affairs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>Current Affairs</span>
-      </button>
+      </a>
     </div>
   </div>
 </header>

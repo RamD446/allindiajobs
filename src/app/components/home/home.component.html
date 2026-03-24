@@ -27,7 +27,7 @@
     </div>
 
     <!-- Govt Notifications Section -->
-    <div class="section-block" *ngIf="!hasNoData()">
+    <div class="section-block" *ngIf="!hasNoData() && govJobs.length > 0">
       <div class="section-header">All Govt Notifications</div>
       <div class="section-content">
         <div *ngFor="let job of govJobs" class="section-item" (click)="viewJobDetails(job)">
@@ -38,13 +38,12 @@
             
           </div>
         </div>
-        <div *ngIf="govJobs.length === 0" class="text-center text-muted py-2">No jobs available</div>
         <a routerLink="/government-jobs" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>
       </div>
     </div>
 
     <!-- Walk-in interviews Section -->
-    <div class="section-block" *ngIf="!hasNoData()">
+    <div class="section-block" *ngIf="!hasNoData() && walkinJobs.length > 0">
       <div class="section-header">Walk-in interviews</div>
       <div class="section-content">
         <div *ngFor="let job of walkinJobs" class="section-item" (click)="viewJobDetails(job)">
@@ -59,13 +58,12 @@
             </ng-container>
           </span>
         </div>
-        <div *ngIf="walkinJobs.length === 0" class="text-center text-muted py-2">No walk-ins available</div>
         <a routerLink="/walk-in-drives" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>
       </div>
     </div>
 
     <!-- Gov Results & Admit Cards Section -->
-    <div class="section-block" *ngIf="!hasNoData()">
+    <div class="section-block" *ngIf="!hasNoData() && govResultsJobs.length > 0">
       <div class="section-header">Gov Results & Admit Cards</div>
       <div class="section-content">
         <div *ngFor="let job of govResultsJobs" class="section-item" (click)="viewJobDetails(job)">
@@ -78,19 +76,17 @@
             </ng-container>
           </span>
         </div>
-        <div *ngIf="govResultsJobs.length === 0" class="text-center text-muted py-2">No results available</div>
         <a routerLink="/government-job-results" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>
       </div>
     </div>
 
     <!-- Current Affairs Section -->
-    <div class="section-block" *ngIf="!hasNoData()">
+    <div class="section-block" *ngIf="!hasNoData() && currentAffairsJobs.length > 0">
       <div class="section-header">Current Affairs</div>
       <div class="section-content">
         <div *ngFor="let job of currentAffairsJobs" class="section-item" (click)="viewJobDetails(job)">
           <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
         </div>
-        <div *ngIf="currentAffairsJobs.length === 0" class="text-center text-muted py-2">Coming soon...</div>
         <a routerLink="/current-affairs" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>
       </div>
     </div>

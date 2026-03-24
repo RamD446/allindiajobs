@@ -42,13 +42,8 @@ export class LoginComponent implements OnInit {
     company: '',
     category: '',
     description: '',
-    eligibilityCriteria: '',
     selectionProcess: '',
     importantDates: '',
-    applicationFee: '',
-    modeOfApplication: '',
-    ageRelaxation: '',
-    applicationStartDate: '',
     createdDate: '', // Will be set in constructor or reset
     experience: 'Fresher',
     walkInStartDate: '',
@@ -59,8 +54,6 @@ export class LoginComponent implements OnInit {
     jobType: '',
     qualification: '',
     howToApply: '',
-    ageCriteria: '',
-    salary: '',
     totalPosts: '',
     otherLink: ''
   };
@@ -293,18 +286,11 @@ export class LoginComponent implements OnInit {
     
     this.jobForm = { 
       ...job,
-      eligibilityCriteria: job.eligibilityCriteria || '',
       selectionProcess: job.selectionProcess || '',
       importantDates: job.importantDates || '',
-      applicationFee: job.applicationFee || '',
-      modeOfApplication: job.modeOfApplication || '',
-      ageRelaxation: job.ageRelaxation || '',
-      applicationStartDate: job.applicationStartDate || '',
       addressAndContact: job.addressAndContact || '',
       qualification: job.qualification || '',
       howToApply: job.howToApply || '',
-      ageCriteria: job.ageCriteria || '',
-      salary: job.salary || '',
       totalPosts: job.totalPosts || '',
       otherLink: job.otherLink || '',
       createdDate: formattedDate || this.toLocalIsoString(new Date())
@@ -490,13 +476,8 @@ export class LoginComponent implements OnInit {
       company: '',
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       description: '',
-      eligibilityCriteria: '',
       selectionProcess: '',
       importantDates: '',
-      applicationFee: '',
-      modeOfApplication: '',
-      ageRelaxation: '',
-      applicationStartDate: '',
       createdDate: this.toLocalIsoString(new Date()),
       experience: this.experienceOptions[0],
       walkInStartDate: '',
@@ -507,8 +488,6 @@ export class LoginComponent implements OnInit {
       jobType: '',
       qualification: '',
       howToApply: '',
-      ageCriteria: '',
-      salary: '',
       totalPosts: '',
       otherLink: ''
     };

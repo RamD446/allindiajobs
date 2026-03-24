@@ -219,14 +219,6 @@
                   <input type="date" class="form-control border-primary px-1" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply">
                 </div>
                 <div class="col-md-2 mb-3">
-                  <label class="form-label text-primary">Age Criteria</label>
-                  <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.ageCriteria" name="ageCriteria" placeholder="Age e.g. 18-35">
-                </div>
-                <div class="col-md-2 mb-3">
-                  <label class="form-label text-primary">Salary</label>
-                  <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.salary" name="salary" placeholder="Salary e.g. 25k-45k">
-                </div>
-                <div class="col-md-2 mb-3">
                   <label class="form-label text-primary">Total Posts</label>
                   <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.totalPosts" name="totalPosts" placeholder="Total Posts">
                 </div>
@@ -258,24 +250,6 @@
                 </div>
               </div>
 
-              <!-- Mode of Application -->
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <label class="form-label text-primary">Mode of Application</label>
-                <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.modeOfApplication" name="modeOfApplication" placeholder="e.g. Online/Offline">
-              </div>
-
-              <!-- Age Relaxation -->
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <label class="form-label text-primary">Age Relaxation</label>
-                <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.ageRelaxation" name="ageRelaxation" placeholder="e.g. 5 years for SC/ST">
-              </div>
-
-              <!-- Application Start Date -->
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <label class="form-label text-primary">Application Start Date</label>
-                <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.applicationStartDate" name="applicationStartDate" placeholder="e.g. 15 March 2026">
-              </div>
-
               <!-- Description - Full Row -->
               <div class="col-12 ">
                 <label class="form-label d-flex justify-content-between">
@@ -300,19 +274,6 @@
                   name="howToApply"
                   class="form-control description-textarea"
                   placeholder="Add application instructions...">
-                </textarea>
-              </div>
-
-              <!-- Eligibility Criteria -->
-              <div class="col-12 mt-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <label class="form-label d-flex justify-content-between">
-                  <span>Eligibility Criteria</span>
-                </label>
-                <textarea
-                  [(ngModel)]="jobForm.eligibilityCriteria"
-                  name="eligibilityCriteria"
-                  class="form-control description-textarea"
-                  placeholder="Add eligibility criteria...">
                 </textarea>
               </div>
 
@@ -342,18 +303,6 @@
                 </textarea>
               </div>
 
-              <!-- Application Fee -->
-              <div class="col-12 mt-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <label class="form-label d-flex justify-content-between">
-                  <span>Application Fee</span>
-                </label>
-                <textarea
-                  [(ngModel)]="jobForm.applicationFee"
-                  name="applicationFee"
-                  class="form-control description-textarea"
-                  placeholder="Add application fee details...">
-                </textarea>
-              </div>
             </div>
             
             <div class="job-form-footer">

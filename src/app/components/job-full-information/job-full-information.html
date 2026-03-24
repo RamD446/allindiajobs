@@ -15,7 +15,7 @@
     <div class="row g-3">
 
       <!-- ===== Main Content Column ===== -->
-      <div class="col-12 col-md-8">
+      <div class="col-12 col-md-7">
         <div class="card jfi-main-card mb-3">
 
           <!-- Blue Gradient Header with Title + Share Buttons -->
@@ -66,21 +66,11 @@
               </div>
             </ng-container>
 
-            <!-- 3. Eligibility Criteria -->
-            <ng-container *ngIf="job.eligibilityCriteria">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Eligibility Criteria :</h6>
-                <div *ngIf="isRichText(job.eligibilityCriteria)" [innerHTML]="getSafeHtml(job.eligibilityCriteria)"></div>
-                <p *ngIf="!isRichText(job.eligibilityCriteria)" class="plain-text-box mb-0">{{ job.eligibilityCriteria }}</p>
-              </div>
-            </ng-container>
-
-            <!-- 4. Selection Process -->
+            <!-- 4. Short Details of Notification -->
             <ng-container *ngIf="job.selectionProcess">
               <hr class="jfi-divider">
               <div class="jfi-section">
-                <h6 class="jfi-section-title">Selection Process :</h6>
+                <h6 class="jfi-section-title">Short Details of Notification :</h6>
                 <div *ngIf="isRichText(job.selectionProcess)" [innerHTML]="getSafeHtml(job.selectionProcess)"></div>
                 <p *ngIf="!isRichText(job.selectionProcess)" class="plain-text-box mb-0">{{ job.selectionProcess }}</p>
               </div>
@@ -91,47 +81,36 @@
               <hr class="jfi-divider">
               <div class="jfi-section">
                 <h6 class="jfi-section-title">Important Dates :</h6>
-                <div *ngIf="isRichText(job.importantDates)" [innerHTML]="getSafeHtml(job.importantDates)"></div>
-                <p *ngIf="!isRichText(job.importantDates)" class="plain-text-box mb-0">{{ job.importantDates }}</p>
+                <div class="table-responsive">
+                  <table class="table table-bordered mb-0">
+                    <tbody>
+                      <tr *ngFor="let line of job.importantDates.split('\n')">
+                        <th class="w-50" *ngIf="line.includes(':')">{{ line.split(':')[0] }}</th>
+                        <td class="w-50" *ngIf="line.includes(':')">{{ line.split(':')[1] }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </ng-container>
 
-            <!-- 6. Application Fee -->
-            <ng-container *ngIf="job.applicationFee">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Application Fee :</h6>
-                <div *ngIf="isRichText(job.applicationFee)" [innerHTML]="getSafeHtml(job.applicationFee)"></div>
-                <p *ngIf="!isRichText(job.applicationFee)" class="plain-text-box mb-0">{{ job.applicationFee }}</p>
-              </div>
-            </ng-container>
-
-            <!-- 6a. Mode of Application -->
+            <!-- 6a. Mode of Application
             <ng-container *ngIf="job.modeOfApplication">
               <hr class="jfi-divider">
               <div class="jfi-section">
                 <h6 class="jfi-section-title">Mode of Application :</h6>
                 <p class="plain-text-box mb-0">{{ job.modeOfApplication }}</p>
               </div>
-            </ng-container>
-
-            <!-- 6b. Age Relaxation -->
-            <ng-container *ngIf="job.ageRelaxation">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Age Relaxation :</h6>
-                <p class="plain-text-box mb-0">{{ job.ageRelaxation }}</p>
-              </div>
-            </ng-container>
+            </ng-container> -->
 
             <!-- 6c. Application Start Date -->
-            <ng-container *ngIf="job.applicationStartDate">
+            <!-- <ng-container *ngIf="job.applicationStartDate">
               <hr class="jfi-divider">
               <div class="jfi-section">
                 <h6 class="jfi-section-title">Application Start Date :</h6>
                 <p class="plain-text-box mb-0">{{ job.applicationStartDate }}</p>
               </div>
-            </ng-container>
+            </ng-container> -->
 
             <!-- 7. Qualification -->
             <ng-container *ngIf="job.qualification">
@@ -192,7 +171,7 @@
       </div>
 
       <!-- ===== Sidebar Column ===== -->
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-md-5">
         
         <!-- Job Information Table -->
         <div class="jfi-info-table mb-3" *ngIf="job.otherLink || job.company || job.walkInStartDate || job.lastDateToApply || job.qualification">
@@ -214,33 +193,13 @@
                       <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
                     </td>
                   </tr>
-                  <tr *ngIf="job.applicationStartDate">
-                    <th class="jfi-th">Application Start Date</th>
-                    <td class="jfi-td">{{ job.applicationStartDate }}</td>
-                  </tr>
                   <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
                     <th class="jfi-th">Last Date</th>
                     <td class="text-danger fw-bold jfi-td">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
                   </tr>
-                  <tr *ngIf="job.category === 'Government Jobs' && job.ageCriteria">
-                    <th class="jfi-th">Age Criteria</th>
-                    <td class="jfi-td">{{ job.ageCriteria }}</td>
-                  </tr>
-                  <tr *ngIf="job.ageRelaxation">
-                    <th class="jfi-th">Age Relaxation</th>
-                    <td class="jfi-td">{{ job.ageRelaxation }}</td>
-                  </tr>
-                  <tr *ngIf="job.category === 'Government Jobs' && job.salary">
-                    <th class="jfi-th">Salary</th>
-                    <td class="jfi-td">{{ job.salary }}</td>
-                  </tr>
                   <tr *ngIf="job.category === 'Government Jobs' && job.totalPosts">
                     <th class="jfi-th">Total Posts</th>
                     <td class="jfi-td">{{ job.totalPosts }}</td>
-                  </tr>
-                  <tr *ngIf="job.modeOfApplication">
-                    <th class="jfi-th">Mode of Application</th>
-                    <td class="jfi-td">{{ job.modeOfApplication }}</td>
                   </tr>
                   <tr *ngIf="job.qualification">
                     <th class="jfi-th">Qualification</th>

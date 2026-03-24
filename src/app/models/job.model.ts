@@ -13,7 +13,9 @@ export interface Job {
   companySize?: string;
   applicationInstructions?: string;
   applicationEmail?: string;
-  applicationUrl?: string;
+  modeOfApplication?: string;
+  ageRelaxation?: string;
+  applicationStartDate?: string;
   requirements?: string;
   benefits?: string;
   experienceLevel?: string;
@@ -21,7 +23,10 @@ export interface Job {
   walkInStartDate?: string;
   walkInEndDate?: string;
   lastDateToApply?: string;
-  importantNotes?: string;
+  eligibilityCriteria?: string;
+  selectionProcess?: string;
+  importantDates?: string;
+  applicationFee?: string;
   updatedDate?: string;
   addressAndContact?: string;
   walkInDrive?: boolean;

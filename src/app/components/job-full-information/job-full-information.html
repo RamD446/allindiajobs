@@ -66,7 +66,74 @@
               </div>
             </ng-container>
 
-            <!-- 3. Qualification -->
+            <!-- 3. Eligibility Criteria -->
+            <ng-container *ngIf="job.eligibilityCriteria">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Eligibility Criteria :</h6>
+                <div *ngIf="isRichText(job.eligibilityCriteria)" [innerHTML]="getSafeHtml(job.eligibilityCriteria)"></div>
+                <p *ngIf="!isRichText(job.eligibilityCriteria)" class="plain-text-box mb-0">{{ job.eligibilityCriteria }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 4. Selection Process -->
+            <ng-container *ngIf="job.selectionProcess">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Selection Process :</h6>
+                <div *ngIf="isRichText(job.selectionProcess)" [innerHTML]="getSafeHtml(job.selectionProcess)"></div>
+                <p *ngIf="!isRichText(job.selectionProcess)" class="plain-text-box mb-0">{{ job.selectionProcess }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 5. Important Dates -->
+            <ng-container *ngIf="job.importantDates">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Important Dates :</h6>
+                <div *ngIf="isRichText(job.importantDates)" [innerHTML]="getSafeHtml(job.importantDates)"></div>
+                <p *ngIf="!isRichText(job.importantDates)" class="plain-text-box mb-0">{{ job.importantDates }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 6. Application Fee -->
+            <ng-container *ngIf="job.applicationFee">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Application Fee :</h6>
+                <div *ngIf="isRichText(job.applicationFee)" [innerHTML]="getSafeHtml(job.applicationFee)"></div>
+                <p *ngIf="!isRichText(job.applicationFee)" class="plain-text-box mb-0">{{ job.applicationFee }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 6a. Mode of Application -->
+            <ng-container *ngIf="job.modeOfApplication">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Mode of Application :</h6>
+                <p class="plain-text-box mb-0">{{ job.modeOfApplication }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 6b. Age Relaxation -->
+            <ng-container *ngIf="job.ageRelaxation">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Age Relaxation :</h6>
+                <p class="plain-text-box mb-0">{{ job.ageRelaxation }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 6c. Application Start Date -->
+            <ng-container *ngIf="job.applicationStartDate">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Application Start Date :</h6>
+                <p class="plain-text-box mb-0">{{ job.applicationStartDate }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 7. Qualification -->
             <ng-container *ngIf="job.qualification">
               <hr class="jfi-divider">
               <div class="jfi-section">
@@ -75,19 +142,7 @@
               </div>
             </ng-container>
 
-            <!-- 4. FAQ / Important Notes
-            <ng-container *ngIf="job.importantNotes">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">
-                  <i class="bi bi-question-circle-fill me-2"></i>FAQ / Important Notes
-                </h6>
-                <div *ngIf="isRichText(job.importantNotes)" class="jfi-rich-desc" [innerHTML]="getSafeHtml(job.importantNotes)"></div>
-                <p *ngIf="!isRichText(job.importantNotes)" class="plain-text-box mb-0">{{ job.importantNotes }}</p>
-              </div>
-            </ng-container> -->
-
-            <!-- 5. Address & Contact -->
+            <!-- 8. Address & Contact -->
             <ng-container *ngIf="job.addressAndContact">
               <hr class="jfi-divider">
               <div class="jfi-section">
@@ -97,18 +152,12 @@
                 <p class="plain-text-box mb-0">{{ job.addressAndContact }}</p>
               </div>
             </ng-container>
-        
-    
 
             <hr class="jfi-divider mt-4">
-                  <!-- Official Links -->
-        <div class="jfi-section" *ngIf="job.applicationUrl || job.otherLink">
+                  <!-- 9. Official Links -->
+        <div class="jfi-section" *ngIf="job.otherLink">
           <h6 class="jfi-section-title">Visit Official Links :</h6>
           <div class="official-links-buttons">
-            <a *ngIf="job.applicationUrl" [href]="job.applicationUrl" target="_blank" class="official-link-btn website-btn">
-              <i class="bi bi-box-arrow-up-right"></i>
-              <span>Official Website</span>
-            </a>
             <a *ngIf="job.otherLink" [href]="job.otherLink" target="_blank" class="official-link-btn notification-btn">
               <i class="bi bi-file-earmark-text"></i>
               <span>Notification</span>
@@ -118,7 +167,7 @@
 
             <hr class="jfi-divider mt-4">
 
-            <!-- 7. Posted By -->
+            <!-- 10. Posted By -->
             <div class="posted-by-box">
               <div class="author-avatar">
                 <img src="assets/images/YallaRamana.jpg" alt="Yalla Ramana">
@@ -146,7 +195,7 @@
       <div class="col-12 col-md-4">
         
         <!-- Job Information Table -->
-        <div class="jfi-info-table mb-3" *ngIf="job.applicationUrl || job.otherLink">
+        <div class="jfi-info-table mb-3" *ngIf="job.otherLink || job.company || job.walkInStartDate || job.lastDateToApply || job.qualification">
           <div class="card border-0 jfi-table-card">
             <div class="card-header jfi-table-header">
               <i class="bi bi-info-circle-fill me-2"></i>Job Information
@@ -165,6 +214,10 @@
                       <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
                     </td>
                   </tr>
+                  <tr *ngIf="job.applicationStartDate">
+                    <th class="jfi-th">Application Start Date</th>
+                    <td class="jfi-td">{{ job.applicationStartDate }}</td>
+                  </tr>
                   <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
                     <th class="jfi-th">Last Date</th>
                     <td class="text-danger fw-bold jfi-td">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
@@ -172,6 +225,10 @@
                   <tr *ngIf="job.category === 'Government Jobs' && job.ageCriteria">
                     <th class="jfi-th">Age Criteria</th>
                     <td class="jfi-td">{{ job.ageCriteria }}</td>
+                  </tr>
+                  <tr *ngIf="job.ageRelaxation">
+                    <th class="jfi-th">Age Relaxation</th>
+                    <td class="jfi-td">{{ job.ageRelaxation }}</td>
                   </tr>
                   <tr *ngIf="job.category === 'Government Jobs' && job.salary">
                     <th class="jfi-th">Salary</th>
@@ -181,18 +238,13 @@
                     <th class="jfi-th">Total Posts</th>
                     <td class="jfi-td">{{ job.totalPosts }}</td>
                   </tr>
+                  <tr *ngIf="job.modeOfApplication">
+                    <th class="jfi-th">Mode of Application</th>
+                    <td class="jfi-td">{{ job.modeOfApplication }}</td>
+                  </tr>
                   <tr *ngIf="job.qualification">
                     <th class="jfi-th">Qualification</th>
                     <td class="jfi-td">{{ job.qualification }}</td>
-                  </tr>
-                
-                  <tr *ngIf="job.applicationUrl">
-                    <th class="jfi-th">Apply Here</th>
-                    <td class="jfi-td">
-                      <a [href]="job.applicationUrl" target="_blank" class="btn btn-sm btn-primary rounded-pill fw-bold jfi-apply-btn">
-                        <i class="bi bi-box-arrow-up-right me-1"></i>Official Site
-                      </a>
-                    </td>
                   </tr>
                   <tr *ngIf="job.otherLink">
                     <th class="jfi-th">Notification Link</th>

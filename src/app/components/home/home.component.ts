@@ -116,4 +116,8 @@ export class HomeComponent implements OnInit {
     const titleSlug = this.createSlug(job.title);
     this.router.navigate(['/job', job.id, titleSlug], { state: { job: job } });
   }
+
+  hasNoData(): boolean {
+    return this.jobs.length === 0;
+  }
 }

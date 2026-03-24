@@ -15,17 +15,13 @@ export class FooterComponent {
   
   constructor(private router: Router) {}
 
-  jobTypes = [
+  quickLinks = [
+    { name: 'Home', route: '/' },
     { name: 'All Govt Jobs', route: '/government-jobs' },
-    { name: 'All Walk-ins', route: '/walk-in-drives' },
-    { name: 'Today Walk-ins', route: '/today-walkins' }
-  ];
-
-  careerTypes = [
-    { name: 'IT Services MNC', type: 'IT Services MNC' },
-    { name: 'Global Tech', type: 'Global Tech' },
-    { name: 'Government', type: 'Government' },
-    { name: 'Central Government', type: 'Central Government' }
+    { name: 'All Walk-in Interviews', route: '/walk-in-drives' },
+    { name: 'All Private Jobs', route: '/private-jobs' },
+    { name: 'Govt Job Results', route: '/government-job-results' },
+    { name: 'Current Affairs', route: '/current-affairs' }
   ];
 
   @HostListener('window:beforeinstallprompt', ['$event'])
@@ -58,11 +54,6 @@ export class FooterComponent {
       const url = encodeURIComponent(window.location.origin);
       window.open(`https://wa.me/?text=Check out the latest job openings on AllIndiaJobs: ${url}`, '_blank');
     }
-  }
-
-  navigateToCareer(type: string) {
-    this.router.navigate(['/government-jobs'], { queryParams: { careerType: type } });
-    window.scrollTo(0, 0);
   }
 
   scrollToTop() {

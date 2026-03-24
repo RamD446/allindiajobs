@@ -3,39 +3,23 @@
    
 
     <div class="footer-grid">
-      <!-- Section 1: Job Types -->
+      <!-- Section 1: Quick Links -->
       <div class="footer-section">
         <h6 class="footer-title">
-          <i class="bi bi-briefcase-fill"></i>
-          Job Links
+          <i class="bi bi-link-45deg"></i>
+          Quick Links
         </h6>
         <ul class="footer-links">
-          <li *ngFor="let job of jobTypes">
-            <a [routerLink]="job.route" (click)="scrollToTop()">
+          <li *ngFor="let link of quickLinks">
+            <a [routerLink]="link.route" (click)="scrollToTop()">
               <i class="bi bi-chevron-right small me-2"></i>
-              {{ job.name }}
+              {{ link.name }}
             </a>
           </li>
         </ul>
       </div>
 
-      <!-- Section 2: Career Types -->
-      <div class="footer-section">
-        <h6 class="footer-title">
-          <i class="bi bi-building"></i>
-          Career Links
-        </h6>
-        <ul class="footer-links">
-          <li *ngFor="let career of careerTypes">
-            <a href="javascript:void(0)" (click)="navigateToCareer(career.type)">
-              <i class="bi bi-chevron-right small me-2"></i>
-              {{ career.name }}
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Section 3: Info Pages -->
+      <!-- Section 2: Information -->
       <div class="footer-section">
         <h6 class="footer-title">
           <i class="bi bi-info-circle-fill"></i>
@@ -69,7 +53,7 @@
         </ul>
       </div>
 
-      <!-- Section 4: Contact & Actions -->
+      <!-- Section 3: Contact & Actions -->
       <div class="footer-section">
         <h6 class="footer-title">
           <i class="bi bi-envelope-paper-fill"></i>
@@ -92,6 +76,16 @@
             </button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Disclaimer Section -->
+    <div class="footer-disclaimer">
+      <div class="disclaimer-box">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <p class="disclaimer-text">
+          <strong>Disclaimer:</strong> allindiajobs.com is not a government website and is not affiliated with any government department or organization. This website only provides information about government jobs, results, admit cards, and related updates collected from official sources. Users are advised to verify all information from the official government website or notification before taking any action.
+        </p>
       </div>
     </div>
 

@@ -14,7 +14,7 @@
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -142,6 +142,50 @@
     flex: 1;
     min-width: 120px;
     padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Disclaimer Section */
+.footer-disclaimer {
+  margin: 2rem 0 1.5rem;
+}
+
+.disclaimer-box {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.disclaimer-box i {
+  color: #ef4444;
+  font-size: 1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.disclaimer-text {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.disclaimer-text strong {
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+@media (max-width: 576px) {
+  .disclaimer-box {
+    padding: 0.9rem;
+  }
+  
+  .disclaimer-text {
     font-size: 0.75rem;
   }
 }

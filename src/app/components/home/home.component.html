@@ -13,8 +13,21 @@
   </div>
 
   <div *ngIf="!isLoading" class="home-sections">
+    <!-- No Data Card -->
+    <div *ngIf="hasNoData()" class="no-data-card">
+      <div class="no-data-icon">
+        <i class="bi bi-inbox"></i>
+      </div>
+      <h5 class="no-data-title">Currently Not Available</h5>
+      <p class="no-data-message">No jobs are available at the moment. Please try again after some time.</p>
+      <div class="no-data-footer">
+        <i class="bi bi-clock-history me-1"></i>
+        <span>Check back soon for new opportunities</span>
+      </div>
+    </div>
+
     <!-- Govt Notifications Section -->
-    <div class="section-block">
+    <div class="section-block" *ngIf="!hasNoData()">
       <div class="section-header">All Govt Notifications</div>
       <div class="section-content">
         <div *ngFor="let job of govJobs" class="section-item" (click)="viewJobDetails(job)">
@@ -31,7 +44,7 @@
     </div>
 
     <!-- Walk-in interviews Section -->
-    <div class="section-block">
+    <div class="section-block" *ngIf="!hasNoData()">
       <div class="section-header">Walk-in interviews</div>
       <div class="section-content">
         <div *ngFor="let job of walkinJobs" class="section-item" (click)="viewJobDetails(job)">
@@ -52,7 +65,7 @@
     </div>
 
     <!-- Gov Results & Admit Cards Section -->
-    <div class="section-block">
+    <div class="section-block" *ngIf="!hasNoData()">
       <div class="section-header">Gov Results & Admit Cards</div>
       <div class="section-content">
         <div *ngFor="let job of govResultsJobs" class="section-item" (click)="viewJobDetails(job)">
@@ -71,7 +84,7 @@
     </div>
 
     <!-- Current Affairs Section -->
-    <div class="section-block">
+    <div class="section-block" *ngIf="!hasNoData()">
       <div class="section-header">Current Affairs</div>
       <div class="section-content">
         <div *ngFor="let job of currentAffairsJobs" class="section-item" (click)="viewJobDetails(job)">
@@ -81,5 +94,97 @@
         <a routerLink="/current-affairs" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>
       </div>
     </div>
+
   </div>
 </div>
+
+    <!-- Welcome Section -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="welcome-card">
+            <h1 class="welcome-title">Welcome to AllIndiaJobs.com</h1>
+            
+            <p class="welcome-intro">
+              Welcome to AllIndiaJobs.com, India's trusted platform for latest government jobs, job results, current affairs, and private walk-in interviews. Our goal is to provide daily, accurate, and fast updates so that job seekers never miss any opportunity.
+            </p>
+            
+            <p class="welcome-intro">
+              Whether you are preparing for competitive exams or searching for a job, AllIndiaJobs.com is your one-stop destination.
+            </p>
+
+            <h2 class="section-heading">Our Main Aim</h2>
+            <p class="section-text">
+              At AllIndiaJobs.com, our main goal is to provide daily, reliable, and easy-to-understand updates to job seekers across India.
+            </p>
+            <p class="section-text">
+              We are committed to helping candidates stay informed and succeed in their careers.
+            </p>
+
+            <h2 class="section-heading">We Provide Daily Updates On</h2>
+            
+            <h3 class="sub-heading">All Government Jobs (Sarkari Jobs)</h3>
+            <p class="section-text">
+              Latest vacancies from Central and State Government departments including SSC, Railway, Banking, UPSC, Defence, Police, and Teaching sectors.
+            </p>
+
+            <h3 class="sub-heading">Government Job Results</h3>
+            <p class="section-text">
+              Fast updates on results, merit lists, and cut-off marks so you can check your performance without delay.
+            </p>
+
+            <h3 class="sub-heading">Daily Current Affairs</h3>
+            <p class="section-text">
+              Important daily current affairs to help you prepare for competitive exams and stay updated with national and international news.
+            </p>
+
+            <h3 class="sub-heading">Private Walk-in Interviews</h3>
+            <p class="section-text">
+              Daily updates on private company jobs and walk-in interview opportunities across India.
+            </p>
+
+            <h2 class="section-heading">Our Mission</h2>
+            <p class="section-text">
+              Our mission is to make job searching simple, fast, and reliable by delivering:
+            </p>
+            <ul class="feature-list">
+              <li>Daily Job Notifications</li>
+              <li>Easy-to-Understand Information</li>
+              <li>Direct Application Links</li>
+              <li>Trusted & Verified Updates</li>
+            </ul>
+            
+            <p class="section-text">
+              We aim to support candidates from all educational backgrounds, including:
+            </p>
+            <ul class="feature-list">
+              <li>10th Pass</li>
+              <li>12th Pass</li>
+              <li>ITI / Diploma Holders</li>
+              <li>Graduates</li>
+              <li>Professionals</li>
+            </ul>
+
+            <h2 class="section-heading">Why Choose AllIndiaJobs.com?</h2>
+            <p class="section-text">
+              Success in government exams requires timely and accurate information. Every year, millions of candidates apply for jobs in various sectors, making competition tough.
+            </p>
+            <p class="section-text">
+              AllIndiaJobs.com simplifies your journey by providing:
+            </p>
+            <ul class="feature-list">
+              <li>Verified Recruitment Notifications</li>
+              <li>Detailed Eligibility Criteria</li>
+              <li>Clear Selection Process</li>
+              <li>Direct Official Links</li>
+              <li>Fast Daily Updates</li>
+              <li>All Jobs in One Place (Govt + Private)</li>
+            </ul>
+            
+            <p class="section-text" style="text-align: center; font-weight: 600; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #e2e8f0;">
+              AllIndiaJobs.com is built to make your job search easy, fast, and successful.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -15,6 +15,10 @@
         <span>Home</span>
       </a>
 
+      <a *ngIf="isJobDetailsPage()" class="jc-pill jc-pill-active">
+        <span>Job Full Information</span>
+      </a>
+
       <a class="jc-pill" routerLink="/government-jobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>All Govt Jobs</span>
       </a>

@@ -19,8 +19,11 @@
       <div class="section-content">
         <div *ngFor="let job of govJobs" class="section-item" (click)="viewJobDetails(job)">
           <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
-          <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
-          <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+          <div class="item-meta-row">
+            <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+            <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+            
+          </div>
         </div>
         <div *ngIf="govJobs.length === 0" class="text-center text-muted py-2">No jobs available</div>
         <a routerLink="/government-jobs" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>

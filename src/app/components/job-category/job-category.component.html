@@ -28,8 +28,10 @@
             <div class="section-content">
               <div *ngFor="let job of getGovJobs()" class="section-item" (click)="viewJobDetails(job)">
                 <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
-                <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
-                <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                <div class="item-meta-row">
+                  <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                  <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -59,8 +61,10 @@
               <div *ngIf="categoryTitle === 'Government Jobs'">
                 <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
                   <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
-                  <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
-                  <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                  <div class="item-meta-row">
+                    <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                    <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                  </div>
                 </div>
               </div>
               <!-- Other categories -->
@@ -95,25 +99,24 @@
             <div class="section-header">
               Recent Posts
             </div>
-            <div class="card-body p-0">
-              <div class="table-responsive">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr *ngFor="let job of getRecentPosts()" class="clickable-row" (click)="viewJobDetails(job)">
-                      <td>
-                        <div class="d-flex align-items-start justify-content-between gap-2">
-                          <span class="job-title-cell">
-                            <i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>{{ job.title }}
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr *ngIf="getRecentPosts().length === 0">
-                      <td class="text-center text-muted py-3" style="font-size:0.8rem">No recent posts</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="section-content">
+              <div *ngFor="let job of getRecentPosts()" class="section-item" (click)="viewJobDetails(job)">
+                <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
+                <div class="item-meta-row" *ngIf="job.category === 'Government Jobs'">
+                  <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                  <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                </div>
+                <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="item-meta">
+                  Walk-in: 
+                  <ng-container *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate">
+                    {{ job.walkInStartDate | date:'dd MMM' }} to {{ job.walkInEndDate | date:'dd MMM' }}
+                  </ng-container>
+                  <ng-container *ngIf="!job.walkInEndDate || job.walkInStartDate === job.walkInEndDate">
+                    {{ job.walkInStartDate | date:'dd MMM' }}
+                  </ng-container>
+                </span>
               </div>
+              <div *ngIf="getRecentPosts().length === 0" class="text-center text-muted py-2">No recent posts</div>
             </div>
           </div>
         </div>

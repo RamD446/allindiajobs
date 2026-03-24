@@ -259,11 +259,16 @@
   margin-top: 2px;
 }
 
+.item-meta-row {
+  display: flex;
+  gap: 1rem;
+  margin-left: 1rem;
+}
+
 .item-meta {
   font-size: 0.7rem;
   color: #64748b;
-  display: block;
-  margin-left: 1rem;
+  display: inline-block;
   font-weight: 700;
 }
 

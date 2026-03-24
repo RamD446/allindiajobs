@@ -21,14 +21,20 @@
           <!-- Blue Gradient Header with Title + Share Buttons -->
           <div class="card-header jfi-main-header">
             <h5 class="mb-2 fw-bold jfi-title w-100">{{ job.title }}</h5>
-            <div class="d-flex align-items-center justify-content-between gap-2">
-              <span class="jfi-created-date">
-                <i class="bi bi-calendar3 me-1"></i>{{ formatDate(job.createdDate) }}
-              </span>
-              <button class="jfi-share-btn whatsapp" (click)="shareOnWhatsApp(job)" title="Share Job on WhatsApp">
-                <span>Share </span>
-                <i class="bi bi-whatsapp ms-1"></i>
-              </button>
+            <div class="d-flex justify-content-center">
+              <div class="share-container">
+                <span class="share-text">Share:</span>
+                <div class="share-buttons">
+                  <button class="share-btn share-whatsapp" (click)="shareOnWhatsApp(job)" title="Share on WhatsApp">
+                    <i class="bi bi-whatsapp"></i>
+                    <span>WhatsApp</span>
+                  </button>
+                  <button class="share-btn share-link" title="Share Link">
+                    <i class="bi bi-share-fill"></i>
+                    <span>Share</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -53,7 +59,7 @@
               <hr class="jfi-divider">
               <div class="jfi-section">
                 <h6 class="jfi-section-title">
-                  <i class="bi bi-clipboard-check-fill me-2"></i>How to Apply
+                  How to Apply :
                 </h6>
                 <div *ngIf="isRichText(job.howToApply)" [innerHTML]="getSafeHtml(job.howToApply)"></div>
                 <div *ngIf="!isRichText(job.howToApply)" class="how-to-apply-list">
@@ -69,9 +75,7 @@
             <ng-container *ngIf="job.qualification">
               <hr class="jfi-divider">
               <div class="jfi-section">
-                <h6 class="jfi-section-title">
-                  <i class="bi bi-mortarboard-fill me-2"></i>Qualification
-                </h6>
+                    <h6 class="jfi-section-title">Qualification :</h6>
                 <p class="plain-text-box mb-0">{{ job.qualification }}</p>
               </div>
             </ng-container>
@@ -93,7 +97,7 @@
               <hr class="jfi-divider">
               <div class="jfi-section">
                 <h6 class="jfi-section-title">
-                  <i class="bi bi-pin-map-fill me-2"></i>Address & Contact
+                Interview Address / Contact :
                 </h6>
                 <p class="plain-text-box mb-0">{{ job.addressAndContact }}</p>
               </div>
@@ -111,14 +115,12 @@
               <div class="posted-content">
                 <span class="posted-author">Posted by :- Yalla Ramana</span>
                 <div class="posted-date">
-                  <ng-container *ngIf="!job.updatedDate">
-                    <i class="bi bi-calendar-check-fill text-success"></i>
+                  <div>
                     <span>{{ formatDate(job.createdDate) }}</span>
-                  </ng-container>
-                  <ng-container *ngIf="job.updatedDate">
-                    <i class="bi bi-pencil-fill text-primary"></i>
+                  </div>
+                  <div *ngIf="job.updatedDate" class="updated-date-small">
                     <span>Updated on {{ formatDate(job.updatedDate) }}</span>
-                  </ng-container>
+                  </div>
                 </div>
               </div>
             </div>
@@ -206,7 +208,7 @@
                    class="sidebar-job-item border-bottom p-3"
                    (click)="viewJobDetails(topJob)">
                 <div class="d-flex align-items-start gap-2">
-                  <i class="bi bi-check2-circle job-tick mt-1"></i>
+                  <i class="bi bi-caret-right-fill job-tick mt-1"></i>
                   <p class="job-title-sidebar m-0">{{ topJob.title }}</p>
                 </div>
               </div>

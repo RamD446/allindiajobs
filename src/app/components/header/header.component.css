@@ -615,12 +615,12 @@
   background: transparent !important;
   border-color: transparent !important;
   color: #0d47a1 !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   border-bottom-color: #1565c0 !important;
 }
 
 .jc-pill-active span {
   color: #0d47a1 !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   border-bottom-color: #1565c0 !important;
 }

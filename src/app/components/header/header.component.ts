@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 import { Job } from '../../models/job.model';
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
     { name: 'Current Affairs', route: '/current-affairs', icon: 'bi-newspaper', color: '#e65100' }
   ];
 
-  constructor(private cdr: ChangeDetectorRef, private el: ElementRef) {}
+  constructor(private cdr: ChangeDetectorRef, private el: ElementRef, private router: Router) {}
 
   ngOnInit() {
     this.loadJobs();
@@ -58,6 +58,10 @@ export class HeaderComponent implements OnInit {
       end.setHours(0, 0, 0, 0);
       return today >= start && today <= end;
     }).length;
+  }
+
+  isJobDetailsPage(): boolean {
+    return this.router.url.startsWith('/job/');
   }
 
   getJobCountByCategory(category: string): number {

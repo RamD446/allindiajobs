@@ -1,6 +1,6 @@
 .container-fluid {
   padding: 0.5rem;
-  background-color: #ffffff;
+  background-color: #ffe4e9;
   min-height: 100vh;
   padding-top: 0.5rem;
 }
@@ -175,6 +175,7 @@
   border: 1px solid #e5e7eb;
   border-right: none;
   border-bottom: none;
+  background: #ffffff;
 }
 
 .section-block:nth-child(4n) {

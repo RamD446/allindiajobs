@@ -4,6 +4,7 @@
   border: 1px solid #e5e7eb;
   border-right: none;
   border-bottom: none;
+  background: #ffffff;
 }
 
 .section-header {
@@ -85,7 +86,7 @@
 }
 .jc {
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #ffe4e9;
   padding-top: 0.5rem;
 }
 

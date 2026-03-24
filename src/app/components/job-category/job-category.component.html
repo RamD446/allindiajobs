@@ -25,19 +25,11 @@
             <div class="section-header">
               Latest Government Jobs
             </div>
-            <div class="card-body p-0">
-              <div class="table-responsive">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr *ngFor="let job of getGovJobs()" class="clickable-row" (click)="viewJobDetails(job)">
-                      <td>
-                        <div class="d-flex align-items-start justify-content-between gap-2">
-                          <span class="job-title-cell"><i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="section-content">
+              <div *ngFor="let job of getGovJobs()" class="section-item" (click)="viewJobDetails(job)">
+                <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
+                <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
               </div>
             </div>
           </div>
@@ -47,40 +39,36 @@
             <div class="section-header">
               {{ categoryTitle }}
             </div>
-            <div class="card-body p-0">
-              <!-- Table format for Walk-in categories -->
-              <div *ngIf="categoryTitle === 'Walk-in Drives' || categoryTitle === 'All Walk-in Drives' || categoryTitle === 'Today Walk-in Drives'" class="table-responsive">
-                <table class="table mb-0">
-                  <tbody>
-                    <tr *ngFor="let job of getPrivateJobs()" class="clickable-row" (click)="viewJobDetails(job)">
-                      <td>
-                        <div class="d-flex align-items-start justify-content-between gap-2">
-                          <span class="job-title-cell"><i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>{{ job.title }}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- Table format for other categories -->
-              <ng-container *ngIf="categoryTitle !== 'Walk-in Drives' && categoryTitle !== 'All Walk-in Drives' && categoryTitle !== 'Today Walk-in Drives'">
-                <div class="table-responsive">
-                  <table class="table mb-0">
-                    <tbody>
-                      <tr *ngFor="let job of getPrivateJobs()" class="clickable-row" (click)="viewJobDetails(job)">
-                        <td>
-                          <div class="d-flex align-items-start justify-content-between gap-2">
-                            <span class="job-title-cell">
-                              <i class="bi bi-caret-right-fill jfi-sidebar-icon me-1"></i>
-                              {{ job.title }}
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+            <div class="section-content">
+              <!-- Walk-in categories -->
+              <div *ngIf="categoryTitle === 'Walk-in Drives' || categoryTitle === 'All Walk-in Drives' || categoryTitle === 'Today Walk-in Drives'">
+                <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
+                  <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
+                  <span *ngIf="job.walkInStartDate" class="item-meta">
+                    Walk-in: 
+                    <ng-container *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate">
+                      {{ job.walkInStartDate | date:'dd MMM' }} to {{ job.walkInEndDate | date:'dd MMM' }}
+                    </ng-container>
+                    <ng-container *ngIf="!job.walkInEndDate || job.walkInStartDate === job.walkInEndDate">
+                      {{ job.walkInStartDate | date:'dd MMM' }}
+                    </ng-container>
+                  </span>
                 </div>
-              </ng-container>
+              </div>
+              <!-- Government Jobs categories -->
+              <div *ngIf="categoryTitle === 'Government Jobs'">
+                <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
+                  <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
+                  <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
+                  <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                </div>
+              </div>
+              <!-- Other categories -->
+              <div *ngIf="categoryTitle !== 'Walk-in Drives' && categoryTitle !== 'All Walk-in Drives' && categoryTitle !== 'Today Walk-in Drives' && categoryTitle !== 'Government Jobs'">
+                <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
+                  <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -181,6 +181,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
 }
 
 .category-tab:hover {
@@ -205,6 +206,36 @@
 }
 
 .category-tab.active .badge {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Delete Category Button */
+.delete-category-btn {
+  background: transparent;
+  border: none;
+  color: #dc2626;
+  padding: 0.15rem 0.3rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.25rem;
+}
+
+.delete-category-btn:hover {
+  opacity: 1;
+  background: rgba(220, 38, 38, 0.1);
+  transform: scale(1.1);
+}
+
+.category-tab.active .delete-category-btn {
+  color: #ffffff;
+}
+
+.category-tab.active .delete-category-btn:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 

@@ -20,11 +20,7 @@
 
           <!-- Blue Gradient Header with Title + Share Buttons -->
           <div class="card-header jfi-main-header">
-            <h5 class="mb-2 fw-bold jfi-title w-100">{{ job.title }}</h5>
-            <div class="d-flex justify-content-center">
-              <div class="share-container">
-                <span class="share-text">Share:</span>
-                <div class="share-buttons">
+            <h5 class="mb-2 fw-bold jfi-title w-100">{{ job.title }}</h5><div class="share-buttons">
                   <button class="share-btn share-whatsapp" (click)="shareOnWhatsApp(job)" title="Share on WhatsApp">
                     <i class="bi bi-whatsapp"></i>
                     <span>WhatsApp</span>
@@ -34,8 +30,7 @@
                     <span>Share</span>
                   </button>
                 </div>
-              </div>
-            </div>
+            
           </div>
 
           <div class="card-body p-3">
@@ -102,8 +97,24 @@
                 <p class="plain-text-box mb-0">{{ job.addressAndContact }}</p>
               </div>
             </ng-container>
-
+        
     
+
+            <hr class="jfi-divider mt-4">
+                  <!-- Official Links -->
+        <div class="jfi-section" *ngIf="job.applicationUrl || job.otherLink">
+          <h6 class="jfi-section-title">Visit Official Links :</h6>
+          <div class="official-links-buttons">
+            <a *ngIf="job.applicationUrl" [href]="job.applicationUrl" target="_blank" class="official-link-btn website-btn">
+              <i class="bi bi-box-arrow-up-right"></i>
+              <span>Official Website</span>
+            </a>
+            <a *ngIf="job.otherLink" [href]="job.otherLink" target="_blank" class="official-link-btn notification-btn">
+              <i class="bi bi-file-earmark-text"></i>
+              <span>Notification</span>
+            </a>
+          </div>
+        </div>
 
             <hr class="jfi-divider mt-4">
 
@@ -127,6 +138,8 @@
 
           </div>
         </div>
+
+        
       </div>
 
       <!-- ===== Sidebar Column ===== -->

@@ -342,6 +342,13 @@
                 [class.active]="selectedJobCategory === category"
                 (click)="selectedJobCategory = category">
                 {{ category }} <span class="badge">{{ getCategoryCount(category) }}</span>
+                <button 
+                  class="delete-category-btn" 
+                  (click)="$event.stopPropagation(); deleteJobsByCategory(category)"
+                  title="Delete all jobs in this category"
+                  *ngIf="getCategoryCount(category) > 0">
+                  <i class="bi bi-trash"></i>
+                </button>
               </button>
             </div>
           </div>

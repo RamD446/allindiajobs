@@ -327,6 +327,33 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  async deleteJobsByCategory(category: string) {
+    const jobsToDelete = this.jobs.filter(job => job.category === category);
+    
+    if (jobsToDelete.length === 0) {
+      alert(`No jobs found in ${category} category.`);
+      return;
+    }
+
+    const confirmMessage = `Are you sure you want to delete ALL ${jobsToDelete.length} jobs in "${category}" category?\n\nThis action cannot be undone!`;
+    
+    if (confirm(confirmMessage)) {
+      try {
+        const deletePromises = jobsToDelete.map(job => {
+          const jobRef = ref(db, `jobs/${job.id}`);
+          return remove(jobRef);
+        });
+        
+        await Promise.all(deletePromises);
+        alert(`Successfully deleted ${jobsToDelete.length} jobs from ${category} category.`);
+        console.log(`Deleted ${jobsToDelete.length} jobs from ${category}`);
+      } catch (error) {
+        console.error('Error deleting jobs by category:', error);
+        alert('Failed to delete some jobs. Please try again.');
+      }
+    }
+  }
+
   async deleteCareer(careerId: string) {
     if (confirm('Are you sure you want to delete this career?')) {
       try {

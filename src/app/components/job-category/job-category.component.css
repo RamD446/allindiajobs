@@ -1,3 +1,88 @@
+/* Home page section styles for consistent UI */
+.section-block {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-right: none;
+  border-bottom: none;
+}
+
+.section-header {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #fff;
+  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
+  padding: 0.8rem 1rem;
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  border-bottom: none;
+}
+
+.section-content {
+  padding: 0.5rem 0;
+}
+
+.section-item {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  transition: all 0.2s ease;
+}
+
+.section-item:last-child {
+  border-bottom: none;
+}
+
+.section-item:hover {
+  background: #f9fafb;
+}
+
+.item-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.3rem;
+}
+
+.item-title i {
+  color: #1565c0;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.item-meta {
+  font-size: 0.7rem;
+  color: #64748b;
+  display: block;
+  margin-left: 1rem;
+  font-weight: 700;
+}
+
+.section-view-all {
+  display: block;
+  font-size: 0.75rem;
+  color: #1565c0;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0.4rem 1rem;
+  background: #e3f2fd;
+  transition: all 0.2s ease;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section-view-all:hover {
+  background: #1565c0;
+  color: #fff;
+}
 .jc {
   min-height: 100vh;
   background-color: #ffffff;

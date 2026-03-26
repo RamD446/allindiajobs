@@ -11,222 +11,122 @@
     <p class="loader-sub">Please wait while we load the latest opportunities</p>
   </div>
 
-  <div *ngIf="!isLoading && job" class="container-fluid">
-    <div class="row g-3">
 
-      <!-- ===== Main Content Column ===== -->
-      <div class="col-12 col-md-7">
-        <div class="card jfi-main-card mb-3">
+  <div *ngIf="!isLoading && job" class="container-fluid p-0">
+    <div class="row m-0">
+      <!-- Left: Job Information (70% on desktop) -->
+      <div class="col-12 col-lg-8 p-0">
+        <!-- Breadcrumb: Home > Current Page > Job Title -->
+        <nav aria-label="breadcrumb" class="mb-2 p-0 overflow-hidden">
+          <ol class="breadcrumb small p-0 m-0 flex-nowrap">
+            <li class="breadcrumb-item flex-shrink-0"><a routerLink="/" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item flex-shrink-0"><a class="text-decoration-none text-muted">Job Details</a></li>
+            <li class="breadcrumb-item active text-truncate" aria-current="page">{{ job.title }}</li>
+          </ol>
+        </nav>
 
-          <!-- Blue Gradient Header with Title + Share Buttons -->
-          <div class="card-header jfi-main-header">
-            <h5 class="mb-2 fw-bold jfi-title w-100">{{ job.title }}</h5><div class="share-buttons">
-                  <button class="share-btn share-whatsapp" (click)="shareOnWhatsApp(job)" title="Share on WhatsApp">
-                    <i class="bi bi-whatsapp"></i>
-                    <span>WhatsApp</span>
-                  </button>
-                  <button class="share-btn share-link" title="Share Link">
-                    <i class="bi bi-share-fill"></i>
-                    <span>Share</span>
-                  </button>
-                </div>
-            
+
+        <!-- Job Title -->
+        <h1 class="h5 fw-bold mb-2 text-dark">{{ job.title }}</h1>
+
+        <!-- Share Icons Row (Separate row) -->
+        <div class="d-flex align-items-center gap-3 mb-3 border-bottom pb-2">
+          <div class="d-flex align-items-center gap-1 cursor-pointer" (click)="shareOnWhatsApp(job)" style="color: #25D366; font-size: 0.85rem; font-weight: 600;">
+            <i class="bi bi-whatsapp fs-5"></i>
+            <span>WhatsApp</span>
           </div>
-
-          <div class="card-body p-3">
-
-            <!-- 1. Job Description -->
-            <div class="jfi-section">
-              <h6 class="jfi-section-title">Job Description :</h6>
-              <div *ngIf="isRichText(job.description)" class="jfi-rich-desc" [innerHTML]="getSafeHtml(job.description)"></div>
-              <div *ngIf="!isRichText(job.description)" class="jfi-desc-paragraphs">
-                <ol>
-                  <li *ngFor="let para of getParagraphs(job.description)" class="jfi-para">{{ para }}</li>
-                </ol>
-              </div>
-            </div>
-
-            <!-- 2. Key Responsibilities -->
-            <ng-container *ngIf="job.keyResponsibilities">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Key Responsibilities :</h6>
-                <div *ngIf="isRichText(job.keyResponsibilities)" [innerHTML]="getSafeHtml(job.keyResponsibilities)"></div>
-                <p *ngIf="!isRichText(job.keyResponsibilities)" class="plain-text-box mb-0">{{ job.keyResponsibilities }}</p>
-              </div>
-            </ng-container>
-
-            <!-- 3. Eligibility Criteria -->
-            <ng-container *ngIf="job.eligibilityCriteria">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Eligibility Criteria :</h6>
-                <div *ngIf="isRichText(job.eligibilityCriteria)" [innerHTML]="getSafeHtml(job.eligibilityCriteria)"></div>
-                <p *ngIf="!isRichText(job.eligibilityCriteria)" class="plain-text-box mb-0">{{ job.eligibilityCriteria }}</p>
-              </div>
-            </ng-container>
-
-            <!-- 4. Documents Required -->
-            <ng-container *ngIf="job.documentsRequired">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Documents Required :</h6>
-                <div *ngIf="isRichText(job.documentsRequired)" [innerHTML]="getSafeHtml(job.documentsRequired)"></div>
-                <p *ngIf="!isRichText(job.documentsRequired)" class="plain-text-box mb-0">{{ job.documentsRequired }}</p>
-              </div>
-            </ng-container>
-
-            <!-- 5. How to Apply -->
-            <ng-container *ngIf="job.howToApply">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">How to Apply :</h6>
-                <div *ngIf="isRichText(job.howToApply)" [innerHTML]="getSafeHtml(job.howToApply)"></div>
-                <div *ngIf="!isRichText(job.howToApply)" class="how-to-apply-list">
-                  <div *ngFor="let note of getHowToApplyList(job.howToApply); let i = index" class="how-to-apply-item">
-                    <span class="apply-number">{{ i + 1 }}.</span>
-                    <span>{{ note }}</span>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-
-            <!-- 6. Venue Address -->
-            <ng-container *ngIf="job.addressAndContact">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Venue Address :</h6>
-                <p class="plain-text-box mb-0">{{ job.addressAndContact }}</p>
-              </div>
-            </ng-container>
-
-            <!-- 7. Contact Details -->
-            <ng-container *ngIf="job.contactInfo">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Contact Details :</h6>
-                <p class="plain-text-box mb-0">{{ job.contactInfo }}</p>
-              </div>
-            </ng-container>
-
-            <hr class="jfi-divider mt-4">
-
-            <!-- 8. Official Links -->
-            <div class="jfi-section" *ngIf="job.otherLink">
-              <h6 class="jfi-section-title">Apply Official Link :</h6>
-              <div class="official-links-buttons">
-                <a *ngIf="job.otherLink" [href]="job.otherLink" target="_blank" class="official-link-btn notification-btn">
-                  <i class="bi bi-link-45deg"></i>
-                  <span>Apply Now</span>
-                </a>
-              </div>
-            </div>
-
-            <hr class="jfi-divider mt-4">
-
-            <!-- 10. Posted By -->
-            <div class="posted-by-box">
-              <div class="author-avatar">
-                <img src="assets/images/YallaRamana.jpg" alt="Yalla Ramana">
-              </div>
-              <div class="posted-content">
-                <span class="posted-author">Posted by :- Yalla Ramana</span>
-                <div class="posted-date">
-                  <div>
-                    <span>{{ formatDate(job.createdDate) }}</span>
-                  </div>
-                  <div *ngIf="job.updatedDate" class="updated-date-small">
-                    <span>Updated on {{ formatDate(job.updatedDate) }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+          <div class="d-flex align-items-center gap-1 cursor-pointer" (click)="shareJob(job)" style="color: #0d6efd; font-size: 0.85rem; font-weight: 600;">
+            <i class="bi bi-share fs-5"></i>
+            <span>Share</span>
           </div>
         </div>
 
-        
+        <!-- Short Description -->
+        <div class="text-secondary small mb-3 lh-sm">
+          {{ job.description }}.
+        </div>
+
+        <!-- Job Details List (List wise, small dark headers) -->
+        <div class="job-details-list">
+          <div class="detail-item mb-2" *ngIf="job.keyResponsibilities">
+            <div class="small fw-bold text-dark">Key Responsibilities:</div>
+            <ul class="ps-3 mb-0 small text-secondary">
+              <li *ngFor="let item of getDescriptionList(job.keyResponsibilities)">{{ item }}</li>
+            </ul>
+          </div>
+
+
+          <div class="detail-item mb-2" *ngIf="job.howToApply">
+            <div class="small fw-bold text-dark">How to Apply:</div>
+            <div class="small text-secondary mb-1">Follow these steps:</div>
+            <ul class="ps-3 mb-0 small text-secondary">
+              <li *ngFor="let item of getHowToApplyList(job.howToApply)">{{ item }}</li>
+            </ul>
+          </div>
+          <div class="detail-item mb-2" *ngIf="job.qualification">
+            <div class="small fw-bold text-dark">Qualification:</div>
+            <div class="text-secondary small">{{ job.qualification }}</div>
+          </div>
+            <div class="detail-item mb-2" *ngIf="job.documentsRequired">
+            <div class="small fw-bold text-dark">Documents Required:</div>
+            <ul class="ps-3 mb-0 small text-secondary">
+              <li *ngFor="let item of getDescriptionList(job.documentsRequired)">{{ item }}</li>
+            </ul>
+          </div>
+
+
+          <div class="detail-item mb-2" *ngIf="job.salary">
+            <div class="small fw-bold text-dark">Salary:</div>
+            <div class="text-secondary small">{{ job.salary }}</div>
+          </div>
+
+
+
+          <div class="detail-item mb-2" *ngIf="job.eligibilityCriteria">
+            <div class="small fw-bold text-dark">Eligibility Criteria:</div>
+            <ul class="ps-3 mb-0 small text-secondary">
+              <li *ngFor="let item of getDescriptionList(job.eligibilityCriteria)">{{ item }}</li>
+            </ul>
+          </div>
+
+         
+
+          <div class="detail-item mb-2" *ngIf="job.addressAndContact">
+            <div class="small fw-bold text-dark">Venue:</div>
+            <div class="text-secondary small">{{ job.addressAndContact }}</div>
+          </div>
+
+          <!-- Apply Button -->
+          <div *ngIf="job.otherLink" class="mt-3">
+            <a [href]="job.otherLink" target="_blank" class="btn btn-primary btn-sm px-4 rounded-pill">Apply Now</a>
+          </div>
+        </div>
+
+        <!-- Posted Info -->
+        <div class="mt-4 pt-2 border-top">
+          <div class="d-flex align-items-center gap-2">
+            <img src="assets/images/YallaRamana.jpg" class="rounded-circle" width="30" height="30" alt="Yalla Ramana">
+            <div class="small">
+              <div class="fw-bold text-dark">AllIndiaJobs Team</div>
+              <div class="text-muted" style="font-size: 0.7rem;">{{ formatDate(job.createdDate) }}</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- ===== Sidebar Column ===== -->
-      <div class="col-12 col-md-5">
-        
-        <!-- Job Information Table -->
-        <div class="jfi-info-table mb-3" *ngIf="job.company || job.qualification || job.experience || job.walkInStartDate">
-          <div class="card border-0 jfi-table-card">
-            <div class="card-header jfi-table-header">
-              <i class="bi bi-info-circle-fill me-2"></i>Job Information
-            </div>
-            <div class="card-body p-0">
-              <table class="table table-bordered mb-0 jfi-table">
-                <tbody>
-                  <tr *ngIf="job.company">
-                    <th class="jfi-th">Company</th>
-                    <td class="fw-bold text-primary jfi-td">{{ job.company }}</td>
-                  </tr>
-                  <tr *ngIf="job.qualification">
-                    <th class="jfi-th">Qualification</th>
-                    <td class="jfi-td">{{ job.qualification }}</td>
-                  </tr>
-                  <tr *ngIf="job.experience">
-                    <th class="jfi-th">Experience</th>
-                    <td class="jfi-td">{{ job.experience }}</td>
-                  </tr>
-                  <tr *ngIf="job.salary">
-                    <th class="jfi-th">Salary</th>
-                    <td class="jfi-td">{{ job.salary }}</td>
-                  </tr>
-                  <tr *ngIf="job.walkInStartDate">
-                    <th class="jfi-th">Walk-in Start</th>
-                    <td class="text-success fw-bold jfi-td">
-                      {{ job.walkInStartDate | date:'dd MMM yyyy, hh:mm a' }}
-                    </td>
-                  </tr>
-                  <tr *ngIf="job.walkInEndDate">
-                    <th class="jfi-th">Walk-in End</th>
-                    <td class="text-danger fw-bold jfi-td">{{ job.walkInEndDate | date:'dd MMM yyyy' }}</td>
-                  </tr>
-                  <tr *ngIf="job.otherLink">
-                    <th class="jfi-th">Apply Link</th>
-                    <td class="jfi-td">
-                      <a [href]="job.otherLink" target="_blank" class="btn btn-sm btn-info text-white rounded-pill fw-bold jfi-apply-btn">
-                        <i class="bi bi-link-45deg me-1"></i>Apply Now
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-       
-
-        <!-- Recent Posts -->
-        <div class="card home-job-card">
-          <div class="card-header walk-header">
-            <i class="bi bi-clock-history me-2"></i>Recent Posts
-          </div>
-          <div class="card-body p-0">
-            <div class="sidebar-list">
-              <div *ngFor="let topJob of getTopJobs()"
-                   class="sidebar-job-item border-bottom p-3"
-                   (click)="viewJobDetails(topJob)">
-                <div class="d-flex align-items-start gap-2">
-                  <i class="bi bi-caret-right-fill job-tick mt-1"></i>
-                  <p class="job-title-sidebar m-0">{{ topJob.title }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer bg-white border-0 text-center pb-3">
-            <a routerLink="/" class="more-jobs-link w-100 py-2">
-              View All Latest Jobs <i class="bi bi-arrow-right ms-1"></i>
+      <!-- Right: Recent Posts (30% on desktop) -->
+      <div class="col-12 col-lg-4">
+        <div class="recent-posts-sidebar">
+          <div class="fw-bold text-dark border-bottom pb-1 mb-2" style="font-size: 0.9rem;">Recent Posts</div>
+          <div class="list-group list-group-flush">
+            <a *ngFor="let topJob of getTopJobs()" (click)="viewJobDetails(topJob)" class="list-group-item list-group-item-action border-0 px-0 py-2 bg-transparent">
+              <div class="fw-bold text-dark" style="font-size: 0.85rem;">{{ topJob.title }}</div>
+              <div class="text-muted" style="font-size: 0.7rem;">{{ getTimeAgo(topJob.createdDate) }}</div>
             </a>
           </div>
+          <a routerLink="/" class="btn btn-link btn-sm text-decoration-none p-0 mt-2">View all jobs →</a>
         </div>
       </div>
-
     </div>
   </div>
 

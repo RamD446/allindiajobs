@@ -13,10 +13,12 @@ import { Job, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
   styleUrl: './job-category.component.css'
 })
 export class JobCategoryComponent implements OnInit {
-    jobsPerPage: number = 10;
-    currentPage: number = 1;
+  jobsPerPage: number = 10;
+  currentPage: number = 1;
   jobs: Job[] = [];
   filteredJobs: Job[] = [];
+  uniqueCompanies: string[] = [];
+  selectedCompany: string = '';
   jobCareers: JobCareer[] = [];
   filteredCareers: JobCareer[] = [];
   careerJobTypes: string[] = [...CAREER_JOB_TYPES];
@@ -24,13 +26,7 @@ export class JobCategoryComponent implements OnInit {
   categoryTitle: string = '';
   categoryParam: string = '';
   isLoading: boolean = true;
-  selectedJobTypes: string[] = [];
-  selectedCompanies: string[] = [];
-  selectedCategories: string[] = [];
-  selectedExperienceLevels: string[] = [];
-  selectedSalaries: string[] = [];
-  topWalkins: Job[] = [];
-  topPrivateJobs: Job[] = [];
+  categoryJobs: Job[] = []; // Store original category jobs
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'IT Walk-ins': { title: 'IT Walk-ins', category: 'IT Walk-ins' },
@@ -62,9 +58,8 @@ export class JobCategoryComponent implements OnInit {
 
   loadJobs(category: string) {
     this.isLoading = true;
-    this.currentPage = 1; // Reset to first page when category changes or data is reloaded
+    this.currentPage = 1; 
     
-    // Track API call
     try {
       get(ref(db, 'stats/apiCalls')).then(snapshot => {
         const count = (snapshot.val() || 0) + 1;
@@ -81,38 +76,29 @@ export class JobCategoryComponent implements OnInit {
           this.jobs = Object.keys(data).map(key => ({
             id: key,
             ...data[key]
-          }));
+          })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
           
-          // Filter jobs by category
-          this.filteredJobs = this.jobs.filter(job => job.category === category);
-
-          // Populate top 5 for sidebar (all walk-in jobs)
-          this.topWalkins = this.jobs
-            .filter(job => job.walkInDrive === true)
-            .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
-            .slice(0, 5);
-
-          this.topPrivateJobs = this.jobs
-            .filter(job => job.walkInDrive === true)
-            .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
-            .slice(0, 5);
+          this.categoryJobs = this.jobs.filter(job => job.category === category);
+          this.filteredJobs = [...this.categoryJobs];
+          this.extractUniqueCompanies();
           
         } else {
           this.jobs = [];
+          this.categoryJobs = [];
           this.filteredJobs = [];
         }
         
         this.isLoading = false;
-        this.cdr.detectChanges(); // Force change detection
+        this.cdr.detectChanges();
       }, (error) => {
-        console.error('Firebase error:', error); // Error log
+        console.error('Firebase error:', error);
         this.isLoading = false;
-        this.cdr.detectChanges(); // Force change detection
+        this.cdr.detectChanges();
       });
     } catch (error) {
       console.error('Error loading jobs:', error);
       this.isLoading = false;
-      this.cdr.detectChanges(); // Force change detection
+      this.cdr.detectChanges();
     }
   }
 
@@ -126,7 +112,6 @@ export class JobCategoryComponent implements OnInit {
             id: key,
             ...data[key]
           }));
-          // By default, filter by the first type or show none
           if (this.selectedCareerType) {
             this.filterCareersByType(this.selectedCareerType);
           }
@@ -144,139 +129,52 @@ export class JobCategoryComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  getTopCareersByType(type: string, limit: number = 5): JobCareer[] {
-    return this.jobCareers
-      .filter(career => career.jobType === type)
-      .slice(0, limit);
+  extractUniqueCompanies() {
+    const companies = this.categoryJobs
+      .map(job => job.company)
+      .filter((company): company is string => !!company);
+    this.uniqueCompanies = Array.from(new Set(companies)).sort();
   }
 
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB');
-  }
-
-  isToday(dateString: string): boolean {
-    if (!dateString) return false;
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const d = new Date(dateString);
-    d.setHours(0, 0, 0, 0);
-    
-    return d.getTime() === today.getTime();
-  }
-
-  isWalkInToday(job: Job): boolean {
-    // Check if job has walkInDrive flag set to true
-    if (job.walkInDrive !== true) return false;
-    if (!job.walkInStartDate || !job.walkInEndDate) return false;
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const startDate = new Date(job.walkInStartDate);
-    startDate.setHours(0, 0, 0, 0);
-
-    const endDate = new Date(job.walkInEndDate);
-    endDate.setHours(23, 59, 59, 999);
-
-    return today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime();
-  }
-
-  getTodayJobsCount(): number {
-    return this.jobs.filter(job => this.isToday(job.createdDate)).length;
-  }
-
-  getTodayWalkinsCount(): number {
-    return this.jobs.filter(job => this.isWalkInToday(job)).length;
-  }
-
-  getTodayExpiredGovJobsCount(): number {
-    return this.jobs.filter(job => job.walkInDrive === true && job.walkInStartDate && this.isToday(job.walkInStartDate)).length;
-  }
-
-  getTimeAgo(dateString: string): string {
-  const now = new Date();
-  const date = new Date(dateString);
-  const diffMs = now.getTime() - date.getTime();
-
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-
-  if (diffMins < 1) return 'Just now';
-
-  if (diffMins < 60)
-    return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
-
-  // Less than 24 hours → Today
-  if (diffHours < 24)
-    return 'Today Posted';
-
-  // 1 to 10 days
-  if (diffDays <= 10)
-    return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-
-  // Older than 10 days → show full date
-  return date.toLocaleString('en-GB', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  });
-}
-
-  isExpired(job: Job): boolean {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Check if any job with walkInDrive flag has expired
-    if (job.walkInDrive === true && job.walkInEndDate) {
-      const endDate = new Date(job.walkInEndDate);
-      endDate.setHours(0, 0, 0, 0);
-      return endDate.getTime() < today.getTime();
+  filterByCompany(company: string) {
+    this.selectedCompany = company;
+    if (company) {
+      this.filteredJobs = this.categoryJobs.filter(job => job.company === company);
+    } else {
+      this.filteredJobs = [...this.categoryJobs];
     }
-    return false;
+    this.currentPage = 1;
+    this.cdr.detectChanges();
   }
 
-  // Method to get color class for job category badge
-  getCategoryClass(category: string): string {
-    switch (category) {
-      case 'Government Jobs':
-        return 'badge-success';
+  getPrivateJobs(): Job[] {
+    const start = (this.currentPage - 1) * this.jobsPerPage;
+    const end = start + this.jobsPerPage;
+    return this.filteredJobs.slice(start, end);
+  }
 
-      case 'Walk-in Drives':
-        return 'badge-info';
-      case 'Banking Jobs':
-        return 'badge-danger';
-      case 'IT Jobs':
-        return 'badge-primary';
-      case 'Non-IT Jobs':
-        return 'badge-secondary';
-      case 'Pharmaceutical Jobs':
-        return 'badge-info';
-      default:
-        return 'badge-primary';
+  getTotalPages(): number {
+    return Math.ceil(this.filteredJobs.length / this.jobsPerPage);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.getTotalPages()) {
+      this.currentPage = page;
+      window.scrollTo(0, 0);
     }
   }
 
-  // Create URL-friendly slug from job title
   private createSlug(title: string): string {
     return title
       .toLowerCase()
-      .replace(/[^a-z0-9 -]/g, '') // Remove special characters
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .replace(/[^a-z0-9 -]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
       .trim()
-      .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+      .replace(/^-+|-+$/g, '');
   }
 
-  // Navigate to job detail page
   viewJobDetails(job: Job) {
-    // Track Job Click
     try {
       get(ref(db, 'stats/jobClicks')).then(snapshot => {
         const count = (snapshot.val() || 0) + 1;
@@ -288,304 +186,5 @@ export class JobCategoryComponent implements OnInit {
     this.router.navigate(['/job', job.id, titleSlug], { state: { job: job } }).then(() => {
       window.scrollTo(0, 0);
     });
-  }
-
-  // Save/bookmark job functionality
-  saveJob(job: Job) {
-    // Here you can implement save functionality to local storage or Firebase
-    alert(`Job "${job.title}" has been saved to your bookmarks!`);
-  }
-
-  // Share job functionality
-  shareJob(job: Job) {
-    if (navigator.share) {
-      navigator.share({
-        title: job.title,
-        text: `Check out this job opportunity at ${job.company}`,
-        url: window.location.href
-      });
-    } else {
-      // Fallback for browsers that don't support Web Share API
-      const shareText = `Check out this job: ${job.title} at ${job.company}`;
-      navigator.clipboard.writeText(shareText).then(() => {
-        alert('Job information copied to clipboard!');
-      });
-    }
-  }
-
-  // Get new jobs (created in last 7 days)
-  getNewJobs(): Job[] {
-    // Return jobs for the current page, sorted by newest first
-    const sorted = [...this.filteredJobs].sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
-    const start = (this.currentPage - 1) * this.jobsPerPage;
-    const end = start + this.jobsPerPage;
-    return sorted.slice(start, end);
-  }
-
-  getRecentPosts(): Job[] {
-    return this.jobs
-      .filter(job =>
-        job.category !== 'Government Jobs'
-      )
-      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
-      .slice(0, 10);
-  }
-
-  getGovJobs(): Job[] {
-    const jobs = this.getNewJobs();
-    return jobs.filter(job => job.category === 'Government Jobs');
-  }
-
-  getPrivateJobs(): Job[] {
-    const jobs = this.getNewJobs();
-    return jobs.filter(job => job.category !== 'Government Jobs');
-  }
-
-  getTotalPages(): number {
-    return Math.ceil(this.filteredJobs.length / this.jobsPerPage);
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.getTotalPages()) {
-      this.currentPage = page;
-    }
-  }
-
-  // Get other jobs (older than 7 days)
-  getOtherJobs(): Job[] {
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    
-    return this.filteredJobs.filter(job => {
-      const createdDate = new Date(job.createdDate);
-      return createdDate < sevenDaysAgo;
-    }).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
-  }
-
-  // Navigate to different job categories
-  navigateToCategory(category: string) {
-    const routeMapping: { [key: string]: string } = {
-      'IT Walk-ins': 'IT Walk-ins',
-      'BPO Walk-ins': 'BPO Walk-ins',
-      'Non-IT Walk-ins': 'Non-IT Walk-ins',
-      'Sales Walk-ins': 'Sales Walk-ins',
-      'Banking Walk-ins': 'Banking Walk-ins',
-      'Pharma Walk-ins': 'Pharma Walk-ins'
-    };
-
-    const route = routeMapping[category];
-    if (route) {
-      this.router.navigate([`/${route}`]);
-    }
-  }
-
-  // Open external channels (YouTube / WhatsApp) in a new tab
-  openExternalChannel(url: string) {
-    try {
-      window.open(url, '_blank', 'noopener');
-    } catch (e) {
-      // fallback: set location (will navigate away)
-      window.location.href = url;
-    }
-  }
-
-  // Filter methods for quick filters
-  getUniqueCompanies(): string[] {
-    const companies = [...new Set(this.filteredJobs.map(job => job.company))];
-    return companies.filter(company => company).sort().slice(0, 100);
-  }
-
-  getUniqueCategories(): string[] {
-    const cats = [...new Set(this.filteredJobs.map(job => job.category))];
-    return cats.filter((c): c is string => !!c).sort();
-  }
-
-  getUniqueExperienceLevels(): string[] {
-    const exps = [...new Set(this.filteredJobs.map(job => job.experience))];
-    return exps.filter((e): e is string => !!e).sort();
-  }
-
-  getUniqueSalaries(): string[] {
-    const sals = [...new Set(this.filteredJobs.map(job => job.salary))];
-    return sals.filter((s): s is string => !!s).sort();
-  }
-
-  getJobCountByCompany(company: string): number {
-    return this.filteredJobs.filter(job => job.company === company).length;
-  }
-
-  getJobCountByCategory(category: string): number {
-    return this.filteredJobs.filter(job => job.category === category).length;
-  }
-
-  getTotalJobCountByCategory(category: string): number {
-    if (category === 'All') return this.jobs.length;
-    if (category === 'Banking Jobs') {
-      return this.jobs.filter(job => 
-        job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
-      ).length;
-    }
-    if (category === 'Fresher Jobs') {
-      return this.jobs.filter(job => job.experience === 'Fresher').length;
-    }
-    if (category === 'Today Posted Jobs') {
-      return this.getTodayJobsCount();
-    }
-    if (category === 'Today Walk-in Drives') {
-      return this.getTodayWalkinsCount();
-    }
-    if (category === 'Today Expired Gov Jobs') {
-      return this.getTodayExpiredGovJobsCount();
-    }
-    if (category === 'Walk-in Drives') {
-      // Count all jobs with walkInDrive flag true
-      return this.jobs.filter(job => job.walkInDrive === true).length;
-    }
-    return this.jobs.filter(job => job.category === category).length;
-  }
-
-  getJobCountByExperience(exp: string): number {
-    return this.filteredJobs.filter(job => job.experience === exp).length;
-  }
-
-  getJobCountBySalary(sal: string): number {
-    return this.filteredJobs.filter(job => job.salary === sal).length;
-  }
-
-  hasActiveFilters(): boolean {
-    return this.selectedCompanies.length > 0 || 
-           this.selectedCategories.length > 0 || 
-           this.selectedExperienceLevels.length > 0 ||
-           this.selectedSalaries.length > 0;
-  }
-
-  clearAllFilters() {
-    this.selectedCompanies = [];
-    this.selectedCategories = [];
-    this.selectedExperienceLevels = [];
-    this.selectedSalaries = [];
-    this.applyFilters();
-  }
-
-  filterByCategory(event: any) {
-    const cat = event.target.value;
-    if (event.target.checked) {
-      this.selectedCategories.push(cat);
-    } else {
-      this.selectedCategories = this.selectedCategories.filter(c => c !== cat);
-    }
-    this.applyFilters();
-  }
-
-  filterByExperienceLevel(event: any) {
-    const exp = event.target.value;
-    if (event.target.checked) {
-      this.selectedExperienceLevels.push(exp);
-    } else {
-      this.selectedExperienceLevels = this.selectedExperienceLevels.filter(e => e !== exp);
-    }
-    this.applyFilters();
-  }
-
-  filterBySalary(event: any) {
-    const sal = event.target.value;
-    if (event.target.checked) {
-      this.selectedSalaries.push(sal);
-    } else {
-      this.selectedSalaries = this.selectedSalaries.filter(s => s !== sal);
-    }
-    this.applyFilters();
-  }
-
-  getJobCountByType(jobType: string): number {
-    return this.jobs.filter(job => job.category === jobType).length;
-  }
-
-  filterByCompany(event: any) {
-    const company = event.target.value;
-    const isChecked = event.target.checked;
-
-    if (isChecked) {
-      this.selectedCompanies.push(company);
-    } else {
-      this.selectedCompanies = this.selectedCompanies.filter(comp => comp !== company);
-    }
-    
-    this.applyFilters();
-  }
-
-  filterByJobType(event: any) {
-    const jobType = event.target.value;
-    const isChecked = event.target.checked;
-
-    if (isChecked) {
-      this.selectedJobTypes.push(jobType);
-    } else {
-      this.selectedJobTypes = this.selectedJobTypes.filter(type => type !== jobType);
-    }
-    
-    this.applyFilters();
-  }
-
-  onCompanyChange(event: any) {
-    const company = event.target.value;
-    if (company) {
-      this.selectedCompanies = [company];
-    } else {
-      this.selectedCompanies = [];
-    }
-    this.applyFilters();
-  }
-
-  applyFilters() {
-    this.currentPage = 1; // Reset to first page when filters are applied
-    let filtered = this.jobs;
-
-    // Apply category filter
-    if (this.categoryTitle !== 'All Latest Jobs') {
-      if (this.categoryTitle === 'Banking Jobs') {
-        filtered = filtered.filter(job => 
-          job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
-        );
-      } else if (this.categoryTitle === 'Walk-in Drives') {
-        // Include all jobs with walkInDrive flag true
-        filtered = filtered.filter(job => job.walkInDrive === true);
-      } else {
-        const mapping = this.categoryMappings[this.categoryParam];
-        const categoryToFilter = mapping ? mapping.category : this.categoryTitle;
-        filtered = filtered.filter(job => job.category === categoryToFilter);
-      }
-    }
-
-    // Apply job type filters
-    if (this.selectedJobTypes.length > 0) {
-      filtered = filtered.filter(job => this.selectedJobTypes.includes(job.category));
-    }
-
-    // Apply company filters
-    if (this.selectedCompanies.length > 0) {
-      filtered = filtered.filter(job => this.selectedCompanies.includes(job.company));
-    }
-
-    // Apply category filters
-    if (this.selectedCategories.length > 0) {
-      filtered = filtered.filter(job => this.selectedCategories.includes(job.category));
-    }
-
-    // Apply experience level filters
-    if (this.selectedExperienceLevels.length > 0) {
-      filtered = filtered.filter(job => job.experience && this.selectedExperienceLevels.includes(job.experience));
-    }
-
-    // Apply salary filters
-    if (this.selectedSalaries.length > 0) {
-      filtered = filtered.filter(job => job.salary && this.selectedSalaries.includes(job.salary));
-    }
-
-    this.filteredJobs = filtered;
-    this.cdr.detectChanges();
-    
-    // Scroll to top when filter is applied
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

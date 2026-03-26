@@ -1,17 +1,15 @@
 .container-fluid {
-  padding: 0.5rem;
+  padding: 0.5rem 0; /* Removed horizontal padding */
   background-color: #ffffff;
   min-height: 100vh;
-  padding-top: 0.5rem;
 }
 
 
 
 @media (min-width: 769px) {
   .container-fluid {
-    padding-top: 0.5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -277,71 +275,78 @@
 }
 
 .home-sections {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 @media (min-width: 768px) {
   .home-sections {
-    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: 1.5rem;
+    align-items: flex-start;
   }
 }
 
-@media (min-width: 992px) {
-  .home-sections {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.jobs-main-col {
+  width: 100%;
+}
+
+.sidebar-col {
+  width: 100%;
+}
+
+.company-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.company-item {
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  color: #475569;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+  font-weight: 700;
+}
+
+.company-item:last-child {
+  border-bottom: none;
+}
+
+.company-item:hover {
+  background-color: #f8fafc;
+  color: #1565c0;
+}
+
+.company-item.active {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-left: 3px solid #1565c0;
 }
 
 .section-block {
   width: 100%;
   border: 1px solid #e5e7eb;
-  border-right: none;
-  border-bottom: none;
   background: #ffffff;
-}
-
-.section-block:nth-child(4n) {
-  border-right: 1px solid #e5e7eb;
-}
-
-.section-block:nth-child(n+5) {
-  border-top: 1px solid #e5e7eb;
-}
-
-@media (max-width: 991px) {
-  .section-block:nth-child(2n) {
-    border-right: 1px solid #e5e7eb;
-  }
-
-  .section-block:nth-child(n+3) {
-    border-top: 1px solid #e5e7eb;
-  }
-}
-
-@media (max-width: 767px) {
-  .section-block {
-    border-right: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  .section-block:last-child {
-    border-bottom: 1px solid #e5e7eb;
-  }
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .section-header {
   font-weight: 800;
   font-size: 0.9rem;
-  color: #fff;
-  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
-  padding: 0.8rem 1rem;
+  color: #1a1a1a;
+  background: #f8f9fa;
+  padding: 0.6rem 1rem;
   text-transform: capitalize;
   letter-spacing: 0.2px;
   display: flex;
   align-items: center;
-  border-bottom: none;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .section-content {

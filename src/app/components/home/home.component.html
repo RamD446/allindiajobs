@@ -13,33 +13,51 @@
   </div>
 
   <div *ngIf="!isLoading" class="home-sections">
-    <!-- No Data Card -->
-    <div *ngIf="hasNoData()" class="no-data-card">
-      <div class="no-data-icon">
-        <i class="bi bi-inbox"></i>
-      </div>
-      <h5 class="no-data-title">Currently Not Available</h5>
-      <p class="no-data-message">No jobs are available at the moment. Please try again after some time.</p>
-      <div class="no-data-footer">
-        <i class="bi bi-clock-history me-1"></i>
-        <span>Check back soon for new opportunities</span>
-      </div>
-    </div>
-
-    <!-- Latest Walk-in Jobs Section -->
-    <div class="section-block" *ngIf="!hasNoData() && walkinJobs.length > 0">
-      <div class="section-header">Latest Walk-in Jobs</div>
-      <div class="section-content">
-        <div *ngFor="let job of walkinJobs" class="section-item" (click)="viewJobDetails(job)">
-          <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
-          <div class="item-meta-row">
-            <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
-            <span *ngIf="job.walkInStartDate" class="item-meta">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}</span>
-          </div>
+    <!-- Left Column (70%) -->
+    <div class="jobs-main-col">
+      <!-- No Data Card -->
+      <div *ngIf="hasNoData()" class="no-data-card">
+        <div class="no-data-icon">
+          <i class="bi bi-inbox"></i>
         </div>
-        <a routerLink="/IT Walk-ins" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>
+        <h5 class="no-data-title">Currently Not Available</h5>
+        <p class="no-data-message">No jobs are available at the moment. Please try again after some time.</p>
+      </div>
+
+      <!-- Latest Walk-in Jobs Section -->
+      <div class="section-block" *ngIf="!hasNoData() && walkinJobs.length > 0">
+        <div class="section-header">Latest All Walk-in Jobs</div>
+        <div class="section-content">
+          <div *ngFor="let job of walkinJobs" class="section-item" (click)="viewJobDetails(job)">
+            <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
+            <div class="item-meta-row">
+              <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
+              <span *ngIf="job.walkInStartDate" class="item-meta">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}</span>
+            </div>
+          </div>
+          <a routerLink="/IT Walk-ins" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
       </div>
     </div>
 
+    <!-- Right Column (30%) -->
+    <div class="sidebar-col">
+      <div class="section-block">
+        <div class="section-header">Filter by Company</div>
+        <div class="section-content">
+          <ul class="company-list">
+            <li class="company-item" [class.active]="selectedCompany === ''" (click)="filterByCompany('')">
+              All Companies
+            </li>
+            <li *ngFor="let company of uniqueCompanies" 
+                class="company-item" 
+                [class.active]="selectedCompany === company"
+                (click)="filterByCompany(company)">
+              {{ company }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

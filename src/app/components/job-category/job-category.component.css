@@ -10,14 +10,14 @@
 .section-header {
   font-weight: 800;
   font-size: 0.9rem;
-  color: #fff;
-  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
-  padding: 0.8rem 1rem;
+  color: #1a1a1a;
+  background: #f8f9fa;
+  padding: 0.6rem 1rem;
   text-transform: capitalize;
   letter-spacing: 0.2px;
   display: flex;
   align-items: center;
-  border-bottom: none;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .section-content {
@@ -89,17 +89,48 @@
   background: #1565c0;
   color: #fff;
 }
+/* Sidebar Category Filter List Styling - Same as Home */
+.company-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.company-item {
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  color: #475569;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+  font-weight: 700;
+}
+
+.company-item:last-child {
+  border-bottom: none;
+}
+
+.company-item:hover {
+  background-color: #f8fafc;
+  color: #1565c0;
+}
+
+.company-item.active {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-left: 3px solid #1565c0;
+}
+
 .jc {
   min-height: 100vh;
   background-color: #ffffff;
-  padding-top: 0.5rem;
+  padding-left: 0;
 }
 
 @media (min-width: 769px) {
   .jc {
-    padding-top: 0.5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 

@@ -14,7 +14,10 @@ import { Job } from '../../models/job.model';
 })
 export class HomeComponent implements OnInit {
   jobs: Job[] = [];
+  filteredJobs: Job[] = [];
   walkinJobs: Job[] = [];
+  uniqueCompanies: string[] = [];
+  selectedCompany: string = '';
   isLoading: boolean = true;
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
@@ -35,6 +38,9 @@ export class HomeComponent implements OnInit {
             ...data[key]
           })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
 
+          this.filteredJobs = [...this.jobs];
+          this.extractUniqueCompanies();
+
           // Get all jobs with walkInDrive flag set to true
           this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 20);
 
@@ -50,6 +56,24 @@ export class HomeComponent implements OnInit {
       console.error('Error loading jobs:', error);
       this.isLoading = false;
       this.cdr.detectChanges();
+    }
+  }
+
+  extractUniqueCompanies() {
+    const companies = this.jobs
+      .map(job => job.company)
+      .filter((company): company is string => !!company);
+    this.uniqueCompanies = Array.from(new Set(companies)).sort();
+  }
+
+  filterByCompany(company: string) {
+    this.selectedCompany = company;
+    if (company) {
+      this.filteredJobs = this.jobs.filter(job => job.company === company);
+      this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true && job.company === company).slice(0, 20);
+    } else {
+      this.filteredJobs = [...this.jobs];
+      this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 20);
     }
   }
 

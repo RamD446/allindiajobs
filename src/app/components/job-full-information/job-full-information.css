@@ -4,10 +4,12 @@
 
 .container-fluid {
   padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .col-12 {
   padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .cursor-pointer {

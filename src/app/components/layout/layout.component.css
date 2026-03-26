@@ -1,36 +1,36 @@
 /* Main Layout Container */
 .app-layout {
   min-height: 100vh;
-  background-color: #ffffff;
-  padding-top: 110px; /* Account for fixed navbar (56px) + pills-bar (~54px) */
+  background-color: #f4f4f4;
+  padding-top: 70px; /* Reduced to fix excessive space between header and content */
 }
 
 .layout-container {
   max-width: 990px;
   margin: 0 auto;
-  padding: 0.5rem;
+  padding: 0.5rem 0; /* Removed horizontal padding */
   background-color: #ffffff;
 }
 
 /* Responsive Padding */
 @media (min-width: 769px) {
   .layout-container {
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 0.5rem; /* Minimal horizontal padding for desktop */
   }
 }
 
 @media (max-width: 768px) {
   .layout-container {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.25rem; /* Very small padding for mobile */
   }
 }
 
 @media (max-width: 576px) {
   .layout-container {
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem 0.15rem; /* Smallest padding for narrow mobile */
   }
   
   .app-layout {
-    padding-top: 100px; /* Adjust for smaller mobile navbar (48px) + pills-bar */
+    padding-top: 80px; /* Increased for mobile to provide better spacing from fixed header */
   }
 }

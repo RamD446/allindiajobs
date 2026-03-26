@@ -12,40 +12,22 @@
   </div>
 
   <!-- Content -->
-  <div *ngIf="!isLoading && filteredJobs.length > 0">
+  <div *ngIf="!isLoading && categoryJobs.length > 0">
     <div class="container-fluid">
-  
-
       <div class="row g-3">
         <!-- Main Column (col-8) -->
         <div class="col-12 col-md-8">
           
-          <!-- Latest Government Jobs (If applicable) -->
-          <div class="section-block mb-4" *ngIf="getGovJobs().length > 0">
+          <!-- Main Category Jobs -->
+          <div class="section-block mb-4" *ngIf="filteredJobs.length > 0">
             <div class="section-header">
-              Latest Government Jobs
+              Latest All {{ categoryTitle }}
             </div>
             <div class="section-content">
-              <div *ngFor="let job of getGovJobs()" class="section-item" (click)="viewJobDetails(job)">
+              <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
                 <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
                 <div class="item-meta-row">
                   <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
-                  <span *ngIf="job.walkInStartDate" class="item-meta">Walk-in: {{ job.walkInStartDate | date:'dd MMM yyyy' }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Main Category Jobs -->
-          <div class="section-block mb-4" *ngIf="getPrivateJobs().length > 0">
-            <div class="section-header">
-              {{ categoryTitle }}
-            </div>
-            <div class="section-content">
-              <!-- Walk-in categories -->
-              <div *ngIf="categoryTitle === 'Walk-in Drives' || categoryTitle === 'All Walk-in Drives' || categoryTitle === 'Today Walk-in Drives'">
-                <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
-                  <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
                   <span *ngIf="job.walkInStartDate" class="item-meta">
                     Walk-in: 
                     <ng-container *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate">
@@ -55,22 +37,6 @@
                       {{ job.walkInStartDate | date:'dd MMM' }}
                     </ng-container>
                   </span>
-                </div>
-              </div>
-              <!-- Government Jobs categories -->
-              <div *ngIf="categoryTitle === 'Government Jobs'">
-                <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
-                  <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
-                  <div class="item-meta-row">
-                    <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
-                    <span *ngIf="job.walkInStartDate" class="item-meta">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}</span>
-                  </div>
-                </div>
-              </div>
-              <!-- Other categories -->
-              <div *ngIf="categoryTitle !== 'Walk-in Drives' && categoryTitle !== 'All Walk-in Drives' && categoryTitle !== 'Today Walk-in Drives' && categoryTitle !== 'Government Jobs'">
-                <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
-                  <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
                 </div>
               </div>
             </div>
@@ -94,29 +60,20 @@
 
         <!-- Sidebar Column (col-4) -->
         <div class="col-12 col-md-4">
-          <!-- Recent Posts -->
           <div class="section-block mb-3">
-            <div class="section-header">
-              Recent Posts
-            </div>
+            <div class="section-header">Filter by Company</div>
             <div class="section-content">
-              <div *ngFor="let job of getRecentPosts()" class="section-item" (click)="viewJobDetails(job)">
-                <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
-                <div class="item-meta-row">
-                  <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
-                  <span *ngIf="job.walkInStartDate" class="item-meta">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}</span>
-                </div>
-                <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="item-meta">
-                  Walk-in: 
-                  <ng-container *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate">
-                    {{ job.walkInStartDate | date:'dd MMM' }} to {{ job.walkInEndDate | date:'dd MMM' }}
-                  </ng-container>
-                  <ng-container *ngIf="!job.walkInEndDate || job.walkInStartDate === job.walkInEndDate">
-                    {{ job.walkInStartDate | date:'dd MMM' }}
-                  </ng-container>
-                </span>
-              </div>
-              <div *ngIf="getRecentPosts().length === 0" class="text-center text-muted py-2">No recent posts</div>
+              <ul class="company-list">
+                <li class="company-item" [class.active]="selectedCompany === ''" (click)="filterByCompany('')">
+                  All Companies
+                </li>
+                <li *ngFor="let company of uniqueCompanies" 
+                    class="company-item" 
+                    [class.active]="selectedCompany === company"
+                    (click)="filterByCompany(company)">
+                  {{ company }}
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -125,7 +82,7 @@
   </div>
 
   <!-- Empty State -->
-  <div *ngIf="!isLoading && filteredJobs.length === 0" class="text-center my-5 py-5">
+  <div *ngIf="!isLoading && categoryJobs.length === 0" class="text-center my-5 py-5">
     <div class="mb-3">
       <i class="bi bi-search" style="font-size: 3rem; color: #90caf9;"></i>
     </div>

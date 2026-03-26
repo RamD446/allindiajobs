@@ -33,20 +33,12 @@ export class JobCategoryComponent implements OnInit {
   topPrivateJobs: Job[] = [];
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
-    'government-jobs': { title: 'Government Jobs', category: 'Government Jobs' },
-    'government-job-results': { title: 'Govt Job Results', category: 'GovernmentJobResults' },
-    'government-admit-cards': { title: 'Govt Admit Cards', category: 'GovernmentAdmitCards' },
-    'walk-in-drives': { title: 'All Walk-in Drives', category: 'Walk-in Drives' },
-    'banking-jobs': { title: 'Banking Jobs', category: 'Banking Jobs' },
-    'it-jobs': { title: 'IT Jobs', category: 'IT Jobs' },
-    'non-it-jobs': { title: 'Non-IT Jobs', category: 'Non-IT Jobs' },
-    'pharmaceutical-jobs': { title: 'Pharmaceutical Jobs', category: 'Pharmaceutical Jobs' },
-    'fresher-jobs': { title: 'Fresher Jobs', category: 'Fresher Jobs' },
-    'today-jobs': { title: 'Today Posted Jobs', category: 'Today Posted Jobs' },
-    'today-walkins': { title: 'Today Walk-in Drives', category: 'Today Walk-in Drives' },
-    'today-expired-gov-jobs': { title: 'Today Expired Gov Jobs', category: 'Today Expired Gov Jobs' },
-    'current-affairs': { title: 'Current Affairs', category: 'Current Affairs' },
-    'all-private-jobs': { title: 'All Private Jobs', category: 'All Private Jobs' }
+    'IT Walk-ins': { title: 'IT Walk-ins', category: 'IT Walk-ins' },
+    'BPO Walk-ins': { title: 'BPO Walk-ins', category: 'BPO Walk-ins' },
+    'Non-IT Walk-ins': { title: 'Non-IT Walk-ins', category: 'Non-IT Walk-ins' },
+    'Sales Walk-ins': { title: 'Sales Walk-ins', category: 'Sales Walk-ins' },
+    'Banking Walk-ins': { title: 'Banking Walk-ins', category: 'Banking Walk-ins' },
+    'Pharma Walk-ins': { title: 'Pharma Walk-ins', category: 'Pharma Walk-ins' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -61,8 +53,8 @@ export class JobCategoryComponent implements OnInit {
         this.categoryTitle = mapping.title;
         this.loadJobs(mapping.category);
       } else {
-        this.categoryTitle = 'Government Jobs';
-        this.loadJobs('Government Jobs');
+        this.categoryTitle = 'IT Walk-ins';
+        this.loadJobs('IT Walk-ins');
       }
       this.loadJobCareers();
     });
@@ -92,48 +84,16 @@ export class JobCategoryComponent implements OnInit {
           }));
           
           // Filter jobs by category
-          if (category === 'Banking Jobs') {
-            // Include all bank-related categories
-            this.filteredJobs = this.jobs.filter(job => 
-              job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
-            );
-          } else if (category === 'Fresher Jobs') {
-            this.filteredJobs = this.jobs.filter(job => job.experience === 'Fresher');
-          } else if (category === 'Today Posted Jobs') {
-            this.filteredJobs = this.jobs.filter(job => this.isToday(job.createdDate));
-          } else if (category === 'Today Walk-in Drives') {
-            this.filteredJobs = this.jobs.filter(job => this.isWalkInToday(job));
-          } else if (category === 'Today Expired Gov Jobs') {
-            this.filteredJobs = this.jobs.filter(job => job.category === 'Government Jobs' && job.lastDateToApply && this.isToday(job.lastDateToApply));
-          } else if (category === 'Walk-in Drives') {
-            // Include all jobs with walkInDrive flag true
-            this.filteredJobs = this.jobs.filter(job => job.walkInDrive === true);
-          } else if (category === 'All Private Jobs') {
-            // IT, Non-IT, Bank, Pharmaceutical - walkInDrive false/undefined only
-            this.filteredJobs = this.jobs.filter(job =>
-              job.walkInDrive !== true &&
-              ['IT Jobs', 'Non-IT Jobs', 'Bank Jobs', 'Pharmaceutical Jobs'].includes(job.category)
-            );
-          } else if (category === 'GovernmentJobResults') {
-            this.filteredJobs = this.jobs.filter(job => job.category === 'GovernmentJobResults');
-          } else if (category === 'GovernmentAdmitCards') {
-            this.filteredJobs = this.jobs.filter(job => job.category === 'GovernmentAdmitCards');
-          } else {
-            this.filteredJobs = this.jobs.filter(job => job.category === category);
-          }
+          this.filteredJobs = this.jobs.filter(job => job.category === category);
 
-          // Populate top 5 for sidebar
+          // Populate top 5 for sidebar (all walk-in jobs)
           this.topWalkins = this.jobs
             .filter(job => job.walkInDrive === true)
             .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
             .slice(0, 5);
 
           this.topPrivateJobs = this.jobs
-            .filter(job => 
-              job.category !== 'Government Jobs' && 
-              job.category !== 'GovernmentJobResults' &&
-              job.category !== 'GovernmentAdmitCards'
-            )
+            .filter(job => job.walkInDrive === true)
             .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
             .slice(0, 5);
           
@@ -233,7 +193,7 @@ export class JobCategoryComponent implements OnInit {
   }
 
   getTodayExpiredGovJobsCount(): number {
-    return this.jobs.filter(job => job.category === 'Government Jobs' && job.lastDateToApply && this.isToday(job.lastDateToApply)).length;
+    return this.jobs.filter(job => job.walkInDrive === true && job.walkInStartDate && this.isToday(job.walkInStartDate)).length;
   }
 
   getTimeAgo(dateString: string): string {
@@ -273,11 +233,6 @@ export class JobCategoryComponent implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (job.category === 'Government Jobs' && job.lastDateToApply) {
-      const lastDate = new Date(job.lastDateToApply);
-      lastDate.setHours(0, 0, 0, 0);
-      return lastDate.getTime() < today.getTime();
-    }
     // Check if any job with walkInDrive flag has expired
     if (job.walkInDrive === true && job.walkInEndDate) {
       const endDate = new Date(job.walkInEndDate);
@@ -410,14 +365,12 @@ export class JobCategoryComponent implements OnInit {
   // Navigate to different job categories
   navigateToCategory(category: string) {
     const routeMapping: { [key: string]: string } = {
-      'Government Jobs': 'government-jobs',
-      'GovernmentJobResults': 'government-job-results',
-      'Walk-in Drives': 'walk-in-drives',
-      'Banking Jobs': 'banking-jobs',
-      'IT Jobs': 'it-jobs',
-      'Non-IT Jobs': 'non-it-jobs',
-      'Pharmaceutical Jobs': 'pharmaceutical-jobs',
-      'TeluguToEnglishLearning': 'telugu-to-english-learning'
+      'IT Walk-ins': 'IT Walk-ins',
+      'BPO Walk-ins': 'BPO Walk-ins',
+      'Non-IT Walk-ins': 'Non-IT Walk-ins',
+      'Sales Walk-ins': 'Sales Walk-ins',
+      'Banking Walk-ins': 'Banking Walk-ins',
+      'Pharma Walk-ins': 'Pharma Walk-ins'
     };
 
     const route = routeMapping[category];
@@ -448,7 +401,7 @@ export class JobCategoryComponent implements OnInit {
   }
 
   getUniqueExperienceLevels(): string[] {
-    const exps = [...new Set(this.filteredJobs.map(job => job.experienceLevel))];
+    const exps = [...new Set(this.filteredJobs.map(job => job.experience))];
     return exps.filter((e): e is string => !!e).sort();
   }
 
@@ -492,7 +445,7 @@ export class JobCategoryComponent implements OnInit {
   }
 
   getJobCountByExperience(exp: string): number {
-    return this.filteredJobs.filter(job => job.experienceLevel === exp).length;
+    return this.filteredJobs.filter(job => job.experience === exp).length;
   }
 
   getJobCountBySalary(sal: string): number {
@@ -621,7 +574,7 @@ export class JobCategoryComponent implements OnInit {
 
     // Apply experience level filters
     if (this.selectedExperienceLevels.length > 0) {
-      filtered = filtered.filter(job => job.experienceLevel && this.selectedExperienceLevels.includes(job.experienceLevel));
+      filtered = filtered.filter(job => job.experience && this.selectedExperienceLevels.includes(job.experience));
     }
 
     // Apply salary filters

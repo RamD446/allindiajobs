@@ -162,16 +162,19 @@
           
           <form (ngSubmit)="saveJob()" #jobFormRef="ngForm" class="job-form-body">
             <div class="row">
-              <!-- Basic Info - 3 Columns for compact view -->
-              <div class="col-md-4 mb-3">
+              <!-- Job Title -->
+              <div class="col-md-6 mb-3">
                 <label class="form-label">Job Title *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Software Engineer">
+                <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Business Development Executive">
+              </div>
+
+              <!-- Company Name -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Company Name *</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" required placeholder="e.g. Tech Solutions Pvt Ltd">
               </div>
               
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category !== 'Government Jobs' && jobForm.category !== 'GovernmentJobResults' && jobForm.category !== 'GovernmentAdmitCards' && jobForm.category !== 'Current Affairs'">
-                <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" placeholder="e.g. Tech Solutions">
-              </div>
-              
+              <!-- Category -->
               <div class="col-md-4 mb-3">
                 <label class="form-label">Category *</label>
                 <select class="form-control" [(ngModel)]="jobForm.category" name="category" required>
@@ -179,20 +182,28 @@
                 </select>
               </div>
 
-              <div class="col-md-4 mb-3" *ngIf="['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
+              <!-- Qualification -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Qualification *</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.qualification" name="qualification" required placeholder="e.g. Any Graduate/10th/12th">
+              </div>
+
+              <!-- Experience -->
+              <div class="col-md-4 mb-3">
                 <label class="form-label">Experience *</label>
                 <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
                   <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>
                 </select>
               </div>
 
-              <div class="col-md-4 mb-3" *ngIf="editingJob">
-                <label class="form-label">Created Date & Time *</label>
-                <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" required>
+              <!-- Salary -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Salary</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.salary" name="salary" placeholder="e.g. 15000-25000 per month">
               </div>
 
-              <!-- Walk-In Drive checkbox for Private, IT, Non-IT, Pharmaceutical, and Bank Jobs -->
-              <div class="col-md-4 mb-3" *ngIf="jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs'">
+              <!-- Walk-in Checkbox -->
+              <div class="col-md-4 mb-3">
                 <div class="form-check mt-4">
                   <input type="checkbox" class="form-check-input" id="walkInDriveCheck" [(ngModel)]="jobForm.walkInDrive" name="walkInDrive">
                   <label class="form-check-label" for="walkInDriveCheck">
@@ -201,106 +212,104 @@
                 </div>
               </div>
 
-              <!-- Conditional Fields - also responsive -->
-              <ng-container *ngIf="(jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs') && jobForm.walkInDrive">
-                <div class="col-md-4 mb-3">
-                  <label class="form-label text-danger">Walk-in Start Date *</label>
-                  <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" >
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label text-danger">Walk-in End Date *</label>
-                  <input type="date" class="form-control border-danger" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate" >
-                </div>
-              </ng-container>
-
-              <ng-container *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <div class="col-md-2 mb-3">
-                  <label class="form-label text-primary">Last Date *</label>
-                  <input type="date" class="form-control border-primary px-1" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply">
-                </div>
-                <div class="col-md-2 mb-3">
-                  <label class="form-label text-primary">Total Posts</label>
-                  <input type="text" class="form-control border-primary" [(ngModel)]="jobForm.totalPosts" name="totalPosts" placeholder="Total Posts">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label text-primary">Notification Link</label>
-                  <div class="input-group">
-                    <span class="input-group-text border-primary px-2"><i class="bi bi-link-45deg"></i></span>
-                    <input type="url" class="form-control border-primary" [(ngModel)]="jobForm.otherLink" name="otherLink" placeholder="Notification URL">
-                  </div>
-                </div>
-              </ng-container>
-
-              <ng-container *ngIf="jobForm.category === 'IT Jobs' || jobForm.category === 'Non-IT Jobs' || jobForm.category === 'Pharmaceutical Jobs' || jobForm.category === 'Bank Jobs'">
-                <div class="col-md-12 mb-3">
-                  <label class="form-label">Address and Contact</label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-card-text"></i></span>
-                    <input type="text" class="form-control" [(ngModel)]="jobForm.addressAndContact" name="addressAndContact" placeholder="Full address or contact info">
-                  </div>
-                </div>
-              </ng-container>
-
-              <!-- Qualification field - Only visible when editing -->
-              <div class="col-md-12 mb-3" *ngIf="editingJob && jobForm.category !== 'Current Affairs' && jobForm.category !== 'GovernmentJobResults'">
-                <label class="form-label">Qualification</label>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
-                  <input type="text" class="form-control" [(ngModel)]="jobForm.qualification" name="qualification" placeholder="Enter qualification details">
-                </div>
+              <!-- Walk-in Start Date & Time - Only when Walk-In Drive is checked -->
+              <div class="col-md-6 mb-3" *ngIf="jobForm.walkInDrive">
+                <label class="form-label">Walk-in Start Date & Time *</label>
+                <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" [required]="jobForm.walkInDrive">
               </div>
 
-              <!-- Description - Full Row -->
-              <div class="col-12 ">
-                <label class="form-label d-flex justify-content-between">
-                  <span>Job Description *</span>
-                </label>
+              <!-- Walk-in End Date - Only when Walk-In Drive is checked -->
+              <div class="col-md-6 mb-3" *ngIf="jobForm.walkInDrive">
+                <label class="form-label">Walk-in End Date</label>
+                <input type="date" class="form-control" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate">
+              </div>
+
+              <!-- Venue Address -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Venue Address *</label>
+                <textarea class="form-control" [(ngModel)]="jobForm.addressAndContact" name="addressAndContact" required placeholder="Complete address with landmarks" rows="2"></textarea>
+              </div>
+
+              <!-- Contact Details -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Contact Details</label>
+                <input type="text" class="form-control" [(ngModel)]="jobForm.contactInfo" name="contactInfo" placeholder="Phone number, email, or contact person">
+              </div>
+
+              <!-- Created Date & Time (Only when editing) -->
+              <div class="col-md-6 mb-3" *ngIf="editingJob">
+                <label class="form-label">Created Date & Time *</label>
+                <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" required>
+              </div>
+
+              <!-- Job Description -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Job Description *</label>
                 <textarea 
                   [(ngModel)]="jobForm.description" 
                   name="description" 
                   class="form-control description-textarea"
                   placeholder="Detailed job description..."
-                  required>
+                  required
+                  rows="4">
                 </textarea>
               </div>
 
-              <!-- How To Apply field -->
-              <div class="col-12 mt-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <label class="form-label d-flex justify-content-between">
-                  <span>How To Apply</span>
-                </label>
+              <!-- How to Apply -->
+              <div class="col-12 mb-3">
+                <label class="form-label">How to Apply</label>
                 <textarea
                   [(ngModel)]="jobForm.howToApply"
                   name="howToApply"
                   class="form-control description-textarea"
-                  placeholder="Add application instructions...">
+                  placeholder="Application instructions..."
+                  rows="3">
                 </textarea>
               </div>
 
-              <!-- Selection Process -->
-              <div class="col-12 mt-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <label class="form-label d-flex justify-content-between">
-                  <span>Selection Process</span>
-                </label>
+              <!-- Key Responsibilities -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Key Responsibilities</label>
                 <textarea
-                  [(ngModel)]="jobForm.selectionProcess"
-                  name="selectionProcess"
+                  [(ngModel)]="jobForm.keyResponsibilities"
+                  name="keyResponsibilities"
                   class="form-control description-textarea"
-                  placeholder="Add selection process details...">
+                  placeholder="Key job responsibilities..."
+                  rows="3">
                 </textarea>
               </div>
 
-              <!-- Important Dates -->
-              <div class="col-12 mt-3" *ngIf="jobForm.category === 'Government Jobs' || ['Bank Jobs', 'IT Jobs', 'Non-IT Jobs', 'Pharmaceutical Jobs'].includes(jobForm.category)">
-                <label class="form-label d-flex justify-content-between">
-                  <span>Important Dates</span>
-                </label>
+              <!-- Documents Required -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Documents Required</label>
                 <textarea
-                  [(ngModel)]="jobForm.importantDates"
-                  name="importantDates"
+                  [(ngModel)]="jobForm.documentsRequired"
+                  name="documentsRequired"
                   class="form-control description-textarea"
-                  placeholder="Add important dates...">
+                  placeholder="List required documents..."
+                  rows="3">
                 </textarea>
+              </div>
+
+              <!-- Eligibility Criteria -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Eligibility Criteria</label>
+                <textarea
+                  [(ngModel)]="jobForm.eligibilityCriteria"
+                  name="eligibilityCriteria"
+                  class="form-control description-textarea"
+                  placeholder="Eligibility criteria..."
+                  rows="3">
+                </textarea>
+              </div>
+
+              <!-- Apply Official Link -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Apply Official Link</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                  <input type="url" class="form-control" [(ngModel)]="jobForm.otherLink" name="otherLink" placeholder="https://company.com/apply">
+                </div>
               </div>
 
             </div>
@@ -385,23 +394,25 @@
                 <div class="job-meta-info mb-2">
                   <small class="text-muted me-3" *ngIf="!job.updatedDate"><i class="bi bi-calendar3 me-1"></i>Posted: {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}</small>
                   <small class="text-info me-3" *ngIf="job.updatedDate"><i class="bi bi-pencil-square me-1"></i>Updated: {{ job.updatedDate | date:'yyyy-MM-dd HH:mm' }}</small>
-                  <small class="text-muted" *ngIf="job.addressAndContact"><i class="bi bi-geo-alt me-1"></i>{{ job.addressAndContact }}</small>
                 </div>
 
-                <!-- Gov Job Details Quick View -->
-                <div class="gov-details-compact mb-2 p-2 bg-light rounded border-start border-primary border-3" *ngIf="job.category === 'Government Jobs'">
+                <!-- Walk-in Job Details Quick View -->
+                <div class="gov-details-compact mb-2 p-2 bg-light rounded border-start border-success border-3">
                   <div class="row g-2 small">
-                    <div class="col-6 col-md-3" *ngIf="job.lastDateToApply">
-                      <strong>Last Date:</strong> {{ job.lastDateToApply | date:'yyyy-MM-dd' }}
+                    <div class="col-6 col-md-4" *ngIf="job.qualification">
+                      <strong>Qualification:</strong> {{ job.qualification }}
                     </div>
-                    <div class="col-6 col-md-3" *ngIf="job.ageCriteria">
-                      <strong>Age:</strong> {{ job.ageCriteria }}
+                    <div class="col-6 col-md-4" *ngIf="job.experience">
+                      <strong>Experience:</strong> {{ job.experience }}
                     </div>
-                    <div class="col-6 col-md-3" *ngIf="job.salary">
-                      <strong>Salary:</strong> {{ job.salary }}
+                    <div class="col-6 col-md-4" *ngIf="job.walkInStartDate">
+                      <strong>Walk-in Start:</strong> {{ job.walkInStartDate | date:'dd MMM, hh:mm a' }}
                     </div>
-                    <div class="col-6 col-md-3" *ngIf="job.totalPosts">
-                      <strong>Posts:</strong> {{ job.totalPosts }}
+                    <div class="col-6 col-md-4" *ngIf="job.walkInEndDate">
+                      <strong>Walk-in End:</strong> {{ job.walkInEndDate | date:'dd MMM yyyy' }}
+                    </div>
+                    <div class="col-12" *ngIf="job.addressAndContact">
+                      <strong>Venue:</strong> {{ job.addressAndContact }}
                     </div>
                     <div class="col-12" *ngIf="job.otherLink">
                       <strong>Link:</strong> <a [href]="job.otherLink" target="_blank" class="text-truncate d-inline-block" style="max-width: 250px;">{{ job.otherLink }}</a>

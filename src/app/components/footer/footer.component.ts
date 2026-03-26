@@ -17,11 +17,12 @@ export class FooterComponent {
 
   quickLinks = [
     { name: 'Home', route: '/' },
-    { name: 'All Govt Jobs', route: '/government-jobs' },
-    { name: 'All Walk-in Interviews', route: '/walk-in-drives' },
-    { name: 'All Private Jobs', route: '/private-jobs' },
-    { name: 'Govt Job Results', route: '/government-job-results' },
-    { name: 'Current Affairs', route: '/current-affairs' }
+    { name: 'IT Walk-ins', route: '/IT Walk-ins' },
+    { name: 'BPO Walk-ins', route: '/BPO Walk-ins' },
+    { name: 'Non-IT Walk-ins', route: '/Non-IT Walk-ins' },
+    { name: 'Sales Walk-ins', route: '/Sales Walk-ins' },
+    { name: 'Banking Walk-ins', route: '/Banking Walk-ins' },
+    { name: 'Pharma Walk-ins', route: '/Pharma Walk-ins' }
   ];
 
   @HostListener('window:beforeinstallprompt', ['$event'])

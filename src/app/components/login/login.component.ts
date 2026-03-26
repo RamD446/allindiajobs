@@ -41,27 +41,27 @@ export class LoginComponent implements OnInit {
     title: '',
     company: '',
     category: '',
-    description: '',
-    selectionProcess: '',
-    importantDates: '',
-    createdDate: '', // Will be set in constructor or reset
-    experience: 'Fresher',
+    qualification: '',
+    experience: 'Freshers',
+    salary: '',
     walkInStartDate: '',
     walkInEndDate: '',
-    lastDateToApply: '',
     addressAndContact: '',
-    walkInDrive: false,
-    jobType: '',
-    qualification: '',
+    contactInfo: '',
+    description: '',
     howToApply: '',
-    totalPosts: '',
-    otherLink: ''
+    keyResponsibilities: '',
+    documentsRequired: '',
+    eligibilityCriteria: '',
+    otherLink: '',
+    walkInDrive: false,
+    createdDate: ''
   };
 
   jobCategories: string[] = [];
   privateJobTypes: string[] = [...PRIVATE_JOB_TYPES];
   careerJobTypes: string[] = [...CAREER_JOB_TYPES];
-  experienceOptions: string[] = ['Fresher', 'Experience'];
+  experienceOptions: string[] = ['Freshers', 'Experienced'];
 
   // Career form
   careerForm: JobCareer = {
@@ -284,15 +284,26 @@ export class LoginComponent implements OnInit {
       formattedDate = this.toLocalIsoString(new Date(job.createdDate));
     }
     
+    let formattedWalkInStart = '';
+    if (job.walkInStartDate) {
+      formattedWalkInStart = this.toLocalIsoString(new Date(job.walkInStartDate));
+    }
+    
     this.jobForm = { 
       ...job,
-      selectionProcess: job.selectionProcess || '',
-      importantDates: job.importantDates || '',
-      addressAndContact: job.addressAndContact || '',
       qualification: job.qualification || '',
+      experience: job.experience || 'Freshers',
+      salary: job.salary || '',
+      walkInStartDate: formattedWalkInStart || '',
+      walkInEndDate: job.walkInEndDate || '',
+      addressAndContact: job.addressAndContact || '',
+      contactInfo: job.contactInfo || '',
       howToApply: job.howToApply || '',
-      totalPosts: job.totalPosts || '',
+      keyResponsibilities: job.keyResponsibilities || '',
+      documentsRequired: job.documentsRequired || '',
+      eligibilityCriteria: job.eligibilityCriteria || '',
       otherLink: job.otherLink || '',
+      walkInDrive: job.walkInDrive || false,
       createdDate: formattedDate || this.toLocalIsoString(new Date())
     };
   }
@@ -475,21 +486,21 @@ export class LoginComponent implements OnInit {
       title: '',
       company: '',
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
-      description: '',
-      selectionProcess: '',
-      importantDates: '',
-      createdDate: this.toLocalIsoString(new Date()),
+      qualification: '',
       experience: this.experienceOptions[0],
+      salary: '',
       walkInStartDate: '',
       walkInEndDate: '',
-      lastDateToApply: '',
       addressAndContact: '',
-      walkInDrive: false,
-      jobType: '',
-      qualification: '',
+      contactInfo: '',
+      description: '',
       howToApply: '',
-      totalPosts: '',
-      otherLink: ''
+      keyResponsibilities: '',
+      documentsRequired: '',
+      eligibilityCriteria: '',
+      otherLink: '',
+      walkInDrive: false,
+      createdDate: this.toLocalIsoString(new Date())
     };
   }
 

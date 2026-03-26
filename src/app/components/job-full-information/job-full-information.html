@@ -37,10 +37,7 @@
 
             <!-- 1. Job Description -->
             <div class="jfi-section">
-              <div class="d-flex align-items-center gap-2 mb-2">
-             
-               
-              </div>
+              <h6 class="jfi-section-title">Job Description :</h6>
               <div *ngIf="isRichText(job.description)" class="jfi-rich-desc" [innerHTML]="getSafeHtml(job.description)"></div>
               <div *ngIf="!isRichText(job.description)" class="jfi-desc-paragraphs">
                 <ol>
@@ -49,13 +46,41 @@
               </div>
             </div>
 
-            <!-- 2. How to Apply -->
+            <!-- 2. Key Responsibilities -->
+            <ng-container *ngIf="job.keyResponsibilities">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Key Responsibilities :</h6>
+                <div *ngIf="isRichText(job.keyResponsibilities)" [innerHTML]="getSafeHtml(job.keyResponsibilities)"></div>
+                <p *ngIf="!isRichText(job.keyResponsibilities)" class="plain-text-box mb-0">{{ job.keyResponsibilities }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 3. Eligibility Criteria -->
+            <ng-container *ngIf="job.eligibilityCriteria">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Eligibility Criteria :</h6>
+                <div *ngIf="isRichText(job.eligibilityCriteria)" [innerHTML]="getSafeHtml(job.eligibilityCriteria)"></div>
+                <p *ngIf="!isRichText(job.eligibilityCriteria)" class="plain-text-box mb-0">{{ job.eligibilityCriteria }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 4. Documents Required -->
+            <ng-container *ngIf="job.documentsRequired">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Documents Required :</h6>
+                <div *ngIf="isRichText(job.documentsRequired)" [innerHTML]="getSafeHtml(job.documentsRequired)"></div>
+                <p *ngIf="!isRichText(job.documentsRequired)" class="plain-text-box mb-0">{{ job.documentsRequired }}</p>
+              </div>
+            </ng-container>
+
+            <!-- 5. How to Apply -->
             <ng-container *ngIf="job.howToApply">
               <hr class="jfi-divider">
               <div class="jfi-section">
-                <h6 class="jfi-section-title">
-                  How to Apply :
-                </h6>
+                <h6 class="jfi-section-title">How to Apply :</h6>
                 <div *ngIf="isRichText(job.howToApply)" [innerHTML]="getSafeHtml(job.howToApply)"></div>
                 <div *ngIf="!isRichText(job.howToApply)" class="how-to-apply-list">
                   <div *ngFor="let note of getHowToApplyList(job.howToApply); let i = index" class="how-to-apply-item">
@@ -66,83 +91,36 @@
               </div>
             </ng-container>
 
-            <!-- 4. Short Details of Notification -->
-            <ng-container *ngIf="job.selectionProcess">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Short Details of Notification :</h6>
-                <div *ngIf="isRichText(job.selectionProcess)" [innerHTML]="getSafeHtml(job.selectionProcess)"></div>
-                <p *ngIf="!isRichText(job.selectionProcess)" class="plain-text-box mb-0">{{ job.selectionProcess }}</p>
-              </div>
-            </ng-container>
-
-            <!-- 5. Important Dates -->
-            <ng-container *ngIf="job.importantDates">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Important Dates :</h6>
-                <div class="table-responsive">
-                  <table class="table table-bordered mb-0">
-                    <tbody>
-                      <tr *ngFor="let line of job.importantDates.split('\n')">
-                        <th class="w-50" *ngIf="line.includes(':')">{{ line.split(':')[0] }}</th>
-                        <td class="w-50" *ngIf="line.includes(':')">{{ line.split(':')[1] }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </ng-container>
-
-            <!-- 6a. Mode of Application
-            <ng-container *ngIf="job.modeOfApplication">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Mode of Application :</h6>
-                <p class="plain-text-box mb-0">{{ job.modeOfApplication }}</p>
-              </div>
-            </ng-container> -->
-
-            <!-- 6c. Application Start Date -->
-            <!-- <ng-container *ngIf="job.applicationStartDate">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                <h6 class="jfi-section-title">Application Start Date :</h6>
-                <p class="plain-text-box mb-0">{{ job.applicationStartDate }}</p>
-              </div>
-            </ng-container> -->
-
-            <!-- 7. Qualification -->
-            <ng-container *ngIf="job.qualification">
-              <hr class="jfi-divider">
-              <div class="jfi-section">
-                    <h6 class="jfi-section-title">Qualification :</h6>
-                <p class="plain-text-box mb-0">{{ job.qualification }}</p>
-              </div>
-            </ng-container>
-
-            <!-- 8. Address & Contact -->
+            <!-- 6. Venue Address -->
             <ng-container *ngIf="job.addressAndContact">
               <hr class="jfi-divider">
               <div class="jfi-section">
-                <h6 class="jfi-section-title">
-                Interview Address / Contact :
-                </h6>
+                <h6 class="jfi-section-title">Venue Address :</h6>
                 <p class="plain-text-box mb-0">{{ job.addressAndContact }}</p>
               </div>
             </ng-container>
 
+            <!-- 7. Contact Details -->
+            <ng-container *ngIf="job.contactInfo">
+              <hr class="jfi-divider">
+              <div class="jfi-section">
+                <h6 class="jfi-section-title">Contact Details :</h6>
+                <p class="plain-text-box mb-0">{{ job.contactInfo }}</p>
+              </div>
+            </ng-container>
+
             <hr class="jfi-divider mt-4">
-                  <!-- 9. Official Links -->
-        <div class="jfi-section" *ngIf="job.otherLink">
-          <h6 class="jfi-section-title">Visit Official Links :</h6>
-          <div class="official-links-buttons">
-            <a *ngIf="job.otherLink" [href]="job.otherLink" target="_blank" class="official-link-btn notification-btn">
-              <i class="bi bi-file-earmark-text"></i>
-              <span>Notification</span>
-            </a>
-          </div>
-        </div>
+
+            <!-- 8. Official Links -->
+            <div class="jfi-section" *ngIf="job.otherLink">
+              <h6 class="jfi-section-title">Apply Official Link :</h6>
+              <div class="official-links-buttons">
+                <a *ngIf="job.otherLink" [href]="job.otherLink" target="_blank" class="official-link-btn notification-btn">
+                  <i class="bi bi-link-45deg"></i>
+                  <span>Apply Now</span>
+                </a>
+              </div>
+            </div>
 
             <hr class="jfi-divider mt-4">
 
@@ -174,7 +152,7 @@
       <div class="col-12 col-md-5">
         
         <!-- Job Information Table -->
-        <div class="jfi-info-table mb-3" *ngIf="job.otherLink || job.company || job.walkInStartDate || job.lastDateToApply || job.qualification">
+        <div class="jfi-info-table mb-3" *ngIf="job.company || job.qualification || job.experience || job.walkInStartDate">
           <div class="card border-0 jfi-table-card">
             <div class="card-header jfi-table-header">
               <i class="bi bi-info-circle-fill me-2"></i>Job Information
@@ -186,30 +164,33 @@
                     <th class="jfi-th">Company</th>
                     <td class="fw-bold text-primary jfi-td">{{ job.company }}</td>
                   </tr>
-                  <tr *ngIf="job.walkInStartDate">
-                    <th class="jfi-th">Walk-in Dates</th>
-                    <td class="text-success fw-bold jfi-td">
-                      {{ job.walkInStartDate | date:'dd MMMM' }}
-                      <span *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate"> – {{ job.walkInEndDate | date:'dd MMMM' }}</span>
-                    </td>
-                  </tr>
-                  <tr *ngIf="job.category === 'Government Jobs' && job.lastDateToApply">
-                    <th class="jfi-th">Last Date</th>
-                    <td class="text-danger fw-bold jfi-td">{{ job.lastDateToApply | date:'dd MMMM yyyy' }}</td>
-                  </tr>
-                  <tr *ngIf="job.category === 'Government Jobs' && job.totalPosts">
-                    <th class="jfi-th">Total Posts</th>
-                    <td class="jfi-td">{{ job.totalPosts }}</td>
-                  </tr>
                   <tr *ngIf="job.qualification">
                     <th class="jfi-th">Qualification</th>
                     <td class="jfi-td">{{ job.qualification }}</td>
                   </tr>
+                  <tr *ngIf="job.experience">
+                    <th class="jfi-th">Experience</th>
+                    <td class="jfi-td">{{ job.experience }}</td>
+                  </tr>
+                  <tr *ngIf="job.salary">
+                    <th class="jfi-th">Salary</th>
+                    <td class="jfi-td">{{ job.salary }}</td>
+                  </tr>
+                  <tr *ngIf="job.walkInStartDate">
+                    <th class="jfi-th">Walk-in Start</th>
+                    <td class="text-success fw-bold jfi-td">
+                      {{ job.walkInStartDate | date:'dd MMM yyyy, hh:mm a' }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="job.walkInEndDate">
+                    <th class="jfi-th">Walk-in End</th>
+                    <td class="text-danger fw-bold jfi-td">{{ job.walkInEndDate | date:'dd MMM yyyy' }}</td>
+                  </tr>
                   <tr *ngIf="job.otherLink">
-                    <th class="jfi-th">Notification Link</th>
+                    <th class="jfi-th">Apply Link</th>
                     <td class="jfi-td">
                       <a [href]="job.otherLink" target="_blank" class="btn btn-sm btn-info text-white rounded-pill fw-bold jfi-apply-btn">
-                        <i class="bi bi-link-45deg me-1"></i>View Notification
+                        <i class="bi bi-link-45deg me-1"></i>Apply Now
                       </a>
                     </td>
                   </tr>

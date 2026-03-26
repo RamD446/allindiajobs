@@ -336,17 +336,11 @@ export class JobFullInformation implements OnInit {
     if (job.walkInEndDate && job.walkInEndDate !== job.walkInStartDate) {
       messageParts.push(`*Walk-in End :* ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
     }
-    if (job.lastDateToApply) {
-      messageParts.push(`*Last Date to Apply :* ${new Date(job.lastDateToApply).toLocaleDateString('en-GB')}`);
-    }
-    if (job.ageCriteria) {
-      messageParts.push(`*Age Criteria :* ${job.ageCriteria}`);
+    if (job.experience) {
+      messageParts.push(`*Experience :* ${job.experience}`);
     }
     if (job.salary) {
       messageParts.push(`*Salary :* ${job.salary}`);
-    }
-    if (job.totalPosts) {
-      messageParts.push(`*Total Posts :* ${job.totalPosts}`);
     }
     if (job.addressAndContact) {
       messageParts.push(`*Location :* ${job.addressAndContact}`);
@@ -419,10 +413,12 @@ export class JobFullInformation implements OnInit {
 
   navigateToCategory(category: string) {
     const routeMapping: { [key: string]: string } = {
-      'Government Jobs': 'government-jobs',
-      'Walk-in Drives': 'walk-in-drives',
-      'Banking Jobs': 'banking-jobs',
-      'IT Jobs': 'it-jobs'
+      'IT Walk-ins': 'IT Walk-ins',
+      'BPO Walk-ins': 'BPO Walk-ins',
+      'Non-IT Walk-ins': 'Non-IT Walk-ins',
+      'Sales Walk-ins': 'Sales Walk-ins',
+      'Banking Walk-ins': 'Banking Walk-ins',
+      'Pharma Walk-ins': 'Pharma Walk-ins'
     };
 
     const route = routeMapping[category];

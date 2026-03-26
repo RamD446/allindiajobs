@@ -29,8 +29,8 @@
               <div *ngFor="let job of getGovJobs()" class="section-item" (click)="viewJobDetails(job)">
                 <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
                 <div class="item-meta-row">
-                  <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
-                  <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                  <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
+                  <span *ngIf="job.walkInStartDate" class="item-meta">Walk-in: {{ job.walkInStartDate | date:'dd MMM yyyy' }}</span>
                 </div>
               </div>
             </div>
@@ -62,8 +62,8 @@
                 <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
                   <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
                   <div class="item-meta-row">
-                    <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
-                    <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                    <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
+                    <span *ngIf="job.walkInStartDate" class="item-meta">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}</span>
                   </div>
                 </div>
               </div>
@@ -102,9 +102,9 @@
             <div class="section-content">
               <div *ngFor="let job of getRecentPosts()" class="section-item" (click)="viewJobDetails(job)">
                 <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
-                <div class="item-meta-row" *ngIf="job.category === 'Government Jobs'">
-                  <span *ngIf="job.lastDateToApply" class="item-meta">Last Date: {{ job.lastDateToApply | date:'dd MMM yyyy' }}</span>
-                  <span *ngIf="job.totalPosts" class="item-meta">Posts: {{ job.totalPosts }}</span>
+                <div class="item-meta-row">
+                  <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
+                  <span *ngIf="job.walkInStartDate" class="item-meta">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}</span>
                 </div>
                 <span *ngIf="job.category === 'Walk-in Drives' && job.walkInStartDate" class="item-meta">
                   Walk-in: 

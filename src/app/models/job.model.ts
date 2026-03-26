@@ -4,50 +4,32 @@ export interface Job {
   title: string;
   company: string;
   category: string;
-  description: string;
-  contactInfo?: string;
-  createdDate: string;
+  qualification?: string;
   experience?: string;
-  // Optional additional fields
-  companyDescription?: string;
-  companySize?: string;
-  applicationInstructions?: string;
-  applicationEmail?: string;
-  modeOfApplication?: string;
-  ageRelaxation?: string;
-  applicationStartDate?: string;
-  requirements?: string;
-  benefits?: string;
-  experienceLevel?: string;
   salary?: string;
   walkInStartDate?: string;
   walkInEndDate?: string;
-  lastDateToApply?: string;
-  eligibilityCriteria?: string;
-  selectionProcess?: string;
-  importantDates?: string;
-  applicationFee?: string;
-  updatedDate?: string;
   addressAndContact?: string;
-  walkInDrive?: boolean;
-  jobType?: string;
-  qualification?: string;
+  contactInfo?: string;
+  description: string;
   howToApply?: string;
-  ageCriteria?: string;
-  totalPosts?: string;
+  keyResponsibilities?: string;
+  documentsRequired?: string;
+  eligibilityCriteria?: string;
   otherLink?: string;
+  walkInDrive?: boolean;
+  createdDate: string;
+  updatedDate?: string;
 }
 
-// Job Categories - simplified list as requested
+// Job Categories - Walk-in categories
 export const DEFAULT_JOB_CATEGORIES = [
-  'Government Jobs',
-  'GovernmentJobResults',
-  'GovernmentAdmitCards',
-  'Bank Jobs',
-  'IT Jobs',
-  'Non-IT Jobs',
-  'Pharmaceutical Jobs',
-  'Current Affairs',
+  'IT Walk-ins',
+  'BPO Walk-ins',
+  'Non-IT Walk-ins',
+  'Sales Walk-ins',
+  'Banking Walk-ins',
+  'Pharma Walk-ins'
 ] as const;
 
 // Job Types for Private Jobs with Walk-In Drive

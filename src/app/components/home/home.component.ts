@@ -14,12 +14,7 @@ import { Job } from '../../models/job.model';
 })
 export class HomeComponent implements OnInit {
   jobs: Job[] = [];
-  govJobs: Job[] = [];
-  govResultsJobs: Job[] = [];
-  privateJobs: Job[] = [];
-  allPrivateJobs: Job[] = [];
   walkinJobs: Job[] = [];
-  currentAffairsJobs: Job[] = [];
   isLoading: boolean = true;
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
@@ -40,31 +35,8 @@ export class HomeComponent implements OnInit {
             ...data[key]
           })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
 
-          this.govJobs = this.jobs.filter(job => job.category === 'Government Jobs').slice(0, 10);
-          
-          this.govResultsJobs = this.jobs.filter(job => 
-            job.category === 'GovernmentJobResults' || 
-            job.category === 'GovernmentAdmitCards'
-          ).slice(0, 10);
-
-          this.privateJobs = this.jobs.filter(job => 
-            job.category !== 'Government Jobs' && 
-            job.category !== 'GovernmentJobResults' &&
-            job.category !== 'GovernmentAdmitCards' &&
-            job.category !== 'Health and Career Tips' && 
-            job.category !== 'Motivation Stories'
-          ).slice(0, 10);
-
-          // All Private Jobs (walkInDrive false/undefined) - IT, Non-IT, Bank, Pharmaceutical
-          this.allPrivateJobs = this.jobs.filter(job =>
-            job.walkInDrive !== true &&
-            ['IT Jobs', 'Non-IT Jobs', 'Bank Jobs', 'Pharmaceutical Jobs'].includes(job.category)
-          ).slice(0, 10);
-
           // Get all jobs with walkInDrive flag set to true
-          this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 10);
-
-          this.currentAffairsJobs = this.jobs.filter(job => job.category === 'Current Affairs').slice(0, 10);
+          this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 20);
 
         }
         this.isLoading = false;

@@ -344,7 +344,7 @@
 
 /* Fix layout and prevent page jumping */
 .container-fluid {
-  max-width: 1400px;
+  width: 100%;
 }
 
 /* Job Form Modal */
@@ -365,7 +365,7 @@
   background: white;
   border-radius: 20px;
   width: 98%;
-  max-width: 1500px;
+  max-width: 990px;
   max-height: 98vh;
   overflow-y: auto;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);

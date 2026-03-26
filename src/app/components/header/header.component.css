@@ -1,3 +1,9 @@
+/* Header Container */
+header {
+  max-width: 990px;
+  margin: 0 auto;
+}
+
 /* Menu Toggle Button */
 .navbar-inner {
   display: flex;
@@ -315,25 +321,41 @@
 
 /* Navbar */
 .navbar {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
+  background: #ffffff !important;
   padding: 0;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e5e7eb;
   height: 56px;
-  width: 100%;
+  max-width: 990px;
+  width: 990px;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%);
   z-index: 1050;
 }
 
 @media (max-width: 576px) {
   .navbar {
     height: 48px;
+    width: 100%;
+    left: 0 !important;
+    transform: none;
   }
   .container-fluid {
     padding: 0 0.5rem !important;
   }
 }
 
+@media (max-width: 989px) {
+  .navbar {
+    width: 100%;
+    left: 0 !important;
+    transform: none;
+  }
+}
+
 .container-fluid {
-  max-width: 1400px;
+  max-width: 990px;
   margin: 0 auto;
   padding: 0 0.1rem;
   height: 100%;
@@ -344,7 +366,7 @@
 
 /* Logo Styles */
 .navbar-brand.logo {
-  color: #fff !important;
+  color: #1e3c72 !important;
   text-decoration: none;
   padding: 0;
 }
@@ -360,19 +382,18 @@
 }
 
 .logo-part1 {
-  color: #ffffff;
+  color: #1e3c72;
   font-weight: 900;
 }
 
 .logo-part2 {
-  color: #ffd700;
+  color: #2a5298;
   font-weight: 900;
   font-size: 1.25rem;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
 }
 
 .logo-part3 {
-  color: #90caf9;
+  color: #64748b;
   font-weight: 700;
   font-size: 0.85rem;
 }
@@ -520,16 +541,35 @@
 
 /* Category Pills Bar */
 .pills-bar {
-  margin-top: 56px;
-  background: #fff;
-  border-bottom: none;
+  position: fixed;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.5rem 1rem;
+  max-width: 990px;
+  width: 990px;
+  z-index: 1040;
 }
 
 @media (max-width: 576px) {
   .pills-bar {
-    margin-top: 52px;
+    top: 48px;
     padding: 0.5rem 0.5rem;
+    max-width: 100%;
+    width: 100%;
+    left: 0;
+    transform: none;
+  }
+}
+
+@media (max-width: 989px) {
+  .pills-bar {
+    max-width: 100%;
+    width: 100%;
+    left: 0;
+    transform: none;
   }
 }
 
@@ -559,16 +599,16 @@
   }
   
   .pills-scroll-row::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: rgba(255, 255, 255, 0.1);
   }
   
   .pills-scroll-row::-webkit-scrollbar-thumb {
-    background: #1565c0;
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 3px;
   }
   
   .pills-scroll-row::-webkit-scrollbar-thumb:hover {
-    background: #0d47a1;
+    background: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -587,7 +627,7 @@
   white-space: nowrap;
   flex-shrink: 0;
   text-decoration: none;
-  color: #1565c0;
+  color: rgba(255, 255, 255, 0.7);
   border-bottom: 2px solid transparent;
   padding-bottom: 2px;
 }
@@ -595,7 +635,7 @@
 .jc-pill span {
   font-size: 0.85rem;
   font-weight: 500;
-  color: #1565c0;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .jc-pill:hover {
@@ -603,24 +643,24 @@
   background: transparent;
   transform: none;
   box-shadow: none;
-  color: #0d47a1;
+  color: #ffffff;
 }
 
 .jc-pill:hover span {
-  color: #0d47a1;
-  border-bottom-color: #1565c0;
+  color: #ffffff;
+  border-bottom-color: #ffffff;
 }
 
 .jc-pill-active {
   background: transparent !important;
   border-color: transparent !important;
-  color: #0d47a1 !important;
+  color: #ffffff !important;
   font-weight: 800 !important;
-  border-bottom-color: #1565c0 !important;
+  border-bottom-color: #ffffff !important;
 }
 
 .jc-pill-active span {
-  color: #0d47a1 !important;
+  color: #ffffff !important;
   font-weight: 800 !important;
-  border-bottom-color: #1565c0 !important;
+  border-bottom-color: #ffffff !important;
 }

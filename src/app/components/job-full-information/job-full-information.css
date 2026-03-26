@@ -1,14 +1,13 @@
 /* ===== Page Root ===== */
 .jc {
   min-height: 100vh;
-  background: #ffe4e9;
+  background: #ffffff;
   padding-top: 0.5rem;
   padding-bottom: 48px;
 }
 
 /* ===== Content Container ===== */
 .jfi-container {
-  max-width: 1100px;
   margin: 0 auto;
   padding: 1rem 0.75rem;
 }

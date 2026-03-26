@@ -200,6 +200,20 @@ export class JobFullInformation implements OnInit {
     });
   }
 
+  formatWalkInDate(dateString: string): string {
+    if (!dateString) return '';
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+    } catch (e) {
+      return dateString;
+    }
+  }
+
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }

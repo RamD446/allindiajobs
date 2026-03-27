@@ -273,15 +273,39 @@
                 </textarea>
               </div>
 
-              <!-- Eligibility Criteria -->
+              <!-- Eligibility Criteria (Renamed to Interview Process) -->
               <div class="col-12 mb-3">
-                <label class="form-label">Eligibility Criteria</label>
+                <label class="form-label">Interview Process</label>
                 <textarea
                   [(ngModel)]="jobForm.eligibilityCriteria"
                   name="eligibilityCriteria"
                   class="form-control description-textarea"
-                  placeholder="Eligibility criteria..."
+                  placeholder="Interview process details..."
                   rows="3">
+                </textarea>
+              </div>
+
+              <!-- Walk-in Interview Location -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Walk-in Interview Location</label>
+                <textarea
+                  [(ngModel)]="jobForm.walkInInterviewLocation"
+                  name="walkInInterviewLocation"
+                  class="form-control description-textarea"
+                  placeholder="Enter walk-in interview address..."
+                  rows="2">
+                </textarea>
+              </div>
+
+              <!-- HR Details -->
+              <div class="col-12 mb-3">
+                <label class="form-label">HR Details</label>
+                <textarea
+                  [(ngModel)]="jobForm.hrDetails"
+                  name="hrDetails"
+                  class="form-control description-textarea"
+                  placeholder="Enter HR contact details..."
+                  rows="2">
                 </textarea>
               </div>
 

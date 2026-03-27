@@ -52,6 +52,8 @@ export class LoginComponent implements OnInit {
     documentsRequired: '',
     eligibilityCriteria: '',
     otherLink: '',
+    walkInInterviewLocation: '',
+    hrDetails: '',
     createdDate: ''
   };
 
@@ -298,6 +300,8 @@ export class LoginComponent implements OnInit {
       documentsRequired: job.documentsRequired || '',
       eligibilityCriteria: job.eligibilityCriteria || '',
       otherLink: job.otherLink || '',
+      walkInInterviewLocation: job.walkInInterviewLocation || '',
+      hrDetails: job.hrDetails || '',
       createdDate: formattedDate || this.toLocalIsoString(new Date())
     };
   }

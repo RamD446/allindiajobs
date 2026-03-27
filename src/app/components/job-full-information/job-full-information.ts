@@ -398,6 +398,12 @@ export class JobFullInformation implements OnInit {
     if (job.experience) {
       messageParts.push(`*Experience :* ${job.experience}`);
     }
+    if (job.walkInInterviewLocation) {
+      messageParts.push(`*Walk-in Location :* ${job.walkInInterviewLocation}`);
+    }
+    if (job.hrDetails) {
+      messageParts.push(`*HR Details :* ${job.hrDetails}`);
+    }
     if (job.fullInformationTableFormat) {
       messageParts.push(`*FullinfoationTableForamt :* ${job.fullInformationTableFormat}`);
     }

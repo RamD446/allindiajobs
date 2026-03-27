@@ -15,6 +15,8 @@ export interface Job {
   documentsRequired?: string;
   eligibilityCriteria?: string;
   otherLink?: string;
+  walkInInterviewLocation?: string;
+  hrDetails?: string;
   createdDate: string;
   updatedDate?: string;
 }

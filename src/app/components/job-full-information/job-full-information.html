@@ -16,12 +16,16 @@
     <div class="row m-0">
       <!-- Left: Job Information (70% on desktop) -->
       <div class="col-12 col-lg-8 p-0">
-        <!-- Breadcrumb: Home > Current Page > Job Title -->
-        <nav aria-label="breadcrumb" class="mb-2 p-0 overflow-hidden">
-          <ol class="breadcrumb small p-0 m-0 flex-nowrap">
-            <li class="breadcrumb-item flex-shrink-0"><a routerLink="/" class="text-decoration-none">Home</a></li>
-            <li class="breadcrumb-item flex-shrink-0"><a class="text-decoration-none text-muted">Job Details</a></li>
-            <li class="breadcrumb-item active text-truncate" aria-current="page">{{ job.title }}</li>
+        <!-- Breadcrumb: Home / Job Details / Job Title -->
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb bg-transparent p-0 m-0 small flex-nowrap overflow-hidden">
+            <li class="breadcrumb-item flex-shrink-0">
+              <a routerLink="/" class="text-decoration-none text-primary fw-medium">Home</a>
+            </li>
+            <li class="breadcrumb-item flex-shrink-0 text-muted">Job Details</li>
+            <li class="breadcrumb-item active text-truncate text-secondary" aria-current="page">
+              {{ job.title }}
+            </li>
           </ol>
         </nav>
 
@@ -75,23 +79,23 @@
         <div class="job-details-list">
           <!-- What & Why -->
           <div class="detail-item mb-2" *ngIf="job.keyResponsibilities">
-            <div class="small fw-bold text-dark">Key Responsibilities:</div>
+            <div class="small fw-bold text-dark">Job Profile & Key Responsibilities:</div>
             <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getDescriptionList(job.keyResponsibilities)">{{ item }}</li>
+              <li *ngFor="let item of getHowToApplyList(job.keyResponsibilities)">{{ item }}</li>
             </ul>
           </div>
 
           <div class="detail-item mb-2" *ngIf="job.eligibilityCriteria">
-            <div class="small fw-bold text-dark">Eligibility Criteria:</div>
+            <div class="small fw-bold text-dark">Interview Process:</div>
             <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getDescriptionList(job.eligibilityCriteria)">{{ item }}</li>
+              <li *ngFor="let item of getHowToApplyList(job.eligibilityCriteria)">{{ item }}</li>
             </ul>
           </div>
 
           <div class="detail-item mb-2" *ngIf="job.documentsRequired">
             <div class="small fw-bold text-dark">Documents Required:</div>
             <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getDescriptionList(job.documentsRequired)">{{ item }}</li>
+              <li *ngFor="let item of getHowToApplyList(job.documentsRequired)">{{ item }}</li>
             </ul>
           </div>
 
@@ -103,6 +107,22 @@
             </div>
             <ul class="ps-3 mb-0 small text-secondary">
               <li *ngFor="let item of getHowToApplyList(job.howToApply)">{{ item }}</li>
+            </ul>
+          </div>
+
+          <!-- Walk-in Location -->
+          <div class="detail-item mb-2" *ngIf="job.walkInInterviewLocation">
+            <div class="small fw-bold text-dark">Walk-in Interview Location:</div>
+            <ul class="ps-3 mb-0 small text-secondary">
+              <li *ngFor="let item of getHowToApplyList(job.walkInInterviewLocation)">{{ item }}</li>
+            </ul>
+          </div>
+
+          <!-- HR Details -->
+          <div class="detail-item mb-2" *ngIf="job.hrDetails">
+            <div class="small fw-bold text-dark">HR Details:</div>
+            <ul class="ps-3 mb-0 small text-secondary">
+              <li *ngFor="let item of getHowToApplyList(job.hrDetails)">{{ item }}</li>
             </ul>
           </div>
         </div>

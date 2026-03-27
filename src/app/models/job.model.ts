@@ -4,20 +4,17 @@ export interface Job {
   title: string;
   company: string;
   category: string;
-  qualification?: string;
   experience?: string;
-  salary?: string;
+  fullInformationTableFormat?: string;
   walkInStartDate?: string;
   walkInEndDate?: string;
-  addressAndContact?: string;
-  contactInfo?: string;
+  walkInDrive?: boolean;
   description: string;
   howToApply?: string;
   keyResponsibilities?: string;
   documentsRequired?: string;
   eligibilityCriteria?: string;
   otherLink?: string;
-  walkInDrive?: boolean;
   createdDate: string;
   updatedDate?: string;
 }

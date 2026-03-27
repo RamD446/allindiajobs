@@ -41,20 +41,17 @@ export class LoginComponent implements OnInit {
     title: '',
     company: '',
     category: '',
-    qualification: '',
     experience: 'Freshers',
-    salary: '',
+    fullInformationTableFormat: '',
     walkInStartDate: '',
     walkInEndDate: '',
-    addressAndContact: '',
-    contactInfo: '',
+    walkInDrive: true,
     description: '',
     howToApply: '',
     keyResponsibilities: '',
     documentsRequired: '',
     eligibilityCriteria: '',
     otherLink: '',
-    walkInDrive: false,
     createdDate: ''
   };
 
@@ -291,19 +288,16 @@ export class LoginComponent implements OnInit {
     
     this.jobForm = { 
       ...job,
-      qualification: job.qualification || '',
       experience: job.experience || 'Freshers',
-      salary: job.salary || '',
+      fullInformationTableFormat: job.fullInformationTableFormat || '',
       walkInStartDate: formattedWalkInStart || '',
       walkInEndDate: job.walkInEndDate || '',
-      addressAndContact: job.addressAndContact || '',
-      contactInfo: job.contactInfo || '',
+      walkInDrive: job.walkInDrive || false,
       howToApply: job.howToApply || '',
       keyResponsibilities: job.keyResponsibilities || '',
       documentsRequired: job.documentsRequired || '',
       eligibilityCriteria: job.eligibilityCriteria || '',
       otherLink: job.otherLink || '',
-      walkInDrive: job.walkInDrive || false,
       createdDate: formattedDate || this.toLocalIsoString(new Date())
     };
   }
@@ -486,20 +480,17 @@ export class LoginComponent implements OnInit {
       title: '',
       company: '',
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
-      qualification: '',
       experience: this.experienceOptions[0],
-      salary: '',
+      fullInformationTableFormat: '',
       walkInStartDate: '',
       walkInEndDate: '',
-      addressAndContact: '',
-      contactInfo: '',
+      walkInDrive: true,
       description: '',
       howToApply: '',
       keyResponsibilities: '',
       documentsRequired: '',
       eligibilityCriteria: '',
       otherLink: '',
-      walkInDrive: false,
       createdDate: this.toLocalIsoString(new Date())
     };
   }

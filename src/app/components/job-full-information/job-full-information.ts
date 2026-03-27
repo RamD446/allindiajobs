@@ -218,6 +218,54 @@ export class JobFullInformation implements OnInit {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
+  parseFullInfo(text: string): { label: string, value: string }[] {
+    if (!text) return [];
+
+    // Common labels to identify key-value pairs
+    const labels = [
+      'Organization', 'Post Name', 'Notification No', 'Total Vacancies',
+      'Job Type', 'Application Mode', 'Start Date', 'Last Date', 'Salary'
+    ];
+
+    // Try to find if the string contains labels with colons
+    // Pattern matches Label: Value, but we also want to catch them if they are on new lines or just in a sequence
+    
+    // First, split by common labels to separate the pairs
+    let result: { label: string, value: string }[] = [];
+    
+    // If text has newlines, use them
+    if (text.includes('\n')) {
+      const lines = text.split('\n');
+      lines.forEach(line => {
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          const label = parts[0].trim();
+          const value = parts.slice(1).join(':').trim();
+          if (label && value) {
+            result.push({ label, value });
+          }
+        }
+      });
+      if (result.length > 0) return result;
+    }
+
+    // If no newlines, but colons exist, try to split by colon
+    // Use a regex to find Label: Value patterns
+    // This is more complex but more robust for the example provided
+    const parts = text.split(/([a-zA-Z\s]+:)/).filter(p => p.trim());
+    for (let i = 0; i < parts.length; i += 2) {
+      if (i + 1 < parts.length) {
+        const label = parts[i].replace(':', '').trim();
+        const value = parts[i + 1].trim();
+        if (label && value) {
+          result.push({ label, value });
+        }
+      }
+    }
+
+    return result;
+  }
+
   isRichText(description: string): boolean {
     if (!description) return false;
     return description.includes('&nbsp;');
@@ -341,9 +389,6 @@ export class JobFullInformation implements OnInit {
     if (job.company) {
       messageParts.push(`*Company :* ${job.company}`);
     }
-    if (job.qualification) {
-      messageParts.push(`*Qualification :* ${job.qualification}`);
-    }
     if (job.walkInStartDate) {
       messageParts.push(`*Walk-in Start :* ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
     }
@@ -353,11 +398,8 @@ export class JobFullInformation implements OnInit {
     if (job.experience) {
       messageParts.push(`*Experience :* ${job.experience}`);
     }
-    if (job.salary) {
-      messageParts.push(`*Salary :* ${job.salary}`);
-    }
-    if (job.addressAndContact) {
-      messageParts.push(`*Location :* ${job.addressAndContact}`);
+    if (job.fullInformationTableFormat) {
+      messageParts.push(`*FullinfoationTableForamt :* ${job.fullInformationTableFormat}`);
     }
 
     messageParts.push(``);

@@ -182,12 +182,6 @@
                 </select>
               </div>
 
-              <!-- Qualification -->
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Qualification *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.qualification" name="qualification" required placeholder="e.g. Any Graduate/10th/12th">
-              </div>
-
               <!-- Experience -->
               <div class="col-md-4 mb-3">
                 <label class="form-label">Experience *</label>
@@ -196,10 +190,10 @@
                 </select>
               </div>
 
-              <!-- Salary -->
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Salary</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.salary" name="salary" placeholder="e.g. 15000-25000 per month">
+              <!-- FullinfoationTableForamt -->
+              <div class="col-12 mb-3">
+                <label class="form-label">FullinfoationTableForamt</label>
+                <textarea class="form-control" [(ngModel)]="jobForm.fullInformationTableFormat" name="fullInformationTableFormat" placeholder="Enter FullinfoationTableForamt" rows="3"></textarea>
               </div>
 
               <!-- Walk-in Checkbox -->
@@ -222,18 +216,6 @@
               <div class="col-md-6 mb-3" *ngIf="jobForm.walkInDrive">
                 <label class="form-label">Walk-in End Date</label>
                 <input type="date" class="form-control" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate">
-              </div>
-
-              <!-- Venue Address -->
-              <div class="col-12 mb-3">
-                <label class="form-label">Venue Address *</label>
-                <textarea class="form-control" [(ngModel)]="jobForm.addressAndContact" name="addressAndContact" required placeholder="Complete address with landmarks" rows="2"></textarea>
-              </div>
-
-              <!-- Contact Details -->
-              <div class="col-12 mb-3">
-                <label class="form-label">Contact Details</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.contactInfo" name="contactInfo" placeholder="Phone number, email, or contact person">
               </div>
 
               <!-- Created Date & Time (Only when editing) -->
@@ -396,12 +378,9 @@
                   <small class="text-info me-3" *ngIf="job.updatedDate"><i class="bi bi-pencil-square me-1"></i>Updated: {{ job.updatedDate | date:'yyyy-MM-dd HH:mm' }}</small>
                 </div>
 
-                <!-- Walk-in Job Details Quick View -->
+                <!-- Job Details Quick View -->
                 <div class="gov-details-compact mb-2 p-2 bg-light rounded border-start border-success border-3">
                   <div class="row g-2 small">
-                    <div class="col-6 col-md-4" *ngIf="job.qualification">
-                      <strong>Qualification:</strong> {{ job.qualification }}
-                    </div>
                     <div class="col-6 col-md-4" *ngIf="job.experience">
                       <strong>Experience:</strong> {{ job.experience }}
                     </div>
@@ -411,8 +390,8 @@
                     <div class="col-6 col-md-4" *ngIf="job.walkInEndDate">
                       <strong>Walk-in End:</strong> {{ job.walkInEndDate | date:'dd MMM yyyy' }}
                     </div>
-                    <div class="col-12" *ngIf="job.addressAndContact">
-                      <strong>Venue:</strong> {{ job.addressAndContact }}
+                    <div class="col-12" *ngIf="job.fullInformationTableFormat">
+                      <strong>FullinfoationTableForamt:</strong> {{ job.fullInformationTableFormat }}
                     </div>
                     <div class="col-12" *ngIf="job.otherLink">
                       <strong>Link:</strong> <a [href]="job.otherLink" target="_blank" class="text-truncate d-inline-block" style="max-width: 250px;">{{ job.otherLink }}</a>

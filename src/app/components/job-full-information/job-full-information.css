@@ -3,6 +3,13 @@
   padding-right: 0.75rem;
 }
 
+/* Desktop Spacing from Header */
+@media (min-width: 992px) {
+  .jc {
+    padding-top: 1.5rem;
+  }
+}
+
 .container-fluid {
   padding-left: 0 !important;
   padding-right: 0 !important;

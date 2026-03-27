@@ -55,7 +55,7 @@
         </div>
 
         <!-- Job Details Table -->
-        <div class="table-responsive mb-3 mt-1" *ngIf="job.walkInStartDate || job.experience || job.qualification || job.salary || job.addressAndContact || job.contactInfo">
+        <div class="table-responsive mb-3 mt-1" *ngIf="job.walkInStartDate || job.experience || job.otherLink">
           <table class="table table-sm table-bordered mb-0 small">
             <tbody>
               <tr *ngIf="job.walkInStartDate">
@@ -69,22 +69,6 @@
                 <th class="bg-light text-dark fw-bold px-2 py-1">Experience:</th>
                 <td class="text-secondary px-2 py-1">{{ job.experience }}</td>
               </tr>
-              <tr *ngIf="job.qualification">
-                <th class="bg-light text-dark fw-bold px-2 py-1">Qualification:</th>
-                <td class="text-secondary px-2 py-1">{{ job.qualification }}</td>
-              </tr>
-              <tr *ngIf="job.salary">
-                <th class="bg-light text-dark fw-bold px-2 py-1">Salary:</th>
-                <td class="text-secondary px-2 py-1">{{ job.salary }}</td>
-              </tr>
-              <tr *ngIf="job.addressAndContact">
-                <th class="bg-light text-dark fw-bold px-2 py-1">Venue / Address:</th>
-                <td class="text-secondary px-2 py-1">{{ job.addressAndContact }}</td>
-              </tr>
-              <tr *ngIf="job.contactInfo">
-                <th class="bg-light text-dark fw-bold px-2 py-1">Contact Details:</th>
-                <td class="text-secondary px-2 py-1">{{ job.contactInfo }}</td>
-              </tr>
                 <tr *ngIf="job.otherLink">
                  <th class="bg-light text-dark fw-bold px-2 py-1">Official Link:</th>
                  <td class="text px-2 py-1">
@@ -93,6 +77,21 @@
                </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Full Information Detailed Table -->
+        <div class="full-info-detailed-table mb-4" *ngIf="job.fullInformationTableFormat">
+          <div class="small fw-bold text-dark mb-2">Job Full Information:</div>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered mb-0 small">
+              <tbody>
+                <tr *ngFor="let info of parseFullInfo(job.fullInformationTableFormat)">
+                  <th class="bg-light text-dark fw-bold px-2 py-1" style="width: 40%;">{{ info.label }}:</th>
+                  <td class="text-secondary px-2 py-1">{{ info.value }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Job Details List (List wise, small dark headers) -->

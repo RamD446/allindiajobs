@@ -54,34 +54,11 @@
           {{ job.description }}.
         </div>
 
-        <!-- Job Details Table -->
-        <div class="table-responsive mb-3 mt-1" *ngIf="job.walkInStartDate || job.experience || job.otherLink">
-          <table class="table table-sm table-bordered mb-0 small">
-            <tbody>
-              <tr *ngIf="job.walkInStartDate">
-                <th class="bg-light text-dark fw-bold px-2 py-1" style="width: 35%;">Walk-in Dates:</th>
-                <td class="text-secondary px-2 py-1">
-                  {{ formatWalkInDate(job.walkInStartDate) }}
-                  <span *ngIf="job.walkInEndDate && job.walkInEndDate !== job.walkInStartDate"> - {{ formatWalkInDate(job.walkInEndDate) }}</span>
-                </td>
-              </tr>
-              <tr *ngIf="job.experience">
-                <th class="bg-light text-dark fw-bold px-2 py-1">Experience:</th>
-                <td class="text-secondary px-2 py-1">{{ job.experience }}</td>
-              </tr>
-                <tr *ngIf="job.otherLink">
-                 <th class="bg-light text-dark fw-bold px-2 py-1">Official Link:</th>
-                 <td class="text px-2 py-1">
-                   <a [href]="job.otherLink" target="_blank" class="btn btn-primary btn-sm px-4 rounded-pill">Apply Now</a>
-                 </td>
-               </tr>
-            </tbody>
-          </table>
-        </div>
+        
 
         <!-- Full Information Detailed Table -->
         <div class="full-info-detailed-table mb-4" *ngIf="job.fullInformationTableFormat">
-          <div class="small fw-bold text-dark mb-2">Job Full Information:</div>
+          
           <div class="table-responsive">
             <table class="table table-sm table-bordered mb-0 small">
               <tbody>
@@ -129,13 +106,33 @@
             </ul>
           </div>
         </div>
-
+<!-- Job Details Table -->
+        <div class="table-responsive mb-3 mt-1" *ngIf="job.walkInStartDate || job.experience || job.otherLink">
+          <table class="table table-sm table-bordered mb-0 small">
+            <tbody>
+              <tr *ngIf="job.walkInStartDate">
+                <th class="bg-light text-dark fw-bold px-2 py-1" style="width: 35%;">Walk-in Dates:</th>
+                <td class="text-secondary px-2 py-1">
+                  {{ formatWalkInDate(job.walkInStartDate) }}
+                  <span *ngIf="job.walkInEndDate && job.walkInEndDate !== job.walkInStartDate"> - {{ formatWalkInDate(job.walkInEndDate) }}</span>
+                </td>
+              </tr>
+      
+                <tr *ngIf="job.otherLink">
+                 <th class="bg-light text-dark fw-bold px-2 py-1">Official Link:</th>
+                 <td class="text px-2 py-1">
+                   <a [href]="job.otherLink" target="_blank" class="btn btn-primary btn-sm px-4 rounded-pill">Apply Now</a>
+                 </td>
+               </tr>
+            </tbody>
+          </table>
+        </div>
 
       </div>
 
       <!-- Right: Recent Posts (30% on desktop) -->
       <div class="col-12 col-lg-4">
-        <div class="recent-posts-sidebar">
+          <div class="recent-posts-sidebar ms-lg-4">
           <div class="fw-bold text-dark border-bottom pb-1 mb-2" style="font-size: 0.9rem;">Recent Posts</div>
           <div class="list-group list-group-flush">
             <a *ngFor="let topJob of getTopJobs()" (click)="viewJobDetails(topJob)" class="list-group-item list-group-item-action border-0 px-0 py-2 bg-transparent">

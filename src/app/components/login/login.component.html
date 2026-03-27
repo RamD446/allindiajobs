@@ -162,6 +162,15 @@
           
           <form (ngSubmit)="saveJob()" #jobFormRef="ngForm" class="job-form-body">
             <div class="row">
+              <!-- Job Location -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Job Location</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                  <input type="text" class="form-control" [(ngModel)]="jobForm.jobLocation" name="jobLocation" placeholder="e.g. Hyderabad, Telangana">
+                </div>
+              </div>
+
               <!-- Job Title -->
               <div class="col-md-6 mb-3">
                 <label class="form-label">Job Title *</label>

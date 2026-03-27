@@ -9,8 +9,8 @@ import { OfficialCompanyCareersComponent } from './components/official-company-c
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'IT Walk-ins', component: JobCategoryComponent },
-  { path: 'BPO Walk-ins', component: JobCategoryComponent },
-  { path: 'Non-IT Walk-ins', component: JobCategoryComponent },
+  { path: 'BPO/Non-IT Walk-ins', component: JobCategoryComponent },
+  { path: 'Fresher Walk-ins', component: JobCategoryComponent },
   { path: 'Sales Walk-ins', component: JobCategoryComponent },
   { path: 'Banking Walk-ins', component: JobCategoryComponent },
   { path: 'Pharma Walk-ins', component: JobCategoryComponent },

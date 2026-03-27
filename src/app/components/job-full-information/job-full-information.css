@@ -47,10 +47,29 @@
 }
 
 /* Breadcrumb Styling */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: 0;
+}
+
 .breadcrumb-item + .breadcrumb-item::before {
-  content: ">" !important;
-  font-size: 0.7rem;
-  color: #ccc;
+  content: "/" !important;
+  font-size: 0.8rem;
+  color: #adb5bd;
+  padding: 0 0.25rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
 }
 
 /* Mobile Optimizations */

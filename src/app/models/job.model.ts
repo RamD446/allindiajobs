@@ -3,6 +3,7 @@ export interface Job {
   id: string;
   title: string;
   company: string;
+  jobLocation?: string;
   category: string;
   experience?: string;
   fullInformationTableFormat?: string;
@@ -15,6 +16,7 @@ export interface Job {
   documentsRequired?: string;
   eligibilityCriteria?: string;
   otherLink?: string;
+  whatsappGroupLink?: string;
   walkInInterviewLocation?: string;
   hrDetails?: string;
   createdDate: string;
@@ -24,8 +26,8 @@ export interface Job {
 // Job Categories - Walk-in categories
 export const DEFAULT_JOB_CATEGORIES = [
   'IT Walk-ins',
-  'BPO Walk-ins',
-  'Non-IT Walk-ins',
+  'BPO/Non-IT Walk-ins',
+  'Fresher Walk-ins',
   'Sales Walk-ins',
   'Banking Walk-ins',
   'Pharma Walk-ins'

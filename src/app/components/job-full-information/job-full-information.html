@@ -138,10 +138,21 @@
                 </td>
               </tr>
       
+         
+
+              <tr>
+                <th class="bg-light text-dark fw-bold px-2 py-1">Jobs Channel:</th>
+                <td class="px-2 py-1">
+                  <button (click)="joinWhatsAppGroup()" class="btn btn-success btn-sm px-3 py-1 rounded-1 d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                    <i class="bi bi-whatsapp"></i> Join Channel
+                  </button>
+                </td>
+              </tr>
+
                 <tr *ngIf="job.otherLink">
                  <th class="bg-light text-dark fw-bold px-2 py-1">Official Link:</th>
                  <td class="text px-2 py-1">
-                   <a [href]="job.otherLink" target="_blank" class="btn btn-primary btn-sm px-4 rounded-pill">Apply Now</a>
+                   <a [href]="job.otherLink" target="_blank" class="btn btn-success btn-sm px-3 py-1 rounded-1" style="font-size: 0.8rem;">Apply Now</a>
                  </td>
                </tr>
             </tbody>

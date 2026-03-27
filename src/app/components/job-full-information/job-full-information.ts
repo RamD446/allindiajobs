@@ -412,6 +412,9 @@ export class JobFullInformation implements OnInit {
     messageParts.push(`*Apply / Full Details :*`);
     messageParts.push(jobUrl);
     messageParts.push(``);
+    messageParts.push(`Join our WhatsApp Group for more updates:`);
+    messageParts.push(`https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p`);
+    messageParts.push(``);
     messageParts.push(`Kindly forward to eligible candidates.`);
     messageParts.push(``);
     messageParts.push(`*AllIndiaJobs Portal*`);
@@ -419,6 +422,10 @@ export class JobFullInformation implements OnInit {
     const message = messageParts.join('\n');
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+  }
+
+  joinWhatsAppGroup() {
+    window.open('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p', '_blank');
   }
 
   copyLink(job: Job) {
@@ -476,8 +483,8 @@ export class JobFullInformation implements OnInit {
   navigateToCategory(category: string) {
     const routeMapping: { [key: string]: string } = {
       'IT Walk-ins': 'IT Walk-ins',
-      'BPO Walk-ins': 'BPO Walk-ins',
-      'Non-IT Walk-ins': 'Non-IT Walk-ins',
+      'BPO/Non-IT Walk-ins': 'BPO/Non-IT Walk-ins',
+      'Fresher Walk-ins': 'Fresher Walk-ins',
       'Sales Walk-ins': 'Sales Walk-ins',
       'Banking Walk-ins': 'Banking Walk-ins',
       'Pharma Walk-ins': 'Pharma Walk-ins'

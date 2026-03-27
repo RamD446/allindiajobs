@@ -18,8 +18,8 @@ export class FooterComponent {
   quickLinks = [
     { name: 'Home', route: '/' },
     { name: 'IT Walk-ins', route: '/IT Walk-ins' },
-    { name: 'BPO Walk-ins', route: '/BPO Walk-ins' },
-    { name: 'Non-IT Walk-ins', route: '/Non-IT Walk-ins' },
+    { name: 'BPO/Non-IT Walk-ins', route: '/BPO/Non-IT Walk-ins' },
+    { name: 'Fresher Walk-ins', route: '/Fresher Walk-ins' },
     { name: 'Sales Walk-ins', route: '/Sales Walk-ins' },
     { name: 'Banking Walk-ins', route: '/Banking Walk-ins' },
     { name: 'Pharma Walk-ins', route: '/Pharma Walk-ins' }

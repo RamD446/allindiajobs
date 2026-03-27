@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
     id: '',
     title: '',
     company: '',
+    jobLocation: '',
     category: '',
     experience: 'Freshers',
     fullInformationTableFormat: '',
@@ -290,6 +291,7 @@ export class LoginComponent implements OnInit {
     
     this.jobForm = { 
       ...job,
+      jobLocation: job.jobLocation || '',
       experience: job.experience || 'Freshers',
       fullInformationTableFormat: job.fullInformationTableFormat || '',
       walkInStartDate: formattedWalkInStart || '',

@@ -30,8 +30,8 @@ export class JobCategoryComponent implements OnInit {
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'IT Walk-ins': { title: 'IT Walk-ins', category: 'IT Walk-ins' },
-    'BPO Walk-ins': { title: 'BPO Walk-ins', category: 'BPO Walk-ins' },
-    'Non-IT Walk-ins': { title: 'Non-IT Walk-ins', category: 'Non-IT Walk-ins' },
+    'BPO/Non-IT Walk-ins': { title: 'BPO/Non-IT Walk-ins', category: 'BPO/Non-IT Walk-ins' },
+    'Fresher Walk-ins': { title: 'Fresher Walk-ins', category: 'Fresher Walk-ins' },
     'Sales Walk-ins': { title: 'Sales Walk-ins', category: 'Sales Walk-ins' },
     'Banking Walk-ins': { title: 'Banking Walk-ins', category: 'Banking Walk-ins' },
     'Pharma Walk-ins': { title: 'Pharma Walk-ins', category: 'Pharma Walk-ins' }
@@ -78,7 +78,14 @@ export class JobCategoryComponent implements OnInit {
             ...data[key]
           })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
           
-          this.categoryJobs = this.jobs.filter(job => job.category === category);
+          if (category === 'BPO/Non-IT Walk-ins') {
+            this.categoryJobs = this.jobs.filter(job => 
+              job.category === 'BPO Walk-ins' || job.category === 'Non-IT Walk-ins' || job.category === 'BPO/Non-IT Walk-ins'
+            );
+          } else {
+            this.categoryJobs = this.jobs.filter(job => job.category === category);
+          }
+          
           this.filteredJobs = [...this.categoryJobs];
           this.extractUniqueCompanies();
           

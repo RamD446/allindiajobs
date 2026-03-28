@@ -6,20 +6,20 @@
 
 @media (max-width: 768px) {
   .jc {
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
+    padding-top: 0; /* Added slight top space */
+    padding-left: 0.5rem; /* Increased left space */
+    padding-right: 0.5rem; /* Increased right space */
   }
 }
 
 .container-fluid {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .col-12 {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .cursor-pointer {

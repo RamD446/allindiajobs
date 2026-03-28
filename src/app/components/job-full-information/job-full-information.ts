@@ -482,12 +482,12 @@ export class JobFullInformation implements OnInit {
 
   navigateToCategory(category: string) {
     const routeMapping: { [key: string]: string } = {
-      'IT Walk-ins': 'IT Walk-ins',
-      'BPO/Non-IT Walk-ins': 'BPO/Non-IT Walk-ins',
-      'Fresher Walk-ins': 'Fresher Walk-ins',
-      'Sales Walk-ins': 'Sales Walk-ins',
-      'Banking Walk-ins': 'Banking Walk-ins',
-      'Pharma Walk-ins': 'Pharma Walk-ins'
+      'IT Walk-ins': 'IT-Walk-ins',
+      'BPO/Non-IT Walk-ins': 'BPO-Non-IT-Walk-ins',
+      'Fresher Walk-ins': 'Fresher-Walk-ins',
+      'Sales Walk-ins': 'Sales-Walk-ins',
+      'Banking Walk-ins': 'Banking-Walk-ins',
+      'Pharma Walk-ins': 'Pharma-Walk-ins'
     };
 
     const route = routeMapping[category];

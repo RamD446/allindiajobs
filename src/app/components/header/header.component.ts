@@ -17,12 +17,12 @@ export class HeaderComponent implements OnInit {
   jobs: Job[] = [];
 
   navCategories = [
-    { name: 'IT Walk-ins', route: '/IT Walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
-    { name: 'BPO Walk-ins', route: '/BPO Walk-ins', icon: 'bi-person-walking', color: '#0288d1' },
-    { name: 'Non-IT Walk-ins', route: '/Non-IT Walk-ins', icon: 'bi-person-walking', color: '#0097a7' },
-    { name: 'Sales Walk-ins', route: '/Sales Walk-ins', icon: 'bi-person-walking', color: '#00796b' },
-    { name: 'Banking Walk-ins', route: '/Banking Walk-ins', icon: 'bi-person-walking', color: '#388e3c' },
-    { name: 'Pharma Walk-ins', route: '/Pharma Walk-ins', icon: 'bi-person-walking', color: '#7b1fa2' }
+    { name: 'IT Walk-ins', route: '/IT-Walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
+    { name: 'BPO/Non-IT Walk-ins', route: '/BPO-Non-IT-Walk-ins', icon: 'bi-person-walking', color: '#0288d1' },
+    { name: 'Fresher Walk-ins', route: '/Fresher-Walk-ins', icon: 'bi-person-walking', color: '#0097a7' },
+    { name: 'Sales Walk-ins', route: '/Sales-Walk-ins', icon: 'bi-person-walking', color: '#00796b' },
+    { name: 'Banking Walk-ins', route: '/Banking-Walk-ins', icon: 'bi-person-walking', color: '#388e3c' },
+    { name: 'Pharma Walk-ins', route: '/Pharma-Walk-ins', icon: 'bi-person-walking', color: '#7b1fa2' }
   ];
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef, private router: Router) {}

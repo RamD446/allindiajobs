@@ -17,12 +17,12 @@ export class FooterComponent {
 
   quickLinks = [
     { name: 'Home', route: '/' },
-    { name: 'IT Walk-ins', route: '/IT Walk-ins' },
-    { name: 'BPO/Non-IT Walk-ins', route: '/BPO/Non-IT Walk-ins' },
-    { name: 'Fresher Walk-ins', route: '/Fresher Walk-ins' },
-    { name: 'Sales Walk-ins', route: '/Sales Walk-ins' },
-    { name: 'Banking Walk-ins', route: '/Banking Walk-ins' },
-    { name: 'Pharma Walk-ins', route: '/Pharma Walk-ins' }
+    { name: 'IT Walk-ins', route: '/IT-Walk-ins' },
+    { name: 'BPO/Non-IT Walk-ins', route: '/BPO-Non-IT-Walk-ins' },
+    { name: 'Fresher Walk-ins', route: '/Fresher-Walk-ins' },
+    { name: 'Sales Walk-ins', route: '/Sales-Walk-ins' },
+    { name: 'Banking Walk-ins', route: '/Banking-Walk-ins' },
+    { name: 'Pharma Walk-ins', route: '/Pharma-Walk-ins' }
   ];
 
   @HostListener('window:beforeinstallprompt', ['$event'])

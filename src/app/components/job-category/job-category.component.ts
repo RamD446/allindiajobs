@@ -29,12 +29,12 @@ export class JobCategoryComponent implements OnInit {
   categoryJobs: Job[] = []; // Store original category jobs
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
-    'IT Walk-ins': { title: 'IT Walk-ins', category: 'IT Walk-ins' },
-    'BPO/Non-IT Walk-ins': { title: 'BPO/Non-IT Walk-ins', category: 'BPO/Non-IT Walk-ins' },
-    'Fresher Walk-ins': { title: 'Fresher Walk-ins', category: 'Fresher Walk-ins' },
-    'Sales Walk-ins': { title: 'Sales Walk-ins', category: 'Sales Walk-ins' },
-    'Banking Walk-ins': { title: 'Banking Walk-ins', category: 'Banking Walk-ins' },
-    'Pharma Walk-ins': { title: 'Pharma Walk-ins', category: 'Pharma Walk-ins' }
+    'IT-Walk-ins': { title: 'IT Walk-ins', category: 'IT Walk-ins' },
+    'BPO-Non-IT-Walk-ins': { title: 'BPO/Non-IT Walk-ins', category: 'BPO/Non-IT Walk-ins' },
+    'Fresher-Walk-ins': { title: 'Fresher Walk-ins', category: 'Fresher Walk-ins' },
+    'Sales-Walk-ins': { title: 'Sales Walk-ins', category: 'Sales Walk-ins' },
+    'Banking-Walk-ins': { title: 'Banking Walk-ins', category: 'Banking Walk-ins' },
+    'Pharma-Walk-ins': { title: 'Pharma Walk-ins', category: 'Pharma Walk-ins' }
   };
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -81,6 +81,10 @@ export class JobCategoryComponent implements OnInit {
           if (category === 'BPO/Non-IT Walk-ins') {
             this.categoryJobs = this.jobs.filter(job => 
               job.category === 'BPO Walk-ins' || job.category === 'Non-IT Walk-ins' || job.category === 'BPO/Non-IT Walk-ins'
+            );
+          } else if (category === 'Fresher Walk-ins') {
+            this.categoryJobs = this.jobs.filter(job => 
+              job.category === 'Fresher Walk-ins' || job.experience === 'Freshers'
             );
           } else {
             this.categoryJobs = this.jobs.filter(job => job.category === category);

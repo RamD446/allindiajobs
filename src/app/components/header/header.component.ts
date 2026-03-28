@@ -15,7 +15,9 @@ import { Job } from '../../models/job.model';
 })
 export class HeaderComponent implements OnInit {
   isNavActive = false;
+  isLoggedIn: boolean = false;
   isSearchModalOpen = false;
+  isGamesDropdownOpen = false;
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
@@ -106,17 +108,29 @@ export class HeaderComponent implements OnInit {
     this.isSearchModalOpen = false;
   }
 
-  onSearch() {
-    if (!this.searchQuery.trim()) {
+  toggleGamesDropdown(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isGamesDropdownOpen = !this.isGamesDropdownOpen;
+  }
+
+  closeGamesDropdown() {
+    this.isGamesDropdownOpen = false;
+  }
+
+  performSearch() {
+    if (!this.searchQuery || !this.searchQuery.trim()) {
       this.searchResults = [];
       return;
     }
-    const query = this.searchQuery.toLowerCase();
+    const query = this.searchQuery.toLowerCase().trim();
     this.searchResults = this.jobs.filter(job => 
-      job.title.toLowerCase().includes(query) || 
-      job.company.toLowerCase().includes(query) ||
-      (job.category && job.category.toLowerCase().includes(query))
-    ).slice(0, 5);
+      job.title?.toLowerCase().includes(query) || 
+      job.company?.toLowerCase().includes(query) ||
+      job.category?.toLowerCase().includes(query) ||
+      job.jobLocation?.toLowerCase().includes(query) ||
+      job.walkInInterviewLocation?.toLowerCase().includes(query)
+    ).slice(0, 10);
   }
 
   viewJobDetails(job: Job) {
@@ -146,10 +160,11 @@ export class HeaderComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
-    if (this.isNavActive) {
+    if (this.isNavActive || this.isGamesDropdownOpen) {
       const clickedInside = this.el.nativeElement.contains(event.target);
       if (!clickedInside) {
         this.closeNav();
+        this.closeGamesDropdown();
       }
     }
   }

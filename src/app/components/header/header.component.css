@@ -1,3 +1,18 @@
+/* Global Utilities */
+.rounded-pill-start {
+  border-top-left-radius: 50rem !important;
+  border-bottom-left-radius: 50rem !important;
+}
+
+.rounded-pill-end {
+  border-top-right-radius: 50rem !important;
+  border-bottom-right-radius: 50rem !important;
+}
+
+.smaller {
+  font-size: 0.75rem;
+}
+
 /* Header Container */
 header {
   max-width: 990px;
@@ -234,8 +249,6 @@ header {
   background: #000000; /* Black background */
   border-top: 1px solid #ffffff; /* Top white border */
   border-bottom: 1px solid #ffffff; /* Bottom white border */
-  height: 28px; /* Reduced height */
-  overflow: hidden;
   padding: 0;
   position: fixed;
   top: 50px;
@@ -259,6 +272,7 @@ header {
   gap: 0;
   padding: 0;
   scrollbar-width: none;
+  align-items: center;
 }
 
 .pills-scroll-row::-webkit-scrollbar {
@@ -300,6 +314,41 @@ header {
   color: #ffeb3b !important; /* Yellow active text */
   box-shadow: none;
   border-bottom: none !important; /* No underline */
+}
+
+/* Games Dropdown */
+.games-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0; /* Changed to right align to prevent overflow on edge cases */
+  background: #ffffff;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 1100;
+  margin-top: 5px;
+  padding: 5px 0;
+  border: 1px solid #dee2e6;
+}
+
+.dropdown-item-custom {
+  display: block;
+  width: 100%;
+  padding: 8px 15px;
+  clear: both;
+  font-weight: 700;
+  color: #334155;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.dropdown-item-custom:hover {
+  background-color: #f8f9fa;
+  color: #1565c0;
 }
 
 /* Custom Close Button for search */

@@ -1,0 +1,91 @@
+<div class="thambola-container">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-3">
+      <h4 class="mb-0 fw-bold">Thambola High Five</h4>
+      <div class="game-controls">
+        <button class="btn btn-light btn-sm fw-bold" (click)="stopGame()" *ngIf="gameStarted">
+          <i class="bi bi-arrow-clockwise"></i> Reset
+        </button>
+      </div>
+    </div>
+    
+    <div class="card-body text-center p-2 p-md-4">
+      <!-- Welcome Screen -->
+      <div *ngIf="!gameStarted" class="py-5">
+        <i class="bi bi-grid-3x3-gap display-1 text-success mb-4"></i>
+        <h2 class="fw-bold text-dark">Ready to Play?</h2>
+        <p class="text-muted mb-4">Generate random numbers for your Thambola game.</p>
+        <button class="btn btn-success btn-lg px-5 py-3 fw-bold rounded-pill shadow" (click)="startGame()">
+          START NEW GAME
+        </button>
+      </div>
+
+      <!-- Active Game Layout -->
+      <div *ngIf="gameStarted">
+        <!-- Main Display Row -->
+        <div class="row g-3 mb-4">
+          <!-- Current Number -->
+          <div class="col-7">
+            <div class="current-number-card p-3 rounded-4 shadow-sm bg-white border">
+              <p class="text-muted small mb-1 uppercase fw-bold">Current</p>
+              <div class="current-number-display animate-pop" *ngIf="currentNumber">
+                {{ currentNumber }}
+              </div>
+              <div class="current-number-display text-muted" *ngIf="!currentNumber">--</div>
+            </div>
+          </div>
+          <!-- Upcoming Number -->
+          <div class="col-5">
+            <div class="upcoming-number-card p-3 rounded-4 shadow-sm bg-light border">
+              <p class="text-muted small mb-1 uppercase fw-bold">Upcoming</p>
+              <div class="upcoming-number-display">
+                {{ upcomingNumber || '--' }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="mb-4">
+          <button class="btn btn-success btn-lg w-100 fw-bold py-3 shadow-lg rounded-pill main-gen-btn" 
+                  (click)="drawNumber()" 
+                  [disabled]="!upcomingNumber && drawnNumbers.length >= 89">
+            <i class="bi bi-play-circle-fill me-2"></i>GENERATE NEXT
+          </button>
+        </div>
+
+        <!-- Drawn Numbers Sequence -->
+        <div class="drawn-sequence-container mb-4" *ngIf="drawnNumbers.length > 0">
+          <div class="d-flex justify-content-between align-items-center mb-2 px-2">
+            <p class="text-muted small mb-0 fw-bold">Last Drawn:</p>
+            <span class="badge bg-secondary">{{ drawnNumbers.length }} done</span>
+          </div>
+          <div class="drawn-sequence-row">
+            <div class="sequence-number" *ngFor="let num of drawnNumbers.slice().reverse()">
+              {{ num }}
+            </div>
+          </div>
+        </div>
+
+        <!-- 1-90 Grid -->
+        <div class="grid-label text-start ps-2 mb-2 small fw-bold text-muted">Number Board (1-90)</div>
+        <div class="numbers-grid shadow-sm">
+          <div class="number-cell" 
+               *ngFor="let num of numbers" 
+               [class.highlighted]="isDrawn(num)"
+               [class.active]="currentNumber === num">
+            {{ num }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="game-stats mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+        <span class="text-muted small fw-bold">Numbers Drawn: {{ drawnNumbers.length }} / 90</span>
+        <button class="btn btn-outline-success btn-sm rounded-pill px-3" (click)="shareGame()" *ngIf="drawnNumbers.length > 0">
+          <i class="bi bi-share me-1"></i> Share Result
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

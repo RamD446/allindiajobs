@@ -23,6 +23,55 @@
     </div>
   </nav>
 
+  <!-- Search Modal Overlay -->
+  <div class="search-modal-backdrop" *ngIf="isSearchModalOpen" (click)="closeSearchModal()">
+    <div class="search-modal-content" (click)="$event.stopPropagation()">
+      <div class="p-2 border-bottom bg-light d-flex align-items-center gap-2">
+        <div class="input-group input-group-sm flex-grow-1">
+          <input type="text" 
+                 class="form-control rounded-pill-start border-end-0 ps-3" 
+                 placeholder="Search jobs..." 
+                 [(ngModel)]="searchQuery"
+                 (keyup.enter)="performSearch()">
+          <button class="btn btn-primary rounded-pill-end px-3" (click)="performSearch()">
+            Search
+          </button>
+        </div>
+        <div class="d-flex gap-1 align-items-center">
+          <button class="btn btn-outline-secondary btn-sm p-1 rounded-circle" style="width: 32px; height: 32px;" title="Share" (click)="shareApp()">
+            <i class="bi bi-share"></i>
+          </button>
+          <button class="btn btn-outline-secondary btn-sm p-1 rounded-circle" style="width: 32px; height: 32px;" title="Download" (click)="downloadApp()">
+            <i class="bi bi-download"></i>
+          </button>
+          <button class="btn btn-link text-muted p-0 ms-1" (click)="closeSearchModal()">
+            <i class="bi bi-x-lg fs-5"></i>
+          </button>
+        </div>
+      </div>
+      <div class="search-modal-body p-3 text-center" *ngIf="!searchQuery">
+        <p class="text-muted small mb-0">Type to search for jobs, categories, or companies.</p>
+      </div>
+      <div class="search-modal-body p-2" *ngIf="searchQuery && searchResults.length > 0">
+        <div class="list-group list-group-flush shadow-sm rounded">
+          <button type="button" 
+                  *ngFor="let result of searchResults" 
+                  (click)="viewJobDetails(result)"
+                  class="list-group-item list-group-item-action py-2 px-3 d-flex flex-column border-0 border-bottom">
+            <span class="text-dark fw-bold small text-truncate">{{ result.title }}</span>
+            <span class="text-muted smaller d-flex justify-content-between">
+              <span>{{ result.company }}</span>
+              <span class="text-success">{{ result.walkInStartDate | date:'dd MMM' }}</span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="search-modal-body p-4 text-center" *ngIf="searchQuery && searchResults.length === 0">
+        <p class="text-muted small mb-0">No matching jobs found.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Offcanvas Menu -->
   <div class="mobile-offcanvas" [class.active]="isNavActive">
     <div class="offcanvas-header-nav">
@@ -68,56 +117,9 @@
   </div>
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
 
-  <!-- Search Modal -->
-  <div class="search-modal-backdrop" *ngIf="isSearchModalOpen" (click)="closeSearchModal()">
-    <div class="search-modal-content" (click)="$event.stopPropagation()">
-      <div class="search-modal-header p-3 border-bottom">
-        <div class="d-flex align-items-center gap-2">
-          <div class="search-input-group flex-grow-1 position-relative">
-            <i class="bi bi-search position-absolute start-0 top-50 translate-middle-y ms-3 text-muted"></i>
-            <input type="text" 
-                   class="form-control ps-5 rounded-pill border-primary" 
-                   placeholder="Search for jobs..." 
-                   [(ngModel)]="searchQuery"
-                   (input)="onSearch()"
-                   #searchInput>
-          </div>
-          <button class="btn btn-light rounded-circle p-2" (click)="closeSearchModal()">
-            <i class="bi bi-x-lg"></i>
-          </button>
-        </div>
-      </div>
-      <div class="search-modal-body p-3">
-        <div class="search-results-section">
-          <div *ngIf="searchResults.length > 0" class="search-results-list">
-             <div *ngFor="let job of searchResults" class="search-result-item d-flex align-items-center p-3 mb-2 bg-light rounded-3 cursor-pointer" (click)="viewJobDetails(job)">
-                <div class="result-info flex-grow-1">
-                  <div class="result-title fw-bold text-primary">{{ job.title }}</div>
-                  <div class="result-company text-muted small">{{ job.company }}</div>
-                </div>
-                <div class="result-actions ms-3 d-flex gap-2">
-                   <button class="btn btn-outline-success btn-sm rounded-3" (click)="shareApp(); $event.stopPropagation()">
-                     <i class="bi bi-share"></i>
-                   </button>
-                </div>
-             </div>
-          </div>
-          <div *ngIf="searchQuery && searchResults.length === 0" class="text-center py-5">
-            <i class="bi bi-search display-4 text-muted mb-3 d-block"></i>
-            <p class="text-muted">No jobs found matching "{{ searchQuery }}"</p>
-          </div>
-          <div *ngIf="!searchQuery" class="text-center py-5">
-            <i class="bi bi-briefcase display-4 text-muted mb-3 d-block"></i>
-            <p class="text-muted">Search for your dream job above</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Category Pills Bar (fixed below navbar) -->
   <div class="pills-bar">
-    <div class="pills-scroll-row">
+    <div class="pills-scroll-row" [style.overflow-x]="isGamesDropdownOpen ? 'visible' : 'auto'">
       <a class="jc-pill" routerLink="/" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>Home</span>
       </a>
@@ -145,6 +147,16 @@
       <a class="jc-pill" routerLink="/Sales-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
         <span>Sales Walk-ins</span>
       </a>
+
+      <!-- Games Dropdown -->
+      <div class="jc-pill position-relative cursor-pointer" (click)="toggleGamesDropdown($event)">
+        <span>Games <i class="bi bi-chevron-down small"></i></span>
+        <div class="games-dropdown-menu" *ngIf="isGamesDropdownOpen" (click)="$event.stopPropagation()">
+          <a routerLink="/thambola-game" class="dropdown-item-custom" (click)="closeGamesDropdown()">
+            <i class="bi bi-grid-3x3 me-2"></i>Thambola High Five
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </header>

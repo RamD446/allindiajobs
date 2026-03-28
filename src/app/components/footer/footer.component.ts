@@ -22,7 +22,8 @@ export class FooterComponent {
     { name: 'Fresher Walk-ins', route: '/Fresher-Walk-ins' },
     { name: 'Sales Walk-ins', route: '/Sales-Walk-ins' },
     { name: 'Banking Walk-ins', route: '/Banking-Walk-ins' },
-    { name: 'Pharma Walk-ins', route: '/Pharma-Walk-ins' }
+    { name: 'Pharma Walk-ins', route: '/Pharma-Walk-ins' },
+    { name: 'Thambola Game', route: '/thambola-game' }
   ];
 
   @HostListener('window:beforeinstallprompt', ['$event'])

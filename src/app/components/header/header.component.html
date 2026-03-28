@@ -99,6 +99,19 @@
       </div>
 
       <div class="menu-section mt-3">
+        <div class="section-label px-3 mb-1">Play & Win</div>
+        <div class="menu-items">
+          <a routerLink="/thambola-game" class="menu-item" (click)="closeNav()">
+            <div class="menu-item-icon" style="background-color: #ffeb3b15">
+              <i class="bi bi-grid-3x3" style="color: #ffeb3b"></i>
+            </div>
+            <span class="menu-item-text">Thambola High Five</span>
+            <i class="bi bi-chevron-right ms-auto chevron"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="menu-section mt-3">
         <div class="section-label px-3 mb-1">Follow Jobs Channel</div>
         <div class="menu-items">
           <a href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" class="menu-item">
@@ -148,14 +161,40 @@
         <span>Sales Walk-ins</span>
       </a>
 
-      <!-- Games Dropdown -->
-      <div class="jc-pill position-relative cursor-pointer" (click)="toggleGamesDropdown($event)">
-        <span>Games <i class="bi bi-chevron-down small"></i></span>
-        <div class="games-dropdown-menu" *ngIf="isGamesDropdownOpen" (click)="$event.stopPropagation()">
-          <a routerLink="/thambola-game" class="dropdown-item-custom" (click)="closeGamesDropdown()">
-            <i class="bi bi-grid-3x3 me-2"></i>Thambola High Five
-          </a>
+      <!-- Games Pill -->
+      <div class="jc-pill position-relative cursor-pointer" 
+           (click)="toggleGamesDropdown($event)" 
+           role="button" 
+           tabindex="0"
+           (keyup.enter)="toggleGamesDropdown($event)">
+        <span>Games <i class="bi bi-controller ms-1"></i></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Games Modal Popup (Mobile Friendly) -->
+  <div class="games-modal-backdrop" *ngIf="isGamesDropdownOpen" (click)="closeGamesDropdown()">
+    <div class="games-modal-content shadow-lg" (click)="$event.stopPropagation()">
+      <div class="games-modal-header border-bottom">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-controller text-primary fs-4"></i>
+            <span class="fw-bold">Available Games</span>
         </div>
+        <button class="btn btn-link text-muted p-0" (click)="closeGamesDropdown()">
+          <i class="bi bi-x-lg fs-5"></i>
+        </button>
+      </div>
+      <div class="games-modal-body p-3">
+          <div class="games-grid">
+            <a routerLink="/thambola-game" class="game-item-card" (click)="closeGamesDropdown()">
+              <div class="game-icon-circle bg-warning-subtle">
+                  <i class="bi bi-grid-3x3 text-warning"></i>
+              </div>
+              <span class="game-name">Thambola</span>
+              <span class="game-subtitle">High Five</span>
+            </a>
+            <!-- More games can be added here -->
+          </div>
       </div>
     </div>
   </div>

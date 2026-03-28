@@ -109,7 +109,6 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleGamesDropdown(event: Event) {
-    event.preventDefault();
     event.stopPropagation();
     this.isGamesDropdownOpen = !this.isGamesDropdownOpen;
   }

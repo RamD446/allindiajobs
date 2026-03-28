@@ -131,70 +131,63 @@
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
 
   <!-- Category Pills Bar (fixed below navbar) -->
-  <div class="pills-bar">
+  <div class="pills-bar" [style.mask-image]="isGamesDropdownOpen ? 'none' : 'linear-gradient(to right, black 85%, transparent 100%)'" [style.-webkit-mask-image]="isGamesDropdownOpen ? 'none' : 'linear-gradient(to right, black 85%, transparent 100%)'">
     <div class="pills-scroll-row" [style.overflow-x]="isGamesDropdownOpen ? 'visible' : 'auto'">
-      <a class="jc-pill" routerLink="/" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+      <a class="jc-pill" routerLink="/" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>Home</span>
       </a>
 
-      <a class="jc-pill" routerLink="/IT-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+      <a class="jc-pill" routerLink="/IT-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>IT Walk-ins</span>
       </a>
 
-      <a class="jc-pill" routerLink="/BPO-Non-IT-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+      <a class="jc-pill" routerLink="/BPO-Non-IT-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>BPO/Non-IT Walk-ins</span>
       </a>
 
-      <a class="jc-pill" routerLink="/Fresher-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+      <a class="jc-pill" routerLink="/Fresher-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>Fresher Walk-ins</span>
       </a>
       
-      <a class="jc-pill" routerLink="/Banking-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+      <a class="jc-pill" routerLink="/Banking-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>Banking Walk-ins</span>
       </a>
       
-      <a class="jc-pill" routerLink="/Pharma-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+      <a class="jc-pill" routerLink="/Pharma-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>Pharma Walk-ins</span>
       </a>
 
-      <a class="jc-pill" routerLink="/Sales-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}">
+      <a class="jc-pill" routerLink="/Sales-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>Sales Walk-ins</span>
       </a>
 
-      <!-- Games Pill -->
-      <div class="jc-pill position-relative cursor-pointer" 
-           (click)="toggleGamesDropdown($event)" 
+      <!-- Games Dropdown -->
+      <div class="dropdown" [class.show]="isGamesDropdownOpen">
+        <a class="jc-pill dropdown-toggle" 
+           href="javascript:void(0)" 
            role="button" 
-           tabindex="0"
-           (keyup.enter)="toggleGamesDropdown($event)">
-        <span>Games <i class="bi bi-controller ms-1"></i></span>
-      </div>
-    </div>
-  </div>
+           id="gamesDropdownLink" 
+           (click)="toggleGamesDropdown($event)" 
+           aria-haspopup="true" 
+           [aria-expanded]="isGamesDropdownOpen">
+          <span> Fun Games <i class="bi bi-controller ms-1"></i></span>
+        </a>
 
-  <!-- Games Modal Popup (Mobile Friendly) -->
-  <div class="games-modal-backdrop" *ngIf="isGamesDropdownOpen" (click)="closeGamesDropdown()">
-    <div class="games-modal-content shadow-lg" (click)="$event.stopPropagation()">
-      <div class="games-modal-header border-bottom">
-        <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-controller text-primary fs-4"></i>
-            <span class="fw-bold">Available Games</span>
+        <div class="dropdown-menu shadow-lg" 
+             [class.show]="isGamesDropdownOpen" 
+             aria-labelledby="gamesDropdownLink"
+             (click)="$event.stopPropagation()">
+          <a class="dropdown-item d-flex align-items-center gap-2 py-2" 
+             routerLink="/thambola-game" 
+             (click)="closeGamesDropdown()">
+            <i class="bi bi-grid-3x3 text-warning"></i>
+            <div>
+              <div class="fw-bold small">Thambola High Five</div>
+            
+            </div>
+          </a>
+          <!-- More games can be added here -->
         </div>
-        <button class="btn btn-link text-muted p-0" (click)="closeGamesDropdown()">
-          <i class="bi bi-x-lg fs-5"></i>
-        </button>
-      </div>
-      <div class="games-modal-body p-3">
-          <div class="games-grid">
-            <a routerLink="/thambola-game" class="game-item-card" (click)="closeGamesDropdown()">
-              <div class="game-icon-circle bg-warning-subtle">
-                  <i class="bi bi-grid-3x3 text-warning"></i>
-              </div>
-              <span class="game-name">Thambola</span>
-              <span class="game-subtitle">High Five</span>
-            </a>
-            <!-- More games can be added here -->
-          </div>
       </div>
     </div>
   </div>

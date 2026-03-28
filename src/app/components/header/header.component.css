@@ -247,8 +247,8 @@ header {
 /* Category Pills Bar */
 .pills-bar {
   background: #000000; /* Black background */
-  border-top: 1px solid #ffffff; /* Top white border */
-  border-bottom: 1px solid #ffffff; /* Bottom white border */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0;
   position: fixed;
   top: 50px;
@@ -257,6 +257,7 @@ header {
   z-index: 1000;
   left: 50%;
   transform: translateX(-50%);
+  overflow: visible !important;
 }
 
 @media (max-width: 989px) {
@@ -269,24 +270,29 @@ header {
 .pills-scroll-row {
   display: flex;
   overflow-x: auto;
+  overflow-y: visible;
   gap: 0;
   padding: 0;
-  scrollbar-width: thin; /* Show thin scrollbar if supported */
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff transparent;
   align-items: center;
+  -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling for iOS */
+  scroll-behavior: smooth;
 }
 
 .pills-scroll-row::-webkit-scrollbar {
-  height: 3px;
-  display: block; /* Ensure it's displayed */
+  height: 4px; /* Slightly taller for better touch target */
+  display: block;
 }
 
 .pills-scroll-row::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .pills-scroll-row::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: #ffffff;
   border-radius: 10px;
+  border: 1px solid transparent; /* Gives a little bit of air around the thumb */
 }
 
 .jc-pill {
@@ -331,96 +337,68 @@ header {
   border-bottom: none !important; /* No underline */
 }
 
-/* Games Modal Styles */
-.games-modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  z-index: 2200;
+.dropdown {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 15px;
 }
 
-.games-modal-content {
-  width: 100%;
-  max-width: 400px;
-  background: #ffffff;
-  border-radius: 24px;
-  overflow: hidden;
-  animation: zoomIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-@keyframes zoomIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.games-modal-header {
-  padding: 1rem 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f8fafc;
-}
-
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.game-item-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  padding: 1.25rem 0.5rem;
-  background: #fdfdfd;
-  border: 1px solid #f1f5f9;
-  border-radius: 16px;
-  transition: all 0.2s;
-  color: #334155;
-}
-
-.game-item-card:hover {
-  background: #f0f7ff;
-  border-color: #3b82f6;
-  transform: translateY(-2px);
-}
-
-.game-icon-circle {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-  font-size: 1.5rem;
-}
-
-.game-name {
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-
-.game-subtitle {
-  font-size: 0.75rem;
-  color: #64748b;
-}
-
-@media (max-width: 576px) {
-  .games-modal-content {
-    position: absolute;
-    bottom: 20px;
-    width: calc(100% - 30px);
+@media (max-width: 768px) {
+  .dropdown {
+    position: static; /* Important: allow menu to position relative to pills-scroll-row if needed */
   }
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 180px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  z-index: 2000;
+  margin-top: 5px;
+  padding: 8px 0;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .dropdown-menu {
+    right: 5px;
+    left: auto;
+    width: 200px;
+  }
+}
+
+.dropdown-item {
+  color: #334155;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f8fafc;
+  color: #1565c0;
+}
+
+.dropdown-toggle::after {
+  display: none !important; /* Hide bootstrap default chevron */
+}
+
+/* Ensure bar doesn't clip dropdown */
+.pills-scroll-row {
+  overflow-x: auto;
+  overflow-y: visible; /* CRITICAL: Allow dropdown to show */
+  position: relative;
+}
+
+.pills-bar {
+  overflow: visible !important;
 }
 
 .dropdown-item-custom {

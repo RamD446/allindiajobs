@@ -1,12 +1,12 @@
 .jc {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+  padding-top: 85px;
 }
 
-/* Desktop Spacing from Header */
-@media (min-width: 992px) {
+@media (max-width: 768px) {
   .jc {
-    padding-top: 1.5rem;
+    padding-top: 100px;
   }
 }
 

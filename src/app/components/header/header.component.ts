@@ -3,17 +3,21 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
+import { FormsModule } from '@angular/forms';
 import { Job } from '../../models/job.model';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
   isNavActive = false;
+  isSearchModalOpen = false;
+  searchQuery = '';
+  searchResults: Job[] = [];
   jobs: Job[] = [];
 
   navCategories = [
@@ -40,7 +44,7 @@ export class HeaderComponent implements OnInit {
           this.jobs = Object.keys(data).map(key => ({
             id: key,
             ...data[key]
-          }));
+          })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
         }
         this.cdr.detectChanges();
       });
@@ -85,6 +89,59 @@ export class HeaderComponent implements OnInit {
 
   closeNav() {
     this.isNavActive = false;
+  }
+
+  toggleSearchModal(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.isSearchModalOpen = !this.isSearchModalOpen;
+    if (this.isSearchModalOpen) {
+      this.searchQuery = '';
+      this.searchResults = [];
+    }
+  }
+
+  closeSearchModal() {
+    this.isSearchModalOpen = false;
+  }
+
+  onSearch() {
+    if (!this.searchQuery.trim()) {
+      this.searchResults = [];
+      return;
+    }
+    const query = this.searchQuery.toLowerCase();
+    this.searchResults = this.jobs.filter(job => 
+      job.title.toLowerCase().includes(query) || 
+      job.company.toLowerCase().includes(query) ||
+      (job.category && job.category.toLowerCase().includes(query))
+    ).slice(0, 5);
+  }
+
+  viewJobDetails(job: Job) {
+    const titleSlug = job.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    this.router.navigate(['/job', job.id, titleSlug], { state: { job } }).then(() => {
+      this.closeSearchModal();
+      window.scrollTo(0, 0);
+    });
+  }
+
+  shareApp() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'AllIndiaJobs Portal',
+        text: 'Find latest walk-in interviews and jobs across India.',
+        url: window.location.origin
+      });
+    } else {
+      alert('Sharing not supported on this browser');
+    }
+  }
+
+  downloadApp() {
+    // Placeholder for download app functionality
+    alert('App download coming soon!');
   }
 
   @HostListener('document:click', ['$event'])

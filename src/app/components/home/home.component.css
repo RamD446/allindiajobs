@@ -2,6 +2,13 @@
   padding: 0.5rem 0; /* Removed horizontal padding */
   background-color: #ffffff;
   min-height: 100vh;
+  padding-top: 85px; /* Default/Desktop: tighter space */
+}
+
+@media (max-width: 768px) {
+  .container-fluid {
+    padding-top: 100px; /* Mobile: more space to clear fixed header */
+  }
 }
 
 

@@ -1,13 +1,127 @@
 <header>
-  <nav class="navbar navbar-expand-lg navbar fixed-top">
-    <div class="container-fluid px-0 d-flex justify-content-center">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid px-2 d-flex justify-content-between align-items-center">
+      <!-- Menu Icon (Left) -->
+      <button class="btn btn-link text-white p-0 menu-btn" (click)="toggleNav($event)">
+        <i class="bi bi-list fs-2"></i>
+      </button>
+
       <!-- Logo Centered -->
-      <a routerLink="/" class="navbar-brand logo mb-0 d-flex align-items-center">
-        <img src="assets/images/logo.png" alt="AllIndiaJobs Logo" class="logo-img me-2">
-        <span class="logo-main"><span class="logo-part1">AllIndiaJobs</span><span class="logo-part2"></span><span class="logo-part3"></span></span>
-      </a>
+      <div class="navbar-brand-center">
+        <a routerLink="/" class="navbar-brand logo mb-0 d-flex align-items-center">
+          <img src="favicon.ico" alt="Icon" class="logo-img me-2" style="width: 24px; height: 24px;">
+          <span class="logo-main">
+            <span class="logo-part1">AllIndiaJobs</span>
+            <span class="logo-part2"></span>
+            <span class="logo-part3"></span>
+          </span>
+        </a>
+      </div>
+
+      <!-- Search Icon (Right) -->
+      <button class="btn btn-link text-white p-0 search-btn" (click)="toggleSearchModal($event)">
+        <i class="bi bi-search fs-4"></i>
+      </button>
     </div>
   </nav>
+
+  <!-- Offcanvas Menu -->
+  <div class="mobile-offcanvas" [class.active]="isNavActive">
+    <div class="offcanvas-header-nav">
+      <span class="text-white fw-bold">Menu</span>
+      <button class="btn-close-custom" (click)="closeNav()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="px-3 mb-4 mt-2">
+        <div class="section-label mb-2">Job Categories</div>
+        <div class="menu-items">
+          <a *ngFor="let cat of navCategories" 
+             [routerLink]="cat.route" 
+             class="menu-item mb-2" 
+             routerLinkActive="active"
+             (click)="closeNav()">
+            <div class="menu-item-icon" [style.background-color]="cat.color + '20'">
+              <i class="bi" [ngClass]="cat.icon" [style.color]="cat.color"></i>
+            </div>
+            <span class="menu-item-text">{{ cat.name }}</span>
+            <i class="bi bi-chevron-right ms-auto chevron"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="px-3 mb-4">
+        <div class="section-label mb-2">Job Channel</div>
+        <div class="menu-items">
+          <a href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" class="menu-item">
+            <div class="menu-item-icon" style="background-color: #25D36620">
+              <i class="bi bi-whatsapp" style="color: #25D366"></i>
+            </div>
+            <span class="menu-item-text">Join WhatsApp Channel</span>
+            <i class="bi bi-box-arrow-up-right ms-auto chevron"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="offcanvas-footer">
+      <p class="copyright-text mb-0">© 2026 AllIndiaJobs. All rights reserved.</p>
+    </div>
+  </div>
+  <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
+
+  <!-- Search Modal -->
+  <div class="search-modal-backdrop" *ngIf="isSearchModalOpen" (click)="closeSearchModal()">
+    <div class="search-modal-content" (click)="$event.stopPropagation()">
+      <div class="search-modal-header p-3 border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="search-input-group flex-grow-1 position-relative">
+            <i class="bi bi-search position-absolute start-0 top-50 translate-middle-y ms-3 text-muted"></i>
+            <input type="text" 
+                   class="form-control ps-5 rounded-pill border-primary" 
+                   placeholder="Search for jobs, companies..." 
+                   [(ngModel)]="searchQuery"
+                   (input)="onSearch()"
+                   #searchInput>
+          </div>
+          <button class="btn btn-primary rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" (click)="onSearch()">
+            <i class="bi bi-search"></i>
+          </button>
+          <button class="btn btn-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" (click)="closeSearchModal()">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      </div>
+      <div class="search-modal-body p-3">
+        <div class="search-results-section">
+          <div *ngIf="searchResults.length > 0" class="search-results-list">
+             <div *ngFor="let job of searchResults" class="search-result-item d-flex align-items-center p-3 mb-2 bg-light rounded-3 cursor-pointer" (click)="viewJobDetails(job)">
+                <div class="result-info flex-grow-1">
+                  <div class="result-title fw-bold text-primary">{{ job.title }}</div>
+                  <div class="result-company text-muted small">{{ job.company }}</div>
+                </div>
+                <div class="result-actions ms-3 d-flex gap-2">
+                   <button class="btn btn-outline-success btn-sm rounded-3" (click)="shareApp(); $event.stopPropagation()">
+                     <i class="bi bi-share"></i>
+                   </button>
+                   <button class="btn btn-outline-primary btn-sm rounded-3" (click)="downloadApp(); $event.stopPropagation()">
+                     <i class="bi bi-download"></i>
+                   </button>
+                </div>
+             </div>
+          </div>
+          <div *ngIf="searchQuery && searchResults.length === 0" class="text-center py-5">
+            <i class="bi bi-search display-4 text-muted mb-3 d-block"></i>
+            <p class="text-muted">No jobs found matching "{{ searchQuery }}"</p>
+          </div>
+          <div *ngIf="!searchQuery" class="text-center py-5">
+            <i class="bi bi-briefcase display-4 text-muted mb-3 d-block"></i>
+            <p class="text-muted">Search for your dream job above</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Category Pills Bar (fixed below navbar) -->
   <div class="pills-bar">

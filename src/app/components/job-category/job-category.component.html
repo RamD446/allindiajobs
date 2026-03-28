@@ -25,18 +25,15 @@
             </div>
             <div class="section-content">
               <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
-                <span class="item-title"><i class="bi bi-caret-right-fill me-1"></i>{{ job.title }}</span>
-                <div class="item-meta-row">
-                  <span *ngIf="job.company" class="item-meta">{{ job.company }}</span>
-                  <span *ngIf="job.walkInStartDate" class="item-meta">
-                    Walk-in: 
-                    <ng-container *ngIf="job.walkInEndDate && job.walkInStartDate !== job.walkInEndDate">
-                      {{ job.walkInStartDate | date:'dd MMM' }} to {{ job.walkInEndDate | date:'dd MMM' }}
-                    </ng-container>
-                    <ng-container *ngIf="!job.walkInEndDate || job.walkInStartDate === job.walkInEndDate">
-                      {{ job.walkInStartDate | date:'dd MMM' }}
-                    </ng-container>
-                  </span>
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <div class="item-title">
+                    <i class="bi bi-arrow-right-short"></i>
+                    {{ job.title }}
+                  </div>
+                  <button class="view-btn-mini">View</button>
+                </div>
+                <div class="walk-in-text">
+                  <span *ngIf="job.walkInStartDate">Walk-in: {{ job.walkInStartDate | date:'dd MMM' }}</span>
                 </div>
               </div>
             </div>

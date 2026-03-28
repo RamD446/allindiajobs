@@ -11,9 +11,7 @@
         <a routerLink="/" class="navbar-brand logo mb-0 d-flex align-items-center">
           <img src="favicon.ico" alt="Icon" class="logo-img me-2" style="width: 24px; height: 24px;">
           <span class="logo-main">
-            <span class="logo-part1">AllIndiaJobs</span>
-            <span class="logo-part2"></span>
-            <span class="logo-part3"></span>
+            <span class="logo-part1">All</span><span class="logo-part2">India</span><span class="logo-part3">Jobs</span>
           </span>
         </a>
       </div>
@@ -28,21 +26,21 @@
   <!-- Offcanvas Menu -->
   <div class="mobile-offcanvas" [class.active]="isNavActive">
     <div class="offcanvas-header-nav">
-      <span class="text-white fw-bold">Menu</span>
+      <span class="text-white fw-bold">AllIndiaJobs.com</span>
       <button class="btn-close-custom" (click)="closeNav()">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
-    <div class="offcanvas-body">
-      <div class="px-3 mb-4 mt-2">
-        <div class="section-label mb-2">Job Categories</div>
+    <div class="offcanvas-body p-0">
+      <div class="menu-section mt-2">
+        <div class="section-label px-3 mb-1">Job Categories</div>
         <div class="menu-items">
           <a *ngFor="let cat of navCategories" 
              [routerLink]="cat.route" 
-             class="menu-item mb-2" 
+             class="menu-item" 
              routerLinkActive="active"
              (click)="closeNav()">
-            <div class="menu-item-icon" [style.background-color]="cat.color + '20'">
+            <div class="menu-item-icon" [style.background-color]="cat.color + '15'">
               <i class="bi" [ngClass]="cat.icon" [style.color]="cat.color"></i>
             </div>
             <span class="menu-item-text">{{ cat.name }}</span>
@@ -51,11 +49,11 @@
         </div>
       </div>
 
-      <div class="px-3 mb-4">
-        <div class="section-label mb-2">Job Channel</div>
+      <div class="menu-section mt-3">
+        <div class="section-label px-3 mb-1">Follow Jobs Channel</div>
         <div class="menu-items">
           <a href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" class="menu-item">
-            <div class="menu-item-icon" style="background-color: #25D36620">
+            <div class="menu-item-icon" style="background-color: #25D36615">
               <i class="bi bi-whatsapp" style="color: #25D366"></i>
             </div>
             <span class="menu-item-text">Join WhatsApp Channel</span>
@@ -79,15 +77,18 @@
             <i class="bi bi-search position-absolute start-0 top-50 translate-middle-y ms-3 text-muted"></i>
             <input type="text" 
                    class="form-control ps-5 rounded-pill border-primary" 
-                   placeholder="Search for jobs, companies..." 
+                   placeholder="Search for jobs..." 
                    [(ngModel)]="searchQuery"
                    (input)="onSearch()"
                    #searchInput>
           </div>
-          <button class="btn btn-primary rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" (click)="onSearch()">
-            <i class="bi bi-search"></i>
+          <button class="btn btn-outline-primary rounded-circle p-2" (click)="shareApp()">
+            <i class="bi bi-share"></i>
           </button>
-          <button class="btn btn-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" (click)="closeSearchModal()">
+          <button class="btn btn-outline-success rounded-circle p-2" (click)="downloadApp()">
+            <i class="bi bi-download"></i>
+          </button>
+          <button class="btn btn-light rounded-circle p-2" (click)="closeSearchModal()">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -103,9 +104,6 @@
                 <div class="result-actions ms-3 d-flex gap-2">
                    <button class="btn btn-outline-success btn-sm rounded-3" (click)="shareApp(); $event.stopPropagation()">
                      <i class="bi bi-share"></i>
-                   </button>
-                   <button class="btn btn-outline-primary btn-sm rounded-3" (click)="downloadApp(); $event.stopPropagation()">
-                     <i class="bi bi-download"></i>
                    </button>
                 </div>
              </div>

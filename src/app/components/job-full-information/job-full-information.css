@@ -1,12 +1,14 @@
 .jc {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-  padding-top: 85px;
+  padding-top: 0;
 }
 
 @media (max-width: 768px) {
   .jc {
-    padding-top: 100px;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -74,12 +76,16 @@
 
 /* Mobile Optimizations */
 @media (max-width: 991px) {
+  .breadcrumb {
+    font-size: 0.7rem !important; /* Smaller breadcrumbs on mobile */
+  }
+  
   .row.g-3 {
     --bs-gutter-y: 1rem;
   }
   
-  h1.h4 {
-    font-size: 1.1rem;
+  h1.h5 {
+    font-size: 0.95rem !important; /* Reduced main title font size */
     width: 100%;
   }
   

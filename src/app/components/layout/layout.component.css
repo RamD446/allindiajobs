@@ -2,35 +2,35 @@
 .app-layout {
   min-height: 100vh;
   background-color: #f4f4f4;
-  padding-top: 70px; /* Reduced to fix excessive space between header and content */
+  padding-top: 78px; /* Matches total header height (50px navbar + 28px pills bar) */
 }
 
 .layout-container {
   max-width: 990px;
   margin: 0 auto;
-  padding: 0.5rem 0; /* Removed horizontal padding */
+  padding: 0.5rem 0; /* Added slight vertical padding back */
   background-color: #ffffff;
 }
 
 /* Responsive Padding */
 @media (min-width: 769px) {
   .layout-container {
-    padding: 0.5rem 0.5rem; /* Minimal horizontal padding for desktop */
+    padding: 0.5rem 0.5rem; /* Added slight horizontal padding back */
   }
 }
 
 @media (max-width: 768px) {
   .layout-container {
-    padding: 0.5rem 0.25rem; /* Very small padding for mobile */
+    padding: 0.5rem 0; /* Removed horizontal padding for mobile */
   }
 }
 
 @media (max-width: 576px) {
   .layout-container {
-    padding: 0.5rem 0.15rem; /* Smallest padding for narrow mobile */
+    padding: 0.5rem 0; /* Removed horizontal padding for narrow mobile */
   }
   
   .app-layout {
-    padding-top: 80px; /* Increased for mobile to provide better spacing from fixed header */
+    padding-top: 85px; /* Added slight extra space for mobile as requested */
   }
 }

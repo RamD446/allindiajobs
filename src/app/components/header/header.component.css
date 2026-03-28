@@ -9,7 +9,7 @@ header {
   background: #1565c0 !important; /* Blue background as requested */
   padding: 0 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  height: 56px;
+  height: 50px;
   max-width: 990px;
   width: 990px;
   left: 50% !important;
@@ -41,8 +41,17 @@ header {
 .logo-main {
   font-size: 1.1rem;
   font-weight: 900;
-  color: #ffffff;
   letter-spacing: -0.5px;
+}
+
+.logo-part1 { color: #ffffff; }
+.logo-part2 { color: #ffeb3b; } /* Yellow */
+.logo-part3 { color: #ffffff; }
+
+@media (max-width: 768px) {
+  .logo-main {
+    font-size: 0.9rem; /* Further reduced */
+  }
 }
 
 /* Icons */
@@ -88,40 +97,41 @@ header {
 .offcanvas-body {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem 0;
+  padding: 0;
 }
 
 .section-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: #64748b;
-  letter-spacing: 1px;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: 0.4rem 1rem; /* Further reduced from 0.5rem */
   text-decoration: none;
   color: #334155;
-  border-radius: 12px;
   transition: background 0.2s;
+  border-bottom: 1px solid #f8fafc;
 }
 
 .menu-item:hover {
-  background: #f1f5f9;
+  background: #f8fafc;
 }
 
 .menu-item.active {
-  background: #e3f2fd;
+  background: #f0f7ff;
   color: #1565c0;
+  border-left: 3px solid #1565c0;
 }
 
 .menu-item-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 28px; /* Reduced from 32px */
+  height: 28px; /* Reduced from 32px */
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,7 +140,12 @@ header {
 
 .menu-item-text {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Reduced from 0.9rem */
+}
+
+.chevron {
+  font-size: 0.75rem;
+  color: #cbd5e1;
 }
 
 .offcanvas-footer {
@@ -216,11 +231,14 @@ header {
 
 /* Category Pills Bar */
 .pills-bar {
-  background: #f8fafc; /* Very light background for the bar */
-  border-bottom: 1px solid #e2e8f0;
-  padding: 4px 0; /* Reduced padding */
+  background: #000000; /* Black background */
+  border-top: 1px solid #ffffff; /* Top white border */
+  border-bottom: 1px solid #ffffff; /* Bottom white border */
+  height: 28px; /* Reduced height */
+  overflow: hidden;
+  padding: 0;
   position: fixed;
-  top: 56px;
+  top: 50px;
   width: 100%;
   max-width: 990px;
   z-index: 1000;
@@ -238,8 +256,8 @@ header {
 .pills-scroll-row {
   display: flex;
   overflow-x: auto;
-  gap: 4px; /* Reduced gap */
-  padding: 0 10px;
+  gap: 0;
+  padding: 0;
   scrollbar-width: none;
 }
 
@@ -249,26 +267,39 @@ header {
 
 .jc-pill {
   white-space: nowrap;
-  padding: 6px 12px;
-  background: transparent; /* Removed background to look like text */
-  border-radius: 6px;
+  padding: 4px 12px; /* Reduced vertical padding for shorter bar */
+  background: transparent;
+  border-radius: 0;
   text-decoration: none;
-  color: #64748b; /* Muted text color */
-  font-size: 0.8rem; /* Slightly smaller */
+  color: #ffffff;
+  font-size: 0.8rem; /* Slightly smaller text */
   font-weight: 700;
   transition: all 0.2s;
-  border: none; /* Removed border */
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .jc-pill {
+    font-size: 0.7rem; /* Further reduced */
+    padding: 5px 8px; /* Tighter padding */
+  }
+}
+
+.jc-pill:last-child {
+  border-right: none;
 }
 
 .jc-pill:hover {
-  color: #1565c0;
-  background: rgba(21, 101, 192, 0.05);
+  color: #ffeb3b;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .jc-pill-active {
-  background: #1565c0 !important; /* Keep a nice background for the active one */
-  color: #ffffff !important;
-  box-shadow: 0 2px 6px rgba(21, 101, 192, 0.2);
+  background: transparent !important;
+  color: #ffeb3b !important; /* Yellow active text */
+  box-shadow: none;
+  border-bottom: none !important; /* No underline */
 }
 
 /* Custom Close Button for search */

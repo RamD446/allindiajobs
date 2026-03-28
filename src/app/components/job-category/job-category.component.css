@@ -9,10 +9,10 @@
 
 .section-header {
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #ffffff;
   background: #1565c0;
-  padding: 0.6rem 1rem;
+  padding: 0.4rem 0.8rem; /* Reduced padding */
   text-transform: capitalize;
   letter-spacing: 0.2px;
   display: flex;
@@ -21,17 +21,15 @@
 }
 
 .section-content {
-  padding: 0.5rem 0;
+  padding: 0;
 }
 
 .section-item {
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
   transition: all 0.2s ease;
+  display: block;
 }
 
 .section-item:last-child {
@@ -39,37 +37,48 @@
 }
 
 .section-item:hover {
-  background: #f9fafb;
+  background: #f8fafc;
 }
 
 .item-title {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: #334155;
-  line-height: 1.4;
+  color: #1e293b;
+  line-height: 1.3;
   display: flex;
-  align-items: flex-start;
-  gap: 0.3rem;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.15rem;
 }
 
 .item-title i {
   color: #1565c0;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   flex-shrink: 0;
-  margin-top: 2px;
 }
 
-.item-meta-row {
-  display: flex;
-  gap: 0.8rem;
-  margin-left: 1rem;
+.walk-in-text {
+  color: #dc2626; /* Red color */
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 1.15rem;
 }
 
-.item-meta {
+.posted-date-mini {
   font-size: 0.65rem;
   color: #64748b;
-  display: inline-block;
+  font-weight: 600;
+}
+
+.view-btn-mini {
+  padding: 2px 12px;
+  font-size: 0.7rem;
   font-weight: 700;
+  background: #1565c0;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  text-transform: uppercase;
 }
 
 .section-view-all {
@@ -125,12 +134,12 @@
   min-height: 100vh;
   background-color: #ffffff;
   padding-left: 0;
-  padding-top: 85px;
+  padding-top: 0;
 }
 
 @media (max-width: 768px) {
   .jc {
-    padding-top: 100px;
+    padding-top: 0;
   }
 }
 
@@ -239,6 +248,24 @@
 
 .jc-pill-active i, .jc-pill-active span {
   color: white !important;
+}
+
+@media (max-width: 768px) {
+  .item-title {
+    font-size: 0.75rem !important; /* Further reduced title size */
+  }
+
+  .section-item {
+    padding: 0.4rem 0.5rem !important; /* Even tighter padding */
+  }
+
+  .section-header {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.75rem !important; /* Reduced header font size */
+    font-weight: 800 !important;
+    text-transform: capitalize !important;
+    letter-spacing: 0.1px !important;
+  }
 }
 
 /* Card Styling - Same as Home */
@@ -455,7 +482,7 @@
   }
 
   .job-title {
-    font-size: 0.95rem !important;
+    font-size: 0.8rem !important;
     line-height: 1.2 !important;
     color: #334155 !important;
   }
@@ -593,7 +620,7 @@
   }
 
   .job-title-cell {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 700;
   }
 

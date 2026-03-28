@@ -405,6 +405,9 @@
   font-size: 0.75rem;
   font-weight: 700;
   margin-left: 1.15rem; /* Align with title text after arrow */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .posted-date-mini {

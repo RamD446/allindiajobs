@@ -297,12 +297,12 @@ header {
 
 .jc-pill {
   white-space: nowrap;
-  padding: 4px 12px; /* Reduced vertical padding for shorter bar */
+  padding: 8px 20px; /* Increased vertical and horizontal padding for desktop */
   background: transparent;
   border-radius: 0;
   text-decoration: none;
   color: #ffffff;
-  font-size: 0.8rem; /* Slightly smaller text */
+  font-size: 0.85rem; /* Slightly larger text */
   font-weight: 700;
   transition: all 0.2s;
   border: none;
@@ -316,8 +316,8 @@ header {
 /* Mobile adjustments for pills */
 @media (max-width: 768px) {
   .jc-pill {
-    font-size: 0.7rem; /* Further reduced */
-    padding: 5px 8px; /* Tighter padding */
+    font-size: 0.75rem; 
+    padding: 10px 15px; /* Increased padding for mobile touch friendly */
   }
 }
 

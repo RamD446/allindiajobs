@@ -7,8 +7,8 @@
 }
 
 .footer-container {
-  max-width: 990px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   padding: 3rem 1rem;
   background: linear-gradient(to bottom, #0f172a, #020617); /* Inner content is dark */
   border-top: 3px solid #6366f1;

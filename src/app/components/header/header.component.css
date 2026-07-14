@@ -15,29 +15,17 @@
 
 /* Header Container */
 header {
-  max-width: 990px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 /* Navbar */
 .navbar {
-  background: #1565c0 !important; /* Blue background as requested */
+  background: #1565c0 !important;
   padding: 0 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  height: 50px;
-  max-width: 990px;
-  width: 990px;
-  left: 50% !important;
-  transform: translateX(-50%);
+  height: 44px;
+  width: 100%;
   z-index: 1050;
-}
-
-@media (max-width: 989px) {
-  .navbar {
-    width: 100%;
-    left: 0 !important;
-    transform: none;
-  }
 }
 
 .navbar-brand-center {
@@ -54,18 +42,28 @@ header {
 }
 
 .logo-main {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 900;
   letter-spacing: -0.5px;
 }
 
 .logo-part1 { color: #ffffff; }
-.logo-part2 { color: #ffeb3b; } /* Yellow */
-.logo-part3 { color: #ffffff; }
+.logo-part2 { color: #ffeb3b; }
+
+.create-btn {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
 
 @media (max-width: 768px) {
   .logo-main {
-    font-size: 0.9rem; /* Further reduced */
+    font-size: 1rem;
+  }
+  .create-btn {
+    font-size: 0.7rem;
+    padding: 3px 8px;
   }
 }
 
@@ -246,25 +244,15 @@ header {
 
 /* Category Pills Bar */
 .pills-bar {
-  background: #000000; /* Black background */
+  background: #000000;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0;
   position: fixed;
-  top: 50px;
+  top: 44px;
   width: 100%;
-  max-width: 990px;
   z-index: 1000;
-  left: 50%;
-  transform: translateX(-50%);
   overflow: visible !important;
-}
-
-@media (max-width: 989px) {
-  .pills-bar {
-    left: 0;
-    transform: none;
-  }
 }
 
 .pills-scroll-row {

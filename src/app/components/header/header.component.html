@@ -131,7 +131,7 @@
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
 
   <!-- Category Pills Bar (fixed below navbar) -->
-  <div class="pills-bar" [style.mask-image]="isGamesDropdownOpen ? 'none' : 'linear-gradient(to right, black 85%, transparent 100%)'" [style.-webkit-mask-image]="isGamesDropdownOpen ? 'none' : 'linear-gradient(to right, black 85%, transparent 100%)'">
+  <div class="pills-bar">
     <div class="pills-scroll-row" [style.overflow-x]="isGamesDropdownOpen ? 'visible' : 'auto'">
       <a class="jc-pill" routerLink="/" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>Home</span>

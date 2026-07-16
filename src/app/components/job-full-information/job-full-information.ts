@@ -218,6 +218,12 @@ export class JobFullInformation implements OnInit {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
+  getFullInfoImages(html: string): string[] {
+    if (!html) return [];
+    const matches = [...html.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)];
+    return matches.map(match => match[1]).filter(Boolean);
+  }
+
   parseFullInfo(text: string): { label: string, value: string }[] {
     if (!text) return [];
 
@@ -389,20 +395,11 @@ export class JobFullInformation implements OnInit {
     if (job.company) {
       messageParts.push(`*Company :* ${job.company}`);
     }
-    if (job.walkInStartDate) {
-      messageParts.push(`*Walk-in Start :* ${new Date(job.walkInStartDate).toLocaleDateString('en-GB')}`);
-    }
-    if (job.walkInEndDate && job.walkInEndDate !== job.walkInStartDate) {
-      messageParts.push(`*Walk-in End :* ${new Date(job.walkInEndDate).toLocaleDateString('en-GB')}`);
-    }
     if (job.experience) {
       messageParts.push(`*Experience :* ${job.experience}`);
     }
-    if (job.walkInInterviewLocation) {
-      messageParts.push(`*Walk-in Location :* ${job.walkInInterviewLocation}`);
-    }
-    if (job.hrDetails) {
-      messageParts.push(`*HR Details :* ${job.hrDetails}`);
+    if (job.jobLocation) {
+      messageParts.push(`*Job Location & HR Details :* ${job.jobLocation}`);
     }
     if (job.fullInformationTableFormat) {
       messageParts.push(`*FullinfoationTableForamt :* ${job.fullInformationTableFormat}`);

@@ -41,8 +41,8 @@ export class HomeComponent implements OnInit {
           this.filteredJobs = [...this.jobs];
           this.extractUniqueCompanies();
 
-          // Get all jobs with walkInDrive flag set to true
-          this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 20);
+          // 4x4 card layout: keep top 16 walk-in jobs
+          this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 16);
 
         }
         this.isLoading = false;
@@ -70,11 +70,24 @@ export class HomeComponent implements OnInit {
     this.selectedCompany = company;
     if (company) {
       this.filteredJobs = this.jobs.filter(job => job.company === company);
-      this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true && job.company === company).slice(0, 20);
+      this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true && job.company === company).slice(0, 16);
     } else {
       this.filteredJobs = [...this.jobs];
-      this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 20);
+      this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 16);
     }
+  }
+
+  getJobCardImage(job: Job): string | null {
+    const sources = [job.description || '', job.fullInformationTableFormat || ''];
+
+    for (const html of sources) {
+      const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+
+    return null;
   }
 
   getTodayWalkinsCount(): number {
@@ -82,20 +95,7 @@ export class HomeComponent implements OnInit {
   }
 
   isWalkInToday(job: Job): boolean {
-    // Check if job has walkInDrive flag set to true
-    if (job.walkInDrive !== true) return false;
-    if (!job.walkInStartDate || !job.walkInEndDate) return false;
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const startDate = new Date(job.walkInStartDate);
-    startDate.setHours(0, 0, 0, 0);
-
-    const endDate = new Date(job.walkInEndDate);
-    endDate.setHours(23, 59, 59, 999);
-
-    return today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime();
+    return job.walkInDrive === true;
   }
 
   private createSlug(title: string): string {

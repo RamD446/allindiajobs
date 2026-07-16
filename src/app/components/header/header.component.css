@@ -261,26 +261,14 @@ header {
   overflow-y: visible;
   gap: 0;
   padding: 0;
-  scrollbar-width: thin;
-  scrollbar-color: #ffffff transparent;
+  scrollbar-width: none;
   align-items: center;
   -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling for iOS */
   scroll-behavior: smooth;
 }
 
 .pills-scroll-row::-webkit-scrollbar {
-  height: 4px; /* Slightly taller for better touch target */
-  display: block;
-}
-
-.pills-scroll-row::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.pills-scroll-row::-webkit-scrollbar-thumb {
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1px solid transparent; /* Gives a little bit of air around the thumb */
+  display: none;
 }
 
 .jc-pill {
@@ -416,4 +404,30 @@ header {
   font-size: 1.2rem;
   color: #64748b;
   cursor: pointer;
+}
+
+.scroll-direction-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 18px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #1565c0;
+  color: #ffffff;
+  z-index: 2200;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-direction-btn:hover {
+  background: #0d47a1;
+}
+
+.scroll-direction-btn i {
+  font-size: 1rem;
+  font-weight: 700;
 }

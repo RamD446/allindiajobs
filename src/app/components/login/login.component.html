@@ -90,65 +90,9 @@
           <button class="btn btn-success" (click)="showCreateForm()">
             <i class="bi bi-plus-circle me-1"></i>Create Job
           </button>
-          <button class="btn btn-info text-white" (click)="showCareerCreateForm()">
-            <i class="bi bi-briefcase me-1"></i>Create Career
-          </button>
           <button class="btn btn-outline-danger" (click)="logout()">
             <i class="bi bi-box-arrow-right me-1"></i>Logout
           </button>
-        </div>
-      </div>
-
-      <!-- Tabs Navigation -->
-      <ul class="nav nav-tabs mb-4">
-        <li class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'jobs'" (click)="activeTab = 'jobs'" href="javascript:void(0)">All Latest Jobs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'careers'" (click)="activeTab = 'careers'" href="javascript:void(0)">All Latest Job Careers</a>
-        </li>
-      </ul>
-
-      <!-- Career Form Modal -->
-      <div *ngIf="showCareerForm" class="job-form-modal">
-        <div class="job-form-content">
-          <div class="job-form-header">
-            <h4 class="mb-0">{{ editingCareer ? 'Edit Job Career' : 'Create New Job Career' }}</h4>
-            <button class="btn-close" (click)="cancelCareerForm()"></button>
-          </div>
-          
-          <form (ngSubmit)="saveCareer()" #careerFormRef="ngForm" class="job-form-body">
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Company Name *</label>
-                <input type="text" class="form-control" [(ngModel)]="careerForm.company" name="company" required placeholder="e.g. Google">
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Job Type *</label>
-                <select class="form-control" [(ngModel)]="careerForm.jobType" name="jobType" required>
-                  <option *ngFor="let type of careerJobTypes" [value]="type">{{ type }}</option>
-                </select>
-              </div>
-              
-              <div class="col-12 mb-3">
-                <label class="form-label">CareerOfficeURL *</label>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
-                  <input type="url" class="form-control" [(ngModel)]="careerForm.careerOfficeUrl" name="careerOfficeUrl" required placeholder="https://google.com/careers">
-                </div>
-              </div>
-            </div>
-            
-            <div class="job-form-footer">
-              <button type="button" class="btn btn-secondary me-2" (click)="cancelCareerForm()" [disabled]="isSaving">Cancel</button>
-              <button type="submit" class="btn btn-primary" [disabled]="!careerFormRef.valid || isSaving">
-                <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                <span *ngIf="isSaving">{{ editingCareer ? 'Updating...' : 'Creating...' }}</span>
-                <span *ngIf="!isSaving">{{ editingCareer ? 'Save Career' : 'Create Career' }}</span>
-              </button>
-            </div>
-          </form>
         </div>
       </div>
 
@@ -162,25 +106,36 @@
           
           <form (ngSubmit)="saveJob()" #jobFormRef="ngForm" class="job-form-body">
             <div class="row">
-              <!-- Job Location -->
-              <div class="col-12 mb-3">
-                <label class="form-label">Job Location</label>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                  <input type="text" class="form-control" [(ngModel)]="jobForm.jobLocation" name="jobLocation" placeholder="e.g. Hyderabad, Telangana">
-                </div>
-              </div>
-
-              <!-- Job Title -->
+              <!-- Row 1: Job Title + Job Location and HR Details -->
               <div class="col-md-6 mb-3">
                 <label class="form-label">Job Title *</label>
                 <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Business Development Executive">
               </div>
 
-              <!-- Company Name -->
               <div class="col-md-6 mb-3">
+                <label class="form-label">Job Location and HR Details</label>
+                <input
+                  type="text"
+                  [(ngModel)]="jobForm.jobLocation"
+                  name="jobLocation"
+                  class="form-control"
+                  placeholder="e.g. Hyderabad, Telangana | HR: 9876543210">
+              </div>
+
+              <div class="w-100"></div>
+
+              <!-- Row 2: Company Name + Job Type + Category -->
+              <div class="col-md-4 mb-3">
                 <label class="form-label">Company Name *</label>
                 <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" required placeholder="e.g. Tech Solutions Pvt Ltd">
+              </div>
+
+              <!-- Job Type -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Job Type *</label>
+                <select class="form-control" [(ngModel)]="jobForm.jobType" name="jobType" (change)="onJobTypeChange()" required>
+                  <option *ngFor="let type of jobTypeOptions" [value]="type">{{ type }}</option>
+                </select>
               </div>
               
               <!-- Category -->
@@ -191,40 +146,27 @@
                 </select>
               </div>
 
-              <!-- Experience -->
-              <div class="col-md-4 mb-3">
+              <div class="w-100"></div>
+
+              <!-- Row 3 start: Experience -->
+              <div class="col-md-6 mb-3">
                 <label class="form-label">Experience *</label>
                 <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
                   <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>
                 </select>
               </div>
 
-              <!-- FullinfoationTableForamt -->
-              <div class="col-12 mb-3">
-                <label class="form-label">FullinfoationTableForamt</label>
-                <textarea class="form-control" [(ngModel)]="jobForm.fullInformationTableFormat" name="fullInformationTableFormat" placeholder="Enter FullinfoationTableForamt" rows="3"></textarea>
-              </div>
-
-              <!-- Walk-in Checkbox -->
-              <div class="col-md-4 mb-3">
-                <div class="form-check mt-4">
-                  <input type="checkbox" class="form-check-input" id="walkInDriveCheck" [(ngModel)]="jobForm.walkInDrive" name="walkInDrive">
-                  <label class="form-check-label" for="walkInDriveCheck">
-                    <strong>Walk-In Drive</strong>
-                  </label>
-                </div>
-              </div>
-
-              <!-- Walk-in Start Date & Time - Only when Walk-In Drive is checked -->
-              <div class="col-md-6 mb-3" *ngIf="jobForm.walkInDrive">
-                <label class="form-label">Walk-in Start Date & Time *</label>
-                <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" [required]="jobForm.walkInDrive">
-              </div>
-
-              <!-- Walk-in End Date - Only when Walk-In Drive is checked -->
-              <div class="col-md-6 mb-3" *ngIf="jobForm.walkInDrive">
-                <label class="form-label">Walk-in End Date</label>
-                <input type="date" class="form-control" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate">
+              <!-- Row 3: Job Description -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Job Description *</label>
+                <textarea
+                  [(ngModel)]="jobForm.description"
+                  name="description"
+                  class="form-control description-textarea"
+                  placeholder="Detailed job description..."
+                  required
+                  rows="4">
+                </textarea>
               </div>
 
               <!-- Created Date & Time (Only when editing) -->
@@ -233,21 +175,8 @@
                 <input type="datetime-local" class="form-control" [(ngModel)]="jobForm.createdDate" name="createdDate" required>
               </div>
 
-              <!-- Job Description -->
-              <div class="col-12 mb-3">
-                <label class="form-label">Job Description *</label>
-                <textarea 
-                  [(ngModel)]="jobForm.description" 
-                  name="description" 
-                  class="form-control description-textarea"
-                  placeholder="Detailed job description..."
-                  required
-                  rows="4">
-                </textarea>
-              </div>
-
               <!-- How to Apply -->
-              <div class="col-12 mb-3">
+              <div class="col-md-6 mb-3">
                 <label class="form-label">How to Apply</label>
                 <textarea
                   [(ngModel)]="jobForm.howToApply"
@@ -259,7 +188,7 @@
               </div>
 
               <!-- Key Responsibilities -->
-              <div class="col-12 mb-3">
+              <div class="col-md-6 mb-3">
                 <label class="form-label">Key Responsibilities</label>
                 <textarea
                   [(ngModel)]="jobForm.keyResponsibilities"
@@ -271,7 +200,7 @@
               </div>
 
               <!-- Documents Required -->
-              <div class="col-12 mb-3">
+              <div class="col-md-6 mb-3">
                 <label class="form-label">Documents Required</label>
                 <textarea
                   [(ngModel)]="jobForm.documentsRequired"
@@ -283,7 +212,7 @@
               </div>
 
               <!-- Eligibility Criteria (Renamed to Interview Process) -->
-              <div class="col-12 mb-3">
+              <div class="col-md-6 mb-3">
                 <label class="form-label">Interview Process</label>
                 <textarea
                   [(ngModel)]="jobForm.eligibilityCriteria"
@@ -294,37 +223,26 @@
                 </textarea>
               </div>
 
-              <!-- Walk-in Interview Location -->
-              <div class="col-12 mb-3">
-                <label class="form-label">Walk-in Interview Location</label>
-                <textarea
-                  [(ngModel)]="jobForm.walkInInterviewLocation"
-                  name="walkInInterviewLocation"
-                  class="form-control description-textarea"
-                  placeholder="Enter walk-in interview address..."
-                  rows="2">
-                </textarea>
-              </div>
-
-              <!-- HR Details -->
-              <div class="col-12 mb-3">
-                <label class="form-label">HR Details</label>
-                <textarea
-                  [(ngModel)]="jobForm.hrDetails"
-                  name="hrDetails"
-                  class="form-control description-textarea"
-                  placeholder="Enter HR contact details..."
-                  rows="2">
-                </textarea>
-              </div>
-
               <!-- Apply Official Link -->
-              <div class="col-12 mb-3">
+              <div class="col-md-6 mb-3">
                 <label class="form-label">Apply Official Link</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
                   <input type="url" class="form-control" [(ngModel)]="jobForm.otherLink" name="otherLink" placeholder="https://company.com/apply">
                 </div>
+              </div>
+
+              <!-- Full Information Quill Editor (Last) -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Full Information (Image Only)</label>
+                <quill-editor
+                  [(ngModel)]="jobForm.fullInformationTableFormat"
+                  name="fullInformationTableFormat"
+                  [modules]="fullInfoEditorModules"
+                  (onEditorCreated)="onFullInfoEditorCreated($event)"
+                  [styles]="{ height: '180px' }"
+                  placeholder="Upload images only (auto crop 16:9 before insert)...">
+                </quill-editor>
               </div>
 
             </div>
@@ -341,8 +259,8 @@
         </div>
       </div>
 
-      <!-- Jobs List (Tab 1) -->
-      <div class="jobs-section" *ngIf="activeTab === 'jobs'">
+      <!-- Jobs List -->
+      <div class="jobs-section">
         <div class="jobs-header mb-3">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="text-primary mb-0">Jobs Management</h4>
@@ -417,14 +335,11 @@
                     <div class="col-6 col-md-4" *ngIf="job.experience">
                       <strong>Experience:</strong> {{ job.experience }}
                     </div>
-                    <div class="col-6 col-md-4" *ngIf="job.walkInStartDate">
-                      <strong>Walk-in Start:</strong> {{ job.walkInStartDate | date:'dd MMM, hh:mm a' }}
-                    </div>
-                    <div class="col-6 col-md-4" *ngIf="job.walkInEndDate">
-                      <strong>Walk-in End:</strong> {{ job.walkInEndDate | date:'dd MMM yyyy' }}
+                    <div class="col-6 col-md-4" *ngIf="job.jobType">
+                      <strong>Job Type:</strong> {{ job.jobType }}
                     </div>
                     <div class="col-12" *ngIf="job.fullInformationTableFormat">
-                      <strong>FullinfoationTableForamt:</strong> {{ job.fullInformationTableFormat }}
+                      <strong>Full Information:</strong> <span [innerHTML]="job.fullInformationTableFormat"></span>
                     </div>
                     <div class="col-12" *ngIf="job.otherLink">
                       <strong>Link:</strong> <a [href]="job.otherLink" target="_blank" class="text-truncate d-inline-block" style="max-width: 250px;">{{ job.otherLink }}</a>
@@ -442,59 +357,6 @@
           <i class="bi bi-inbox display-4 text-muted"></i>
           <h5 class="mt-3 text-muted">No {{ selectedJobCategory !== 'All' ? selectedJobCategory : '' }} Jobs Available</h5>
           <p class="text-muted">No jobs found in this category.</p>
-        </div>
-      </div>
-
-      <!-- Job Careers List (Tab 2) -->
-      <div class="jobs-section" *ngIf="activeTab === 'careers'">
-        <div class="jobs-header mb-3 d-flex justify-content-between align-items-center">
-          <h4 class="text-primary mb-0">Job Careers ({{ jobCareers.length }})</h4>
-        </div>
-        
-        <div class="row" *ngIf="jobCareers.length > 0">
-          <div class="col-12 mb-3" *ngFor="let career of jobCareers">
-            <div class="job-card-compact" [class.expanded]="isCareerExpanded(career.id)">
-              <div class="job-header-compact" (click)="toggleCareerExpand(career.id)" style="cursor: pointer;">
-                <div class="job-info">
-                  <div class="d-flex align-items-center gap-2">
-                    <i class="bi" [class.bi-chevron-right]="!isCareerExpanded(career.id)" [class.bi-chevron-down]="isCareerExpanded(career.id)"></i>
-                    <div>
-                      <h6 class="job-title-small mb-0">{{ career.company }}</h6>
-                      <small class="job-company-small text-muted">
-                        <span class="badge bg-info text-white badge-sm">{{ career.jobType }}</span>
-                      </small>
-                    </div>
-                  </div>
-                </div>
-                <div class="job-actions-small" (click)="$event.stopPropagation()">
-                  <button class="btn btn-sm btn-outline-primary me-1" (click)="editCareer(career)" title="Edit">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" (click)="deleteCareer(career.id)" title="Delete">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </div>
-              
-              <div class="job-body-compact" *ngIf="isCareerExpanded(career.id)">
-                <div class="job-meta-info mb-2">
-                  <div class="mb-2"><strong>Company:</strong> {{ career.company }}</div>
-                  <div class="mb-2"><strong>Job Type:</strong> {{ career.jobType }}</div>
-                  <div class="mb-2">
-                    <strong>CareerOfficeURL:</strong> 
-                    <a [href]="career.careerOfficeUrl" target="_blank" class="ms-1">{{ career.careerOfficeUrl }}</a>
-                  </div>
-                  <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>Added: {{ career.createdDate | date:'yyyy-MM-dd HH:mm' }}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div *ngIf="jobCareers.length === 0" class="text-center py-4">
-          <i class="bi bi-briefcase display-4 text-muted"></i>
-          <h5 class="mt-3 text-muted">No Career Links Available</h5>
-          <p class="text-muted">Add your first job career link to get started.</p>
         </div>
       </div>
 

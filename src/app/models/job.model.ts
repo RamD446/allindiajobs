@@ -4,11 +4,10 @@ export interface Job {
   title: string;
   company: string;
   jobLocation?: string;
+  jobType?: string;
   category: string;
   experience?: string;
   fullInformationTableFormat?: string;
-  walkInStartDate?: string;
-  walkInEndDate?: string;
   walkInDrive?: boolean;
   description: string;
   howToApply?: string;

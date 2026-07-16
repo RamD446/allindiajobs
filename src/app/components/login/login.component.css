@@ -298,6 +298,31 @@
   .nav-tabs::-webkit-scrollbar {
     display: none; /* Hide scrollbar Chrome/Safari */
   }
+
+  :host ::ng-deep .ql-toolbar.ql-snow,
+  :host ::ng-deep .ql-container.ql-snow {
+    border-color: #d6dbe3;
+  }
+
+  :host ::ng-deep .ql-container.ql-snow {
+    border-radius: 0 0 6px 6px;
+  }
+
+  :host ::ng-deep .ql-toolbar.ql-snow {
+    border-radius: 6px 6px 0 0;
+    background: #ffffff;
+  }
+
+  :host ::ng-deep .ql-editor {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  :host ::ng-deep .ql-editor img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
   
   .nav-tabs .nav-link {
     white-space: nowrap;

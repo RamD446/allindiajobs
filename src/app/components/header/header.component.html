@@ -11,7 +11,7 @@
         <a routerLink="/" class="navbar-brand logo mb-0 d-flex align-items-center">
           <img src="favicon.ico" alt="Icon" class="logo-img me-2" style="width: 24px; height: 24px;">
           <span class="logo-main">
-            <span class="logo-part1">All</span><span class="logo-part2">India</span><span class="logo-part3">Jobs</span>
+            <span class="logo-part1">All</span><span class="logo-part2">Jobs</span>
           </span>
         </a>
       </div>
@@ -41,9 +41,6 @@
           <button class="btn btn-outline-secondary btn-sm p-1 rounded-circle" style="width: 32px; height: 32px;" title="Share" (click)="shareApp()">
             <i class="bi bi-share"></i>
           </button>
-          <button class="btn btn-outline-secondary btn-sm p-1 rounded-circle" style="width: 32px; height: 32px;" title="Download" (click)="downloadApp()">
-            <i class="bi bi-download"></i>
-          </button>
           <button class="btn btn-link text-muted p-0 ms-1" (click)="closeSearchModal()">
             <i class="bi bi-x-lg fs-5"></i>
           </button>
@@ -61,7 +58,7 @@
             <span class="text-dark fw-bold small text-truncate">{{ result.title }}</span>
             <span class="text-muted smaller d-flex justify-content-between">
               <span>{{ result.company }}</span>
-              <span class="text-success">{{ result.walkInStartDate | date:'dd MMM' }}</span>
+              <span class="text-success">{{ result.jobType || 'Job' }}</span>
             </span>
           </button>
         </div>
@@ -75,7 +72,7 @@
   <!-- Offcanvas Menu -->
   <div class="mobile-offcanvas" [class.active]="isNavActive">
     <div class="offcanvas-header-nav">
-      <span class="text-white fw-bold">AllIndiaJobs.com</span>
+      <span class="text-white fw-bold">AllJobs.com</span>
       <button class="btn-close-custom" (click)="closeNav()">
         <i class="bi bi-x-lg"></i>
       </button>
@@ -112,20 +109,20 @@
       </div>
 
       <div class="menu-section mt-3">
-        <div class="section-label px-3 mb-1">Follow Jobs Channel</div>
+        <div class="section-label px-3 mb-1">Follow Wt'sUP</div>
         <div class="menu-items">
           <a href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" class="menu-item">
             <div class="menu-item-icon" style="background-color: #25D36615">
               <i class="bi bi-whatsapp" style="color: #25D366"></i>
             </div>
-            <span class="menu-item-text">Join WhatsApp Channel</span>
+            <span class="menu-item-text">Wt'sUP</span>
             <i class="bi bi-box-arrow-up-right ms-auto chevron"></i>
           </a>
         </div>
       </div>
     </div>
     <div class="offcanvas-footer">
-      <p class="copyright-text mb-0">© 2026 AllIndiaJobs. All rights reserved.</p>
+      <p class="copyright-text mb-0">© 2026 AllJobs. All rights reserved.</p>
     </div>
   </div>
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
@@ -191,4 +188,13 @@
       </div>
     </div>
   </div>
+
+  <button
+    type="button"
+    class="scroll-direction-btn"
+    (click)="handleScrollArrowClick()"
+    [title]="isScrolledDown ? 'Scroll to top' : 'Scroll down'"
+    aria-label="Scroll direction button">
+    <i class="bi" [ngClass]="isScrolledDown ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+  </button>
 </header>

@@ -2,14 +2,15 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserSessionPersistence, setPersistence } from 'firebase/auth';
-import { ref, push, get, update, remove, onValue } from 'firebase/database';
+import { ref, push, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
-import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
+import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES } from '../../models/job.model';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, QuillModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -24,16 +25,11 @@ export class LoginComponent implements OnInit {
 
   // Job management
   jobs: Job[] = [];
-  jobCareers: JobCareer[] = [];
-  activeTab: 'jobs' | 'careers' = 'jobs';
   selectedJobCategory: string = 'All';
   showJobForm: boolean = false;
-  showCareerForm: boolean = false;
   editingJob: Job | null = null;
-  editingCareer: JobCareer | null = null;
   isSaving: boolean = false;
   expandedJobIds: Set<string> = new Set();
-  expandedCareerIds: Set<string> = new Set();
 
   // Job form
   jobForm: Job = {
@@ -41,11 +37,10 @@ export class LoginComponent implements OnInit {
     title: '',
     company: '',
     jobLocation: '',
+    jobType: 'Walk-ins',
     category: '',
     experience: 'Freshers',
     fullInformationTableFormat: '',
-    walkInStartDate: '',
-    walkInEndDate: '',
     walkInDrive: true,
     description: '',
     howToApply: '',
@@ -60,17 +55,21 @@ export class LoginComponent implements OnInit {
 
   jobCategories: string[] = [];
   privateJobTypes: string[] = [...PRIVATE_JOB_TYPES];
-  careerJobTypes: string[] = [...CAREER_JOB_TYPES];
+  jobTypeOptions: string[] = ['Walk-ins', 'Non-Walkins'];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
 
-  // Career form
-  careerForm: JobCareer = {
-    id: '',
-    company: '',
-    jobType: this.careerJobTypes[0],
-    careerOfficeUrl: '',
-    createdDate: new Date().toISOString().slice(0, 16)
+  fullInfoEditorModules = {
+    toolbar: {
+      container: [
+        ['image']
+      ],
+      handlers: {
+        image: () => this.handleImageInsert('fullInfo')
+      }
+    }
   };
+
+  private fullInfoQuillInstance: any;
 
   constructor(private cdr: ChangeDetectorRef) {
     this.loadJobMetadata();
@@ -102,9 +101,8 @@ export class LoginComponent implements OnInit {
         this.currentUser = user;
         this.loginError = '';
         console.log('User is logged in:', user.email);
-        // Load jobs and careers only then set loading to false
+        // Load jobs then set loading to false
         this.loadJobs();
-        this.loadJobCareers();
       } else {
         this.isLoggedIn = false;
         this.currentUser = null;
@@ -114,34 +112,6 @@ export class LoginComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
-  }
-
-  private loadJobCareers() {
-    try {
-      const careersRef = ref(db, 'jobCareers');
-      onValue(careersRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          this.jobCareers = Object.keys(data).map(key => ({
-            id: key,
-            ...data[key]
-          }));
-          // Sort careers by creation date - newest first
-          this.jobCareers.sort((a, b) => {
-            const dateA = new Date(a.createdDate || '1970-01-01').getTime();
-            const dateB = new Date(b.createdDate || '1970-01-01').getTime();
-            return dateB - dateA;
-          });
-        } else {
-          this.jobCareers = [];
-        }
-        this.cdr.detectChanges();
-      }, (error) => {
-        console.error('Error loading job careers:', error);
-      });
-    } catch (error) {
-      console.error('Error loading job careers:', error);
-    }
   }
 
   // Firebase Authentication Methods
@@ -244,28 +214,10 @@ export class LoginComponent implements OnInit {
     return this.jobs.filter(job => job.category === category).length;
   }
 
-  toggleCareerExpand(careerId: string) {
-    if (this.expandedCareerIds.has(careerId)) {
-      this.expandedCareerIds.delete(careerId);
-    } else {
-      this.expandedCareerIds.add(careerId);
-    }
-  }
-
-  isCareerExpanded(careerId: string): boolean {
-    return this.expandedCareerIds.has(careerId);
-  }
-
   showCreateForm() {
     this.showJobForm = true;
     this.editingJob = null;
     this.resetJobForm();
-  }
-
-  showCareerCreateForm() {
-    this.showCareerForm = true;
-    this.editingCareer = null;
-    this.resetCareerForm();
   }
 
   private toLocalIsoString(date: Date): string {
@@ -284,43 +236,21 @@ export class LoginComponent implements OnInit {
       formattedDate = this.toLocalIsoString(new Date(job.createdDate));
     }
     
-    let formattedWalkInStart = '';
-    if (job.walkInStartDate) {
-      formattedWalkInStart = this.toLocalIsoString(new Date(job.walkInStartDate));
-    }
-    
     this.jobForm = { 
       ...job,
       jobLocation: job.jobLocation || '',
+      jobType: job.jobType || (job.walkInDrive ? 'Walk-ins' : 'Non-Walkins'),
       experience: job.experience || 'Freshers',
       fullInformationTableFormat: job.fullInformationTableFormat || '',
-      walkInStartDate: formattedWalkInStart || '',
-      walkInEndDate: job.walkInEndDate || '',
-      walkInDrive: job.walkInDrive || false,
+      walkInDrive: job.jobType ? job.jobType === 'Walk-ins' : !!job.walkInDrive,
       howToApply: job.howToApply || '',
       keyResponsibilities: job.keyResponsibilities || '',
       documentsRequired: job.documentsRequired || '',
       eligibilityCriteria: job.eligibilityCriteria || '',
       otherLink: job.otherLink || '',
-      walkInInterviewLocation: job.walkInInterviewLocation || '',
-      hrDetails: job.hrDetails || '',
+      walkInInterviewLocation: '',
+      hrDetails: '',
       createdDate: formattedDate || this.toLocalIsoString(new Date())
-    };
-  }
-
-  editCareer(career: JobCareer) {
-    this.showCareerForm = true;
-    this.editingCareer = career;
-    
-    let formattedDate = '';
-    if (career.createdDate) {
-      const d = new Date(career.createdDate);
-      formattedDate = d.toISOString().slice(0, 16);
-    }
-    
-    this.careerForm = { 
-      ...career,
-      createdDate: formattedDate || new Date().toISOString().slice(0, 16)
     };
   }
 
@@ -363,18 +293,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  async deleteCareer(careerId: string) {
-    if (confirm('Are you sure you want to delete this career?')) {
-      try {
-        const careerRef = ref(db, `jobCareers/${careerId}`);
-        await remove(careerRef);
-        console.log('Career deleted successfully');
-      } catch (error) {
-        console.error('Error deleting career:', error);
-      }
-    }
-  }
-
   async saveJob() {
     // Prevent double submission
     if (this.isSaving) return;
@@ -387,10 +305,17 @@ export class LoginComponent implements OnInit {
         // Update existing job
         const jobRef = ref(db, `jobs/${this.editingJob.id}`);
         const { id, ...jobData } = this.jobForm;
+        const normalizedJobData = {
+          ...jobData,
+          fullInformationTableFormat: this.keepOnlyImageEmbeds(jobData.fullInformationTableFormat || ''),
+          walkInDrive: jobData.jobType === 'Walk-ins',
+          walkInInterviewLocation: '',
+          hrDetails: ''
+        };
         
         // Add or update updatedDate
         const updatedJobData = {
-          ...jobData,
+          ...normalizedJobData,
           updatedDate: new Date().toISOString()
         };
         
@@ -400,8 +325,15 @@ export class LoginComponent implements OnInit {
         // Create new job
         const jobsRef = ref(db, 'jobs');
         const { id, ...jobData } = this.jobForm;
-        const newJobData = {
+        const normalizedJobData = {
           ...jobData,
+          fullInformationTableFormat: this.keepOnlyImageEmbeds(jobData.fullInformationTableFormat || ''),
+          walkInDrive: jobData.jobType === 'Walk-ins',
+          walkInInterviewLocation: '',
+          hrDetails: ''
+        };
+        const newJobData = {
+          ...normalizedJobData,
           createdDate: jobData.createdDate || new Date().toISOString()
         };
         await push(jobsRef, newJobData);
@@ -427,45 +359,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  async saveCareer() {
-    if (this.isSaving) return;
-    
-    try {
-      this.isSaving = true;
-      this.cdr.detectChanges();
-      
-      if (this.editingCareer) {
-        const careerRef = ref(db, `jobCareers/${this.editingCareer.id}`);
-        const { id, ...careerData } = this.careerForm;
-        await update(careerRef, careerData);
-        console.log('Career updated successfully');
-      } else {
-        const careersRef = ref(db, 'jobCareers');
-        const { id, ...careerData } = this.careerForm;
-        const newCareerData = {
-          ...careerData,
-          createdDate: new Date().toISOString()
-        };
-        await push(careersRef, newCareerData);
-        console.log('Career created successfully');
-      }
-      
-      this.isSaving = false;
-      this.cdr.detectChanges();
-      
-      if (!this.editingCareer) {
-        this.resetCareerForm();
-        alert('Career created successfully! You can add another one.');
-      } else {
-        this.cancelCareerForm();
-      }
-    } catch (error) {
-      console.error('Error saving career:', error);
-      this.isSaving = false;
-      this.cdr.detectChanges();
-    }
-  }
-
   cancelJobForm() {
     this.showJobForm = false;
     this.editingJob = null;
@@ -473,42 +366,162 @@ export class LoginComponent implements OnInit {
     this.resetJobForm();
   }
 
-  cancelCareerForm() {
-    this.showCareerForm = false;
-    this.editingCareer = null;
-    this.isSaving = false;
-    this.resetCareerForm();
-  }
-
   resetJobForm() {
     this.jobForm = {
       id: '',
       title: '',
       company: '',
+      jobType: this.jobTypeOptions[0],
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       experience: this.experienceOptions[0],
       fullInformationTableFormat: '',
-      walkInStartDate: '',
-      walkInEndDate: '',
       walkInDrive: true,
       description: '',
+      jobLocation: '',
       howToApply: '',
       keyResponsibilities: '',
       documentsRequired: '',
       eligibilityCriteria: '',
       otherLink: '',
+      walkInInterviewLocation: '',
+      hrDetails: '',
       createdDate: this.toLocalIsoString(new Date())
     };
   }
 
-  resetCareerForm() {
-    this.careerForm = {
-      id: '',
-      company: '',
-      jobType: this.careerJobTypes[0],
-      careerOfficeUrl: '',
-      createdDate: new Date().toISOString().slice(0, 16)
-    };
+  onJobTypeChange() {
+    this.jobForm.walkInDrive = this.jobForm.jobType === 'Walk-ins';
+  }
+  
+  onFullInfoEditorCreated(editor: any) {
+    this.fullInfoQuillInstance = editor;
+  }
+
+  private async handleImageInsert(editorKey: 'fullInfo') {
+    const file = await this.selectImageFile();
+    if (!file) {
+      return;
+    }
+
+    try {
+      const dataUrl = await this.compressImageForEditor(file);
+      const editor = editorKey === 'fullInfo' ? this.fullInfoQuillInstance : null;
+      if (!editor) {
+        return;
+      }
+
+      const range = editor.getSelection(true);
+      const index = range ? range.index : editor.getLength();
+      editor.insertEmbed(index, 'image', dataUrl, 'user');
+      editor.setSelection(index + 1, 0);
+    } catch (error) {
+      console.error('Image processing failed:', error);
+      alert('Unable to process this image. Please try another image.');
+    }
+  }
+
+  private selectImageFile(): Promise<File | null> {
+    return new Promise((resolve) => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = () => resolve(input.files && input.files.length > 0 ? input.files[0] : null);
+      input.click();
+    });
+  }
+
+  private async compressImageForEditor(file: File): Promise<string> {
+    const image = await this.loadImage(file);
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      throw new Error('Canvas context not available');
+    }
+
+    // Force final image to 16:9 for consistent content layout.
+    canvas.width = 1280;
+    canvas.height = 720;
+
+    const sourceAspect = image.width / image.height;
+    const targetAspect = 16 / 9;
+
+    let sx = 0;
+    let sy = 0;
+    let sw = image.width;
+    let sh = image.height;
+
+    if (sourceAspect > targetAspect) {
+      sw = image.height * targetAspect;
+      sx = (image.width - sw) / 2;
+    } else if (sourceAspect < targetAspect) {
+      sh = image.width / targetAspect;
+      sy = (image.height - sh) / 2;
+    }
+
+    context.drawImage(image, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+    const minKb = 10;
+    const maxKb = 20;
+    let quality = 0.9;
+    let bestDataUrl = canvas.toDataURL('image/jpeg', quality);
+    let bestSizeKb = this.getDataUrlSizeKb(bestDataUrl);
+
+    while (quality >= 0.2) {
+      const candidate = canvas.toDataURL('image/jpeg', quality);
+      const sizeKb = this.getDataUrlSizeKb(candidate);
+
+      bestDataUrl = candidate;
+      bestSizeKb = sizeKb;
+
+      if (sizeKb <= maxKb) {
+        break;
+      }
+
+      quality -= 0.05;
+    }
+
+    if (bestSizeKb < minKb) {
+      bestDataUrl = canvas.toDataURL('image/jpeg', 0.98);
+    }
+
+    return bestDataUrl;
+  }
+
+  private loadImage(file: File): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = reader.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private getDataUrlSizeKb(dataUrl: string): number {
+    const payload = dataUrl.split(',')[1] || '';
+    const padding = payload.endsWith('==') ? 2 : payload.endsWith('=') ? 1 : 0;
+    const bytes = (payload.length * 3) / 4 - padding;
+    return bytes / 1024;
+  }
+
+  private keepOnlyImageEmbeds(html: string): string {
+    if (!html) {
+      return '';
+    }
+
+    const matches = [...html.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)];
+    if (matches.length === 0) {
+      return '';
+    }
+
+    return matches
+      .map((match) => `<p><img src="${match[1]}" alt="Job image"></p>`)
+      .join('');
   }
 
   shareJobOnWhatsApp(job: Job) {

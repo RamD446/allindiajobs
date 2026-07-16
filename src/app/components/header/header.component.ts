@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
+  isScrolledDown = false;
 
   navCategories = [
     { name: 'IT Walk-ins', route: '/IT-Walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
@@ -56,16 +57,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getTodayWalkinsCount(): number {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return this.jobs.filter(job => {
-      if (!job.walkInStartDate) return false;
-      const start = new Date(job.walkInStartDate);
-      start.setHours(0, 0, 0, 0);
-      const end = job.walkInEndDate ? new Date(job.walkInEndDate) : start;
-      end.setHours(0, 0, 0, 0);
-      return today >= start && today <= end;
-    }).length;
+    return this.jobs.filter(job => job.walkInDrive === true).length;
   }
 
   isJobDetailsPage(): boolean {
@@ -125,11 +117,13 @@ export class HeaderComponent implements OnInit {
     const query = this.searchQuery.toLowerCase().trim();
     this.searchResults = this.jobs.filter(job => 
       job.title?.toLowerCase().includes(query) || 
-      job.company?.toLowerCase().includes(query) ||
       job.category?.toLowerCase().includes(query) ||
-      job.jobLocation?.toLowerCase().includes(query) ||
-      job.walkInInterviewLocation?.toLowerCase().includes(query)
+      this.toPlainText(job.description || '').toLowerCase().includes(query)
     ).slice(0, 10);
+  }
+
+  private toPlainText(html: string): string {
+    return html.replace(/<[^>]*>/g, ' ');
   }
 
   viewJobDetails(job: Job) {
@@ -143,18 +137,13 @@ export class HeaderComponent implements OnInit {
   shareApp() {
     if (navigator.share) {
       navigator.share({
-        title: 'AllIndiaJobs Portal',
+        title: 'AllJobs Portal',
         text: 'Find latest walk-in interviews and jobs across India.',
         url: window.location.origin
       });
     } else {
       alert('Sharing not supported on this browser');
     }
-  }
-
-  downloadApp() {
-    // Placeholder for download app functionality
-    alert('App download coming soon!');
   }
 
   @HostListener('document:click', ['$event'])
@@ -176,6 +165,19 @@ export class HeaderComponent implements OnInit {
   onResize(event: Event) {
     if (window.innerWidth > 991) {
       this.isNavActive = false;
+    }
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.isScrolledDown = window.scrollY > 120;
+  }
+
+  handleScrollArrowClick() {
+    if (this.isScrolledDown) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
     }
   }
 }

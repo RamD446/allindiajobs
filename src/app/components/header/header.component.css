@@ -18,6 +18,63 @@ header {
   width: 100%;
 }
 
+/* Floating WhatsApp Button (header scoped) */
+.floating-wa-btn {
+  position: fixed;
+  right: 15px;
+  bottom: 100px;
+  z-index: 1000;
+  background: #25d366;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  animation: slideInRight 0.3s ease-out;
+  border: 1.5px solid #ffffff;
+}
+
+.wa-float-icon {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.wa-float-text {
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-wa-btn {
+    padding: 5px 10px;
+    bottom: 90px;
+    right: 10px;
+  }
+
+  .wa-float-text {
+    font-size: 0.7rem;
+  }
+}
+
 /* Navbar */
 .navbar {
   background: #1565c0 !important;

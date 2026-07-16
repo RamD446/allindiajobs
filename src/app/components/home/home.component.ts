@@ -26,6 +26,21 @@ export class HomeComponent implements OnInit {
     this.loadJobs();
   }
 
+  private getCreatedTimestamp(job: Job): number {
+    const raw = (job.createdDate || '').toString().trim();
+    if (!raw) {
+      return 0;
+    }
+
+    const normalized = raw.includes('T') && raw.length === 16 ? `${raw}:00` : raw;
+    const parsed = new Date(normalized).getTime();
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  private sortByLatestCreated(jobs: Job[]): Job[] {
+    return [...jobs].sort((a, b) => this.getCreatedTimestamp(b) - this.getCreatedTimestamp(a));
+  }
+
   loadJobs() {
     this.isLoading = true;
     try {
@@ -33,16 +48,18 @@ export class HomeComponent implements OnInit {
       onValue(jobsRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          this.jobs = Object.keys(data).map(key => ({
+          const mappedJobs = Object.keys(data).map(key => ({
             id: key,
             ...data[key]
-          })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+          }));
+
+          this.jobs = this.sortByLatestCreated(mappedJobs);
 
           this.filteredJobs = [...this.jobs];
           this.extractUniqueCompanies();
 
           // 4x4 card layout: keep top 16 walk-in jobs
-          this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 16);
+          this.walkinJobs = this.sortByLatestCreated(this.jobs.filter(job => job.walkInDrive === true)).slice(0, 16);
 
         }
         this.isLoading = false;
@@ -69,11 +86,11 @@ export class HomeComponent implements OnInit {
   filterByCompany(company: string) {
     this.selectedCompany = company;
     if (company) {
-      this.filteredJobs = this.jobs.filter(job => job.company === company);
-      this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true && job.company === company).slice(0, 16);
+      this.filteredJobs = this.sortByLatestCreated(this.jobs.filter(job => job.company === company));
+      this.walkinJobs = this.sortByLatestCreated(this.jobs.filter(job => job.walkInDrive === true && job.company === company)).slice(0, 16);
     } else {
-      this.filteredJobs = [...this.jobs];
-      this.walkinJobs = this.jobs.filter(job => job.walkInDrive === true).slice(0, 16);
+      this.filteredJobs = this.sortByLatestCreated(this.jobs);
+      this.walkinJobs = this.sortByLatestCreated(this.jobs.filter(job => job.walkInDrive === true)).slice(0, 16);
     }
   }
 

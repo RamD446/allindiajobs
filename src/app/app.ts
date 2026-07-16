@@ -1,4 +1,4 @@
-import { Component, signal, OnInit, HostListener } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -17,8 +17,6 @@ import { filter } from 'rxjs';
 })
 export class App implements OnInit {
   protected readonly title = signal('allindianjobs');
-  showWhatsAppBtn = true;
-  private lastScrollTop = 0;
 
   constructor(private router: Router) {
     this.router.events.pipe(
@@ -26,23 +24,6 @@ export class App implements OnInit {
     ).subscribe(() => {
       window.scrollTo(0, 0);
     });
-  }
-
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    const st = window.pageYOffset || document.documentElement.scrollTop;
-    if (st > this.lastScrollTop) {
-      // Scroll Down - Hide button
-      this.showWhatsAppBtn = false;
-    } else {
-      // Scroll Up - Show button
-      this.showWhatsAppBtn = true;
-    }
-    this.lastScrollTop = st <= 0 ? 0 : st;
-  }
-
-  joinWhatsAppGroup() {
-    window.open('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p', '_blank');
   }
 
   ngOnInit() {

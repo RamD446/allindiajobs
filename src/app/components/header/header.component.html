@@ -109,13 +109,13 @@
       </div>
 
       <div class="menu-section mt-3">
-        <div class="section-label px-3 mb-1">Follow Wt'sUP</div>
+        <div class="section-label px-3 mb-1">Wt's up --Join Jobs Group</div>
         <div class="menu-items">
           <a href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" class="menu-item">
             <div class="menu-item-icon" style="background-color: #25D36615">
               <i class="bi bi-whatsapp" style="color: #25D366"></i>
             </div>
-            <span class="menu-item-text">Wt'sUP</span>
+            <span class="menu-item-text">Wt's up --Join Jobs Group</span>
             <i class="bi bi-box-arrow-up-right ms-auto chevron"></i>
           </a>
         </div>
@@ -197,4 +197,12 @@
     aria-label="Scroll direction button">
     <i class="bi" [ngClass]="isScrolledDown ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
   </button>
+
+  <!-- Floating WhatsApp Button (moved from app component) -->
+  <div class="floating-wa-btn" *ngIf="showWhatsAppBtn" (click)="joinWhatsAppGroup()">
+    <div class="wa-float-icon">
+      <i class="bi bi-whatsapp"></i>
+    </div>
+    <span class="wa-float-text">Join Jobs Group <i class="bi bi-arrow-down-short"></i></span>
+  </div>
 </header>

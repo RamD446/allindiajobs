@@ -3,6 +3,7 @@ export interface Job {
   id: string;
   title: string;
   company: string;
+  companyImage?: string;
   jobLocation?: string;
   jobType?: string;
   category: string;
@@ -59,3 +60,11 @@ export const CAREER_JOB_TYPES = [
 ] as const;
 
 export type CareerJobType = typeof CAREER_JOB_TYPES[number];
+
+export interface CompanyImage {
+  id: string;
+  companyName: string;
+  companyImage: string;
+  createdDate: string;
+  updatedDate?: string;
+}

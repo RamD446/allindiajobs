@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { ref, push, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
-import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES } from '../../models/job.model';
+import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES, CompanyImage } from '../../models/job.model';
 import { QuillModule } from 'ngx-quill';
 import * as XLSX from 'xlsx';
 
@@ -37,6 +38,10 @@ export class LoginComponent implements OnInit {
   showToast: boolean = false;
   toastMessage: string = '';
   toastType: 'success' | 'error' = 'success';
+  activeAdminTab: 'jobs' | 'companies' = 'jobs';
+  showCompanyImageForm: boolean = false;
+  isSavingCompanyImage: boolean = false;
+  companyImages: CompanyImage[] = [];
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Job form
@@ -44,6 +49,7 @@ export class LoginComponent implements OnInit {
     id: '',
     title: '',
     company: '',
+    companyImage: '',
     jobLocation: '',
     jobType: 'Walk-ins',
     category: '',
@@ -61,25 +67,32 @@ export class LoginComponent implements OnInit {
     createdDate: ''
   };
 
+  companyImageForm: CompanyImage = {
+    id: '',
+    companyName: '',
+    companyImage: '',
+    createdDate: ''
+  };
+
   jobCategories: string[] = [];
   privateJobTypes: string[] = [...PRIVATE_JOB_TYPES];
   jobTypeOptions: string[] = ['Walk-ins', 'Non-Walkins'];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
 
-  fullInfoEditorModules = {
+  companyImageEditorModules = {
     toolbar: {
       container: [
         ['image']
       ],
       handlers: {
-        image: () => this.handleImageInsert('fullInfo')
+        image: () => this.handleImageInsert('companyImage')
       }
     }
   };
 
-  private fullInfoQuillInstance: any;
+  private companyImageQuillInstance: any;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, private router: Router) {
     this.loadJobMetadata();
   }
 
@@ -109,12 +122,14 @@ export class LoginComponent implements OnInit {
         this.currentUser = user;
         this.loginError = '';
         console.log('User is logged in:', user.email);
-        // Load jobs then set loading to false
+        // Load admin data then set loading to false.
         this.loadJobs();
+        this.loadCompanyImages();
       } else {
         this.isLoggedIn = false;
         this.currentUser = null;
         this.jobs = [];
+        this.companyImages = [];
         this.isLoading = false;
         console.log('User is logged out');
         this.cdr.detectChanges();
@@ -154,8 +169,10 @@ export class LoginComponent implements OnInit {
       this.loginError = '';
       this.isLoading = false;
       this.showJobForm = false;
+      this.showCompanyImageForm = false;
       this.editingJob = null;
       this.jobs = [];
+      this.companyImages = [];
       this.cdr.detectChanges();
       console.log('Logout successful');
     } catch (error: any) {
@@ -193,6 +210,27 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  async loadCompanyImages() {
+    try {
+      const companyImagesRef = ref(db, 'companyImages');
+      onValue(companyImagesRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          this.companyImages = Object.keys(data)
+            .map((key) => ({ id: key, ...data[key] }))
+            .sort((a, b) => a.companyName.localeCompare(b.companyName)) as CompanyImage[];
+        } else {
+          this.companyImages = [];
+        }
+        this.cdr.detectChanges();
+      }, (error) => {
+        console.error('Error loading company images:', error);
+      });
+    } catch (error) {
+      console.error('Error loading company images:', error);
+    }
+  }
+
   toggleJobExpand(jobId: string) {
     if (this.expandedJobIds.has(jobId)) {
       this.expandedJobIds.delete(jobId);
@@ -221,6 +259,12 @@ export class LoginComponent implements OnInit {
     return [...jobs].sort((a, b) => this.getCreatedTimestamp(b) - this.getCreatedTimestamp(a));
   }
 
+  private normalizeCompanyName(value: string): string {
+    return (value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+  }
+
   getFilteredJobs(): Job[] {
     if (this.selectedJobCategory === 'All') {
       return this.jobs;
@@ -238,9 +282,20 @@ export class LoginComponent implements OnInit {
   }
 
   showCreateForm() {
+    this.activeAdminTab = 'jobs';
     this.showJobForm = true;
     this.editingJob = null;
     this.resetJobForm();
+  }
+
+  showCreateCompanyImageForm() {
+    this.activeAdminTab = 'companies';
+    this.showCompanyImageForm = true;
+    this.resetCompanyImageForm();
+  }
+
+  switchAdminTab(tab: 'jobs' | 'companies') {
+    this.activeAdminTab = tab;
   }
 
   editJob(job: Job) {
@@ -249,10 +304,11 @@ export class LoginComponent implements OnInit {
     
     this.jobForm = { 
       ...job,
+      companyImage: this.keepOnlyImageEmbeds(job.companyImage || '') || this.getCompanyImageByName(job.company),
       jobLocation: job.jobLocation || '',
       jobType: job.jobType || (job.walkInDrive ? 'Walk-ins' : 'Non-Walkins'),
       experience: job.experience || 'Freshers',
-      fullInformationTableFormat: job.fullInformationTableFormat || '',
+      fullInformationTableFormat: '',
       walkInDrive: job.jobType ? job.jobType === 'Walk-ins' : !!job.walkInDrive,
       howToApply: job.howToApply || '',
       keyResponsibilities: job.keyResponsibilities || '',
@@ -338,9 +394,12 @@ export class LoginComponent implements OnInit {
         // Update existing job
         const jobRef = ref(db, `jobs/${this.editingJob.id}`);
         const { id, ...jobData } = this.jobForm;
+        const normalizedCurrentImage = this.keepOnlyImageEmbeds(jobData.companyImage || '');
+        const normalizedMappedImage = this.keepOnlyImageEmbeds(this.getCompanyImageByName(jobData.company) || '');
         const normalizedJobData = {
           ...jobData,
-          fullInformationTableFormat: this.keepOnlyImageEmbeds(jobData.fullInformationTableFormat || ''),
+          companyImage: normalizedCurrentImage || normalizedMappedImage,
+          fullInformationTableFormat: '',
           walkInDrive: jobData.jobType === 'Walk-ins',
           walkInInterviewLocation: '',
           hrDetails: ''
@@ -358,9 +417,12 @@ export class LoginComponent implements OnInit {
         // Create new job
         const jobsRef = ref(db, 'jobs');
         const { id, ...jobData } = this.jobForm;
+        const normalizedCurrentImage = this.keepOnlyImageEmbeds(jobData.companyImage || '');
+        const normalizedMappedImage = this.keepOnlyImageEmbeds(this.getCompanyImageByName(jobData.company) || '');
         const normalizedJobData = {
           ...jobData,
-          fullInformationTableFormat: this.keepOnlyImageEmbeds(jobData.fullInformationTableFormat || ''),
+          companyImage: normalizedCurrentImage || normalizedMappedImage,
+          fullInformationTableFormat: '',
           walkInDrive: jobData.jobType === 'Walk-ins',
           walkInInterviewLocation: '',
           hrDetails: ''
@@ -400,11 +462,18 @@ export class LoginComponent implements OnInit {
     this.resetJobForm();
   }
 
+  cancelCompanyImageForm() {
+    this.showCompanyImageForm = false;
+    this.isSavingCompanyImage = false;
+    this.resetCompanyImageForm();
+  }
+
   resetJobForm() {
     this.jobForm = {
       id: '',
       title: '',
       company: '',
+      companyImage: '',
       jobType: this.jobTypeOptions[0],
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       experience: this.experienceOptions[0],
@@ -423,15 +492,132 @@ export class LoginComponent implements OnInit {
     };
   }
 
+  resetCompanyImageForm() {
+    this.companyImageForm = {
+      id: '',
+      companyName: '',
+      companyImage: '',
+      createdDate: ''
+    };
+  }
+
   onJobTypeChange() {
     this.jobForm.walkInDrive = this.jobForm.jobType === 'Walk-ins';
   }
-  
-  onFullInfoEditorCreated(editor: any) {
-    this.fullInfoQuillInstance = editor;
+
+  onCompanySelectionChange() {
+    const mappedImage = this.getCompanyImageByName(this.jobForm.company);
+    this.jobForm.companyImage = mappedImage;
   }
 
-  private async handleImageInsert(editorKey: 'fullInfo') {
+  onCompanyImageEditorCreated(editor: any) {
+    this.companyImageQuillInstance = editor;
+  }
+
+  async saveCompanyImage() {
+    const companyName = this.companyImageForm.companyName.trim();
+    const normalizedImageHtml = this.keepOnlyImageEmbeds(this.companyImageForm.companyImage || '');
+    const editingId = this.companyImageForm.id;
+
+    if (!companyName || !normalizedImageHtml) {
+      this.showErrorToast('Company name and company image are required.');
+      return;
+    }
+
+    if (this.isSavingCompanyImage) {
+      return;
+    }
+
+    try {
+      this.isSavingCompanyImage = true;
+      this.cdr.detectChanges();
+
+      const existingById = editingId
+        ? this.companyImages.find((item) => item.id === editingId)
+        : null;
+
+      const existingByName = this.companyImages.find(
+        (item) => this.normalizeCompanyName(item.companyName) === this.normalizeCompanyName(companyName)
+      );
+
+      const payload = {
+        companyName,
+        companyImage: normalizedImageHtml,
+        updatedDate: new Date().toISOString()
+      };
+
+      const targetId = existingById?.id || existingByName?.id;
+
+      if (targetId) {
+        const updateRef = ref(db, `companyImages/${targetId}`);
+        await update(updateRef, payload);
+      } else {
+        const createRef = ref(db, 'companyImages');
+        await push(createRef, {
+          ...payload,
+          createdDate: new Date().toISOString()
+        });
+      }
+
+      if (this.jobForm.company && this.normalizeCompanyName(this.jobForm.company) === this.normalizeCompanyName(companyName)) {
+        this.jobForm.companyImage = normalizedImageHtml;
+      }
+
+      this.showSuccessToast('Company image saved successfully.');
+      this.cancelCompanyImageForm();
+    } catch (error) {
+      console.error('Error saving company image:', error);
+      this.showErrorToast('Failed to save company image. Please try again.');
+      this.isSavingCompanyImage = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  editCompanyImage(item: CompanyImage) {
+    this.activeAdminTab = 'companies';
+    this.showCompanyImageForm = true;
+    this.companyImageForm = {
+      id: item.id,
+      companyName: item.companyName,
+      companyImage: item.companyImage,
+      createdDate: item.createdDate
+    };
+  }
+
+  async deleteCompanyImage(item: CompanyImage) {
+    const isConfirmed = confirm(`Delete company image for "${item.companyName}"?`);
+    if (!isConfirmed) {
+      return;
+    }
+
+    try {
+      const companyRef = ref(db, `companyImages/${item.id}`);
+      await remove(companyRef);
+      this.showSuccessToast('Company image deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting company image:', error);
+      this.showErrorToast('Failed to delete company image. Please try again.');
+    }
+  }
+
+  getCompanyImagePreview(html: string): string | null {
+    if (!html) {
+      return null;
+    }
+
+    const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+    return match && match[1] ? match[1] : null;
+  }
+
+  getCompanyUsageCount(companyName: string): number {
+    if (!companyName) {
+      return 0;
+    }
+
+    return this.jobs.filter((job) => job.company?.toLowerCase() === companyName.toLowerCase()).length;
+  }
+
+  private async handleImageInsert(editorKey: 'companyImage') {
     const file = await this.selectImageFile();
     if (!file) {
       return;
@@ -439,7 +625,7 @@ export class LoginComponent implements OnInit {
 
     try {
       const dataUrl = await this.compressImageForEditor(file);
-      const editor = editorKey === 'fullInfo' ? this.fullInfoQuillInstance : null;
+      const editor = editorKey === 'companyImage' ? this.companyImageQuillInstance : null;
       if (!editor) {
         return;
       }
@@ -558,6 +744,28 @@ export class LoginComponent implements OnInit {
       .join('');
   }
 
+  getCompanyImageByName(companyName: string): string {
+    const key = this.normalizeCompanyName(companyName);
+    if (!key) {
+      return '';
+    }
+
+    const direct = this.companyImages.find(
+      (item) => this.normalizeCompanyName(item.companyName) === key
+    );
+
+    if (direct?.companyImage) {
+      return direct.companyImage;
+    }
+
+    const partial = this.companyImages.find((item) => {
+      const itemKey = this.normalizeCompanyName(item.companyName);
+      return key.includes(itemKey) || itemKey.includes(key);
+    });
+
+    return partial?.companyImage || '';
+  }
+
   shareJobOnWhatsApp(job: Job) {
     // Strip HTML tags for WhatsApp message
     const tempDiv = document.createElement('div');
@@ -597,6 +805,11 @@ _Share this opportunity with your friends!_
     window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
   }
 
+  viewJobDetails(job: Job) {
+    const titleSlug = this.createSlug(job.title);
+    this.router.navigate(['/job', job.id, titleSlug], { state: { job } });
+  }
+
   private createSlug(title: string): string {
     return title
       .toLowerCase()
@@ -622,6 +835,7 @@ _Share this opportunity with your friends!_
       const headers = [
         'JobTitle',
         'CompanyName',
+        'CompanyImageHtml',
         'JobType',
         'Category',
         'Experience',
@@ -639,6 +853,7 @@ _Share this opportunity with your friends!_
       const rows = this.jobs.map((job) => ({
         JobTitle: job.title || '',
         CompanyName: job.company || '',
+        CompanyImageHtml: job.companyImage || '',
         JobType: job.jobType || 'Walk-ins',
         Category: job.category || '',
         Experience: job.experience || 'Freshers',
@@ -708,6 +923,7 @@ _Share this opportunity with your friends!_
         const newJobData = {
           title,
           company,
+          companyImage: this.keepOnlyImageEmbeds(this.getExcelValue(row, ['CompanyImageHtml', 'Company Image Html', 'CompanyImage']) || ''),
           jobType,
           category,
           experience: this.getExcelValue(row, ['Experience']) || 'Freshers',
@@ -718,7 +934,7 @@ _Share this opportunity with your friends!_
           documentsRequired: this.getExcelValue(row, ['DocumentsRequired', 'Documents Required']) || '',
           eligibilityCriteria: this.getExcelValue(row, ['InterviewProcess', 'Interview Process']) || '',
           otherLink: this.getExcelValue(row, ['ApplyOfficialLink', 'Apply Official Link']) || '',
-          fullInformationTableFormat: this.keepOnlyImageEmbeds(this.getExcelValue(row, ['FullInformationImagesHtml', 'Full Information Images Html', 'FullInformationTableFormat']) || ''),
+          fullInformationTableFormat: this.getExcelValue(row, ['FullInformationImagesHtml', 'Full Information Images Html', 'FullInformationTableFormat']) || '',
           walkInDrive: jobType === 'Walk-ins',
           walkInInterviewLocation: '',
           hrDetails: '',

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { onValue, ref, get, update } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
-import { Job, JobCareer, CAREER_JOB_TYPES } from '../../models/job.model';
+import { Job, JobCareer, CAREER_JOB_TYPES, CompanyImage } from '../../models/job.model';
 
 @Component({
   selector: 'app-job-category',
@@ -27,6 +27,8 @@ export class JobCategoryComponent implements OnInit {
   categoryParam: string = '';
   isLoading: boolean = true;
   categoryJobs: Job[] = []; // Store original category jobs
+  currentCategoryFilter: string = 'IT Walk-ins';
+  companyImageMap: Record<string, string> = {};
 
   private categoryMappings: { [key: string]: { title: string; category: string } } = {
     'IT-Walk-ins': { title: 'IT Walk-ins', category: 'IT Walk-ins' },
@@ -40,6 +42,7 @@ export class JobCategoryComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.loadCompanyImages();
     this.route.url.subscribe(urlSegments => {
       const path = urlSegments.map(segment => segment.path).join('/');
       this.categoryParam = path;
@@ -58,6 +61,7 @@ export class JobCategoryComponent implements OnInit {
 
   loadJobs(category: string) {
     this.isLoading = true;
+    this.currentCategoryFilter = category;
     this.currentPage = 1; 
     
     try {
@@ -77,20 +81,12 @@ export class JobCategoryComponent implements OnInit {
             id: key,
             ...data[key]
           })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
-          
-          if (category === 'BPO/Non-IT Walk-ins') {
-            this.categoryJobs = this.jobs.filter(job => 
-              job.category === 'BPO Walk-ins' || job.category === 'Non-IT Walk-ins' || job.category === 'BPO/Non-IT Walk-ins'
-            );
-          } else if (category === 'Fresher Walk-ins') {
-            this.categoryJobs = this.jobs.filter(job => 
-              job.category === 'Fresher Walk-ins' || job.experience === 'Freshers'
-            );
-          } else {
-            this.categoryJobs = this.jobs.filter(job => job.category === category);
-          }
-          
-          this.filteredJobs = [...this.categoryJobs];
+
+          this.jobs = this.applyCompanyImageMapping(this.jobs);
+          this.categoryJobs = this.filterJobsByCategory(this.jobs, category);
+          this.filteredJobs = this.selectedCompany
+            ? this.categoryJobs.filter(job => job.company === this.selectedCompany)
+            : [...this.categoryJobs];
           this.extractUniqueCompanies();
           
         } else {
@@ -111,6 +107,136 @@ export class JobCategoryComponent implements OnInit {
       this.isLoading = false;
       this.cdr.detectChanges();
     }
+  }
+
+  loadCompanyImages() {
+    try {
+      const companyImagesRef = ref(db, 'companyImages');
+      onValue(companyImagesRef, (snapshot) => {
+        const data = snapshot.val();
+        const map: Record<string, string> = {};
+
+        if (data) {
+          const rows = Object.keys(data).map((key) => ({
+            id: key,
+            ...data[key]
+          })) as CompanyImage[];
+
+          for (const item of rows) {
+            const normalizedName = this.normalizeCompanyName(item.companyName || '');
+            if (normalizedName) {
+              map[normalizedName] = item.companyImage || '';
+            }
+          }
+        }
+
+        this.companyImageMap = map;
+
+        if (this.jobs.length > 0) {
+          this.jobs = this.applyCompanyImageMapping(this.jobs);
+          this.categoryJobs = this.filterJobsByCategory(this.jobs, this.currentCategoryFilter);
+          this.filteredJobs = this.selectedCompany
+            ? this.categoryJobs.filter(job => job.company === this.selectedCompany)
+            : [...this.categoryJobs];
+          this.extractUniqueCompanies();
+          this.cdr.detectChanges();
+        }
+      });
+    } catch (error) {
+      console.error('Error loading company images on category page:', error);
+    }
+  }
+
+  private normalizeCompanyName(value: string): string {
+    return (value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  private filterJobsByCategory(jobs: Job[], category: string): Job[] {
+    if (category === 'BPO/Non-IT Walk-ins') {
+      return jobs.filter(job =>
+        job.category === 'BPO Walk-ins' || job.category === 'Non-IT Walk-ins' || job.category === 'BPO/Non-IT Walk-ins'
+      );
+    }
+
+    if (category === 'Fresher Walk-ins') {
+      return jobs.filter(job =>
+        job.category === 'Fresher Walk-ins' || job.experience === 'Freshers'
+      );
+    }
+
+    return jobs.filter(job => job.category === category);
+  }
+
+  private extractImageSrc(value: string): string | null {
+    const raw = (value || '').trim();
+    if (!raw) {
+      return null;
+    }
+
+    const match = raw.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (match && match[1]) {
+      return match[1];
+    }
+
+    if (raw.startsWith('data:image/')) {
+      return raw;
+    }
+
+    if (/^https?:\/\//i.test(raw)) {
+      return raw;
+    }
+
+    return null;
+  }
+
+  private getMappedImageByCompany(companyName: string): string {
+    const key = this.normalizeCompanyName(companyName);
+    if (!key) {
+      return '';
+    }
+
+    if (this.companyImageMap[key]) {
+      return this.companyImageMap[key];
+    }
+
+    const mapKeys = Object.keys(this.companyImageMap);
+    const partialMatch = mapKeys.find((k) => key.includes(k) || k.includes(key));
+    if (partialMatch) {
+      return this.companyImageMap[partialMatch] || '';
+    }
+
+    return '';
+  }
+
+  private applyCompanyImageMapping(jobs: Job[]): Job[] {
+    return jobs.map((job) => {
+      const existingImageSrc = this.extractImageSrc(job.companyImage || '');
+      if (existingImageSrc) {
+        return job;
+      }
+
+      const mappedImage = this.getMappedImageByCompany(job.company || '');
+      if (!mappedImage) {
+        return job;
+      }
+
+      return {
+        ...job,
+        companyImage: mappedImage
+      };
+    });
+  }
+
+  getJobCardImage(job: Job): string | null {
+    const direct = this.extractImageSrc(job.companyImage || '');
+    if (direct) {
+      return direct;
+    }
+
+    const mapped = this.getMappedImageByCompany(job.company || '');
+    return this.extractImageSrc(mapped);
   }
 
   loadJobCareers() {

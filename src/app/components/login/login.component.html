@@ -91,13 +91,16 @@
           <p class="text-muted mb-0">Welcome, {{ currentUser?.email || currentUser?.displayName }}</p>
         </div>
         <div class="header-actions mt-3 mt-md-0">
-          <button class="btn btn-success" (click)="showCreateForm()">
+          <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-success" (click)="showCreateForm()">
             <i class="bi bi-plus-circle me-1"></i>Create Job
           </button>
-          <button class="btn btn-outline-primary" (click)="requestExportConfirmation()">
+          <button *ngIf="activeAdminTab === 'companies'" class="btn btn-success" (click)="showCreateCompanyImageForm()">
+            <i class="bi bi-image me-1"></i>Create Company Image
+          </button>
+          <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-outline-primary" (click)="requestExportConfirmation()">
             <i class="bi bi-file-earmark-excel me-1"></i>Export Excel
           </button>
-          <button class="btn btn-outline-success" (click)="excelFileInput.click()">
+          <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-outline-success" (click)="excelFileInput.click()">
             <i class="bi bi-upload me-1"></i>Import Excel
           </button>
           <input
@@ -110,6 +113,22 @@
             <i class="bi bi-box-arrow-right me-1"></i>Logout
           </button>
         </div>
+      </div>
+
+      <!-- Admin Tabs -->
+      <div class="admin-tabs mb-3">
+        <button
+          class="admin-tab-btn"
+          [class.active]="activeAdminTab === 'jobs'"
+          (click)="switchAdminTab('jobs')">
+          <i class="bi bi-briefcase-fill me-1"></i>Jobs
+        </button>
+        <button
+          class="admin-tab-btn"
+          [class.active]="activeAdminTab === 'companies'"
+          (click)="switchAdminTab('companies')">
+          <i class="bi bi-building me-1"></i>Companies
+        </button>
       </div>
 
       <!-- Job Form Modal -->
@@ -143,7 +162,20 @@
               <!-- Row 2: Company Name + Job Type + Category -->
               <div class="col-md-4 mb-3">
                 <label class="form-label">Company Name *</label>
-                <input type="text" class="form-control" [(ngModel)]="jobForm.company" name="company" required placeholder="e.g. Tech Solutions Pvt Ltd">
+                <select
+                  class="form-control"
+                  [(ngModel)]="jobForm.company"
+                  name="company"
+                  (change)="onCompanySelectionChange()"
+                  required>
+                  <option value="" disabled>Select company</option>
+                  <option *ngFor="let item of companyImages" [value]="item.companyName">
+                    {{ item.companyName }}
+                  </option>
+                </select>
+                <small class="company-image-help" *ngIf="companyImages.length === 0">
+                  No company image records found. Use <strong>Create Company Image</strong> first.
+                </small>
               </div>
 
               <!-- Job Type -->
@@ -242,20 +274,6 @@
                 </div>
               </div>
 
-              <!-- Full Information Quill Editor (Last) -->
-              <div class="col-12 mb-3">
-                <label class="form-label">Full Information (Image Only)</label>
-                <quill-editor
-                  class="full-info-editor"
-                  [(ngModel)]="jobForm.fullInformationTableFormat"
-                  name="fullInformationTableFormat"
-                  [modules]="fullInfoEditorModules"
-                  (onEditorCreated)="onFullInfoEditorCreated($event)"
-                  [styles]="{ height: '320px', width: '100%' }"
-                  placeholder="Upload images only (auto crop 16:9 before insert)...">
-                </quill-editor>
-              </div>
-
             </div>
             
             <div class="job-form-footer">
@@ -287,8 +305,53 @@
         </div>
       </div>
 
+      <!-- Company Image Modal -->
+      <div *ngIf="showCompanyImageForm" class="job-form-modal" (click)="cancelCompanyImageForm()">
+        <div class="job-form-content company-image-content" (click)="$event.stopPropagation()">
+          <div class="job-form-header">
+            <h5 class="mb-0">{{ companyImageForm.id ? 'Edit Company Image' : 'Create Company Image' }}</h5>
+            <button class="btn-close" (click)="cancelCompanyImageForm()"></button>
+          </div>
+
+          <form (ngSubmit)="saveCompanyImage()" #companyImageFormRef="ngForm" class="job-form-body">
+            <div class="mb-3">
+              <label class="form-label">Company Name *</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="companyImageForm.companyName"
+                name="companyName"
+                required
+                placeholder="e.g. Tech Solutions Pvt Ltd">
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Company Image (Image Only) *</label>
+              <quill-editor
+                class="company-image-editor"
+                [(ngModel)]="companyImageForm.companyImage"
+                name="companyImage"
+                [modules]="companyImageEditorModules"
+                (onEditorCreated)="onCompanyImageEditorCreated($event)"
+                [styles]="{ height: '250px', width: '100%' }"
+                placeholder="Upload company image only...">
+              </quill-editor>
+            </div>
+
+            <div class="job-form-footer">
+              <button type="button" class="btn btn-secondary me-2" (click)="cancelCompanyImageForm()" [disabled]="isSavingCompanyImage">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="!companyImageFormRef.valid || isSavingCompanyImage">
+                <span *ngIf="isSavingCompanyImage" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span *ngIf="isSavingCompanyImage">Saving...</span>
+                <span *ngIf="!isSavingCompanyImage">{{ companyImageForm.id ? 'Update Company Image' : 'Save Company Image' }}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <!-- Jobs List -->
-      <div class="jobs-section">
+      <div *ngIf="activeAdminTab === 'jobs'" class="jobs-section">
         <div class="jobs-header jobs-header-modern mb-3">
           <div class="d-flex justify-content-between align-items-center mb-3 jobs-header-row">
             <h4 class="text-primary mb-0 jobs-title-modern">
@@ -348,6 +411,9 @@
                   </div>
                 </div>
                 <div class="job-actions-small" (click)="$event.stopPropagation()">
+                  <button class="btn btn-sm btn-outline-success me-1" (click)="viewJobDetails(job)" title="View">
+                    <i class="bi bi-eye"></i>
+                  </button>
                   <button class="btn btn-sm btn-success me-1" (click)="shareJobOnWhatsApp(job)" title="Share on WhatsApp">
                     <i class="bi bi-whatsapp"></i>
                   </button>
@@ -366,20 +432,33 @@
                   <small class="text-info me-3" *ngIf="job.updatedDate"><i class="bi bi-pencil-square me-1"></i>Updated: {{ job.updatedDate | date:'yyyy-MM-dd HH:mm' }}</small>
                 </div>
 
-                <!-- Job Details Quick View -->
-                <div class="gov-details-compact mb-2 p-2 bg-light rounded border-start border-success border-3">
-                  <div class="row g-2 small">
-                    <div class="col-6 col-md-4" *ngIf="job.experience">
-                      <strong>Experience:</strong> {{ job.experience }}
+                <div class="expanded-split-wrap mb-2">
+                  <div class="company-mini-card">
+                    <div class="company-mini-image-wrap" *ngIf="getCompanyImagePreview(job.companyImage || getCompanyImageByName(job.company)) as preview; else noJobCompanyImage">
+                      <img [src]="preview" [alt]="job.company" class="company-mini-image" loading="lazy">
                     </div>
-                    <div class="col-6 col-md-4" *ngIf="job.jobType">
-                      <strong>Job Type:</strong> {{ job.jobType }}
-                    </div>
-                    <div class="col-12" *ngIf="job.fullInformationTableFormat">
-                      <strong>Full Information:</strong> <span [innerHTML]="job.fullInformationTableFormat"></span>
-                    </div>
-                    <div class="col-12" *ngIf="job.otherLink">
-                      <strong>Link:</strong> <a [href]="job.otherLink" target="_blank" class="text-truncate d-inline-block" style="max-width: 250px;">{{ job.otherLink }}</a>
+                    <ng-template #noJobCompanyImage>
+                      <div class="company-mini-image-wrap company-mini-image-empty">
+                        <i class="bi bi-image"></i>
+                      </div>
+                    </ng-template>
+                    <div class="company-mini-name text-truncate" [title]="job.company">{{ job.company }}</div>
+                    <button class="btn btn-sm btn-outline-primary w-100" (click)="viewJobDetails(job)">
+                      <i class="bi bi-eye me-1"></i>View Details
+                    </button>
+                  </div>
+
+                  <div class="gov-details-compact p-2 bg-light rounded border-start border-success border-3">
+                    <div class="row g-2 small">
+                      <div class="col-6 col-md-4" *ngIf="job.experience">
+                        <strong>Experience:</strong> {{ job.experience }}
+                      </div>
+                      <div class="col-6 col-md-4" *ngIf="job.jobType">
+                        <strong>Job Type:</strong> {{ job.jobType }}
+                      </div>
+                      <div class="col-12" *ngIf="job.otherLink">
+                        <strong>Link:</strong> <a [href]="job.otherLink" target="_blank" class="text-truncate d-inline-block" style="max-width: 250px;">{{ job.otherLink }}</a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -394,6 +473,55 @@
           <i class="bi bi-inbox display-4 text-muted"></i>
           <h5 class="mt-3 text-muted">No {{ selectedJobCategory !== 'All' ? selectedJobCategory : '' }} Jobs Available</h5>
           <p class="text-muted">No jobs found in this category.</p>
+        </div>
+      </div>
+
+      <!-- Companies List -->
+      <div *ngIf="activeAdminTab === 'companies'" class="jobs-section">
+        <div class="jobs-header jobs-header-modern mb-3">
+          <div class="d-flex justify-content-between align-items-center jobs-header-row">
+            <h4 class="text-primary mb-0 jobs-title-modern">
+              <i class="bi bi-building me-2"></i>Companies Management
+            </h4>
+            <div class="jobs-summary-chip">
+              <span class="jobs-count">{{ companyImages.length }} companies</span>
+              <span class="jobs-order">Image Mapped</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="companyImages.length > 0">
+          <div class="col-12 col-md-6 col-xl-4 mb-3" *ngFor="let item of companyImages">
+            <div class="company-card">
+              <div class="company-image-wrap" *ngIf="getCompanyImagePreview(item.companyImage) as preview; else noCompanyImage">
+                <img [src]="preview" [alt]="item.companyName" class="company-image-thumb" loading="lazy">
+              </div>
+              <ng-template #noCompanyImage>
+                <div class="company-image-wrap company-image-empty">
+                  <i class="bi bi-image"></i>
+                </div>
+              </ng-template>
+
+              <div class="company-card-body">
+                <h6 class="mb-1">{{ item.companyName }}</h6>
+                <small class="text-muted d-block mb-2">Used in {{ getCompanyUsageCount(item.companyName) }} jobs</small>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-primary" (click)="editCompanyImage(item)">
+                    <i class="bi bi-pencil me-1"></i>Edit
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteCompanyImage(item)">
+                    <i class="bi bi-trash me-1"></i>Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="companyImages.length === 0" class="text-center py-4">
+          <i class="bi bi-building display-4 text-muted"></i>
+          <h5 class="mt-3 text-muted">No Companies Available</h5>
+          <p class="text-muted">Create company image records to map them during job creation.</p>
         </div>
       </div>
 

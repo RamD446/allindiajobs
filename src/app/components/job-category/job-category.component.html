@@ -23,17 +23,27 @@
             <div class="section-header">
               Latest All {{ categoryTitle }}
             </div>
-            <div class="section-content">
-              <div *ngFor="let job of getPrivateJobs()" class="section-item" (click)="viewJobDetails(job)">
-                <div class="mb-1">
-                  <div class="item-title">
-                    <i class="bi bi-arrow-right-short"></i>
-                    {{ job.title }}
+            <div class="section-content p-2">
+              <div class="jobs-card-grid">
+                <div *ngFor="let job of getPrivateJobs()" class="category-job-thumb-card" (click)="viewJobDetails(job)">
+                  <div class="category-job-thumb-image-wrap" *ngIf="getJobCardImage(job) as imageSrc; else noCategoryImage">
+                    <img [src]="imageSrc" [alt]="job.company" class="category-job-thumb-image" loading="lazy">
                   </div>
-                </div>
-                <div class="walk-in-text d-flex justify-content-between align-items-center">
-                  <span>Type: {{ job.jobType || 'Walk-ins' }}</span>
-                  <button class="view-btn-mini">View</button>
+                  <ng-template #noCategoryImage>
+                    <div class="category-job-thumb-image-wrap category-job-thumb-empty">
+                      <i class="bi bi-image"></i>
+                    </div>
+                  </ng-template>
+
+                  <div class="category-job-thumb-content">
+                    <div class="category-job-thumb-title">{{ job.title }}</div>
+                    <div class="category-job-company">{{ job.company }}</div>
+                    <div class="category-job-meta">Type: {{ job.jobType || 'Walk-ins' }}</div>
+                    <div class="category-job-created" *ngIf="job.createdDate">
+                      {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}
+                    </div>
+                    <button class="category-job-view-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">View</button>
+                  </div>
                 </div>
               </div>
             </div>

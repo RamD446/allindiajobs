@@ -401,9 +401,6 @@ export class JobFullInformation implements OnInit {
     if (job.jobLocation) {
       messageParts.push(`*Job Location & HR Details :* ${job.jobLocation}`);
     }
-    if (job.fullInformationTableFormat) {
-      messageParts.push(`*FullinfoationTableForamt :* ${job.fullInformationTableFormat}`);
-    }
 
     messageParts.push(``);
     messageParts.push(`*Apply / Full Details :*`);

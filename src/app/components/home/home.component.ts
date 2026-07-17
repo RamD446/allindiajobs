@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
-import { Job } from '../../models/job.model';
+import { Job, CompanyImage } from '../../models/job.model';
 
 @Component({
   selector: 'app-home',
@@ -19,10 +19,12 @@ export class HomeComponent implements OnInit {
   uniqueCompanies: string[] = [];
   selectedCompany: string = '';
   isLoading: boolean = true;
+  companyImageMap: Record<string, string> = {};
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.loadCompanyImages();
     this.loadJobs();
   }
 
@@ -41,6 +43,90 @@ export class HomeComponent implements OnInit {
     return [...jobs].sort((a, b) => this.getCreatedTimestamp(b) - this.getCreatedTimestamp(a));
   }
 
+  private normalizeCompanyName(value: string): string {
+    return (value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  loadCompanyImages() {
+    try {
+      const companyImagesRef = ref(db, 'companyImages');
+      onValue(companyImagesRef, (snapshot) => {
+        const data = snapshot.val();
+        const map: Record<string, string> = {};
+
+        if (data) {
+          const rows = Object.keys(data).map((key) => ({
+            id: key,
+            ...data[key]
+          })) as CompanyImage[];
+
+          for (const item of rows) {
+            const normalizedName = this.normalizeCompanyName(item.companyName || '');
+            if (normalizedName) {
+              map[normalizedName] = item.companyImage || '';
+            }
+          }
+        }
+
+        this.companyImageMap = map;
+        this.jobs = this.applyCompanyImageMapping(this.jobs);
+        this.filteredJobs = this.applyCompanyImageMapping(this.filteredJobs);
+        this.walkinJobs = this.applyCompanyImageMapping(this.walkinJobs);
+        this.cdr.detectChanges();
+      });
+    } catch (error) {
+      console.error('Error loading company images on home:', error);
+    }
+  }
+
+  private applyCompanyImageMapping(jobs: Job[]): Job[] {
+    return jobs.map((job) => {
+      const mappedImage = this.getMappedImageByCompany(job.company || '');
+      const existingImageSrc = this.extractImageSrc(job.companyImage || '');
+      if (mappedImage) {
+        return {
+          ...job,
+          companyImage: mappedImage
+        };
+      }
+
+      if (existingImageSrc) {
+        return job;
+      }
+
+      if (!mappedImage) {
+        return job;
+      }
+
+      return {
+        ...job,
+        companyImage: mappedImage
+      };
+    });
+  }
+
+  private getMappedImageByCompany(companyName: string): string {
+    const key = this.normalizeCompanyName(companyName);
+    if (!key) {
+      return '';
+    }
+
+    if (this.companyImageMap[key]) {
+      return this.companyImageMap[key];
+    }
+
+    const mapKeys = Object.keys(this.companyImageMap);
+
+    const partialMatch = mapKeys.find((k) => key.includes(k) || k.includes(key));
+    if (partialMatch) {
+      return this.companyImageMap[partialMatch] || '';
+    }
+
+    return '';
+  }
+
   loadJobs() {
     this.isLoading = true;
     try {
@@ -53,7 +139,7 @@ export class HomeComponent implements OnInit {
             ...data[key]
           }));
 
-          this.jobs = this.sortByLatestCreated(mappedJobs);
+          this.jobs = this.sortByLatestCreated(this.applyCompanyImageMapping(mappedJobs));
 
           this.filteredJobs = [...this.jobs];
           this.extractUniqueCompanies();
@@ -94,17 +180,37 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  getJobCardImage(job: Job): string | null {
-    const sources = [job.description || '', job.fullInformationTableFormat || ''];
+  private extractImageSrc(value: string): string | null {
+    const raw = (value || '').trim();
+    if (!raw) {
+      return null;
+    }
 
-    for (const html of sources) {
-      const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
-      if (match && match[1]) {
-        return match[1];
-      }
+    const match = raw.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (match && match[1]) {
+      return match[1];
+    }
+
+    if (raw.startsWith('data:image/')) {
+      return raw;
+    }
+
+    if (/^https?:\/\//i.test(raw)) {
+      return raw;
     }
 
     return null;
+  }
+
+  getJobCardImage(job: Job): string | null {
+    const mapped = this.getMappedImageByCompany(job.company || '');
+    const mappedSrc = this.extractImageSrc(mapped);
+    if (mappedSrc) {
+      return mappedSrc;
+    }
+
+    const direct = this.extractImageSrc(job.companyImage || '');
+    return direct;
   }
 
   getTodayWalkinsCount(): number {

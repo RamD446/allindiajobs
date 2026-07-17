@@ -57,21 +57,6 @@
         <div class="text-secondary small mb-3 lh-sm" [innerHTML]="getSafeHtml(job.description)">
         </div>
 
-        
-
-        <!-- Full Information Detailed Table -->
-        <div class="full-info-detailed-table mb-4" *ngIf="job.fullInformationTableFormat">
-          <div class="full-info-images-only" *ngIf="getFullInfoImages(job.fullInformationTableFormat).length > 0">
-            <div class="full-info-top-image" *ngFor="let fullInfoImage of getFullInfoImages(job.fullInformationTableFormat)">
-              <img [src]="fullInfoImage" [alt]="job.title" class="full-info-feature-image" loading="lazy">
-            </div>
-          </div>
-
-          <div class="table-responsive" *ngIf="getFullInfoImages(job.fullInformationTableFormat).length === 0">
-            <small class="text-muted">No full information image available.</small>
-          </div>
-        </div>
-
         <!-- Job Details List (List wise, small dark headers) -->
         <div class="job-details-list">
           <!-- What & Why -->

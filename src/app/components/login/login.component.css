@@ -282,6 +282,35 @@
   flex-wrap: wrap;
 }
 
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.admin-tab-btn {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.admin-tab-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.admin-tab-btn.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.28);
+}
+
 :host ::ng-deep .full-info-editor {
   width: 100%;
   min-height: 320px;
@@ -316,6 +345,84 @@
   border-radius: 8px;
 }
 
+.expanded-split-wrap {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.company-mini-card {
+  border: 1px solid #dbe6ff;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.company-mini-image-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.company-mini-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.company-mini-image-empty {
+  color: #94a3b8;
+  font-size: 1.8rem;
+}
+
+.company-mini-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+:host ::ng-deep .company-image-editor {
+  width: 100%;
+  min-height: 250px;
+  max-height: 250px;
+}
+
+:host ::ng-deep .company-image-editor .ql-toolbar.ql-snow,
+:host ::ng-deep .company-image-editor .ql-container.ql-snow {
+  border-color: #d6dbe3;
+}
+
+:host ::ng-deep .company-image-editor .ql-toolbar.ql-snow {
+  border-radius: 6px 6px 0 0;
+  background: #ffffff;
+}
+
+:host ::ng-deep .company-image-editor .ql-container.ql-snow {
+  border-radius: 0 0 6px 6px;
+  height: 202px;
+}
+
+:host ::ng-deep .company-image-editor .ql-editor {
+  min-height: 202px;
+  max-height: 202px;
+}
+
+.company-image-help {
+  display: block;
+  margin-top: 0.35rem;
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
 /* Mobile Responsiveness Improvements */
 @media (max-width: 768px) {
   .login-container {
@@ -342,6 +449,16 @@
     min-width: 140px;
     padding: 0.5rem;
     font-size: 0.85rem;
+  }
+
+  .admin-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .admin-tab-btn {
+    flex: 1;
+    min-width: 140px;
   }
   
   .nav-tabs {
@@ -421,6 +538,14 @@
   .job-actions-small .btn {
     padding: 0.2rem 0.4rem;
   }
+
+  .expanded-split-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .company-card-body .btn {
+    flex: 1;
+  }
 }
 
 /* Fix layout and prevent page jumping */
@@ -460,6 +585,11 @@
   max-height: 210px;
   display: flex;
   flex-direction: column;
+}
+
+.company-image-content {
+  width: 95%;
+  max-width: 760px;
 }
 
 .export-confirm-content .job-form-body {
@@ -568,6 +698,38 @@
   border-radius: 999px;
   padding: 0.12rem 0.5rem;
   font-size: 0.72rem;
+}
+
+.company-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.company-image-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.company-image-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.company-image-empty {
+  color: #94a3b8;
+  font-size: 2rem;
+}
+
+.company-card-body {
+  padding: 0.85rem;
 }
 
 /* Job Cards */

@@ -40,7 +40,13 @@ export class LoginComponent implements OnInit {
   toastType: 'success' | 'error' = 'success';
   activeAdminTab: 'jobs' | 'companies' = 'jobs';
   showCompanyImageForm: boolean = false;
+  showImportModal: boolean = false;
+  importModalType: 'jobs' | 'companies' | null = null;
+  selectedImportFileName: string = '';
+  pendingImportRows: Record<string, any>[] = [];
+  importModalError: string = '';
   isSavingCompanyImage: boolean = false;
+  isImportingData: boolean = false;
   companyImages: CompanyImage[] = [];
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -294,6 +300,23 @@ export class LoginComponent implements OnInit {
     this.resetCompanyImageForm();
   }
 
+  openImportModal(type: 'jobs' | 'companies') {
+    this.importModalType = type;
+    this.showImportModal = true;
+    this.selectedImportFileName = '';
+    this.pendingImportRows = [];
+    this.importModalError = '';
+  }
+
+  closeImportModal() {
+    this.showImportModal = false;
+    this.importModalType = null;
+    this.selectedImportFileName = '';
+    this.pendingImportRows = [];
+    this.importModalError = '';
+    this.isImportingData = false;
+  }
+
   switchAdminTab(tab: 'jobs' | 'companies') {
     this.activeAdminTab = tab;
   }
@@ -516,7 +539,7 @@ export class LoginComponent implements OnInit {
 
   async saveCompanyImage() {
     const companyName = this.companyImageForm.companyName.trim();
-    const normalizedImageHtml = this.keepOnlyImageEmbeds(this.companyImageForm.companyImage || '');
+    const normalizedImageHtml = this.normalizeImageHtml(this.companyImageForm.companyImage || '');
     const editingId = this.companyImageForm.id;
 
     if (!companyName || !normalizedImageHtml) {
@@ -873,25 +896,33 @@ _Share this opportunity with your friends!_
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Jobs');
 
       const dateTag = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(workbook, `alljobs-${dateTag}.xlsx`, { compression: true });
-      this.showSuccessToast('Excel file downloaded successfully.');
+      XLSX.writeFile(workbook, `alljobs-${dateTag}.xls`, { bookType: 'biff8', compression: true });
+      this.showSuccessToast('XLS file downloaded successfully.');
     } catch (error) {
       console.error('Excel export failed:', error);
-      this.showErrorToast('Unable to download Excel file. Please try again.');
+      this.showErrorToast('Unable to download XLS file. Please try again.');
     }
   }
 
-  async onExcelFileSelected(event: Event) {
+  async onImportFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files && input.files[0];
     if (!file) {
       return;
     }
 
-    try {
-      this.isSaving = true;
-      this.cdr.detectChanges();
+    this.importModalError = '';
 
+    if (!file.name.toLowerCase().endsWith('.xls')) {
+      this.importModalError = 'Only .xls files are supported.';
+      this.selectedImportFileName = '';
+      this.pendingImportRows = [];
+      input.value = '';
+      this.cdr.detectChanges();
+      return;
+    }
+
+    try {
       const data = await file.arrayBuffer();
       const workbook = XLSX.read(data, { type: 'array' });
       const sheetName = workbook.SheetNames[0];
@@ -899,61 +930,170 @@ _Share this opportunity with your friends!_
       const rawRows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: '' });
 
       if (!rawRows.length) {
-        this.showErrorToast('Excel file is empty.');
+        this.importModalError = 'XLS file is empty.';
+        this.selectedImportFileName = '';
+        this.pendingImportRows = [];
         return;
       }
 
-      const jobsRef = ref(db, 'jobs');
-      let imported = 0;
-      let skipped = 0;
+      this.selectedImportFileName = file.name;
+      this.pendingImportRows = rawRows;
+      this.importModalError = '';
+    } catch (error) {
+      console.error('Excel preview failed:', error);
+      this.importModalError = 'Failed to read the XLS file. Please check the format.';
+      this.selectedImportFileName = '';
+      this.pendingImportRows = [];
+    } finally {
+      input.value = '';
+      this.cdr.detectChanges();
+    }
+  }
 
-      for (const row of rawRows) {
-        const title = this.getExcelValue(row, ['JobTitle', 'Job Title', 'Title']).trim();
-        const company = this.getExcelValue(row, ['CompanyName', 'Company Name', 'Company']).trim();
-        const category = this.getExcelValue(row, ['Category']).trim();
+  async saveImportedData() {
+    if (!this.importModalType || this.pendingImportRows.length === 0 || this.isImportingData) {
+      return;
+    }
 
-        if (!title || !company || !category) {
-          skipped++;
-          continue;
-        }
+    try {
+      this.isImportingData = true;
+      this.importModalError = '';
+      this.cdr.detectChanges();
 
-        const jobType = this.getExcelValue(row, ['JobType', 'Job Type']) || 'Walk-ins';
-        const createdDate = this.getExcelValue(row, ['CreatedDate', 'Created Date']) || new Date().toISOString();
-
-        const newJobData = {
-          title,
-          company,
-          companyImage: this.keepOnlyImageEmbeds(this.getExcelValue(row, ['CompanyImageHtml', 'Company Image Html', 'CompanyImage']) || ''),
-          jobType,
-          category,
-          experience: this.getExcelValue(row, ['Experience']) || 'Freshers',
-          jobLocation: this.getExcelValue(row, ['JobLocationAndHRDetails', 'Job Location and HR Details', 'JobLocation']) || '',
-          description: this.getExcelValue(row, ['JobDescription', 'Job Description']) || '',
-          howToApply: this.getExcelValue(row, ['HowToApply', 'How To Apply']) || '',
-          keyResponsibilities: this.getExcelValue(row, ['KeyResponsibilities', 'Key Responsibilities']) || '',
-          documentsRequired: this.getExcelValue(row, ['DocumentsRequired', 'Documents Required']) || '',
-          eligibilityCriteria: this.getExcelValue(row, ['InterviewProcess', 'Interview Process']) || '',
-          otherLink: this.getExcelValue(row, ['ApplyOfficialLink', 'Apply Official Link']) || '',
-          fullInformationTableFormat: this.getExcelValue(row, ['FullInformationImagesHtml', 'Full Information Images Html', 'FullInformationTableFormat']) || '',
-          walkInDrive: jobType === 'Walk-ins',
-          walkInInterviewLocation: '',
-          hrDetails: '',
-          createdDate
-        };
-
-        await push(jobsRef, newJobData);
-        imported++;
+      if (this.importModalType === 'jobs') {
+        await this.importJobsFromRows(this.pendingImportRows);
+      } else {
+        await this.importCompaniesFromRows(this.pendingImportRows);
       }
 
-      this.showSuccessToast(`Import complete. Imported: ${imported}, Skipped: ${skipped}.`);
+      const importedLabel = this.importModalType === 'jobs' ? 'Jobs' : 'Companies';
+      this.closeImportModal();
+      this.showSuccessToast(`${importedLabel} imported successfully.`);
     } catch (error) {
-      console.error('Excel import failed:', error);
-      this.showErrorToast('Failed to import Excel file. Please check file format.');
+      console.error('Import failed:', error);
+      this.importModalError = 'Failed to import data. Please verify the XLS columns and try again.';
+      this.showErrorToast(this.importModalError);
     } finally {
-      this.isSaving = false;
+      this.isImportingData = false;
       this.cdr.detectChanges();
-      (event.target as HTMLInputElement).value = '';
     }
+  }
+
+  downloadImportTemplate() {
+    if (this.importModalType === 'companies') {
+      this.downloadCompanyTemplateXls();
+      return;
+    }
+
+    this.downloadJobsTemplateXls();
+  }
+
+  private downloadJobsTemplateXls() {
+    const headers = [
+      'JobTitle',
+      'CompanyName',
+      'CompanyImageHtml',
+      'JobType',
+      'Category',
+      'Experience',
+      'JobLocationAndHRDetails',
+      'JobDescription',
+      'HowToApply',
+      'KeyResponsibilities',
+      'DocumentsRequired',
+      'InterviewProcess',
+      'ApplyOfficialLink',
+      'FullInformationImagesHtml',
+      'CreatedDate'
+    ];
+
+    const worksheet = XLSX.utils.aoa_to_sheet([headers]);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Jobs');
+    XLSX.writeFile(workbook, 'jobs-import-template.xls', { bookType: 'biff8', compression: true });
+  }
+
+  private downloadCompanyTemplateXls() {
+    const worksheet = XLSX.utils.aoa_to_sheet([
+      ['CompanyName', 'CompanyImageHtml', 'CreatedDate']
+    ]);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Companies');
+    XLSX.writeFile(workbook, 'companies-import-template.xls', { bookType: 'biff8', compression: true });
+  }
+
+  private async importJobsFromRows(rawRows: Record<string, any>[]) {
+    const jobsRef = ref(db, 'jobs');
+    let imported = 0;
+    let skipped = 0;
+
+    for (const row of rawRows) {
+      const title = this.getExcelValue(row, ['JobTitle', 'Job Title', 'Title']).trim();
+      const company = this.getExcelValue(row, ['CompanyName', 'Company Name', 'Company']).trim();
+      const category = this.getExcelValue(row, ['Category']).trim();
+
+      if (!title || !company || !category) {
+        skipped++;
+        continue;
+      }
+
+      const jobType = this.getExcelValue(row, ['JobType', 'Job Type']) || 'Walk-ins';
+      const createdDate = this.getExcelValue(row, ['CreatedDate', 'Created Date']) || new Date().toISOString();
+
+      const newJobData = {
+        title,
+        company,
+        companyImage: this.normalizeImageHtml(this.getExcelValue(row, ['CompanyImageHtml', 'Company Image Html', 'CompanyImage']) || ''),
+        jobType,
+        category,
+        experience: this.getExcelValue(row, ['Experience']) || 'Freshers',
+        jobLocation: this.getExcelValue(row, ['JobLocationAndHRDetails', 'Job Location and HR Details', 'JobLocation']) || '',
+        description: this.getExcelValue(row, ['JobDescription', 'Job Description']) || '',
+        howToApply: this.getExcelValue(row, ['HowToApply', 'How To Apply']) || '',
+        keyResponsibilities: this.getExcelValue(row, ['KeyResponsibilities', 'Key Responsibilities']) || '',
+        documentsRequired: this.getExcelValue(row, ['DocumentsRequired', 'Documents Required']) || '',
+        eligibilityCriteria: this.getExcelValue(row, ['InterviewProcess', 'Interview Process']) || '',
+        otherLink: this.getExcelValue(row, ['ApplyOfficialLink', 'Apply Official Link']) || '',
+        fullInformationTableFormat: this.getExcelValue(row, ['FullInformationImagesHtml', 'Full Information Images Html', 'FullInformationTableFormat']) || '',
+        walkInDrive: jobType === 'Walk-ins',
+        walkInInterviewLocation: '',
+        hrDetails: '',
+        createdDate
+      };
+
+      await push(jobsRef, newJobData);
+      imported++;
+    }
+
+    this.showSuccessToast(`Import complete. Imported: ${imported}, Skipped: ${skipped}.`);
+  }
+
+  private async importCompaniesFromRows(rawRows: Record<string, any>[]) {
+    const companyImagesRef = ref(db, 'companyImages');
+    let imported = 0;
+    let skipped = 0;
+
+    for (const row of rawRows) {
+      const companyName = this.getExcelValue(row, ['CompanyName', 'Company Name']).trim();
+      const imageValue = this.getExcelValue(row, ['CompanyImageHtml', 'Company Image Html', 'CompanyImage', 'CompanyImageUrl', 'Company Image Url']).trim();
+      const createdDate = this.getExcelValue(row, ['CreatedDate', 'Created Date']) || new Date().toISOString();
+
+      if (!companyName || !imageValue) {
+        skipped++;
+        continue;
+      }
+
+      await push(companyImagesRef, {
+        companyName,
+        companyImage: this.normalizeImageHtml(imageValue),
+        createdDate
+      });
+      imported++;
+    }
+
+    this.showSuccessToast(`Import complete. Imported: ${imported}, Skipped: ${skipped}.`);
   }
 
   private showSuccessToast(message: string) {
@@ -994,6 +1134,24 @@ _Share this opportunity with your friends!_
       if (map.has(normalized)) {
         return String(map.get(normalized) ?? '');
       }
+    }
+
+    return '';
+  }
+
+  private normalizeImageHtml(value: string): string {
+    const trimmed = (value || '').trim();
+    if (!trimmed) {
+      return '';
+    }
+
+    const embeddedImages = this.keepOnlyImageEmbeds(trimmed);
+    if (embeddedImages) {
+      return embeddedImages;
+    }
+
+    if (/^(https?:\/\/|data:image\/)/i.test(trimmed)) {
+      return `<p><img src="${trimmed}" alt="Company image"></p>`;
     }
 
     return '';

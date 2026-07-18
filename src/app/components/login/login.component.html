@@ -20,61 +20,92 @@
   <!-- Login Form -->
   <div *ngIf="!isLoggedIn && !isLoading" class="login-section">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
-          <div class="login-card position-relative">
-            <!-- Loading Overlay -->
-            <div *ngIf="isLoading" class="loading-overlay loading-fade-in">
-              <div class="spinner-container">
-                <div class="modern-loader"></div>
-                <p class="loader-text">Authenticating...</p>
-              </div>
+      <div class="auth-shell">
+        <div class="auth-brand-panel">
+          <div class="brand-badge">
+            <i class="bi bi-briefcase-fill"></i>
+          </div>
+          <p class="brand-kicker">All India Jobs</p>
+          <h1>Admin dashboard made for fast job and company updates.</h1>
+          <p class="brand-copy">
+            Manage jobs, company images, and XLS imports from one focused screen with a cleaner modern layout.
+          </p>
+
+          <div class="brand-metrics">
+            <div class="metric-chip">
+              <strong>Jobs</strong>
+              <span>Quick edits</span>
+            </div>
+            <div class="metric-chip">
+              <strong>Companies</strong>
+              <span>Compact rows</span>
+            </div>
+            <div class="metric-chip">
+              <strong>XLS</strong>
+              <span>Import / export</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-card position-relative">
+          <!-- Loading Overlay -->
+          <div *ngIf="isLoading" class="loading-overlay loading-fade-in">
+            <div class="spinner-container">
+              <div class="modern-loader"></div>
+              <p class="loader-text">Authenticating...</p>
+            </div>
+          </div>
+
+          <div class="auth-card-top">
+            <div>
+              <p class="auth-card-eyebrow mb-1">Admin access</p>
+              <h2 class="mb-1">Sign in</h2>
+              <p class="text-muted mb-0">Use your registered email and password</p>
+            </div>
+            <div class="auth-card-icon">
+              <i class="bi bi-shield-lock-fill"></i>
+            </div>
+          </div>
+
+          <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="auth-form">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address</label>
+              <input 
+                type="email" 
+                class="form-control form-control-lg" 
+                id="email" 
+                [(ngModel)]="email" 
+                name="email" 
+                required 
+                placeholder="Enter your email">
             </div>
             
-            <div class="text-center mb-4">
-              <h2 class="text-primary">Admin Login</h2>
-              <p class="text-muted">Access Job Management System</p>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input 
+                type="password" 
+                class="form-control form-control-lg" 
+                id="password" 
+                [(ngModel)]="password" 
+                name="password" 
+                required 
+                placeholder="Enter your password">
             </div>
             
-            <form (ngSubmit)="onLogin()" #loginForm="ngForm">
-              <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input 
-                  type="email" 
-                  class="form-control" 
-                  id="email" 
-                  [(ngModel)]="email" 
-                  name="email" 
-                  required 
-                  placeholder="Enter your email">
-              </div>
-              
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input 
-                  type="password" 
-                  class="form-control" 
-                  id="password" 
-                  [(ngModel)]="password" 
-                  name="password" 
-                  required 
-                  placeholder="Enter your password">
-              </div>
-              
-              <div class="alert alert-danger" *ngIf="loginError">
-                {{ loginError }}
-              </div>
-              
-              <button type="submit" class="btn btn-primary w-100" [disabled]="!loginForm.valid || isLoading">
-                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                <span *ngIf="isLoading">Logging in...</span>
-                <span *ngIf="!isLoading">Login</span>
-              </button>
-            </form>
-            
-            <div class="mt-3 text-center">
-              <small class="text-muted">Use your registered email and password</small>
+            <div class="alert alert-danger" *ngIf="loginError">
+              {{ loginError }}
             </div>
+            
+            <button type="submit" class="btn btn-primary btn-lg w-100 auth-submit" [disabled]="!loginForm.valid || isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span *ngIf="isLoading">Logging in...</span>
+              <span *ngIf="!isLoading">Login</span>
+            </button>
+          </form>
+
+          <div class="auth-card-footer">
+            <span>Secure admin portal</span>
+            <span>Jobs • Companies • XLS</span>
           </div>
         </div>
       </div>
@@ -84,54 +115,58 @@
   <!-- Job Management Dashboard -->
   <div *ngIf="isLoggedIn" class="job-management-section">
     <div class="container-fluid py-4">
-      <!-- Header -->
-      <div class="dashboard-header mb-4">
-        <div class="header-info">
-          <h2 class="text-primary mb-0">Job Management</h2>
-          <p class="text-muted mb-0">Welcome, {{ currentUser?.email || currentUser?.displayName }}</p>
+      <div class="dashboard-card">
+        <div class="header-account-bar">
+          <div class="header-account">
+            <div class="header-account-label">Signed in</div>
+            <div class="header-account-email">{{ currentUser?.email || currentUser?.displayName }}</div>
+            <button class="btn btn-outline-danger header-logout-btn" (click)="logout()">
+              <i class="bi bi-box-arrow-right me-1"></i>Logout
+            </button>
+          </div>
         </div>
-        <div class="header-actions mt-3 mt-md-0">
-          <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-success" (click)="showCreateForm()">
-            <i class="bi bi-plus-circle me-1"></i>Create Job
-          </button>
-          <button *ngIf="activeAdminTab === 'companies'" class="btn btn-success" (click)="showCreateCompanyImageForm()">
-            <i class="bi bi-image me-1"></i>Create Company Image
-          </button>
-          <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-outline-primary" (click)="requestExportConfirmation()">
-            <i class="bi bi-file-earmark-excel me-1"></i>Export Excel
-          </button>
-          <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-outline-success" (click)="excelFileInput.click()">
-            <i class="bi bi-upload me-1"></i>Import Excel
-          </button>
-          <input
-            #excelFileInput
-            type="file"
-            accept=".xlsx,.xls"
-            class="d-none"
-            (change)="onExcelFileSelected($event)">
-          <button class="btn btn-outline-danger" (click)="logout()">
-            <i class="bi bi-box-arrow-right me-1"></i>Logout
-          </button>
+
+        <div class="dashboard-header mb-3">
+          <div class="header-info">
+            <div class="header-eyebrow">Admin dashboard</div>
+            <h2 class="text-primary mb-0">Welcome To Admin Management</h2>
+            <div class="admin-tabs">
+              <button
+                class="admin-tab-btn"
+                [class.active]="activeAdminTab === 'jobs'"
+                (click)="switchAdminTab('jobs')">
+                <i class="bi bi-briefcase-fill me-1"></i>Jobs
+              </button>
+              <button
+                class="admin-tab-btn"
+                [class.active]="activeAdminTab === 'companies'"
+                (click)="switchAdminTab('companies')">
+                <i class="bi bi-building me-1"></i>Companies
+              </button>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-success" (click)="showCreateForm()">
+              <i class="bi bi-plus-circle me-1"></i>Create Job
+            </button>
+            <button *ngIf="activeAdminTab === 'companies'" class="btn btn-success" (click)="showCreateCompanyImageForm()">
+              <i class="bi bi-image me-1"></i>Create Company Image
+            </button>
+            <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-outline-primary" (click)="requestExportConfirmation()">
+              <i class="bi bi-file-earmark-excel me-1"></i>Export XLS
+            </button>
+            <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-outline-success" (click)="openImportModal('jobs')">
+              <i class="bi bi-upload me-1"></i>Import XLS
+            </button>
+            <button *ngIf="activeAdminTab === 'companies'" class="btn btn-outline-success" (click)="openImportModal('companies')">
+              <i class="bi bi-upload me-1"></i>Import XLS
+            </button>
+          </div>
         </div>
-      </div>
 
-      <!-- Admin Tabs -->
-      <div class="admin-tabs mb-3">
-        <button
-          class="admin-tab-btn"
-          [class.active]="activeAdminTab === 'jobs'"
-          (click)="switchAdminTab('jobs')">
-          <i class="bi bi-briefcase-fill me-1"></i>Jobs
-        </button>
-        <button
-          class="admin-tab-btn"
-          [class.active]="activeAdminTab === 'companies'"
-          (click)="switchAdminTab('companies')">
-          <i class="bi bi-building me-1"></i>Companies
-        </button>
-      </div>
+        <div class="dashboard-content">
 
-      <!-- Job Form Modal -->
+        <!-- Job Form Modal -->
       <div *ngIf="showJobForm" class="job-form-modal">
         <div class="job-form-content">
           <div class="job-form-header">
@@ -288,7 +323,7 @@
         </div>
       </div>
 
-      <!-- Export Excel Confirmation Modal -->
+      <!-- Export XLS Confirmation Modal -->
       <div *ngIf="showExportConfirmModal" class="job-form-modal" (click)="closeExportConfirmModal()">
         <div class="job-form-content export-confirm-content" (click)="$event.stopPropagation()">
           <div class="job-form-header">
@@ -296,7 +331,7 @@
             <button class="btn-close" (click)="closeExportConfirmModal()"></button>
           </div>
           <div class="job-form-body">
-            <p class="mb-0">Are you sure you want to download the Excel file?</p>
+            <p class="mb-0">Are you sure you want to download the XLS file?</p>
           </div>
           <div class="job-form-footer">
             <button type="button" class="btn btn-secondary me-2" (click)="closeExportConfirmModal()">No</button>
@@ -350,6 +385,63 @@
         </div>
       </div>
 
+      <!-- XLS Import Modal -->
+      <div *ngIf="showImportModal" class="job-form-modal" (click)="closeImportModal()">
+        <div class="job-form-content import-modal-content" (click)="$event.stopPropagation()">
+          <div class="job-form-header">
+            <h5 class="mb-0">{{ importModalType === 'companies' ? 'Import Companies from XLS' : 'Import Jobs from XLS' }}</h5>
+            <button class="btn-close" (click)="closeImportModal()"></button>
+          </div>
+
+          <div class="job-form-body">
+            <div class="import-format-box mb-3">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                  <div class="fw-semibold mb-1">XLS only format</div>
+                  <small class="text-muted" *ngIf="importModalType === 'companies'">
+                    Required columns: CompanyName, CompanyImageHtml.
+                  </small>
+                  <small class="text-muted" *ngIf="importModalType === 'jobs'">
+                    Required columns: JobTitle, CompanyName, Category.
+                  </small>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary" (click)="downloadImportTemplate()">
+                  <i class="bi bi-download me-1"></i>Download XLS Template
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Select XLS file</label>
+              <input
+                type="file"
+                class="form-control"
+                accept=".xls"
+                (change)="onImportFileSelected($event)">
+              <small class="text-muted d-block mt-2">Only .xls files are supported.</small>
+            </div>
+
+            <div class="import-file-summary mb-3" *ngIf="selectedImportFileName">
+              <i class="bi bi-file-earmark-spreadsheet me-1"></i>{{ selectedImportFileName }}
+              <span class="ms-2 badge bg-primary">{{ pendingImportRows.length }} rows ready</span>
+            </div>
+
+            <div *ngIf="importModalError" class="alert alert-danger py-2 mb-0">
+              {{ importModalError }}
+            </div>
+          </div>
+
+          <div class="job-form-footer">
+            <button type="button" class="btn btn-secondary me-2" (click)="closeImportModal()" [disabled]="isImportingData">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="saveImportedData()" [disabled]="pendingImportRows.length === 0 || isImportingData">
+              <span *ngIf="isImportingData" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span *ngIf="isImportingData">Saving...</span>
+              <span *ngIf="!isImportingData">Save</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Jobs List -->
       <div *ngIf="activeAdminTab === 'jobs'" class="jobs-section">
         <div class="jobs-header jobs-header-modern mb-3">
@@ -359,7 +451,6 @@
             </h4>
             <div class="jobs-summary-chip">
               <span class="jobs-count">{{ getSortedFilteredJobs().length }} jobs</span>
-              <span class="jobs-order">Latest Created First</span>
             </div>
           </div>
           
@@ -390,80 +481,32 @@
           </div>
         </div>
         
-        <div class="row" *ngIf="getSortedFilteredJobs().length > 0">
-          <div class="col-12 mb-3" *ngFor="let job of getSortedFilteredJobs()">
-            <div class="job-card-compact" [class.expanded]="isJobExpanded(job.id)">
-              <div class="job-header-compact" (click)="toggleJobExpand(job.id)" style="cursor: pointer;">
-                <div class="job-info">
-                  <div class="d-flex align-items-center gap-2">
-                    <i class="bi" [class.bi-chevron-right]="!isJobExpanded(job.id)" [class.bi-chevron-down]="isJobExpanded(job.id)"></i>
-                    <div>
-                      <h6 class="job-title-small mb-0">{{ job.title }}</h6>
-                      <small class="job-company-small text-muted">
-                        <i class="bi bi-building me-1"></i>{{ job.company }} • 
-                        <span class="badge bg-primary badge-sm">{{ job.category }}</span>
-                      </small>
-                      <div class="job-created-small text-muted">
-                        <i class="bi bi-calendar3 me-1"></i>
-                        Created: {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="job-actions-small" (click)="$event.stopPropagation()">
-                  <button class="btn btn-sm btn-outline-success me-1" (click)="viewJobDetails(job)" title="View">
-                    <i class="bi bi-eye"></i>
-                  </button>
-                  <button class="btn btn-sm btn-success me-1" (click)="shareJobOnWhatsApp(job)" title="Share on WhatsApp">
-                    <i class="bi bi-whatsapp"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-primary me-1" (click)="editJob(job)" title="Edit">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" (click)="requestDeleteConfirmation(job.id)" title="Delete">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
+        <div class="jobs-grid" *ngIf="getSortedFilteredJobs().length > 0">
+          <div class="job-grid-item" *ngFor="let job of getSortedFilteredJobs()">
+            <div class="job-card-compact job-card-grid">
+              <div class="job-grid-body">
+                <h6 class="job-title-small mb-1 text-truncate" [title]="job.title">{{ job.title }}</h6>
+                <small class="job-company-small text-muted text-truncate d-block" [title]="job.company">
+                  <i class="bi bi-building me-1"></i>{{ job.company }}
+                </small>
+                <small class="job-created-small text-muted d-block" [title]="job.createdDate">
+                  <i class="bi bi-calendar3 me-1"></i>{{ job.createdDate | date:'dd MMM yyyy' }}
+                </small>
               </div>
-              
-              <div class="job-body-compact" *ngIf="isJobExpanded(job.id)">
-                <div class="job-meta-info mb-2">
-                  <small class="text-muted me-3" *ngIf="!job.updatedDate"><i class="bi bi-calendar3 me-1"></i>Posted: {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}</small>
-                  <small class="text-info me-3" *ngIf="job.updatedDate"><i class="bi bi-pencil-square me-1"></i>Updated: {{ job.updatedDate | date:'yyyy-MM-dd HH:mm' }}</small>
-                </div>
 
-                <div class="expanded-split-wrap mb-2">
-                  <div class="company-mini-card">
-                    <div class="company-mini-image-wrap" *ngIf="getCompanyImagePreview(job.companyImage || getCompanyImageByName(job.company)) as preview; else noJobCompanyImage">
-                      <img [src]="preview" [alt]="job.company" class="company-mini-image" loading="lazy">
-                    </div>
-                    <ng-template #noJobCompanyImage>
-                      <div class="company-mini-image-wrap company-mini-image-empty">
-                        <i class="bi bi-image"></i>
-                      </div>
-                    </ng-template>
-                    <div class="company-mini-name text-truncate" [title]="job.company">{{ job.company }}</div>
-                    <button class="btn btn-sm btn-outline-primary w-100" (click)="viewJobDetails(job)">
-                      <i class="bi bi-eye me-1"></i>View Details
-                    </button>
-                  </div>
-
-                  <div class="gov-details-compact p-2 bg-light rounded border-start border-success border-3">
-                    <div class="row g-2 small">
-                      <div class="col-6 col-md-4" *ngIf="job.experience">
-                        <strong>Experience:</strong> {{ job.experience }}
-                      </div>
-                      <div class="col-6 col-md-4" *ngIf="job.jobType">
-                        <strong>Job Type:</strong> {{ job.jobType }}
-                      </div>
-                      <div class="col-12" *ngIf="job.otherLink">
-                        <strong>Link:</strong> <a [href]="job.otherLink" target="_blank" class="text-truncate d-inline-block" style="max-width: 250px;">{{ job.otherLink }}</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="job-desc-small" [innerHTML]="job.description"></div>
+              <div class="job-actions-small job-actions-grid" (click)="$event.stopPropagation()">
+                <button class="btn btn-sm btn-outline-success" (click)="viewJobDetails(job)" title="View">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-success" (click)="shareJobOnWhatsApp(job)" title="Share on WhatsApp">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary" (click)="editJob(job)" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="requestDeleteConfirmation(job.id)" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -490,30 +533,29 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="companyImages.length > 0">
-          <div class="col-12 col-md-6 col-xl-4 mb-3" *ngFor="let item of companyImages">
-            <div class="company-card">
-              <div class="company-image-wrap" *ngIf="getCompanyImagePreview(item.companyImage) as preview; else noCompanyImage">
-                <img [src]="preview" [alt]="item.companyName" class="company-image-thumb" loading="lazy">
+        <div class="company-list" *ngIf="companyImages.length > 0">
+          <div class="company-row" *ngFor="let item of companyImages">
+            <div class="company-image-wrap company-image-wrap-small" *ngIf="getCompanyImagePreview(item.companyImage) as preview; else noCompanyImage">
+              <img [src]="preview" [alt]="item.companyName" class="company-image-thumb" loading="lazy">
+            </div>
+            <ng-template #noCompanyImage>
+              <div class="company-image-wrap company-image-wrap-small company-image-empty">
+                <i class="bi bi-image"></i>
               </div>
-              <ng-template #noCompanyImage>
-                <div class="company-image-wrap company-image-empty">
-                  <i class="bi bi-image"></i>
-                </div>
-              </ng-template>
+            </ng-template>
 
-              <div class="company-card-body">
-                <h6 class="mb-1">{{ item.companyName }}</h6>
-                <small class="text-muted d-block mb-2">Used in {{ getCompanyUsageCount(item.companyName) }} jobs</small>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-sm btn-outline-primary" (click)="editCompanyImage(item)">
-                    <i class="bi bi-pencil me-1"></i>Edit
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" (click)="deleteCompanyImage(item)">
-                    <i class="bi bi-trash me-1"></i>Delete
-                  </button>
-                </div>
-              </div>
+            <div class="company-row-body">
+              <div class="company-row-title">{{ item.companyName }}</div>
+              <small class="text-muted d-block">Used in {{ getCompanyUsageCount(item.companyName) }} jobs</small>
+            </div>
+
+            <div class="company-row-actions">
+              <button class="btn btn-sm btn-outline-primary" (click)="editCompanyImage(item)">
+                <i class="bi bi-pencil me-1"></i>Edit
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteCompanyImage(item)">
+                <i class="bi bi-trash me-1"></i>Delete
+              </button>
             </div>
           </div>
         </div>
@@ -525,7 +567,7 @@
         </div>
       </div>
 
-      <!-- Delete Job Confirmation Modal -->
+        <!-- Delete Job Confirmation Modal -->
       <div *ngIf="showDeleteConfirmModal" class="job-form-modal" (click)="closeDeleteConfirmModal()">
         <div class="job-form-content export-confirm-content" (click)="$event.stopPropagation()">
           <div class="job-form-header">
@@ -542,6 +584,7 @@
         </div>
       </div>
 
+      </div>
     </div>
   </div>
 </div>

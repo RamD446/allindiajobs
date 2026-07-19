@@ -26,7 +26,7 @@
 
       <!-- Latest Walk-in Jobs Section -->
       <div class="section-block" *ngIf="!hasNoData() && walkinJobs.length > 0">
-        <div class="section-header">Latest All Walk-in Jobs</div>
+        <div class="section-header">All Least Jobs</div>
         <div class="section-content p-2">
           <div class="jobs-card-grid">
             <div *ngFor="let job of walkinJobs | slice:0:16" class="home-job-thumb-card" (click)="viewJobDetails(job)">
@@ -58,7 +58,6 @@
               </div>
             </div>
           </div>
-          <a routerLink="/IT-Walk-ins" class="section-view-all">View All <i class="bi bi-arrow-right ms-1"></i></a>
         </div>
       </div>
     </div>
@@ -80,23 +79,6 @@
         </div>
       </div>
 
-      <!-- Filter by Company -->
-      <div class="section-block">
-        <div class="section-header">Filter by Company</div>
-        <div class="section-content">
-          <ul class="company-list">
-            <li class="company-item" [class.active]="selectedCompany === ''" (click)="filterByCompany('')">
-              All Companies
-            </li>
-            <li *ngFor="let company of uniqueCompanies" 
-                class="company-item" 
-                [class.active]="selectedCompany === company"
-                (click)="filterByCompany(company)">
-              {{ company }}
-            </li>
-          </ul>
-        </div>
-      </div>
     </div>
   </div>
 </div>

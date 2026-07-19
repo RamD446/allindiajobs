@@ -43,9 +43,28 @@
 
 /* Sidebar Styling */
 .recent-posts-sidebar {
-  background: #fdfdfd;
-  padding: 0.5rem;
-  border-radius: 4px;
+  background: linear-gradient(180deg, #f3f8ff 0%, #e8f2ff 100%);
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #cfe2ff;
+}
+
+.recent-posts-heading {
+  color: #0a58ca;
+  border-color: #b6d4fe !important;
+}
+
+.recent-post-title {
+  color: #0b3d91 !important;
+}
+
+.recent-post-date {
+  color: #3b6fb6;
+}
+
+.recent-posts-link {
+  color: #0a58ca;
+  font-weight: 600;
 }
 
 /* Breadcrumb Styling */

@@ -109,14 +109,20 @@
       </div>
 
       <div class="menu-section mt-3">
-        <div class="section-label px-3 mb-1">Wt's up --Join Jobs Group</div>
+        <div class="section-label px-3 mb-1 d-flex align-items-center gap-2">
+          <i class="bi bi-whatsapp" style="color: #25D366"></i>
+          <i class="bi bi-arrow-down-up"></i>
+        </div>
         <div class="menu-items">
           <a href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" class="menu-item">
             <div class="menu-item-icon" style="background-color: #25D36615">
               <i class="bi bi-whatsapp" style="color: #25D366"></i>
             </div>
-            <span class="menu-item-text">Wt's up --Join Jobs Group</span>
-            <i class="bi bi-box-arrow-up-right ms-auto chevron"></i>
+            <span class="menu-item-text d-flex align-items-center gap-2">
+              <i class="bi bi-whatsapp" style="color: #25D366"></i>
+              <i class="bi bi-arrow-down-up"></i>
+            </span>
+            <i class="bi bi-arrow-down-up ms-auto chevron"></i>
           </a>
         </div>
       </div>
@@ -189,20 +195,16 @@
     </div>
   </div>
 
-  <button
-    type="button"
-    class="scroll-direction-btn"
-    (click)="handleScrollArrowClick()"
-    [title]="isScrolledDown ? 'Scroll to top' : 'Scroll down'"
-    aria-label="Scroll direction button">
-    <i class="bi" [ngClass]="isScrolledDown ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
-  </button>
+ 
 
   <!-- Floating WhatsApp Button (moved from app component) -->
   <div class="floating-wa-btn" *ngIf="showWhatsAppBtn" (click)="joinWhatsAppGroup()">
     <div class="wa-float-icon">
       <i class="bi bi-whatsapp"></i>
     </div>
-    <span class="wa-float-text">Join Jobs Group <i class="bi bi-arrow-down-short"></i></span>
+    <div class="wa-float-text d-flex align-items-center gap-1">
+      <i class="bi bi-arrow-down-short"></i>
+      <i class="bi bi-arrow-up-short"></i>
+    </div>
   </div>
 </header>

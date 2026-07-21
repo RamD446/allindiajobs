@@ -15,8 +15,8 @@
   <div *ngIf="!isLoading && categoryJobs.length > 0">
     <div class="container-fluid">
       <div class="row g-3">
-        <!-- Main Column (col-8) -->
-        <div class="col-12 col-md-8">
+        <!-- Main Column (col-9) -->
+        <div class="col-12 col-md-9">
           
           <!-- Main Category Jobs -->
           <div class="section-block mb-4" *ngIf="filteredJobs.length > 0">
@@ -37,12 +37,10 @@
 
                   <div class="category-job-thumb-content">
                     <div class="category-job-thumb-title">{{ job.title }}</div>
-                    <div class="category-job-company">{{ job.company }}</div>
-                    <div class="category-job-meta">Type: {{ job.jobType || 'Walk-ins' }}</div>
+                    <div class="category-job-description">{{ getJobDescriptionPreview(job, 200) }}</div>
                     <div class="category-job-created" *ngIf="job.createdDate">
-                      {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}
+                      Created date: {{ job.createdDate | date:'MMMM d' }}
                     </div>
-                    <button class="category-job-view-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">View</button>
                   </div>
                 </div>
               </div>
@@ -65,8 +63,8 @@
           </nav>
         </div>
 
-        <!-- Sidebar Column (col-4) -->
-        <div class="col-12 col-md-4">
+        <!-- Sidebar Column (col-3) -->
+        <div class="col-12 col-md-3">
           <!-- Filter by Category -->
           <div class="section-block mb-3">
             <div class="section-header">Filter by Category</div>
@@ -78,23 +76,6 @@
                 <li class="company-item" routerLink="/Banking-Walk-ins" routerLinkActive="active">Banking Walk-ins</li>
                 <li class="company-item" routerLink="/Pharma-Walk-ins" routerLinkActive="active">Pharma Walk-ins</li>
                 <li class="company-item" routerLink="/Sales-Walk-ins" routerLinkActive="active">Sales Walk-ins</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="section-block mb-3">
-            <div class="section-header">Filter by Company</div>
-            <div class="section-content">
-              <ul class="company-list">
-                <li class="company-item" [class.active]="selectedCompany === ''" (click)="filterByCompany('')">
-                  All Companies
-                </li>
-                <li *ngFor="let company of uniqueCompanies" 
-                    class="company-item" 
-                    [class.active]="selectedCompany === company"
-                    (click)="filterByCompany(company)">
-                  {{ company }}
-                </li>
               </ul>
             </div>
           </div>

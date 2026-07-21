@@ -30,25 +30,38 @@ header {
   border-radius: 30px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
   animation: slideInRight 0.3s ease-out;
   border: 1.5px solid #ffffff;
 }
 
-.wa-float-icon {
-  font-size: 1rem;
+.wa-action {
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  display: inline-flex;
   display: flex;
   align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0;
+  cursor: pointer;
 }
 
-.wa-float-text {
-  font-size: 0.7rem;
+.wa-divider {
+  opacity: 0.85;
   font-weight: 700;
+}
+
+.wa-scroll i,
+.wa-join i {
+  font-size: 0.95rem;
+}
+
+.wa-action span {
   white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
 }
 
 @keyframes slideInRight {
@@ -68,10 +81,11 @@ header {
     padding: 5px 10px;
     bottom: 90px;
     right: 10px;
+    gap: 6px;
   }
 
-  .wa-float-text {
-    font-size: 0.7rem;
+  .wa-action {
+    font-size: 0.66rem;
   }
 }
 

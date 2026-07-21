@@ -21,9 +21,6 @@ export class HeaderComponent implements OnInit {
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
-  isScrolledDown = false;
-  showWhatsAppBtn = true;
-  private lastScrollTop = 0;
 
   navCategories = [
     { name: 'IT Walk-ins', route: '/IT-Walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
@@ -170,23 +167,15 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  @HostListener('window:scroll')
-  onWindowScroll() {
-    this.isScrolledDown = window.scrollY > 120;
-    const st = window.pageYOffset || document.documentElement.scrollTop;
-    this.showWhatsAppBtn = st <= this.lastScrollTop;
-    this.lastScrollTop = st <= 0 ? 0 : st;
-  }
-
   joinWhatsAppGroup() {
     window.open('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p', '_blank');
   }
 
   handleScrollArrowClick() {
-    if (this.isScrolledDown) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  handleScrollDownClick() {
+    window.scrollTo({ top: window.scrollY + window.innerHeight, behavior: 'smooth' });
   }
 }

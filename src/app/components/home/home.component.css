@@ -293,7 +293,7 @@
 @media (min-width: 768px) {
   .home-sections {
     display: grid;
-    grid-template-columns: 7fr 3fr;
+    grid-template-columns: 9fr 3fr;
     gap: 1.5rem;
     align-items: flex-start;
   }
@@ -391,6 +391,8 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 0.05rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.22);
+  padding-left: 0.4rem;
 }
 
 .home-job-thumb-card:hover {

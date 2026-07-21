@@ -239,6 +239,19 @@ export class JobCategoryComponent implements OnInit {
     return this.extractImageSrc(mapped);
   }
 
+  getJobDescriptionPreview(job: Job, maxLength: number = 200): string {
+    const cleanText = (job.description || '').replace(/\s+/g, ' ').trim();
+    if (!cleanText) {
+      return 'No description available';
+    }
+
+    if (cleanText.length <= maxLength) {
+      return cleanText;
+    }
+
+    return `${cleanText.slice(0, maxLength)}...`;
+  }
+
   loadJobCareers() {
     try {
       const careersRef = ref(db, 'jobCareers');

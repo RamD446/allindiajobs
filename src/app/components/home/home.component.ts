@@ -19,13 +19,29 @@ export class HomeComponent implements OnInit {
   uniqueCompanies: string[] = [];
   selectedCompany: string = '';
   isLoading: boolean = true;
+  isWalkinOnlyPage: boolean = false;
+  isNonWalkinOnlyPage: boolean = false;
   companyImageMap: Record<string, string> = {};
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.isWalkinOnlyPage = this.router.url.includes('/walkinjobs');
+    this.isNonWalkinOnlyPage = this.router.url.includes('/non-walkinjobs');
     this.loadCompanyImages();
     this.loadJobs();
+  }
+
+  private getJobTypeFilteredList(jobs: Job[]): Job[] {
+    if (this.isWalkinOnlyPage) {
+      return jobs.filter(job => job.walkInDrive === true);
+    }
+
+    if (this.isNonWalkinOnlyPage) {
+      return jobs.filter(job => job.walkInDrive !== true);
+    }
+
+    return jobs.filter(job => job.walkInDrive === true).slice(0, 16);
   }
 
   private getCreatedTimestamp(job: Job): number {
@@ -144,8 +160,7 @@ export class HomeComponent implements OnInit {
           this.filteredJobs = [...this.jobs];
           this.extractUniqueCompanies();
 
-          // 4x4 card layout: keep top 16 walk-in jobs
-          this.walkinJobs = this.sortByLatestCreated(this.jobs.filter(job => job.walkInDrive === true)).slice(0, 16);
+          this.walkinJobs = this.sortByLatestCreated(this.getJobTypeFilteredList(this.jobs));
 
         }
         this.isLoading = false;
@@ -173,10 +188,11 @@ export class HomeComponent implements OnInit {
     this.selectedCompany = company;
     if (company) {
       this.filteredJobs = this.sortByLatestCreated(this.jobs.filter(job => job.company === company));
-      this.walkinJobs = this.sortByLatestCreated(this.jobs.filter(job => job.walkInDrive === true && job.company === company)).slice(0, 16);
+      const companyJobs = this.jobs.filter(job => job.company === company);
+      this.walkinJobs = this.sortByLatestCreated(this.getJobTypeFilteredList(companyJobs));
     } else {
       this.filteredJobs = this.sortByLatestCreated(this.jobs);
-      this.walkinJobs = this.sortByLatestCreated(this.jobs.filter(job => job.walkInDrive === true)).slice(0, 16);
+      this.walkinJobs = this.sortByLatestCreated(this.getJobTypeFilteredList(this.jobs));
     }
   }
 
@@ -250,6 +266,6 @@ export class HomeComponent implements OnInit {
   }
 
   hasNoData(): boolean {
-    return this.jobs.length === 0;
+    return this.walkinJobs.length === 0;
   }
 }

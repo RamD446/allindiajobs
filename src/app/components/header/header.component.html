@@ -11,7 +11,7 @@
         <a routerLink="/" class="navbar-brand logo mb-0 d-flex align-items-center">
           <img src="favicon.ico" alt="Icon" class="logo-img me-2" style="width: 24px; height: 24px;">
           <span class="logo-main">
-            <span class="logo-part1">All</span><span class="logo-part2">Jobs</span>
+            <span class="logo-part1">All</span><span class="logo-part2"> Jobs</span>
           </span>
         </a>
       </div>
@@ -103,24 +103,6 @@
         </div>
       </div>
 
-      <div class="menu-section mt-3">
-        <div class="section-label px-3 mb-1 d-flex align-items-center gap-2">
-          <i class="bi bi-whatsapp" style="color: #25D366"></i>
-          <i class="bi bi-arrow-down-up"></i>
-        </div>
-        <div class="menu-items">
-          <a href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" class="menu-item">
-            <div class="menu-item-icon" style="background-color: #25D36615">
-              <i class="bi bi-whatsapp" style="color: #25D366"></i>
-            </div>
-            <span class="menu-item-text d-flex align-items-center gap-2">
-              <i class="bi bi-whatsapp" style="color: #25D366"></i>
-              <i class="bi bi-arrow-down-up"></i>
-            </span>
-            <i class="bi bi-arrow-down-up ms-auto chevron"></i>
-          </a>
-        </div>
-      </div>
     </div>
     <div class="offcanvas-footer">
       <p class="copyright-text mb-0">© 2026 AllJobs. All rights reserved.</p>
@@ -135,28 +117,36 @@
         <span>Home</span>
       </a>
 
+      <a class="jc-pill" routerLink="/walkinjobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
+        <span>Walk-in Jobs</span>
+      </a>
+
+      <a class="jc-pill" routerLink="/non-walkinjobs" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
+        <span>Non Walk-in</span>
+      </a>
+  <a class="jc-pill" routerLink="/Fresher-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
+        <span>Fresher Jobs</span>
+      </a>
       <a class="jc-pill" routerLink="/IT-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
-        <span>IT Walk-ins</span>
+        <span>IT Jobs</span>
       </a>
 
       <a class="jc-pill" routerLink="/BPO-Non-IT-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
-        <span>BPO/Non-IT Walk-ins</span>
+        <span>BPO/Non-IT Jobs</span>
       </a>
 
-      <a class="jc-pill" routerLink="/Fresher-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
-        <span>Fresher Walk-ins</span>
-      </a>
+    
       
       <a class="jc-pill" routerLink="/Banking-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
-        <span>Banking Walk-ins</span>
+        <span>Banking Jobs</span>
       </a>
       
       <a class="jc-pill" routerLink="/Pharma-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
-        <span>Pharma Walk-ins</span>
+        <span>Pharma Jobs</span>
       </a>
 
       <a class="jc-pill" routerLink="/Sales-Walk-ins" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
-        <span>Sales Walk-ins</span>
+        <span>Sales Jobs</span>
       </a>
 
       <!-- Games Dropdown -->

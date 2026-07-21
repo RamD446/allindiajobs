@@ -213,6 +213,19 @@ export class HomeComponent implements OnInit {
     return direct;
   }
 
+  getJobDescriptionPreview(job: Job, maxLength: number = 100): string {
+    const cleanText = (job.description || '').replace(/\s+/g, ' ').trim();
+    if (!cleanText) {
+      return 'No description available';
+    }
+
+    if (cleanText.length <= maxLength) {
+      return cleanText;
+    }
+
+    return `${cleanText.slice(0, maxLength)}...`;
+  }
+
   getTodayWalkinsCount(): number {
     return this.jobs.filter(job => this.isWalkInToday(job)).length;
   }

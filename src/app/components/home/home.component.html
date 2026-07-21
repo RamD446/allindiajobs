@@ -47,14 +47,12 @@
                 <div class="home-job-thumb-title">
                   {{ job.title }}
                 </div>
-                <div class="home-job-meta-top" *ngIf="job.jobType">Job type: {{ job.jobType }}</div>
-                <div class="home-job-meta-top" *ngIf="job.category">Category: {{ job.category }}</div>
-                <div class="home-job-created-top" *ngIf="job.createdDate">
-                  Created date: {{ job.createdDate | date:'yyyy-MM-dd HH:mm' }}
+                <div class="home-job-description">
+                  {{ getJobDescriptionPreview(job, 200) }}
                 </div>
-                <button class="home-job-view-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">
-                  View Details
-                </button>
+                <div class="home-job-created-top" *ngIf="job.createdDate">
+                  Created date: {{ job.createdDate | date:'MMMM d' }}
+                </div>
               </div>
             </div>
           </div>

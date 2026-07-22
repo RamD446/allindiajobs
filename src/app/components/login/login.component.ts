@@ -28,6 +28,10 @@ export class LoginComponent implements OnInit {
   // Job management
   jobs: Job[] = [];
   selectedJobCategory: string = 'All';
+  selectedFilterJobType: string = 'All';
+  selectedFilterExperience: string = 'All';
+  selectedFilterQualification: string = 'All';
+  selectedFilterLocation: string = 'All';
   showJobForm: boolean = false;
   editingJob: Job | null = null;
   isSaving: boolean = false;
@@ -84,6 +88,8 @@ export class LoginComponent implements OnInit {
   privateJobTypes: string[] = [...PRIVATE_JOB_TYPES];
   jobTypeOptions: string[] = ['Walk-ins', 'Non-Walkins'];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
+  locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
+  qualificationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
 
   companyImageEditorModules = {
     toolbar: {
@@ -272,10 +278,17 @@ export class LoginComponent implements OnInit {
   }
 
   getFilteredJobs(): Job[] {
-    if (this.selectedJobCategory === 'All') {
-      return this.jobs;
-    }
-    return this.jobs.filter(job => job.category === this.selectedJobCategory);
+    return this.jobs.filter((job) => {
+      const categoryPass = this.selectedJobCategory === 'All' || job.category === this.selectedJobCategory;
+      const jobTypePass = this.selectedFilterJobType === 'All' || (job.jobType || '') === this.selectedFilterJobType;
+      const experiencePass = this.selectedFilterExperience === 'All' || (job.experience || '') === this.selectedFilterExperience;
+      const qualificationPass = this.selectedFilterQualification === 'All' || (job.qualification || '') === this.selectedFilterQualification;
+      const locationSource = ((job as any).location || job.jobLocation || '').toLowerCase();
+      const locationPass = this.selectedFilterLocation === 'All'
+        || locationSource.includes(this.selectedFilterLocation.toLowerCase());
+
+      return categoryPass && jobTypePass && experiencePass && qualificationPass && locationPass;
+    });
   }
 
   getSortedFilteredJobs(): Job[] {
@@ -285,6 +298,94 @@ export class LoginComponent implements OnInit {
   getCategoryCount(category: string): number {
     if (category === 'All') return this.jobs.length;
     return this.jobs.filter(job => job.category === category).length;
+  }
+
+  selectCategoryTab(category: string) {
+    this.selectedJobCategory = category;
+    this.selectedFilterJobType = 'All';
+    this.selectedFilterExperience = 'All';
+    this.selectedFilterQualification = 'All';
+    this.selectedFilterLocation = 'All';
+  }
+
+  getJobTypeFilterOptions(): string[] {
+    return this.getUniqueFilterOptions(this.jobs.map((job) => job.jobType), this.jobTypeOptions);
+  }
+
+  getExperienceFilterOptions(): string[] {
+    return this.getUniqueFilterOptions(this.jobs.map((job) => job.experience), this.experienceOptions);
+  }
+
+  getQualificationFilterOptions(): string[] {
+    return this.getUniqueFilterOptions(this.jobs.map((job) => job.qualification), this.qualificationOptions);
+  }
+
+  getLocationFilterOptions(): string[] {
+    const jobLocations = this.jobs
+      .map((job) => (job as any).location || '')
+      .filter((value) => !!value && value.toString().trim().length > 0)
+      .map((value) => value.toString().trim());
+
+    return this.getUniqueFilterOptions(jobLocations, this.locationOptions);
+  }
+
+  onIndependentFilterChange(changedFilter: 'jobType' | 'experience' | 'qualification' | 'location') {
+    if (changedFilter !== 'jobType') {
+      this.selectedFilterJobType = 'All';
+    }
+
+    if (changedFilter !== 'experience') {
+      this.selectedFilterExperience = 'All';
+    }
+
+    if (changedFilter !== 'qualification') {
+      this.selectedFilterQualification = 'All';
+    }
+
+    if (changedFilter !== 'location') {
+      this.selectedFilterLocation = 'All';
+    }
+  }
+
+  applyIndependentFilter(changedFilter: 'jobType' | 'experience' | 'qualification' | 'location', value: string) {
+    this.onIndependentFilterChange(changedFilter);
+
+    if (changedFilter === 'jobType') {
+      this.selectedFilterJobType = value;
+      return;
+    }
+
+    if (changedFilter === 'experience') {
+      this.selectedFilterExperience = value;
+      return;
+    }
+
+    if (changedFilter === 'qualification') {
+      this.selectedFilterQualification = value;
+      return;
+    }
+
+    this.selectedFilterLocation = value;
+  }
+
+  private getUniqueFilterOptions(values: Array<string | undefined>, preferred: string[] = []): string[] {
+    const set = new Set<string>();
+
+    preferred.forEach((item) => {
+      const trimmed = (item || '').trim();
+      if (trimmed) {
+        set.add(trimmed);
+      }
+    });
+
+    values.forEach((item) => {
+      const trimmed = (item || '').trim();
+      if (trimmed) {
+        set.add(trimmed);
+      }
+    });
+
+    return Array.from(set);
   }
 
   showCreateForm() {
@@ -331,7 +432,8 @@ export class LoginComponent implements OnInit {
       jobLocation: job.jobLocation || '',
       jobType: job.jobType || (job.walkInDrive ? 'Walk-ins' : 'Non-Walkins'),
       experience: job.experience || 'Freshers',
-      fullInformationTableFormat: '',
+      qualification: job.qualification || 'Any Graduate',
+      fullInformationTableFormat: job.fullInformationTableFormat || '',
       walkInDrive: job.jobType ? job.jobType === 'Walk-ins' : !!job.walkInDrive,
       howToApply: job.howToApply || '',
       keyResponsibilities: job.keyResponsibilities || '',
@@ -422,7 +524,7 @@ export class LoginComponent implements OnInit {
         const normalizedJobData = {
           ...jobData,
           companyImage: normalizedCurrentImage || normalizedMappedImage,
-          fullInformationTableFormat: '',
+          fullInformationTableFormat: jobData.fullInformationTableFormat || '',
           walkInDrive: jobData.jobType === 'Walk-ins',
           walkInInterviewLocation: '',
           hrDetails: ''
@@ -445,7 +547,7 @@ export class LoginComponent implements OnInit {
         const normalizedJobData = {
           ...jobData,
           companyImage: normalizedCurrentImage || normalizedMappedImage,
-          fullInformationTableFormat: '',
+          fullInformationTableFormat: jobData.fullInformationTableFormat || '',
           walkInDrive: jobData.jobType === 'Walk-ins',
           walkInInterviewLocation: '',
           hrDetails: ''
@@ -500,10 +602,11 @@ export class LoginComponent implements OnInit {
       jobType: this.jobTypeOptions[0],
       category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       experience: this.experienceOptions[0],
+      qualification: this.qualificationOptions[2],
       fullInformationTableFormat: '',
       walkInDrive: true,
       description: '',
-      jobLocation: '',
+      jobLocation: this.locationOptions[0],
       howToApply: '',
       keyResponsibilities: '',
       documentsRequired: '',
@@ -862,6 +965,7 @@ _Share this opportunity with your friends!_
         'JobType',
         'Category',
         'Experience',
+        'Qualification',
         'JobLocationAndHRDetails',
         'JobDescription',
         'HowToApply',
@@ -880,6 +984,7 @@ _Share this opportunity with your friends!_
         JobType: job.jobType || 'Walk-ins',
         Category: job.category || '',
         Experience: job.experience || 'Freshers',
+        Qualification: job.qualification || 'Any Graduate',
         JobLocationAndHRDetails: job.jobLocation || '',
         JobDescription: job.description || '',
         HowToApply: job.howToApply || '',
@@ -996,6 +1101,7 @@ _Share this opportunity with your friends!_
       'JobType',
       'Category',
       'Experience',
+      'Qualification',
       'JobLocationAndHRDetails',
       'JobDescription',
       'HowToApply',
@@ -1049,6 +1155,7 @@ _Share this opportunity with your friends!_
         jobType,
         category,
         experience: this.getExcelValue(row, ['Experience']) || 'Freshers',
+        qualification: this.getExcelValue(row, ['Qualification', 'EducationalQualification', 'Qualification Required']) || 'Any Graduate',
         jobLocation: this.getExcelValue(row, ['JobLocationAndHRDetails', 'Job Location and HR Details', 'JobLocation']) || '',
         description: this.getExcelValue(row, ['JobDescription', 'Job Description']) || '',
         howToApply: this.getExcelValue(row, ['HowToApply', 'How To Apply']) || '',

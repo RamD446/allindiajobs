@@ -1,5 +1,11 @@
-<app-header></app-header>
-<app-layout>
+<ng-container *ngIf="showSiteChrome; else standaloneRoute">
+  <app-header></app-header>
+  <app-layout>
+    <router-outlet></router-outlet>
+  </app-layout>
+  <app-footer></app-footer>
+</ng-container>
+
+<ng-template #standaloneRoute>
   <router-outlet></router-outlet>
-</app-layout>
-<app-footer></app-footer>
+</ng-template>

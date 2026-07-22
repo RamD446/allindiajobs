@@ -8,6 +8,7 @@ export interface Job {
   jobType?: string;
   category: string;
   experience?: string;
+  qualification?: string;
   fullInformationTableFormat?: string;
   walkInDrive?: boolean;
   description: string;

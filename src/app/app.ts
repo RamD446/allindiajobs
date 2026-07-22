@@ -17,17 +17,24 @@ import { filter } from 'rxjs';
 })
 export class App implements OnInit {
   protected readonly title = signal('allindianjobs');
+  protected showSiteChrome = true;
 
   constructor(private router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
+      this.updateSiteChromeVisibility();
       window.scrollTo(0, 0);
     });
   }
 
   ngOnInit() {
+    this.updateSiteChromeVisibility();
     this.trackVisitor();
+  }
+
+  private updateSiteChromeVisibility() {
+    this.showSiteChrome = true;
   }
 
   private trackVisitor() {

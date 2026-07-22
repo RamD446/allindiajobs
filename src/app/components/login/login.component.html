@@ -21,32 +21,6 @@
   <div *ngIf="!isLoggedIn && !isLoading" class="login-section">
     <div class="container">
       <div class="auth-shell">
-        <div class="auth-brand-panel">
-          <div class="brand-badge">
-            <i class="bi bi-briefcase-fill"></i>
-          </div>
-          <p class="brand-kicker">All India Jobs</p>
-          <h1>Admin dashboard made for fast job and company updates.</h1>
-          <p class="brand-copy">
-            Manage jobs, company images, and XLS imports from one focused screen with a cleaner modern layout.
-          </p>
-
-          <div class="brand-metrics">
-            <div class="metric-chip">
-              <strong>Jobs</strong>
-              <span>Quick edits</span>
-            </div>
-            <div class="metric-chip">
-              <strong>Companies</strong>
-              <span>Compact rows</span>
-            </div>
-            <div class="metric-chip">
-              <strong>XLS</strong>
-              <span>Import / export</span>
-            </div>
-          </div>
-        </div>
-
         <div class="auth-card position-relative">
           <!-- Loading Overlay -->
           <div *ngIf="isLoading" class="loading-overlay loading-fade-in">
@@ -102,11 +76,6 @@
               <span *ngIf="!isLoading">Login</span>
             </button>
           </form>
-
-          <div class="auth-card-footer">
-            <span>Secure admin portal</span>
-            <span>Jobs • Companies • XLS</span>
-          </div>
         </div>
       </div>
     </div>
@@ -114,22 +83,11 @@
 
   <!-- Job Management Dashboard -->
   <div *ngIf="isLoggedIn" class="job-management-section">
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-2 px-2 px-lg-3">
       <div class="dashboard-card">
-        <div class="header-account-bar">
-          <div class="header-account">
-            <div class="header-account-label">Signed in</div>
-            <div class="header-account-email">{{ currentUser?.email || currentUser?.displayName }}</div>
-            <button class="btn btn-outline-danger header-logout-btn" (click)="logout()">
-              <i class="bi bi-box-arrow-right me-1"></i>Logout
-            </button>
-          </div>
-        </div>
-
-        <div class="dashboard-header mb-3">
-          <div class="header-info">
-            <div class="header-eyebrow">Admin dashboard</div>
-            <h2 class="text-primary mb-0">Welcome To Admin Management</h2>
+        <div class="admin-top-row mb-3">
+          <div class="admin-top-left">
+            <h2 class="admin-page-title mb-2">Admin Page</h2>
             <div class="admin-tabs">
               <button
                 class="admin-tab-btn"
@@ -145,23 +103,37 @@
               </button>
             </div>
           </div>
-          <div class="header-actions">
-            <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-success" (click)="showCreateForm()">
-              <i class="bi bi-plus-circle me-1"></i>Create Job
-            </button>
-            <button *ngIf="activeAdminTab === 'companies'" class="btn btn-success" (click)="showCreateCompanyImageForm()">
-              <i class="bi bi-image me-1"></i>Create Company Image
-            </button>
-            <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-outline-primary" (click)="requestExportConfirmation()">
-              <i class="bi bi-file-earmark-excel me-1"></i>Export XLS
-            </button>
-            <button *ngIf="activeAdminTab === 'jobs'" class="btn btn-outline-success" (click)="openImportModal('jobs')">
-              <i class="bi bi-upload me-1"></i>Import XLS
-            </button>
-            <button *ngIf="activeAdminTab === 'companies'" class="btn btn-outline-success" (click)="openImportModal('companies')">
-              <i class="bi bi-upload me-1"></i>Import XLS
-            </button>
+
+          <div class="header-account-bar">
+            <div class="header-account">
+              <div class="header-account-label">Signed in</div>
+              <div class="header-account-email">{{ currentUser?.email || currentUser?.displayName }}</div>
+              <button class="btn btn-outline-danger header-logout-btn" (click)="logout()">
+                <i class="bi bi-box-arrow-right me-1"></i>Logout
+              </button>
+            </div>
           </div>
+        </div>
+
+        <div class="admin-actions-row mb-3" *ngIf="activeAdminTab === 'jobs'">
+          <button class="btn btn-success" (click)="showCreateForm()">
+            <i class="bi bi-plus-circle me-1"></i>Create Job
+          </button>
+          <button class="btn btn-outline-primary" (click)="requestExportConfirmation()">
+            <i class="bi bi-file-earmark-excel me-1"></i>Download XLS
+          </button>
+          <button class="btn btn-outline-success" (click)="openImportModal('jobs')">
+            <i class="bi bi-upload me-1"></i>Import XLS
+          </button>
+        </div>
+
+        <div class="admin-actions-row mb-3" *ngIf="activeAdminTab === 'companies'">
+          <button class="btn btn-success" (click)="showCreateCompanyImageForm()">
+            <i class="bi bi-image me-1"></i>Create Company Image
+          </button>
+          <button class="btn btn-outline-success" (click)="openImportModal('companies')">
+            <i class="bi bi-upload me-1"></i>Import XLS
+          </button>
         </div>
 
         <div class="dashboard-content">
@@ -239,18 +211,45 @@
                 </select>
               </div>
 
-              <!-- Row 3: Job Description -->
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Job Description *</label>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Location *</label>
+                <select class="form-control" [(ngModel)]="jobForm.jobLocation" name="jobLocation" required>
+                  <option *ngFor="let location of locationOptions" [value]="location">{{ location }}</option>
+                </select>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Qualification *</label>
+                <select class="form-control" [(ngModel)]="jobForm.qualification" name="qualification" required>
+                  <option *ngFor="let qualification of qualificationOptions" [value]="qualification">{{ qualification }}</option>
+                </select>
+              </div>
+
+              <div class="w-100"></div>
+
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Description *</label>
                 <textarea
                   [(ngModel)]="jobForm.description"
                   name="description"
                   class="form-control description-textarea"
-                  placeholder="Detailed job description..."
+                  placeholder="Enter description..."
                   required
                   rows="4">
                 </textarea>
               </div>
+
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Table Description</label>
+                <textarea
+                  [(ngModel)]="jobForm.fullInformationTableFormat"
+                  name="fullInformationTableFormat"
+                  class="form-control description-textarea"
+                  placeholder="Enter table description..."
+                  rows="4">
+                </textarea>
+              </div>
+
 
               <!-- How to Apply -->
               <div class="col-md-6 mb-3">
@@ -454,29 +453,110 @@
             </div>
           </div>
           
-          <!-- Category Sub-tabs -->
-          <div class="category-tabs-container">
-            <div class="category-tabs">
-              <button 
-                class="category-tab" 
+          <div class="jobs-filter-item mb-2">
+            <label class="jobs-filter-label">Category</label>
+            <div class="jobs-filter-tabs">
+              <button
+                type="button"
+                class="jobs-filter-tab"
                 [class.active]="selectedJobCategory === 'All'"
-                (click)="selectedJobCategory = 'All'">
-                All <span class="badge">{{ getCategoryCount('All') }}</span>
+                (click)="selectCategoryTab('All')">
+                All
               </button>
-              <button 
+              <button
+                type="button"
                 *ngFor="let category of jobCategories"
-                class="category-tab" 
+                class="jobs-filter-tab"
                 [class.active]="selectedJobCategory === category"
-                (click)="selectedJobCategory = category">
-                {{ category }} <span class="badge">{{ getCategoryCount(category) }}</span>
-                <button 
-                  class="delete-category-btn" 
-                  (click)="$event.stopPropagation(); deleteJobsByCategory(category)"
-                  title="Delete all jobs in this category"
-                  *ngIf="getCategoryCount(category) > 0">
-                  <i class="bi bi-trash"></i>
-                </button>
+                (click)="selectCategoryTab(category)">
+                {{ category }}
               </button>
+            </div>
+          </div>
+
+          <div class="jobs-extra-filters mt-2">
+            <div class="jobs-filter-item">
+              <label class="jobs-filter-label">Job Type</label>
+              <div class="jobs-filter-tabs">
+                <button
+                  type="button"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedFilterJobType === 'All'"
+                  (click)="applyIndependentFilter('jobType', 'All')">
+                  All
+                </button>
+                <button
+                  type="button"
+                  *ngFor="let item of getJobTypeFilterOptions()"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedFilterJobType === item"
+                  (click)="applyIndependentFilter('jobType', item)">
+                  {{ item }}
+                </button>
+              </div>
+            </div>
+
+            <div class="jobs-filter-item">
+              <label class="jobs-filter-label">Experience</label>
+              <div class="jobs-filter-tabs">
+                <button
+                  type="button"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedFilterExperience === 'All'"
+                  (click)="applyIndependentFilter('experience', 'All')">
+                  All
+                </button>
+                <button
+                  type="button"
+                  *ngFor="let item of getExperienceFilterOptions()"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedFilterExperience === item"
+                  (click)="applyIndependentFilter('experience', item)">
+                  {{ item }}
+                </button>
+              </div>
+            </div>
+
+            <div class="jobs-filter-item">
+              <label class="jobs-filter-label">Education</label>
+              <div class="jobs-filter-tabs">
+                <button
+                  type="button"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedFilterQualification === 'All'"
+                  (click)="applyIndependentFilter('qualification', 'All')">
+                  All
+                </button>
+                <button
+                  type="button"
+                  *ngFor="let item of getQualificationFilterOptions()"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedFilterQualification === item"
+                  (click)="applyIndependentFilter('qualification', item)">
+                  {{ item }}
+                </button>
+              </div>
+            </div>
+
+            <div class="jobs-filter-item">
+              <label class="jobs-filter-label">Location</label>
+              <div class="jobs-filter-tabs">
+                <button
+                  type="button"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedFilterLocation === 'All'"
+                  (click)="applyIndependentFilter('location', 'All')">
+                  All
+                </button>
+                <button
+                  type="button"
+                  *ngFor="let item of getLocationFilterOptions()"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedFilterLocation === item"
+                  (click)="applyIndependentFilter('location', item)">
+                  {{ item }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -484,29 +564,43 @@
         <div class="jobs-grid" *ngIf="getSortedFilteredJobs().length > 0">
           <div class="job-grid-item" *ngFor="let job of getSortedFilteredJobs()">
             <div class="job-card-compact job-card-grid">
-              <div class="job-grid-body">
-                <h6 class="job-title-small mb-1 text-truncate" [title]="job.title">{{ job.title }}</h6>
-                <small class="job-company-small text-muted text-truncate d-block" [title]="job.company">
+              <div class="job-row-title">
+                <h6 class="job-title-small mb-0 text-truncate" [title]="job.title">{{ job.title }}</h6>
+              </div>
+
+              <div class="job-row-date">
+                <small class="job-company-small text-muted text-truncate" [title]="job.company">
                   <i class="bi bi-building me-1"></i>{{ job.company }}
                 </small>
-                <small class="job-created-small text-muted d-block" [title]="job.createdDate">
+                <small class="job-created-small text-muted" [title]="job.createdDate">
                   <i class="bi bi-calendar3 me-1"></i>{{ job.createdDate | date:'dd MMM yyyy' }}
                 </small>
               </div>
 
-              <div class="job-actions-small job-actions-grid" (click)="$event.stopPropagation()">
-                <button class="btn btn-sm btn-outline-success" (click)="viewJobDetails(job)" title="View">
-                  <i class="bi bi-eye"></i>
-                </button>
-                <button class="btn btn-sm btn-success" (click)="shareJobOnWhatsApp(job)" title="Share on WhatsApp">
-                  <i class="bi bi-whatsapp"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-primary" (click)="editJob(job)" title="Edit">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger" (click)="requestDeleteConfirmation(job.id)" title="Delete">
-                  <i class="bi bi-trash"></i>
-                </button>
+              <div class="job-row-media-actions">
+                <div class="job-mini-image-wrap" *ngIf="getCompanyImagePreview(job.companyImage || getCompanyImageByName(job.company)) as preview; else noJobImage">
+                  <img [src]="preview" [alt]="job.company" class="job-mini-image" loading="lazy">
+                </div>
+                <ng-template #noJobImage>
+                  <div class="job-mini-image-wrap job-mini-image-empty">
+                    <i class="bi bi-image"></i>
+                  </div>
+                </ng-template>
+
+                <div class="job-actions-small job-actions-grid" (click)="$event.stopPropagation()">
+                  <button class="btn btn-sm btn-outline-success" (click)="viewJobDetails(job)" title="View">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-success" (click)="shareJobOnWhatsApp(job)" title="Share on WhatsApp">
+                    <i class="bi bi-whatsapp"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-primary" (click)="editJob(job)" title="Edit">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="requestDeleteConfirmation(job.id)" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

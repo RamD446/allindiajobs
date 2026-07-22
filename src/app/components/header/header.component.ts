@@ -21,9 +21,25 @@ export class HeaderComponent implements OnInit {
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
+  selectedHeaderCategory = 'all';
   selectedHeaderJobType = 'All';
+  selectedHeaderExperience = 'All';
+  selectedHeaderLocation = 'All';
   showScrollUp = false;
+  homeCategoryOptions = [
+    { id: 'all', label: 'All Jobs' },
+    { id: 'walkin', label: 'Walk-in Jobs' },
+    { id: 'nonwalkin', label: 'Non Walk-in' },
+    { id: 'fresher', label: 'Fresher Jobs' },
+    { id: 'it', label: 'IT Jobs' },
+    { id: 'bpo', label: 'BPO/Non-IT Jobs' },
+    { id: 'banking', label: 'Banking Jobs' },
+    { id: 'pharma', label: 'Pharma Jobs' },
+    { id: 'sales', label: 'Sales Jobs' }
+  ];
   homeJobTypeOptions: string[] = ['All', 'Walk-ins', 'Non-Walkins'];
+  homeExperienceOptions: string[] = ['All', 'Freshers', 'Experienced'];
+  homeLocationOptions: string[] = ['All', 'Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
 
   navCategories = [
     { name: 'IT Walk-ins', route: '/IT-Walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
@@ -41,17 +57,59 @@ export class HeaderComponent implements OnInit {
     this.updateScrollButtonState();
 
     this.route.queryParamMap.subscribe((params) => {
+      this.selectedHeaderCategory = this.resolveHeaderCategorySelection(this.router.url.split('?')[0], params.get('category'));
       this.selectedHeaderJobType = params.get('jobType') || 'All';
+      this.selectedHeaderExperience = params.get('experience') || 'All';
+      this.selectedHeaderLocation = params.get('location') || 'All';
     });
   }
 
   onHeaderQuickFilterChange() {
+    const targetRoute = this.resolveHeaderTargetRoute(this.selectedHeaderCategory);
+    const categoryFilter = this.resolveHeaderCategoryFilter(this.selectedHeaderCategory);
+
     const queryParams: Record<string, string | null> = {
+      category: categoryFilter,
       jobType: this.selectedHeaderJobType !== 'All' ? this.selectedHeaderJobType : null,
-      location: null
+      experience: this.selectedHeaderExperience !== 'All' ? this.selectedHeaderExperience : null,
+      location: this.selectedHeaderLocation !== 'All' ? this.selectedHeaderLocation : null
     };
 
-    this.router.navigate(['/'], { queryParams, queryParamsHandling: 'merge' });
+    this.router.navigate([targetRoute], { queryParams, queryParamsHandling: 'merge' });
+  }
+
+  private resolveHeaderTargetRoute(categorySelection: string): string {
+    if (categorySelection === 'walkin') {
+      return '/walkinjobs';
+    }
+
+    if (categorySelection === 'nonwalkin') {
+      return '/non-walkinjobs';
+    }
+
+    return '/';
+  }
+
+  private resolveHeaderCategoryFilter(categorySelection: string): string | null {
+    if (categorySelection === 'fresher') return 'Fresher Walk-ins';
+    if (categorySelection === 'it') return 'IT Walk-ins';
+    if (categorySelection === 'bpo') return 'BPO/Non-IT Walk-ins';
+    if (categorySelection === 'banking') return 'Banking Walk-ins';
+    if (categorySelection === 'pharma') return 'Pharma Walk-ins';
+    if (categorySelection === 'sales') return 'Sales Walk-ins';
+    return null;
+  }
+
+  private resolveHeaderCategorySelection(path: string, categoryParam: string | null): string {
+    if (path.includes('/walkinjobs')) return 'walkin';
+    if (path.includes('/non-walkinjobs')) return 'nonwalkin';
+    if (categoryParam === 'Fresher Walk-ins') return 'fresher';
+    if (categoryParam === 'IT Walk-ins') return 'it';
+    if (categoryParam === 'BPO/Non-IT Walk-ins') return 'bpo';
+    if (categoryParam === 'Banking Walk-ins') return 'banking';
+    if (categoryParam === 'Pharma Walk-ins') return 'pharma';
+    if (categoryParam === 'Sales Walk-ins') return 'sales';
+    return 'all';
   }
 
   loadJobs() {

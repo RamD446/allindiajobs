@@ -1068,16 +1068,16 @@
     }
 
     .section-block {
-      border-radius: 0;
-      border-left: none;
-      border-right: none;
-      margin-bottom: 0;
+      border-radius: 8px;
+      border-left: 1px solid #dee2e6;
+      border-right: 1px solid #dee2e6;
+      margin: 0 4px 0.5rem;
     }
 
     .home-job-row {
-      border-radius: 0;
-      border-left: none;
-      border-right: none;
+      border-radius: 8px;
+      border-left: 1px solid #334155;
+      border-right: 1px solid #334155;
       padding: 0.65rem 0.75rem;
     }
 

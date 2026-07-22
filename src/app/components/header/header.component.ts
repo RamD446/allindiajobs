@@ -21,25 +21,18 @@ export class HeaderComponent implements OnInit {
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
-  selectedHeaderCategory = 'all';
-  selectedHeaderJobType = 'All';
-  selectedHeaderExperience = 'All';
-  selectedHeaderLocation = 'All';
+  selectedHeaderCategory = '';
+  selectedHeaderJobType = '';
   showScrollUp = false;
   homeCategoryOptions = [
-    { id: 'all', label: 'All Jobs' },
-    { id: 'walkin', label: 'Walk-in Jobs' },
-    { id: 'nonwalkin', label: 'Non Walk-in' },
-    { id: 'fresher', label: 'Fresher Jobs' },
-    { id: 'it', label: 'IT Jobs' },
-    { id: 'bpo', label: 'BPO/Non-IT Jobs' },
-    { id: 'banking', label: 'Banking Jobs' },
-    { id: 'pharma', label: 'Pharma Jobs' },
-    { id: 'sales', label: 'Sales Jobs' }
+    { value: 'IT Walk-ins', label: 'IT Walk-ins' },
+    { value: 'BPO/Non-IT Walk-ins', label: 'BPO/Non-IT Walk-ins' },
+    { value: 'Fresher Walk-ins', label: 'Fresher Walk-ins' },
+    { value: 'Sales Walk-ins', label: 'Sales Walk-ins' },
+    { value: 'Banking Walk-ins', label: 'Banking Walk-ins' },
+    { value: 'Pharma Walk-ins', label: 'Pharma Walk-ins' }
   ];
-  homeJobTypeOptions: string[] = ['All', 'Walk-ins', 'Non-Walkins'];
-  homeExperienceOptions: string[] = ['All', 'Freshers', 'Experienced'];
-  homeLocationOptions: string[] = ['All', 'Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
+  homeJobTypeOptions: string[] = ['Walk-ins', 'Non-Walkins'];
 
   navCategories = [
     { name: 'IT Walk-ins', route: '/IT-Walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
@@ -57,25 +50,47 @@ export class HeaderComponent implements OnInit {
     this.updateScrollButtonState();
 
     this.route.queryParamMap.subscribe((params) => {
-      this.selectedHeaderCategory = this.resolveHeaderCategorySelection(this.router.url.split('?')[0], params.get('category'));
-      this.selectedHeaderJobType = params.get('jobType') || 'All';
-      this.selectedHeaderExperience = params.get('experience') || 'All';
-      this.selectedHeaderLocation = params.get('location') || 'All';
+      this.selectedHeaderCategory = params.get('category') || '';
+      this.selectedHeaderJobType = params.get('jobType') || '';
     });
   }
 
   onHeaderQuickFilterChange() {
-    const targetRoute = this.resolveHeaderTargetRoute(this.selectedHeaderCategory);
-    const categoryFilter = this.resolveHeaderCategoryFilter(this.selectedHeaderCategory);
-
     const queryParams: Record<string, string | null> = {
-      category: categoryFilter,
-      jobType: this.selectedHeaderJobType !== 'All' ? this.selectedHeaderJobType : null,
-      experience: this.selectedHeaderExperience !== 'All' ? this.selectedHeaderExperience : null,
-      location: this.selectedHeaderLocation !== 'All' ? this.selectedHeaderLocation : null
+      category: this.selectedHeaderCategory || null,
+      jobType: this.selectedHeaderJobType || null,
+      experience: null,
+      education: null,
+      location: null
     };
 
-    this.router.navigate([targetRoute], { queryParams, queryParamsHandling: 'merge' });
+    this.router.navigate(['/'], { queryParams, queryParamsHandling: 'merge' });
+  }
+
+  setHeaderCategory(category: string) {
+    this.selectedHeaderCategory = category;
+    this.onHeaderQuickFilterChange();
+  }
+
+  setHeaderJobType(jobType: string) {
+    this.selectedHeaderJobType = jobType;
+    this.onHeaderQuickFilterChange();
+  }
+
+  resetToAllJobs() {
+    this.selectedHeaderCategory = '';
+    this.selectedHeaderJobType = '';
+
+    this.router.navigate(['/'], {
+      queryParams: {
+        category: null,
+        jobType: null,
+        experience: null,
+        education: null,
+        location: null
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   private resolveHeaderTargetRoute(categorySelection: string): string {

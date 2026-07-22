@@ -112,67 +112,24 @@
 
   <!-- Category Pills Bar (fixed below navbar) -->
   <div class="pills-bar">
-    <div class="pills-scroll-row" [style.overflow-x]="isGamesDropdownOpen ? 'visible' : 'auto'">
+    <div class="pills-scroll-row" style="overflow-x: auto;">
       <a class="jc-pill" routerLink="/" routerLinkActive="jc-pill-active" [routerLinkActiveOptions]="{exact: true}" (click)="closeGamesDropdown()">
         <span>Home</span>
       </a>
 
-      <div class="pill-select-block">
-        <label for="headerCategorySelect" class="pill-select-label">Category</label>
-        <select id="headerCategorySelect" class="pill-select" [(ngModel)]="selectedHeaderCategory" (ngModelChange)="onHeaderQuickFilterChange()">
-          <option *ngFor="let category of homeCategoryOptions" [value]="category.id">{{ category.label }}</option>
-        </select>
-      </div>
+      <a class="jc-pill" href="javascript:void(0)"
+         *ngFor="let category of homeCategoryOptions"
+         [class.jc-pill-active]="selectedHeaderCategory === category.value"
+         (click)="setHeaderCategory(category.value)">
+        <span>{{ category.label }}</span>
+      </a>
 
-      <div class="pill-select-block">
-        <label for="headerJobTypeSelect" class="pill-select-label">Job Type</label>
-        <select id="headerJobTypeSelect" class="pill-select" [(ngModel)]="selectedHeaderJobType" (ngModelChange)="onHeaderQuickFilterChange()">
-          <option *ngFor="let type of homeJobTypeOptions" [value]="type">{{ type }}</option>
-        </select>
-      </div>
-
-      <div class="pill-select-block">
-        <label for="headerExperienceSelect" class="pill-select-label">Experience</label>
-        <select id="headerExperienceSelect" class="pill-select" [(ngModel)]="selectedHeaderExperience" (ngModelChange)="onHeaderQuickFilterChange()">
-          <option *ngFor="let exp of homeExperienceOptions" [value]="exp">{{ exp }}</option>
-        </select>
-      </div>
-
-      <div class="pill-select-block">
-        <label for="headerLocationSelect" class="pill-select-label">Location</label>
-        <select id="headerLocationSelect" class="pill-select" [(ngModel)]="selectedHeaderLocation" (ngModelChange)="onHeaderQuickFilterChange()">
-          <option *ngFor="let loc of homeLocationOptions" [value]="loc">{{ loc }}</option>
-        </select>
-      </div>
-
-      <!-- Games Dropdown -->
-      <div class="dropdown" [class.show]="isGamesDropdownOpen">
-        <a class="jc-pill dropdown-toggle" 
-           href="javascript:void(0)" 
-           role="button" 
-           id="gamesDropdownLink" 
-           (click)="toggleGamesDropdown($event)" 
-           aria-haspopup="true" 
-           [aria-expanded]="isGamesDropdownOpen">
-          <span> Fun Games <i class="bi bi-controller ms-1"></i></span>
-        </a>
-
-        <div class="dropdown-menu shadow-lg" 
-             [class.show]="isGamesDropdownOpen" 
-             aria-labelledby="gamesDropdownLink"
-             (click)="$event.stopPropagation()">
-          <a class="dropdown-item d-flex align-items-center gap-2 py-2" 
-             routerLink="/thambola-game" 
-             (click)="closeGamesDropdown()">
-            <i class="bi bi-grid-3x3 text-warning"></i>
-            <div>
-              <div class="fw-bold small">Thambola High Five</div>
-            
-            </div>
-          </a>
-          <!-- More games can be added here -->
-        </div>
-      </div>
+      <a class="jc-pill" href="javascript:void(0)"
+         *ngFor="let type of homeJobTypeOptions"
+         [class.jc-pill-active]="selectedHeaderJobType === type"
+         (click)="setHeaderJobType(type)">
+        <span>{{ type }}</span>
+      </a>
     </div>
   </div>
 

@@ -27,7 +27,7 @@
             <div class="home-jobs-list" *ngIf="!hasNoData()">
               <div *ngFor="let job of getFilteredJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
                 <div class="row g-2 align-items-stretch home-job-inner-row">
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="home-job-thumb-col-wrap">
                       <div class="home-job-thumb-col" *ngIf="getJobCardImage(job) as imageSrc; else noThumb">
                         <img [src]="imageSrc" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
@@ -40,20 +40,22 @@
                     </div>
                   </div>
 
-                  <div class="col-8 home-job-details-col">
+                  <div class="col-9 home-job-details-col">
                     <div class="home-job-row-title">{{ job.title }}</div>
                     <div class="home-job-description">
                       {{ getJobDescriptionPreview(job, 160) }}
                     </div>
                     <div class="home-job-row-meta">
                       <small class="home-job-row-created" [title]="job.createdDate">
-                        <i class="bi bi-calendar3 me-1"></i>{{ job.createdDate | date:'dd MMM yyyy' }}
+                        Created Date: {{ job.createdDate | date:'MMMM d' }}
                       </small>
 
                       <small class="home-job-location text-muted" *ngIf="job.location || job.jobLocation">
-                        <i class="bi bi-geo-alt me-1"></i>{{ job.location || job.jobLocation }}
+                        {{ job.location || job.jobLocation }}
                       </small>
                     </div>
+
+                    <button type="button" class="home-read-more-btn">Read More</button>
                   </div>
                 </div>
               </div>

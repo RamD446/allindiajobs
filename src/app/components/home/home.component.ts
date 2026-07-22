@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
-import { Job, CompanyImage } from '../../models/job.model';
+import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES } from '../../models/job.model';
 
 @Component({
   selector: 'app-home',
@@ -14,20 +14,49 @@ import { Job, CompanyImage } from '../../models/job.model';
 })
 export class HomeComponent implements OnInit {
   jobs: Job[] = [];
-  filteredJobs: Job[] = [];
   walkinJobs: Job[] = [];
-  uniqueCompanies: string[] = [];
-  selectedCompany: string = '';
+  selectedJobCategory: string = 'All';
+  selectedFilterJobType: string = 'All';
+  selectedFilterExperience: string = 'All';
+  selectedFilterQualification: string = 'All';
+  selectedFilterLocation: string = 'All';
   isLoading: boolean = true;
   isWalkinOnlyPage: boolean = false;
   isNonWalkinOnlyPage: boolean = false;
   companyImageMap: Record<string, string> = {};
+  jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
+  jobTypeOptions: string[] = ['Walk-ins', 'Non-Walkins'];
+  experienceOptions: string[] = ['Freshers', 'Experienced'];
+  qualificationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
+  locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
+  private readonly categoryByPath: Record<string, string> = {
+    '/IT-Walk-ins': 'IT Walk-ins',
+    '/BPO-Non-IT-Walk-ins': 'BPO/Non-IT Walk-ins',
+    '/Fresher-Walk-ins': 'Fresher Walk-ins',
+    '/Sales-Walk-ins': 'Sales Walk-ins',
+    '/Banking-Walk-ins': 'Banking Walk-ins',
+    '/Pharma-Walk-ins': 'Pharma Walk-ins'
+  };
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.isWalkinOnlyPage = this.router.url.includes('/walkinjobs');
-    this.isNonWalkinOnlyPage = this.router.url.includes('/non-walkinjobs');
+    const currentPath = this.router.url.split('?')[0];
+    const pathCategory = this.categoryByPath[currentPath] || null;
+
+    this.isWalkinOnlyPage = currentPath.includes('/walkinjobs') || !!pathCategory;
+    this.isNonWalkinOnlyPage = currentPath.includes('/non-walkinjobs');
+
+    this.route.queryParamMap.subscribe((params) => {
+      this.selectedJobCategory = params.get('category') || pathCategory || 'All';
+      this.selectedFilterJobType = params.get('jobType') || 'All';
+      this.selectedFilterExperience = params.get('experience') || 'All';
+      this.selectedFilterQualification = params.get('education') || 'All';
+      this.selectedFilterLocation = params.get('location') || 'All';
+
+      this.cdr.detectChanges();
+    });
+
     this.loadCompanyImages();
     this.loadJobs();
   }
@@ -88,7 +117,6 @@ export class HomeComponent implements OnInit {
 
         this.companyImageMap = map;
         this.jobs = this.applyCompanyImageMapping(this.jobs);
-        this.filteredJobs = this.applyCompanyImageMapping(this.filteredJobs);
         this.walkinJobs = this.applyCompanyImageMapping(this.walkinJobs);
         this.cdr.detectChanges();
       });
@@ -156,10 +184,6 @@ export class HomeComponent implements OnInit {
           }));
 
           this.jobs = this.sortByLatestCreated(this.applyCompanyImageMapping(mappedJobs));
-
-          this.filteredJobs = [...this.jobs];
-          this.extractUniqueCompanies();
-
           this.walkinJobs = this.sortByLatestCreated(this.getJobTypeFilteredList(this.jobs));
 
         }
@@ -177,23 +201,137 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  extractUniqueCompanies() {
-    const companies = this.jobs
-      .map(job => job.company)
-      .filter((company): company is string => !!company);
-    this.uniqueCompanies = Array.from(new Set(companies)).sort();
+  getFilteredJobsForHome(): Job[] {
+    return this.sortByLatestCreated(
+      this.walkinJobs.filter((job) => {
+        const categoryPass = this.selectedJobCategory === 'All' || job.category === this.selectedJobCategory;
+        const jobTypePass = this.selectedFilterJobType === 'All' || (job.jobType || '') === this.selectedFilterJobType;
+        const experiencePass = this.selectedFilterExperience === 'All' || (job.experience || '') === this.selectedFilterExperience;
+        const qualificationPass = this.selectedFilterQualification === 'All' || (job.qualification || '') === this.selectedFilterQualification;
+
+        const rawLocation = ((job.location || '') || (job.jobLocation || '')).toLowerCase();
+        const locationPass = this.selectedFilterLocation === 'All' || rawLocation.includes(this.selectedFilterLocation.toLowerCase());
+
+        return categoryPass && jobTypePass && experiencePass && qualificationPass && locationPass;
+      })
+    );
   }
 
-  filterByCompany(company: string) {
-    this.selectedCompany = company;
-    if (company) {
-      this.filteredJobs = this.sortByLatestCreated(this.jobs.filter(job => job.company === company));
-      const companyJobs = this.jobs.filter(job => job.company === company);
-      this.walkinJobs = this.sortByLatestCreated(this.getJobTypeFilteredList(companyJobs));
-    } else {
-      this.filteredJobs = this.sortByLatestCreated(this.jobs);
-      this.walkinJobs = this.sortByLatestCreated(this.getJobTypeFilteredList(this.jobs));
+  getCategoryCount(category: string): number {
+    if (category === 'All') {
+      return this.walkinJobs.length;
     }
+
+    return this.walkinJobs.filter((job) => job.category === category).length;
+  }
+
+  selectCategoryTab(category: string) {
+    this.selectedJobCategory = category;
+    this.selectedFilterJobType = 'All';
+    this.selectedFilterExperience = 'All';
+    this.selectedFilterQualification = 'All';
+    this.selectedFilterLocation = 'All';
+    this.syncFiltersToQueryParams();
+  }
+
+  onIndependentFilterChange(changedFilter: 'jobType' | 'experience' | 'qualification' | 'location') {
+    this.selectedJobCategory = 'All';
+
+    if (changedFilter !== 'jobType') {
+      this.selectedFilterJobType = 'All';
+    }
+
+    if (changedFilter !== 'experience') {
+      this.selectedFilterExperience = 'All';
+    }
+
+    if (changedFilter !== 'qualification') {
+      this.selectedFilterQualification = 'All';
+    }
+
+    if (changedFilter !== 'location') {
+      this.selectedFilterLocation = 'All';
+    }
+  }
+
+  applyIndependentFilter(changedFilter: 'jobType' | 'experience' | 'qualification' | 'location', value: string) {
+    this.onIndependentFilterChange(changedFilter);
+
+    if (changedFilter === 'jobType') {
+      this.selectedFilterJobType = value;
+      this.syncFiltersToQueryParams();
+      return;
+    }
+
+    if (changedFilter === 'experience') {
+      this.selectedFilterExperience = value;
+      this.syncFiltersToQueryParams();
+      return;
+    }
+
+    if (changedFilter === 'qualification') {
+      this.selectedFilterQualification = value;
+      this.syncFiltersToQueryParams();
+      return;
+    }
+
+    this.selectedFilterLocation = value;
+    this.syncFiltersToQueryParams();
+  }
+
+  private syncFiltersToQueryParams() {
+    const queryParams: Record<string, string | null> = {
+      category: this.selectedJobCategory !== 'All' ? this.selectedJobCategory : null,
+      jobType: this.selectedFilterJobType !== 'All' ? this.selectedFilterJobType : null,
+      experience: this.selectedFilterExperience !== 'All' ? this.selectedFilterExperience : null,
+      education: this.selectedFilterQualification !== 'All' ? this.selectedFilterQualification : null,
+      location: this.selectedFilterLocation !== 'All' ? this.selectedFilterLocation : null
+    };
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams
+    });
+  }
+
+  getJobTypeFilterOptions(): string[] {
+    return this.getUniqueFilterOptions(this.walkinJobs.map((job) => job.jobType), this.jobTypeOptions);
+  }
+
+  getExperienceFilterOptions(): string[] {
+    return this.getUniqueFilterOptions(this.walkinJobs.map((job) => job.experience), this.experienceOptions);
+  }
+
+  getQualificationFilterOptions(): string[] {
+    return this.getUniqueFilterOptions(this.walkinJobs.map((job) => job.qualification), this.qualificationOptions);
+  }
+
+  getLocationFilterOptions(): string[] {
+    const locations = this.walkinJobs
+      .map((job) => (job.location || '').trim())
+      .filter((value) => value.length > 0);
+
+    return this.getUniqueFilterOptions(locations, this.locationOptions);
+  }
+
+  private getUniqueFilterOptions(values: Array<string | undefined>, preferred: string[] = []): string[] {
+    const set = new Set<string>();
+
+    preferred.forEach((item) => {
+      const trimmed = (item || '').trim();
+      if (trimmed) {
+        set.add(trimmed);
+      }
+    });
+
+    values.forEach((item) => {
+      const trimmed = (item || '').trim();
+      if (trimmed) {
+        set.add(trimmed);
+      }
+    });
+
+    return Array.from(set);
   }
 
   private extractImageSrc(value: string): string | null {
@@ -266,6 +404,6 @@ export class HomeComponent implements OnInit {
   }
 
   hasNoData(): boolean {
-    return this.walkinJobs.length === 0;
+    return this.getFilteredJobsForHome().length === 0;
   }
 }

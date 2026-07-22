@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { JobCategoryComponent } from './components/job-category/job-category.component';
 import { LoginComponent } from './components/login/login.component';
 import { JobFullInformation } from './components/job-full-information/job-full-information';
 import { InfoPageComponent } from './components/info-page/info-page.component';
@@ -11,12 +10,12 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'walkinjobs', component: HomeComponent },
   { path: 'non-walkinjobs', component: HomeComponent },
-  { path: 'IT-Walk-ins', component: JobCategoryComponent },
-  { path: 'BPO-Non-IT-Walk-ins', component: JobCategoryComponent },
-  { path: 'Fresher-Walk-ins', component: JobCategoryComponent },
-  { path: 'Sales-Walk-ins', component: JobCategoryComponent },
-  { path: 'Banking-Walk-ins', component: JobCategoryComponent },
-  { path: 'Pharma-Walk-ins', component: JobCategoryComponent },
+  { path: 'IT-Walk-ins', component: HomeComponent },
+  { path: 'BPO-Non-IT-Walk-ins', component: HomeComponent },
+  { path: 'Fresher-Walk-ins', component: HomeComponent },
+  { path: 'Sales-Walk-ins', component: HomeComponent },
+  { path: 'Banking-Walk-ins', component: HomeComponent },
+  { path: 'Pharma-Walk-ins', component: HomeComponent },
   { path: 'official-company-careers', component: OfficialCompanyCareersComponent },
   { path: 'thambola-game', component: ThambolaGameComponent },
   { path: 'about-us', component: InfoPageComponent },

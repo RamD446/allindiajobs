@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 import { FormsModule } from '@angular/forms';
@@ -21,6 +21,9 @@ export class HeaderComponent implements OnInit {
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
+  selectedHeaderJobType = 'All';
+  showScrollUp = false;
+  homeJobTypeOptions: string[] = ['All', 'Walk-ins', 'Non-Walkins'];
 
   navCategories = [
     { name: 'IT Walk-ins', route: '/IT-Walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
@@ -31,10 +34,24 @@ export class HeaderComponent implements OnInit {
     { name: 'Pharma Walk-ins', route: '/Pharma-Walk-ins', icon: 'bi-person-walking', color: '#7b1fa2' }
   ];
 
-  constructor(private cdr: ChangeDetectorRef, private el: ElementRef, private router: Router) {}
+  constructor(private cdr: ChangeDetectorRef, private el: ElementRef, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.loadJobs();
+    this.updateScrollButtonState();
+
+    this.route.queryParamMap.subscribe((params) => {
+      this.selectedHeaderJobType = params.get('jobType') || 'All';
+    });
+  }
+
+  onHeaderQuickFilterChange() {
+    const queryParams: Record<string, string | null> = {
+      jobType: this.selectedHeaderJobType !== 'All' ? this.selectedHeaderJobType : null,
+      location: null
+    };
+
+    this.router.navigate(['/'], { queryParams, queryParamsHandling: 'merge' });
   }
 
   loadJobs() {
@@ -171,11 +188,21 @@ export class HeaderComponent implements OnInit {
     window.open('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p', '_blank');
   }
 
-  handleScrollArrowClick() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  handleScrollDirectionClick() {
+    if (this.showScrollUp) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    window.scrollTo({ top: window.scrollY + window.innerHeight, behavior: 'smooth' });
   }
 
-  handleScrollDownClick() {
-    window.scrollTo({ top: window.scrollY + window.innerHeight, behavior: 'smooth' });
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.updateScrollButtonState();
+  }
+
+  private updateScrollButtonState() {
+    this.showScrollUp = window.scrollY > 160;
   }
 }

@@ -149,6 +149,13 @@
         <span>Sales Jobs</span>
       </a>
 
+      <div class="pill-select-block">
+        <label for="headerJobTypeSelect" class="pill-select-label">Job Type</label>
+        <select id="headerJobTypeSelect" class="pill-select" [(ngModel)]="selectedHeaderJobType" (ngModelChange)="onHeaderQuickFilterChange()">
+          <option *ngFor="let type of homeJobTypeOptions" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
       <!-- Games Dropdown -->
       <div class="dropdown" [class.show]="isGamesDropdownOpen">
         <a class="jc-pill dropdown-toggle" 
@@ -182,19 +189,11 @@
 
   <!-- Floating WhatsApp Button (moved from app component) -->
   <div class="floating-wa-btn">
-    <button type="button" class="wa-action wa-join" (click)="joinWhatsAppGroup()">
+    <button type="button" class="wa-action wa-group-toggle" (click)="joinWhatsAppGroup()" aria-label="Join WhatsApp group">
       <i class="bi bi-whatsapp"></i>
-      <span>WhatsApp</span>
     </button>
-    <span class="wa-divider">|</span>
-    <button type="button" class="wa-action wa-scroll" (click)="handleScrollArrowClick()">
-     
-      <i class="bi bi-arrow-up-short"></i>
-    </button>
-    <span class="wa-divider">|</span>
-    <button type="button" class="wa-action wa-scroll-down" (click)="handleScrollDownClick()">
-     
-      <i class="bi bi-arrow-down-short"></i>
+    <button type="button" class="wa-action wa-scroll-toggle" (click)="handleScrollDirectionClick()" [attr.aria-label]="showScrollUp ? 'Scroll to top' : 'Scroll down'">
+      <i class="bi" [ngClass]="showScrollUp ? 'bi-arrow-up-short' : 'bi-arrow-down-short'"></i>
     </button>
   </div>
 </header>

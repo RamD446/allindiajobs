@@ -1,6 +1,4 @@
-<div class="container-fluid">
-  
-  <!-- Loading -->
+<div class="container-fluid home-container">
   <div *ngIf="isLoading" class="finding-jobs-loader">
     <div class="loader-icon-wrap">
       <i class="bi bi-briefcase-fill loader-briefcase"></i>
@@ -12,73 +10,108 @@
     <p class="loader-sub">Please wait while we load the latest opportunities</p>
   </div>
 
-  <div *ngIf="!isLoading" class="home-sections">
-    <!-- Left Column (70%) -->
-    <div class="jobs-main-col">
-      <!-- No Data Card -->
-      <div *ngIf="hasNoData()" class="no-data-card">
-        <div class="no-data-icon">
-          <i class="bi bi-inbox"></i>
-        </div>
-        <h5 class="no-data-title">Currently Not Available</h5>
-        <p class="no-data-message">No jobs are available at the moment. Please try again after some time.</p>
-      </div>
-
-      <!-- Latest Walk-in Jobs Section -->
-      <div class="section-block" *ngIf="!hasNoData() && walkinJobs.length > 0">
-        <div class="section-header">All Least Jobs</div>
-        <div class="section-content p-2">
-          <div class="jobs-card-grid">
-            <div *ngFor="let job of walkinJobs | slice:0:16" class="home-job-thumb-card" (click)="viewJobDetails(job)">
-              <div class="home-job-thumb-image-wrap">
-                <img
-                  *ngIf="getJobCardImage(job) as imageSrc; else noThumb"
-                  [src]="imageSrc"
-                  [alt]="job.title"
-                  class="home-job-thumb-image"
-                  loading="lazy">
-                <ng-template #noThumb>
-                  <div class="home-job-thumb-placeholder">
-                    <i class="bi bi-image"></i>
-                  </div>
-                </ng-template>
+  <div *ngIf="!isLoading" class="home-main-container">
+    <div class="row gx-2 gy-2 home-grid-row">
+      <div class="col-12 col-lg-8">
+        <div class="section-block jobs-list-block">
+          <div class="section-header">Latest Jobs</div>
+          <div class="section-content p-2">
+            <div *ngIf="hasNoData()" class="no-data-card">
+              <div class="no-data-icon">
+                <i class="bi bi-inbox"></i>
               </div>
-              <div class="home-job-thumb-content">
-                <div class="home-job-thumb-title">
-                  {{ job.title }}
-                </div>
-                <div class="home-job-description">
-                  {{ getJobDescriptionPreview(job, 200) }}
-                </div>
-                <div class="home-job-created-top" *ngIf="job.createdDate">
-                  Created date: {{ job.createdDate | date:'MMMM d' }}
+              <h5 class="no-data-title">Currently Not Available</h5>
+              <p class="no-data-message">No jobs are available at the moment. Please try again after some time.</p>
+            </div>
+
+            <div class="home-jobs-list" *ngIf="!hasNoData()">
+              <div *ngFor="let job of getFilteredJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
+                <div class="row g-2 align-items-stretch home-job-inner-row">
+                  <div class="col-4">
+                    <div class="home-job-thumb-col-wrap">
+                      <div class="home-job-thumb-col" *ngIf="getJobCardImage(job) as imageSrc; else noThumb">
+                        <img [src]="imageSrc" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
+                      </div>
+                      <ng-template #noThumb>
+                        <div class="home-job-thumb-col home-job-thumb-col-empty">
+                          <i class="bi bi-image"></i>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+
+                  <div class="col-8 home-job-details-col">
+                    <div class="home-job-row-title">{{ job.title }}</div>
+                    <div class="home-job-description">
+                      {{ getJobDescriptionPreview(job, 160) }}
+                    </div>
+                    <div class="home-job-row-meta">
+                      <small class="home-job-row-created" [title]="job.createdDate">
+                        <i class="bi bi-calendar3 me-1"></i>{{ job.createdDate | date:'dd MMM yyyy' }}
+                      </small>
+
+                      <small class="home-job-location text-muted" *ngIf="job.location || job.jobLocation">
+                        <i class="bi bi-geo-alt me-1"></i>{{ job.location || job.jobLocation }}
+                      </small>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Right Column (30%) -->
-    <div class="sidebar-col">
-      <!-- Filter by Category -->
-      <div class="section-block mb-3">
-        <div class="section-header">Filter by Category</div>
-        <div class="section-content">
-          <ul class="company-list">
-            <li class="company-item" routerLink="/walkinjobs">Walkin Jobs</li>
-            <li class="company-item" routerLink="/non-walkinjobs">Non Walkin Jobs</li>
-            <li class="company-item" routerLink="/IT-Walk-ins">IT Walk-ins</li>
-            <li class="company-item" routerLink="/BPO-Non-IT-Walk-ins">BPO/Non-IT Walk-ins</li>
-            <li class="company-item" routerLink="/Fresher-Walk-ins">Fresher Walk-ins</li>
-            <li class="company-item" routerLink="/Banking-Walk-ins">Banking Walk-ins</li>
-            <li class="company-item" routerLink="/Pharma-Walk-ins">Pharma Walk-ins</li>
-            <li class="company-item" routerLink="/Sales-Walk-ins">Sales Walk-ins</li>
-          </ul>
+      <div class="col-12 col-lg-4">
+        <div class="section-block filters-block">
+          <div class="section-header">Filter Jobs</div>
+          <div class="section-content p-2">
+            <div class="jobs-filter-item mb-2">
+              <label class="jobs-filter-label">Category</label>
+              <div class="jobs-filter-tabs">
+                <button type="button" class="jobs-filter-tab" [class.active]="selectedJobCategory === 'All'" (click)="selectCategoryTab('All')">
+                  All
+                </button>
+                <button type="button" *ngFor="let category of jobCategories" class="jobs-filter-tab" [class.active]="selectedJobCategory === category" (click)="selectCategoryTab(category)">
+                  {{ category }}
+                </button>
+              </div>
+            </div>
+
+            <div class="jobs-filter-item mb-2">
+              <label class="jobs-filter-label">Job Type</label>
+              <div class="jobs-filter-tabs">
+                <button type="button" class="jobs-filter-tab" [class.active]="selectedFilterJobType === 'All'" (click)="applyIndependentFilter('jobType', 'All')">All</button>
+                <button type="button" *ngFor="let item of getJobTypeFilterOptions()" class="jobs-filter-tab" [class.active]="selectedFilterJobType === item" (click)="applyIndependentFilter('jobType', item)">{{ item }}</button>
+              </div>
+            </div>
+
+            <div class="jobs-filter-item mb-2">
+              <label class="jobs-filter-label">Location</label>
+              <div class="jobs-filter-tabs">
+                <button type="button" class="jobs-filter-tab" [class.active]="selectedFilterLocation === 'All'" (click)="applyIndependentFilter('location', 'All')">All</button>
+                <button type="button" *ngFor="let item of getLocationFilterOptions()" class="jobs-filter-tab" [class.active]="selectedFilterLocation === item" (click)="applyIndependentFilter('location', item)">{{ item }}</button>
+              </div>
+            </div>
+
+            <div class="jobs-filter-item mb-2">
+              <label class="jobs-filter-label">Experience</label>
+              <div class="jobs-filter-tabs">
+                <button type="button" class="jobs-filter-tab" [class.active]="selectedFilterExperience === 'All'" (click)="applyIndependentFilter('experience', 'All')">All</button>
+                <button type="button" *ngFor="let item of getExperienceFilterOptions()" class="jobs-filter-tab" [class.active]="selectedFilterExperience === item" (click)="applyIndependentFilter('experience', item)">{{ item }}</button>
+              </div>
+            </div>
+
+            <div class="jobs-filter-item">
+              <label class="jobs-filter-label">Education</label>
+              <div class="jobs-filter-tabs">
+                <button type="button" class="jobs-filter-tab" [class.active]="selectedFilterQualification === 'All'" (click)="applyIndependentFilter('qualification', 'All')">All</button>
+                <button type="button" *ngFor="let item of getQualificationFilterOptions()" class="jobs-filter-tab" [class.active]="selectedFilterQualification === item" (click)="applyIndependentFilter('qualification', item)">{{ item }}</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

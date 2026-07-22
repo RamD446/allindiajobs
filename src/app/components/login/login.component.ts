@@ -1009,6 +1009,35 @@ _Share this opportunity with your friends!_
     }
   }
 
+  exportCompaniesToExcel() {
+    try {
+      const headers = [
+        'CompanyName',
+        'CompanyImageHtml',
+        'CreatedDate',
+        'UpdatedDate'
+      ];
+
+      const rows = this.companyImages.map((item) => ({
+        CompanyName: item.companyName || '',
+        CompanyImageHtml: item.companyImage || '',
+        CreatedDate: item.createdDate || '',
+        UpdatedDate: item.updatedDate || ''
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Companies');
+
+      const dateTag = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(workbook, `companies-${dateTag}.xls`, { bookType: 'biff8', compression: true });
+      this.showSuccessToast('Company XLS file downloaded successfully.');
+    } catch (error) {
+      console.error('Company export failed:', error);
+      this.showErrorToast('Unable to download company XLS file. Please try again.');
+    }
+  }
+
   async onImportFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files && input.files[0];

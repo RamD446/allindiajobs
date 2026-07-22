@@ -131,6 +131,9 @@
           <button class="btn btn-success" (click)="showCreateCompanyImageForm()">
             <i class="bi bi-image me-1"></i>Create Company Image
           </button>
+          <button class="btn btn-outline-primary" (click)="exportCompaniesToExcel()">
+            <i class="bi bi-file-earmark-excel me-1"></i>Download XLS
+          </button>
           <button class="btn btn-outline-success" (click)="openImportModal('companies')">
             <i class="bi bi-upload me-1"></i>Import XLS
           </button>
@@ -461,7 +464,7 @@
                 class="jobs-filter-tab"
                 [class.active]="selectedJobCategory === 'All'"
                 (click)="selectCategoryTab('All')">
-                All
+                All - {{ getCategoryCount('All') }}
               </button>
               <button
                 type="button"
@@ -469,7 +472,7 @@
                 class="jobs-filter-tab"
                 [class.active]="selectedJobCategory === category"
                 (click)="selectCategoryTab(category)">
-                {{ category }}
+                {{ category }} - {{ getCategoryCount(category) }}
               </button>
             </div>
           </div>

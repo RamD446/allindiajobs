@@ -1621,10 +1621,16 @@
 }
 
 .company-image-wrap-small {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
   flex: 0 0 auto;
+  margin: 0 auto;
+}
+
+.company-image-wrap-small.company-image-empty {
+  font-size: 0.95rem;
+  color: #9aa9bf;
 }
 
 .company-row-body {

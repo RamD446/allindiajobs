@@ -8,6 +8,7 @@ import { ThambolaGameComponent } from './components/thambola-game/thambola-game.
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'job-category/:category', component: HomeComponent },
   { path: 'walkinjobs', component: HomeComponent },
   { path: 'non-walkinjobs', component: HomeComponent },
   { path: 'IT-Walk-ins', component: HomeComponent },

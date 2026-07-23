@@ -78,7 +78,6 @@
         <div class="menu-items">
           <a *ngFor="let cat of offcanvasFilters"
              [routerLink]="cat.route"
-             [queryParams]="cat.queryParams"
              class="menu-item" 
              routerLinkActive="active"
              (click)="closeNav()">

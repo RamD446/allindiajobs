@@ -16,28 +16,28 @@ export class FooterComponent {
   constructor(private router: Router) {}
 
   walkInLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
-    { name: 'Home', route: '/' },
-    { name: 'Walk-ins', route: '/', queryParams: { category: 'Walk-ins' } },
-    { name: 'Non-Walkins', route: '/', queryParams: { category: 'Non-Walkins' } },
-    { name: 'IT Walk-ins', route: '/', queryParams: { category: 'IT Walk-ins' } },
-    { name: 'BPO/Non-IT Walk-ins', route: '/', queryParams: { category: 'BPO/Non-IT Walk-ins' } },
-    { name: 'Sales Walk-ins', route: '/', queryParams: { category: 'Sales Walk-ins' } },
-    { name: 'Banking Walk-ins', route: '/', queryParams: { category: 'Banking Walk-ins' } },
-    { name: 'Pharma Walk-ins', route: '/', queryParams: { category: 'Pharma Walk-ins' } }
+    { name: 'Home', route: '/job-category/all' },
+    { name: 'Walk-ins', route: '/job-category/walk-ins' },
+    { name: 'Non-Walkins', route: '/job-category/non-walkins' },
+    { name: 'IT Walk-ins', route: '/job-category/it-walk-ins' },
+    { name: 'BPO/Non-IT Walk-ins', route: '/job-category/bpo-non-it-walk-ins' },
+    { name: 'Sales Walk-ins', route: '/job-category/sales-walk-ins' },
+    { name: 'Banking Walk-ins', route: '/job-category/banking-walk-ins' },
+    { name: 'Pharma Walk-ins', route: '/job-category/pharma-walk-ins' }
   ];
 
   educationLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
-    { name: 'B.Tech', route: '/', queryParams: { category: 'B.Tech' } },
-    { name: 'Degree', route: '/', queryParams: { category: 'Degree' } },
-    { name: 'Any Graduate', route: '/', queryParams: { category: 'Any Graduate' } },
-    { name: 'Freshers', route: '/', queryParams: { category: 'Freshers' } },
-    { name: 'Experienced', route: '/', queryParams: { category: 'Experienced' } }
+    { name: 'B.Tech', route: '/job-category/b-tech' },
+    { name: 'Degree', route: '/job-category/degree' },
+    { name: 'Any Graduate', route: '/job-category/any-graduate' },
+    { name: 'Freshers', route: '/job-category/freshers' },
+    { name: 'Experienced', route: '/job-category/experienced' }
   ];
 
   locationLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
-    { name: 'Vishakhapatnam', route: '/', queryParams: { category: 'Vishakhapatnam' } },
-    { name: 'Hyderabad', route: '/', queryParams: { category: 'Hyderabad' } },
-    { name: 'Bengaluru', route: '/', queryParams: { category: 'Bengaluru' } }
+    { name: 'Vishakhapatnam', route: '/job-category/vishakhapatnam' },
+    { name: 'Hyderabad', route: '/job-category/hyderabad' },
+    { name: 'Bengaluru', route: '/job-category/bengaluru' }
   ];
 
   gameLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [

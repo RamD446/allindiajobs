@@ -215,8 +215,7 @@
                 <a
                   *ngFor="let category of getAllCategoryFilters()"
                   class="jobs-filter-tab"
-                  [routerLink]="'/'"
-                  [queryParams]="{ category: category === 'All' ? null : category }">
+                  [routerLink]="['/job-category', category === 'All' ? 'all' : category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')]">
                   {{ category }}
                 </a>
               </div>

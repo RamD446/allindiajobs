@@ -48,22 +48,22 @@ export class HeaderComponent implements OnInit {
   locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
 
   offcanvasFilters = [
-    { name: 'All', route: '/', queryParams: this.createFilterQueryParams(), icon: 'bi-grid', color: '#0f766e' },
-    { name: 'Walk-ins', route: '/', queryParams: this.createFilterQueryParams({ category: 'Walk-ins' }), icon: 'bi-person-walking', color: '#1565c0' },
-    { name: 'Non-Walkins', route: '/', queryParams: this.createFilterQueryParams({ category: 'Non-Walkins' }), icon: 'bi-briefcase', color: '#1d4ed8' },
-    { name: 'B.Tech', route: '/', queryParams: this.createFilterQueryParams({ category: 'B.Tech' }), icon: 'bi-mortarboard', color: '#0ea5e9' },
-    { name: 'Degree', route: '/', queryParams: this.createFilterQueryParams({ category: 'Degree' }), icon: 'bi-award', color: '#0284c7' },
-    { name: 'Any Graduate', route: '/', queryParams: this.createFilterQueryParams({ category: 'Any Graduate' }), icon: 'bi-journal-check', color: '#0369a1' },
-    { name: 'Freshers', route: '/', queryParams: this.createFilterQueryParams({ category: 'Freshers' }), icon: 'bi-stars', color: '#0d9488' },
-    { name: 'Experienced', route: '/', queryParams: this.createFilterQueryParams({ category: 'Experienced' }), icon: 'bi-briefcase-fill', color: '#14b8a6' },
-    { name: 'Vishakhapatnam', route: '/', queryParams: this.createFilterQueryParams({ category: 'Vishakhapatnam' }), icon: 'bi-geo-alt', color: '#0891b2' },
-    { name: 'Hyderabad', route: '/', queryParams: this.createFilterQueryParams({ category: 'Hyderabad' }), icon: 'bi-geo-alt-fill', color: '#0e7490' },
-    { name: 'Bengaluru', route: '/', queryParams: this.createFilterQueryParams({ category: 'Bengaluru' }), icon: 'bi-building', color: '#155e75' },
-    { name: 'IT Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'IT Walk-ins' }), icon: 'bi-laptop', color: '#1e3a8a' },
-    { name: 'BPO/Non-IT Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'BPO/Non-IT Walk-ins' }), icon: 'bi-headset', color: '#3730a3' },
-    { name: 'Sales Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'Sales Walk-ins' }), icon: 'bi-graph-up-arrow', color: '#4f46e5' },
-    { name: 'Banking Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'Banking Walk-ins' }), icon: 'bi-bank', color: '#6d28d9' },
-    { name: 'Pharma Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'Pharma Walk-ins' }), icon: 'bi-capsule', color: '#7c3aed' }
+    { name: 'All', route: '/job-category/all', icon: 'bi-grid', color: '#0f766e' },
+    { name: 'Walk-ins', route: '/job-category/walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
+    { name: 'Non-Walkins', route: '/job-category/non-walkins', icon: 'bi-briefcase', color: '#1d4ed8' },
+    { name: 'B.Tech', route: '/job-category/b-tech', icon: 'bi-mortarboard', color: '#0ea5e9' },
+    { name: 'Degree', route: '/job-category/degree', icon: 'bi-award', color: '#0284c7' },
+    { name: 'Any Graduate', route: '/job-category/any-graduate', icon: 'bi-journal-check', color: '#0369a1' },
+    { name: 'Freshers', route: '/job-category/freshers', icon: 'bi-stars', color: '#0d9488' },
+    { name: 'Experienced', route: '/job-category/experienced', icon: 'bi-briefcase-fill', color: '#14b8a6' },
+    { name: 'Vishakhapatnam', route: '/job-category/vishakhapatnam', icon: 'bi-geo-alt', color: '#0891b2' },
+    { name: 'Hyderabad', route: '/job-category/hyderabad', icon: 'bi-geo-alt-fill', color: '#0e7490' },
+    { name: 'Bengaluru', route: '/job-category/bengaluru', icon: 'bi-building', color: '#155e75' },
+    { name: 'IT Jobs', route: '/job-category/it-walk-ins', icon: 'bi-laptop', color: '#1e3a8a' },
+    { name: 'BPO/Non-IT Jobs', route: '/job-category/bpo-non-it-walk-ins', icon: 'bi-headset', color: '#3730a3' },
+    { name: 'Sales Jobs', route: '/job-category/sales-walk-ins', icon: 'bi-graph-up-arrow', color: '#4f46e5' },
+    { name: 'Banking Jobs', route: '/job-category/banking-walk-ins', icon: 'bi-bank', color: '#6d28d9' },
+    { name: 'Pharma Jobs', route: '/job-category/pharma-walk-ins', icon: 'bi-capsule', color: '#7c3aed' }
   ];
 
   private createFilterQueryParams(filters?: { category?: string }) {
@@ -74,6 +74,19 @@ export class HeaderComponent implements OnInit {
       education: null,
       location: null
     };
+  }
+
+  private getCategoryRoutePath(category: string): string {
+    if (!category || category === 'All') {
+      return '/job-category/all';
+    }
+
+    const slug = category
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    return `/job-category/${slug}`;
   }
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef, private router: Router, private route: ActivatedRoute) {}
@@ -89,15 +102,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onHeaderQuickFilterChange() {
-    const queryParams: Record<string, string | null> = {
-      category: this.selectedHeaderCategory || null,
-      jobType: null,
-      experience: null,
-      education: null,
-      location: null
-    };
-
-    this.router.navigate(['/'], { queryParams });
+    const route = this.getCategoryRoutePath(this.selectedHeaderCategory || 'All');
+    this.router.navigate([route]);
   }
 
   setHeaderCategory(category: string) {
@@ -171,16 +177,7 @@ export class HeaderComponent implements OnInit {
     this.selectedEducationFilter = '';
     this.selectedLocationFilter = '';
 
-    this.router.navigate(['/'], {
-      queryParams: {
-        category: null,
-        jobType: null,
-        experience: null,
-        education: null,
-        location: null
-      },
-      queryParamsHandling: 'merge'
-    });
+    this.router.navigate(['/job-category/all']);
   }
 
   private resolveHeaderTargetRoute(categorySelection: string): string {

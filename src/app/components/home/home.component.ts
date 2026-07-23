@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
-import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES } from '../../models/job.model';
+import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   isLoading: boolean = true;
   isWalkinOnlyPage: boolean = false;
   isNonWalkinOnlyPage: boolean = false;
+  isHomeRootPage: boolean = false;
   companyImageMap: Record<string, string> = {};
   jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
   readonly quickFilterCategories: string[] = [
@@ -49,9 +50,15 @@ export class HomeComponent implements OnInit {
 
     this.isWalkinOnlyPage = currentPath.includes('/walkinjobs') || !!pathCategory;
     this.isNonWalkinOnlyPage = currentPath.includes('/non-walkinjobs');
+    this.isHomeRootPage = !this.isWalkinOnlyPage && !this.isNonWalkinOnlyPage;
 
-    this.route.queryParamMap.subscribe((params) => {
-      this.selectedJobCategory = params.get('category') || pathCategory || 'All';
+    this.route.paramMap.subscribe(() => {
+      this.updateSelectedCategory();
+      this.cdr.detectChanges();
+    });
+
+    this.route.queryParamMap.subscribe(() => {
+      this.updateSelectedCategory();
       this.cdr.detectChanges();
     });
 
@@ -68,7 +75,8 @@ export class HomeComponent implements OnInit {
       return jobs.filter(job => job.walkInDrive !== true);
     }
 
-    return jobs.filter(job => job.walkInDrive === true).slice(0, 16);
+    // Root home page should show all jobs, not a hard limit of the first 16.
+    return jobs;
   }
 
   private getCreatedTimestamp(job: Job): number {
@@ -126,7 +134,6 @@ export class HomeComponent implements OnInit {
   private applyCompanyImageMapping(jobs: Job[]): Job[] {
     return jobs.map((job) => {
       const mappedImage = this.getMappedImageByCompany(job.company || '');
-      const existingImageSrc = this.extractImageSrc(job.companyImage || '');
       if (mappedImage) {
         return {
           ...job,
@@ -134,18 +141,7 @@ export class HomeComponent implements OnInit {
         };
       }
 
-      if (existingImageSrc) {
-        return job;
-      }
-
-      if (!mappedImage) {
-        return job;
-      }
-
-      return {
-        ...job,
-        companyImage: mappedImage
-      };
+      return job;
     });
   }
 
@@ -266,18 +262,27 @@ export class HomeComponent implements OnInit {
 
   selectCategoryTab(category: string) {
     this.selectedJobCategory = category;
-    this.syncFiltersToQueryParams();
+    this.navigateToCategory(category);
   }
 
-  private syncFiltersToQueryParams() {
-    const queryParams: Record<string, string | null> = {
-      category: this.selectedJobCategory !== 'All' ? this.selectedJobCategory : null
-    };
+  private navigateToCategory(category: string) {
+    if (!category || category === 'All') {
+      this.router.navigate(['/']);
+      return;
+    }
 
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams
-    });
+    const slug = getCategoryRouteSlug(category);
+    this.router.navigate(['/job-category', slug]);
+  }
+
+  private updateSelectedCategory() {
+    const slug = this.route.snapshot.paramMap.get('category') || '';
+    const slugCategory = slug ? getCategoryLabelFromSlug(slug) : null;
+    const currentPath = this.router.url.split('?')[0];
+    const pathCategory = this.categoryByPath[currentPath] || null;
+    const queryCategory = this.route.snapshot.queryParamMap.get('category') || null;
+
+    this.selectedJobCategory = slugCategory || pathCategory || queryCategory || 'All';
   }
 
   private extractImageSrc(value: string): string | null {

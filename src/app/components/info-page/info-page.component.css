@@ -1,7 +1,10 @@
 /* Page wrapper */
 .info-page-bg {
   min-height: 100vh;
-  background: #f0f4f8;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(30, 60, 114, 0.12), transparent 38%),
+    radial-gradient(circle at 90% 20%, rgba(21, 101, 192, 0.12), transparent 40%),
+    #f0f4f8;
   padding-top: 0.5rem;
 }
 
@@ -12,10 +15,10 @@
 
 .info-card {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-  border: 1px solid #e2e8f0;
+  box-shadow: 0 14px 40px rgba(2, 6, 23, 0.12);
+  border: 1px solid #dbe5f1;
   max-width: 860px;
   margin: 0 auto;
 }
@@ -23,33 +26,47 @@
 /* Card header */
 .info-card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
-  padding: 1.1rem 1.75rem;
+  padding: 1.2rem 1.75rem;
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   border-bottom: 3px solid #ffd700;
 }
 
 .info-card-header i {
-  font-size: 1.4rem;
-  color: #ffd700;
+  font-size: 1.45rem;
   flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.info-card-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
 .info-card-title {
-  font-size: 1.2rem;
+  font-size: 1.24rem;
   font-weight: 800;
   color: #ffffff;
   margin: 0;
   letter-spacing: -0.2px;
 }
 
+.info-card-subtitle {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(226, 232, 240, 0.98);
+  line-height: 1.45;
+}
+
 /* Content typography */
 .info-content {
-  padding: 1.75rem;
-  line-height: 1.75;
-  color: #374151;
-  font-size: 0.97rem;
+  padding: 1.85rem 1.8rem;
+  line-height: 1.8;
+  color: #1f2937;
+  font-size: 0.99rem;
 }
 
 .info-content h3 {
@@ -71,6 +88,11 @@
 }
 
 .info-content p { margin-bottom: 1rem; }
+
+.info-content p:first-child {
+  font-size: 1.02rem;
+  color: #0f172a;
+}
 
 .info-content ul {
   margin-bottom: 1rem;
@@ -99,8 +121,9 @@
 /* Responsive */
 @media (max-width: 768px) {
   .info-page-bg { padding-top: 0.5rem; }
-  .info-card-header { padding: 0.9rem 1.1rem; }
+  .info-card-header { padding: 0.95rem 1.1rem; }
   .info-card-title { font-size: 1.05rem; }
+  .info-card-subtitle { font-size: 0.76rem; }
   .info-content { padding: 1.25rem 1.1rem; }
   .info-body { padding: 1rem 0.75rem 2.5rem; }
 }

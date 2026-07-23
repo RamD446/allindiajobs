@@ -71,45 +71,37 @@
             <div class="jobs-filter-item mb-2">
               <label class="jobs-filter-label">Category</label>
               <div class="jobs-filter-tabs">
-                <button type="button" class="jobs-filter-tab" [class.active]="selectedJobCategory === 'All'" (click)="selectCategoryTab('All')">
-                  All
-                </button>
-                <button type="button" *ngFor="let category of jobCategories" class="jobs-filter-tab" [class.active]="selectedJobCategory === category" (click)="selectCategoryTab(category)">
+                <button
+                  type="button"
+                  *ngFor="let category of getAllCategoryFilters()"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedJobCategory === category"
+                  (click)="selectCategoryTab(category)">
                   {{ category }}
                 </button>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div class="jobs-filter-item mb-2">
-              <label class="jobs-filter-label">Job Type</label>
-              <div class="jobs-filter-tabs">
-                <button type="button" class="jobs-filter-tab" [class.active]="selectedFilterJobType === 'All'" (click)="applyIndependentFilter('jobType', 'All')">All</button>
-                <button type="button" *ngFor="let item of getJobTypeFilterOptions()" class="jobs-filter-tab" [class.active]="selectedFilterJobType === item" (click)="applyIndependentFilter('jobType', item)">{{ item }}</button>
+        <div class="section-block whatsapp-follow-card">
+          <div class="section-header">Keep Job Updates</div>
+          <div class="section-content p-3">
+            <div class="whatsapp-follow-inner">
+              <div class="whatsapp-follow-icon" aria-hidden="true">
+                <i class="bi bi-whatsapp"></i>
               </div>
-            </div>
-
-            <div class="jobs-filter-item mb-2">
-              <label class="jobs-filter-label">Location</label>
-              <div class="jobs-filter-tabs">
-                <button type="button" class="jobs-filter-tab" [class.active]="selectedFilterLocation === 'All'" (click)="applyIndependentFilter('location', 'All')">All</button>
-                <button type="button" *ngFor="let item of getLocationFilterOptions()" class="jobs-filter-tab" [class.active]="selectedFilterLocation === item" (click)="applyIndependentFilter('location', item)">{{ item }}</button>
-              </div>
-            </div>
-
-            <div class="jobs-filter-item mb-2">
-              <label class="jobs-filter-label">Experience</label>
-              <div class="jobs-filter-tabs">
-                <button type="button" class="jobs-filter-tab" [class.active]="selectedFilterExperience === 'All'" (click)="applyIndependentFilter('experience', 'All')">All</button>
-                <button type="button" *ngFor="let item of getExperienceFilterOptions()" class="jobs-filter-tab" [class.active]="selectedFilterExperience === item" (click)="applyIndependentFilter('experience', item)">{{ item }}</button>
-              </div>
-            </div>
-
-            <div class="jobs-filter-item">
-              <label class="jobs-filter-label">Education</label>
-              <div class="jobs-filter-tabs">
-                <button type="button" class="jobs-filter-tab" [class.active]="selectedFilterQualification === 'All'" (click)="applyIndependentFilter('qualification', 'All')">All</button>
-                <button type="button" *ngFor="let item of getQualificationFilterOptions()" class="jobs-filter-tab" [class.active]="selectedFilterQualification === item" (click)="applyIndependentFilter('qualification', item)">{{ item }}</button>
-              </div>
+              <h6 class="whatsapp-follow-title">Join WhatsApp Group</h6>
+              <p class="whatsapp-follow-text">Follow us for latest jobs, walk-ins, and daily alerts.</p>
+              <a
+                class="whatsapp-follow-btn"
+                href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Join WhatsApp group for job updates">
+                <i class="bi bi-whatsapp"></i>
+                Join Now
+              </a>
             </div>
           </div>
         </div>

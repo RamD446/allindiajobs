@@ -22,26 +22,59 @@ export class HeaderComponent implements OnInit {
   searchResults: Job[] = [];
   jobs: Job[] = [];
   selectedHeaderCategory = '';
-  selectedHeaderJobType = '';
+  selectedJobTypeFilter = '';
+  selectedExperienceFilter = '';
+  selectedEducationFilter = '';
+  selectedLocationFilter = '';
   showScrollUp = false;
   homeCategoryOptions = [
-    { value: 'IT Walk-ins', label: 'IT Walk-ins' },
-    { value: 'BPO/Non-IT Walk-ins', label: 'BPO/Non-IT Walk-ins' },
-    { value: 'Fresher Walk-ins', label: 'Fresher Walk-ins' },
-    { value: 'Sales Walk-ins', label: 'Sales Walk-ins' },
-    { value: 'Banking Walk-ins', label: 'Banking Walk-ins' },
-    { value: 'Pharma Walk-ins', label: 'Pharma Walk-ins' }
+    { value: 'IT Walk-ins', label: 'IT Jobs' },
+    { value: 'BPO/Non-IT Walk-ins', label: 'BPO/Non-IT Jobs' },
+    { value: 'Sales Walk-ins', label: 'Sales Jobs' },
+    { value: 'Banking Walk-ins', label: 'Banking Jobs' },
+    { value: 'Pharma Walk-ins', label: 'Pharma Jobs' }
   ];
-  homeJobTypeOptions: string[] = ['Walk-ins', 'Non-Walkins'];
 
-  navCategories = [
-    { name: 'IT Walk-ins', route: '/IT-Walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
-    { name: 'BPO/Non-IT Walk-ins', route: '/BPO-Non-IT-Walk-ins', icon: 'bi-person-walking', color: '#0288d1' },
-    { name: 'Fresher Walk-ins', route: '/Fresher-Walk-ins', icon: 'bi-person-walking', color: '#0097a7' },
-    { name: 'Sales Walk-ins', route: '/Sales-Walk-ins', icon: 'bi-person-walking', color: '#00796b' },
-    { name: 'Banking Walk-ins', route: '/Banking-Walk-ins', icon: 'bi-person-walking', color: '#388e3c' },
-    { name: 'Pharma Walk-ins', route: '/Pharma-Walk-ins', icon: 'bi-person-walking', color: '#7b1fa2' }
+  homeFilterOptions = [
+    ...this.homeCategoryOptions
   ];
+
+  jobTypeOptions = [
+    { value: 'Walk-ins', label: 'Walk-ins Jobs' },
+    { value: 'Non-Walkins', label: 'Non-Walkins Jobs' }
+  ];
+  experienceOptions: string[] = ['Freshers', 'Experienced'];
+  educationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
+  locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
+
+  offcanvasFilters = [
+    { name: 'All', route: '/', queryParams: this.createFilterQueryParams(), icon: 'bi-grid', color: '#0f766e' },
+    { name: 'Walk-ins', route: '/', queryParams: this.createFilterQueryParams({ category: 'Walk-ins' }), icon: 'bi-person-walking', color: '#1565c0' },
+    { name: 'Non-Walkins', route: '/', queryParams: this.createFilterQueryParams({ category: 'Non-Walkins' }), icon: 'bi-briefcase', color: '#1d4ed8' },
+    { name: 'B.Tech', route: '/', queryParams: this.createFilterQueryParams({ category: 'B.Tech' }), icon: 'bi-mortarboard', color: '#0ea5e9' },
+    { name: 'Degree', route: '/', queryParams: this.createFilterQueryParams({ category: 'Degree' }), icon: 'bi-award', color: '#0284c7' },
+    { name: 'Any Graduate', route: '/', queryParams: this.createFilterQueryParams({ category: 'Any Graduate' }), icon: 'bi-journal-check', color: '#0369a1' },
+    { name: 'Freshers', route: '/', queryParams: this.createFilterQueryParams({ category: 'Freshers' }), icon: 'bi-stars', color: '#0d9488' },
+    { name: 'Experienced', route: '/', queryParams: this.createFilterQueryParams({ category: 'Experienced' }), icon: 'bi-briefcase-fill', color: '#14b8a6' },
+    { name: 'Vishakhapatnam', route: '/', queryParams: this.createFilterQueryParams({ category: 'Vishakhapatnam' }), icon: 'bi-geo-alt', color: '#0891b2' },
+    { name: 'Hyderabad', route: '/', queryParams: this.createFilterQueryParams({ category: 'Hyderabad' }), icon: 'bi-geo-alt-fill', color: '#0e7490' },
+    { name: 'Bengaluru', route: '/', queryParams: this.createFilterQueryParams({ category: 'Bengaluru' }), icon: 'bi-building', color: '#155e75' },
+    { name: 'IT Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'IT Walk-ins' }), icon: 'bi-laptop', color: '#1e3a8a' },
+    { name: 'BPO/Non-IT Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'BPO/Non-IT Walk-ins' }), icon: 'bi-headset', color: '#3730a3' },
+    { name: 'Sales Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'Sales Walk-ins' }), icon: 'bi-graph-up-arrow', color: '#4f46e5' },
+    { name: 'Banking Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'Banking Walk-ins' }), icon: 'bi-bank', color: '#6d28d9' },
+    { name: 'Pharma Jobs', route: '/', queryParams: this.createFilterQueryParams({ category: 'Pharma Walk-ins' }), icon: 'bi-capsule', color: '#7c3aed' }
+  ];
+
+  private createFilterQueryParams(filters?: { category?: string }) {
+    return {
+      category: filters?.category || null,
+      jobType: null,
+      experience: null,
+      education: null,
+      location: null
+    };
+  }
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef, private router: Router, private route: ActivatedRoute) {}
 
@@ -51,35 +84,92 @@ export class HeaderComponent implements OnInit {
 
     this.route.queryParamMap.subscribe((params) => {
       this.selectedHeaderCategory = params.get('category') || '';
-      this.selectedHeaderJobType = params.get('jobType') || '';
+      this.syncDropdownSelections(this.selectedHeaderCategory);
     });
   }
 
   onHeaderQuickFilterChange() {
     const queryParams: Record<string, string | null> = {
       category: this.selectedHeaderCategory || null,
-      jobType: this.selectedHeaderJobType || null,
+      jobType: null,
       experience: null,
       education: null,
       location: null
     };
 
-    this.router.navigate(['/'], { queryParams, queryParamsHandling: 'merge' });
+    this.router.navigate(['/'], { queryParams });
   }
 
   setHeaderCategory(category: string) {
     this.selectedHeaderCategory = category;
+    this.syncDropdownSelections(category);
     this.onHeaderQuickFilterChange();
   }
 
-  setHeaderJobType(jobType: string) {
-    this.selectedHeaderJobType = jobType;
-    this.onHeaderQuickFilterChange();
+  onJobTypeChange() {
+    if (!this.selectedJobTypeFilter) {
+      return;
+    }
+
+    this.setHeaderCategory(this.selectedJobTypeFilter);
+  }
+
+  onExperienceChange() {
+    if (!this.selectedExperienceFilter) {
+      return;
+    }
+
+    this.setHeaderCategory(this.selectedExperienceFilter);
+  }
+
+  onEducationChange() {
+    if (!this.selectedEducationFilter) {
+      return;
+    }
+
+    this.setHeaderCategory(this.selectedEducationFilter);
+  }
+
+  onLocationChange() {
+    if (!this.selectedLocationFilter) {
+      return;
+    }
+
+    this.setHeaderCategory(this.selectedLocationFilter);
+  }
+
+  private syncDropdownSelections(category: string) {
+    if (this.jobTypeOptions.some((item) => item.value === category)) {
+      this.selectedJobTypeFilter = category;
+    } else {
+      this.selectedJobTypeFilter = '';
+    }
+
+    if (this.experienceOptions.includes(category)) {
+      this.selectedExperienceFilter = category;
+    } else {
+      this.selectedExperienceFilter = '';
+    }
+
+    if (this.educationOptions.includes(category)) {
+      this.selectedEducationFilter = category;
+    } else {
+      this.selectedEducationFilter = '';
+    }
+
+    if (this.locationOptions.includes(category)) {
+      this.selectedLocationFilter = category;
+    } else {
+      this.selectedLocationFilter = '';
+    }
   }
 
   resetToAllJobs() {
     this.selectedHeaderCategory = '';
-    this.selectedHeaderJobType = '';
+    this.selectedJobTypeFilter = '';
+    this.selectedExperienceFilter = '';
+    this.selectedEducationFilter = '';
+    this.selectedLocationFilter = '';
 
     this.router.navigate(['/'], {
       queryParams: {
@@ -106,7 +196,6 @@ export class HeaderComponent implements OnInit {
   }
 
   private resolveHeaderCategoryFilter(categorySelection: string): string | null {
-    if (categorySelection === 'fresher') return 'Fresher Walk-ins';
     if (categorySelection === 'it') return 'IT Walk-ins';
     if (categorySelection === 'bpo') return 'BPO/Non-IT Walk-ins';
     if (categorySelection === 'banking') return 'Banking Walk-ins';
@@ -118,7 +207,6 @@ export class HeaderComponent implements OnInit {
   private resolveHeaderCategorySelection(path: string, categoryParam: string | null): string {
     if (path.includes('/walkinjobs')) return 'walkin';
     if (path.includes('/non-walkinjobs')) return 'nonwalkin';
-    if (categoryParam === 'Fresher Walk-ins') return 'fresher';
     if (categoryParam === 'IT Walk-ins') return 'it';
     if (categoryParam === 'BPO/Non-IT Walk-ins') return 'bpo';
     if (categoryParam === 'Banking Walk-ins') return 'banking';

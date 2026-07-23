@@ -13,9 +13,11 @@
 
 
   <div *ngIf="!isLoading && job" class="container-fluid p-0">
-    <div class="row m-0">
+      <div class="row gx-3 gy-0 m-0 jobfull-grid-row">
       <!-- Left: Job Information (70% on desktop) -->
-      <div class="col-12 col-lg-8 p-0">
+      <div class="col-12 col-lg-8">
+        <div class="jobfull-section-block jobfull-details-block">
+          <div class="jobfull-section-content p-2 p-lg-3">
         <!-- Breadcrumb: Home / Job Details / Job Title -->
         <nav aria-label="breadcrumb" class="mb-3">
           <ol class="breadcrumb bg-transparent p-0 m-0 small flex-nowrap overflow-hidden">
@@ -31,7 +33,7 @@
 
 
         <!-- Job Title -->
-        <h1 class="h5 fw-bold mb-1 text-dark">{{ job.title }}</h1>
+        <h1 class="h5 fw-bold mb-1 job-title-banner">{{ job.title }}</h1>
         
 
         <!-- Date and Share Row -->
@@ -53,29 +55,51 @@
           </div>
         </div>
 
-        <!-- Short Description -->
-        <div class="text-secondary small mb-3 lh-sm" [innerHTML]="getSafeHtml(job.description)">
+        <div class="full-info-hero-split mb-3">
+          <div class="full-info-hero-image-side" *ngIf="getTopJobImage(job) as topJobImage">
+            <div class="full-info-mini-circle-image">
+              <img [src]="topJobImage" [alt]="job.title" class="full-info-feature-image" loading="lazy">
+            </div>
+          </div>
+
+          <div class="full-info-hero-text-side">
+            <!-- Short Description -->
+            <div class="text-secondary small lh-sm" [innerHTML]="getSafeHtml(job.description)">
+            </div>
+          </div>
         </div>
 
         <!-- Job Details List (List wise, small dark headers) -->
         <div class="job-details-list">
           <!-- What & Why -->
+            <div class="full-info-kv-wrap mb-2" *ngIf="getStructuredInfoRows(job.fullInformationTableFormat || '') as infoRows">
+            <table class="table table-sm table-bordered mb-0 full-info-kv-table" *ngIf="infoRows.length > 0">
+              <tbody>
+                <tr *ngFor="let row of infoRows">
+                  <th>{{ row.label }}</th>
+                  <td>{{ row.value }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div class="detail-item mb-2" *ngIf="job.keyResponsibilities">
-            <div class="small fw-bold text-dark">Job Profile & Key Responsibilities:</div>
+            <div class="small fw-bold detail-label-red">Job Profile & Key Responsibilities:</div>
             <ul class="ps-3 mb-0 small text-secondary">
               <li *ngFor="let item of getHowToApplyList(job.keyResponsibilities)">{{ item }}</li>
             </ul>
           </div>
 
+         
+
           <div class="detail-item mb-2" *ngIf="job.eligibilityCriteria">
-            <div class="small fw-bold text-dark">Interview Process:</div>
+            <div class="small fw-bold detail-label-red">Interview Process:</div>
             <ul class="ps-3 mb-0 small text-secondary">
               <li *ngFor="let item of getHowToApplyList(job.eligibilityCriteria)">{{ item }}</li>
             </ul>
           </div>
 
           <div class="detail-item mb-2" *ngIf="job.documentsRequired">
-            <div class="small fw-bold text-dark">Documents Required:</div>
+            <div class="small fw-bold detail-label-red">Documents Required:</div>
             <ul class="ps-3 mb-0 small text-secondary">
               <li *ngFor="let item of getHowToApplyList(job.documentsRequired)">{{ item }}</li>
             </ul>
@@ -84,7 +108,7 @@
           <!-- How -->
           <div class="detail-item mb-2" *ngIf="job.howToApply">
             <div class="d-flex align-items-center gap-2 mb-1">
-              <div class="small fw-bold text-dark">How to Apply:</div>
+              <div class="small fw-bold detail-label-red">How to Apply:</div>
               <div class="small text-secondary">Follow these steps</div>
             </div>
             <ul class="ps-3 mb-0 small text-secondary">
@@ -94,16 +118,46 @@
 
           <!-- Job Location and HR Details -->
           <div class="detail-item mb-2" *ngIf="job.jobLocation">
-            <div class="small fw-bold text-dark">Job Location and HR Details:</div>
+            <div class="small fw-bold detail-label-red">Job Location and HR Details:</div>
             <ul class="ps-3 mb-0 small text-secondary">
               <li *ngFor="let item of getHowToApplyList(job.jobLocation)">{{ item }}</li>
             </ul>
           </div>
         </div>
 <!-- Job Details Table -->
-        <div class="table-responsive mb-3 mt-1" *ngIf="job.experience || job.otherLink">
+        <div class="table-responsive mb-3 mt-1" *ngIf="job.company || job.category || job.jobType || job.qualification || job.experience || job.location || job.jobLocation || job.otherLink">
           <table class="table table-sm table-bordered mb-0 small">
             <tbody>
+              <tr *ngIf="job.company">
+                <th class="bg-light text-dark fw-bold px-2 py-1">Company</th>
+                <td class="px-2 py-1">{{ job.company }}</td>
+              </tr>
+
+              <tr *ngIf="job.category">
+                <th class="bg-light text-dark fw-bold px-2 py-1">Category</th>
+                <td class="px-2 py-1">{{ job.category }}</td>
+              </tr>
+
+              <tr *ngIf="job.jobType">
+                <th class="bg-light text-dark fw-bold px-2 py-1">Job Type</th>
+                <td class="px-2 py-1">{{ job.jobType }}</td>
+              </tr>
+
+              <tr *ngIf="job.qualification">
+                <th class="bg-light text-dark fw-bold px-2 py-1">Qualification</th>
+                <td class="px-2 py-1">{{ job.qualification }}</td>
+              </tr>
+
+              <tr *ngIf="job.experience">
+                <th class="bg-light text-dark fw-bold px-2 py-1">Experience</th>
+                <td class="px-2 py-1">{{ job.experience }}</td>
+              </tr>
+
+              <tr *ngIf="job.location || job.jobLocation">
+                <th class="bg-light text-dark fw-bold px-2 py-1">Location</th>
+                <td class="px-2 py-1">{{ job.location || job.jobLocation }}</td>
+              </tr>
+
               <tr>
                 <th class="bg-light text-dark fw-bold px-2 py-1">WhatsApp</th>
                 <td class="px-2 py-1">
@@ -123,19 +177,72 @@
           </table>
         </div>
 
+          </div>
+        </div>
+
       </div>
 
       <!-- Right: Recent Posts (30% on desktop) -->
       <div class="col-12 col-lg-4">
-          <div class="recent-posts-sidebar ms-lg-4">
-          <div class="fw-bold recent-posts-heading border-bottom pb-1 mb-2" style="font-size: 0.9rem;">Recent Posts</div>
-          <div class="list-group list-group-flush">
-            <a *ngFor="let topJob of getTopJobs()" (click)="viewJobDetails(topJob)" class="list-group-item list-group-item-action border-0 px-0 py-2 bg-transparent">
-              <div class="fw-bold recent-post-title" style="font-size: 0.85rem;">{{ topJob.title }}</div>
-              <div class="recent-post-date" style="font-size: 0.7rem;">Created: {{ formatWalkInDate(topJob.createdDate) }}</div>
-            </a>
+          <div class="jobfull-section-block jobfull-recent-block">
+            <div class="jobfull-section-header">Recent Posts</div>
+            <div class="jobfull-section-content p-2">
+                <div class="list-group list-group-flush">
+                  <a *ngFor="let topJob of getTopJobs()" (click)="viewJobDetails(topJob)" class="list-group-item list-group-item-action border-0 px-0 py-2 bg-transparent recent-post-item">
+                    <div class="recent-post-thumb" *ngIf="getRecentPostImage(topJob) as imageSrc; else noRecentThumb">
+                      <img [src]="imageSrc" [alt]="topJob.title" loading="lazy">
+                    </div>
+                    <ng-template #noRecentThumb>
+                      <div class="recent-post-thumb recent-post-thumb-empty" aria-hidden="true">
+                        <i class="bi bi-image"></i>
+                      </div>
+                    </ng-template>
+                    <div class="recent-post-content">
+                      <div class="fw-bold recent-post-title">{{ topJob.title }}</div>
+                      <div class="recent-post-date" *ngIf="formatWalkInDate(topJob.createdDate) as createdDateLabel">Created: {{ createdDateLabel }}</div>
+                    </div>
+                  </a>
+              </div>
+            </div>
+        </div>
+
+        <div class="jobfull-section-block jobfull-filter-block">
+          <div class="jobfull-section-header">Filter Jobs</div>
+          <div class="jobfull-section-content p-2">
+            <div class="jobs-filter-item">
+              <label class="jobs-filter-label">Category</label>
+              <div class="jobs-filter-tabs">
+                <a
+                  *ngFor="let category of getAllCategoryFilters()"
+                  class="jobs-filter-tab"
+                  [routerLink]="'/'"
+                  [queryParams]="{ category: category === 'All' ? null : category }">
+                  {{ category }}
+                </a>
+              </div>
+            </div>
           </div>
-          <a routerLink="/" class="btn btn-link btn-sm text-decoration-none p-0 mt-2 recent-posts-link">View all jobs →</a>
+        </div>
+
+        <div class="jobfull-section-block whatsapp-follow-card">
+          <div class="jobfull-section-header">Keep Job Updates</div>
+          <div class="jobfull-section-content p-3">
+            <div class="whatsapp-follow-inner">
+              <div class="whatsapp-follow-icon" aria-hidden="true">
+                <i class="bi bi-whatsapp"></i>
+              </div>
+              <h6 class="whatsapp-follow-title">Join WhatsApp Group</h6>
+              <p class="whatsapp-follow-text">Follow us for latest jobs, walk-ins, and daily alerts.</p>
+              <button
+                type="button"
+                class="whatsapp-follow-btn"
+                (click)="joinWhatsAppGroup()"
+                aria-label="Join WhatsApp group for job updates">
+                <i class="bi bi-whatsapp"></i>
+                Join Now
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

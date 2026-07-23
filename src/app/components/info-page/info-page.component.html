@@ -3,8 +3,11 @@
     <div class="info-card">
       <!-- Card Header -->
       <div class="info-card-header">
-        <i class="bi" [ngClass]="pageIcon"></i>
-        <h2 class="info-card-title">{{ title }}</h2>
+        <i class="bi" [ngClass]="pageIcon" [style.color]="pageIconColor"></i>
+        <div class="info-card-heading">
+          <h2 class="info-card-title">{{ title }}</h2>
+          <p class="info-card-subtitle">{{ subtitle }}</p>
+        </div>
       </div>
       <!-- Card Content -->
       <div class="info-content" [innerHTML]="sanitizedContent"></div>

@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Job } from '../../models/job.model';
+import { Job, DEFAULT_JOB_CATEGORIES } from '../../models/job.model';
 import { ref, get, query, orderByChild, limitToLast, update } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 
@@ -16,6 +16,19 @@ export class JobFullInformation implements OnInit {
   job: Job | null = null;
   isLoading: boolean = true;
   latestJobs: Job[] = [];
+  jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
+  readonly quickFilterCategories: string[] = [
+    'Walk-ins',
+    'Non-Walkins',
+    'B.Tech',
+    'Degree',
+    'Any Graduate',
+    'Freshers',
+    'Experienced',
+    'Vishakhapatnam',
+    'Hyderabad',
+    'Bengaluru'
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -151,8 +164,22 @@ export class JobFullInformation implements OnInit {
   getTopJobs(): Job[] {
     if (!this.latestJobs) return [];
     
-    // Simply return the top 10 latest jobs
-    return this.latestJobs.slice(0, 10);
+    // Show only top 5 recent posts in sidebar
+    return this.latestJobs.slice(0, 5);
+  }
+
+  getAllCategoryFilters(): string[] {
+    const set = new Set<string>(['All']);
+
+    this.quickFilterCategories.forEach((item) => set.add(item));
+    this.jobCategories.forEach((item) => {
+      const trimmed = (item || '').trim();
+      if (trimmed) {
+        set.add(trimmed);
+      }
+    });
+
+    return Array.from(set);
   }
 
   getTimeAgo(dateString: string): string {
@@ -204,14 +231,53 @@ export class JobFullInformation implements OnInit {
     if (!dateString) return '';
     try {
       const date = new Date(dateString);
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
+
       return date.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
+        day: 'numeric',
+        month: 'long'
       });
     } catch (e) {
-      return dateString;
+      return '';
     }
+  }
+
+  private extractImageSrc(value: string): string | null {
+    const raw = (value || '').trim();
+    if (!raw) {
+      return null;
+    }
+
+    const match = raw.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (match && match[1]) {
+      return match[1];
+    }
+
+    if (raw.startsWith('data:image/')) {
+      return raw;
+    }
+
+    if (/^https?:\/\//i.test(raw)) {
+      return raw;
+    }
+
+    return null;
+  }
+
+  getRecentPostImage(job: Job): string | null {
+    return this.extractImageSrc(job.companyImage || '');
+  }
+
+  getTopJobImage(job: Job): string | null {
+    const fromCompanyImage = this.extractImageSrc(job.companyImage || '');
+    if (fromCompanyImage) {
+      return fromCompanyImage;
+    }
+
+    const descriptionImages = this.getFullInfoImages(job.description || '');
+    return descriptionImages.length > 0 ? descriptionImages[0] : null;
   }
 
   getSafeHtml(html: string): SafeHtml {
@@ -227,49 +293,65 @@ export class JobFullInformation implements OnInit {
   parseFullInfo(text: string): { label: string, value: string }[] {
     if (!text) return [];
 
-    // Common labels to identify key-value pairs
-    const labels = [
-      'Organization', 'Post Name', 'Notification No', 'Total Vacancies',
-      'Job Type', 'Application Mode', 'Start Date', 'Last Date', 'Salary'
-    ];
+    const normalized = text
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\u00a0/g, ' ')
+      .trim();
 
-    // Try to find if the string contains labels with colons
-    // Pattern matches Label: Value, but we also want to catch them if they are on new lines or just in a sequence
-    
-    // First, split by common labels to separate the pairs
-    let result: { label: string, value: string }[] = [];
-    
-    // If text has newlines, use them
-    if (text.includes('\n')) {
-      const lines = text.split('\n');
-      lines.forEach(line => {
-        if (line.includes(':')) {
-          const parts = line.split(':');
-          const label = parts[0].trim();
-          const value = parts.slice(1).join(':').trim();
-          if (label && value) {
-            result.push({ label, value });
-          }
-        }
-      });
-      if (result.length > 0) return result;
+    if (!normalized) {
+      return [];
     }
 
-    // If no newlines, but colons exist, try to split by colon
-    // Use a regex to find Label: Value patterns
-    // This is more complex but more robust for the example provided
-    const parts = text.split(/([a-zA-Z\s]+:)/).filter(p => p.trim());
-    for (let i = 0; i < parts.length; i += 2) {
-      if (i + 1 < parts.length) {
-        const label = parts[i].replace(':', '').trim();
-        const value = parts[i + 1].trim();
-        if (label && value) {
-          result.push({ label, value });
-        }
+    const knownLabels = new Set([
+      'organization',
+      'post name',
+      'notification no',
+      'total vacancies',
+      'job type',
+      'mode of application',
+      'application mode',
+      'official website',
+      'official link',
+      'start date',
+      'last date',
+      'salary'
+    ]);
+
+    const rows: { label: string, value: string }[] = [];
+    const lines = normalized
+      .split(/\r\n|\r|\n/)
+      .map(line => line.trim())
+      .filter(Boolean);
+
+    for (const line of lines) {
+      const match = line.match(/^([^:]{2,80}?)\s*:\s*(.+)$/);
+      if (!match) {
+        continue;
+      }
+
+      const label = (match[1] || '').replace(/\s+/g, ' ').trim();
+      const value = (match[2] || '').replace(/\s+/g, ' ').trim();
+
+      if (!label || !value) {
+        continue;
+      }
+
+      const normalizedLabel = label.toLowerCase();
+      const isKnownLabel = knownLabels.has(normalizedLabel);
+      const isShortGenericLabel = !isKnownLabel && label.length <= 35;
+
+      if (isKnownLabel || isShortGenericLabel) {
+        rows.push({ label, value });
       }
     }
 
-    return result;
+    return rows;
+  }
+
+  getStructuredInfoRows(text: string): { label: string, value: string }[] {
+    return this.parseFullInfo(text);
   }
 
   isRichText(description: string): boolean {
@@ -478,7 +560,6 @@ export class JobFullInformation implements OnInit {
     const routeMapping: { [key: string]: string } = {
       'IT Walk-ins': 'IT-Walk-ins',
       'BPO/Non-IT Walk-ins': 'BPO-Non-IT-Walk-ins',
-      'Fresher Walk-ins': 'Fresher-Walk-ins',
       'Sales Walk-ins': 'Sales-Walk-ins',
       'Banking Walk-ins': 'Banking-Walk-ins',
       'Pharma Walk-ins': 'Pharma-Walk-ins'

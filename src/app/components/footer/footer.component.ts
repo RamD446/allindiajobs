@@ -15,14 +15,32 @@ export class FooterComponent {
   
   constructor(private router: Router) {}
 
-  quickLinks = [
+  walkInLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
     { name: 'Home', route: '/' },
-    { name: 'IT Walk-ins', route: '/IT-Walk-ins' },
-    { name: 'BPO/Non-IT Walk-ins', route: '/BPO-Non-IT-Walk-ins' },
-    { name: 'Fresher Walk-ins', route: '/Fresher-Walk-ins' },
-    { name: 'Sales Walk-ins', route: '/Sales-Walk-ins' },
-    { name: 'Banking Walk-ins', route: '/Banking-Walk-ins' },
-    { name: 'Pharma Walk-ins', route: '/Pharma-Walk-ins' },
+    { name: 'Walk-ins', route: '/', queryParams: { category: 'Walk-ins' } },
+    { name: 'Non-Walkins', route: '/', queryParams: { category: 'Non-Walkins' } },
+    { name: 'IT Walk-ins', route: '/', queryParams: { category: 'IT Walk-ins' } },
+    { name: 'BPO/Non-IT Walk-ins', route: '/', queryParams: { category: 'BPO/Non-IT Walk-ins' } },
+    { name: 'Sales Walk-ins', route: '/', queryParams: { category: 'Sales Walk-ins' } },
+    { name: 'Banking Walk-ins', route: '/', queryParams: { category: 'Banking Walk-ins' } },
+    { name: 'Pharma Walk-ins', route: '/', queryParams: { category: 'Pharma Walk-ins' } }
+  ];
+
+  educationLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
+    { name: 'B.Tech', route: '/', queryParams: { category: 'B.Tech' } },
+    { name: 'Degree', route: '/', queryParams: { category: 'Degree' } },
+    { name: 'Any Graduate', route: '/', queryParams: { category: 'Any Graduate' } },
+    { name: 'Freshers', route: '/', queryParams: { category: 'Freshers' } },
+    { name: 'Experienced', route: '/', queryParams: { category: 'Experienced' } }
+  ];
+
+  locationLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
+    { name: 'Vishakhapatnam', route: '/', queryParams: { category: 'Vishakhapatnam' } },
+    { name: 'Hyderabad', route: '/', queryParams: { category: 'Hyderabad' } },
+    { name: 'Bengaluru', route: '/', queryParams: { category: 'Bengaluru' } }
+  ];
+
+  gameLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
     { name: 'Thambola Game', route: '/thambola-game' }
   ];
 

@@ -11,7 +11,7 @@
         <a routerLink="/" class="navbar-brand logo mb-0 d-flex align-items-center">
           <img src="favicon.ico" alt="Icon" class="logo-img me-2" style="width: 24px; height: 24px;">
           <span class="logo-main">
-            <span class="logo-part1">All</span><span class="logo-part2"> Jobs</span>
+            <span class="logo-part1">Allfree</span><span class="logo-part2">Jobs</span>
           </span>
         </a>
       </div>
@@ -76,15 +76,18 @@
       <div class="menu-section mt-2">
         <div class="section-label px-3 mb-1">Job Categories</div>
         <div class="menu-items">
-          <a *ngFor="let cat of navCategories" 
-             [routerLink]="cat.route" 
+          <a *ngFor="let cat of offcanvasFilters"
+             [routerLink]="cat.route"
+             [queryParams]="cat.queryParams"
              class="menu-item" 
              routerLinkActive="active"
              (click)="closeNav()">
             <div class="menu-item-icon" [style.background-color]="cat.color + '15'">
               <i class="bi" [ngClass]="cat.icon" [style.color]="cat.color"></i>
             </div>
-            <span class="menu-item-text">{{ cat.name }}</span>
+            <div class="menu-item-content">
+              <span class="menu-item-text">{{ cat.name }}</span>
+            </div>
             <i class="bi bi-chevron-right ms-auto chevron"></i>
           </a>
         </div>
@@ -118,18 +121,39 @@
       </a>
 
       <a class="jc-pill" href="javascript:void(0)"
-         *ngFor="let category of homeCategoryOptions"
-         [class.jc-pill-active]="selectedHeaderCategory === category.value"
-         (click)="setHeaderCategory(category.value)">
-        <span>{{ category.label }}</span>
+         *ngFor="let filter of homeFilterOptions"
+         [class.jc-pill-active]="selectedHeaderCategory === filter.value"
+         (click)="setHeaderCategory(filter.value)">
+        <span>{{ filter.label }}</span>
       </a>
 
-      <a class="jc-pill" href="javascript:void(0)"
-         *ngFor="let type of homeJobTypeOptions"
-         [class.jc-pill-active]="selectedHeaderJobType === type"
-         (click)="setHeaderJobType(type)">
-        <span>{{ type }}</span>
-      </a>
+      <div class="pill-select-block">
+        <select id="jobTypeFilter" class="pill-select" [(ngModel)]="selectedJobTypeFilter" (change)="onJobTypeChange()" aria-label="Select job type">
+          <option value="">Select Job Type</option>
+          <option *ngFor="let type of jobTypeOptions" [value]="type.value">{{ type.label }}</option>
+        </select>
+      </div>
+
+      <div class="pill-select-block">
+        <select id="experienceFilter" class="pill-select" [(ngModel)]="selectedExperienceFilter" (change)="onExperienceChange()" aria-label="Select experience">
+          <option value="">Select Experience</option>
+          <option *ngFor="let exp of experienceOptions" [value]="exp">{{ exp }}</option>
+        </select>
+      </div>
+
+      <div class="pill-select-block">
+        <select id="educationFilter" class="pill-select" [(ngModel)]="selectedEducationFilter" (change)="onEducationChange()" aria-label="Select education">
+          <option value="">Select Education</option>
+          <option *ngFor="let edu of educationOptions" [value]="edu">{{ edu }}</option>
+        </select>
+      </div>
+
+      <div class="pill-select-block">
+        <select id="locationFilter" class="pill-select" [(ngModel)]="selectedLocationFilter" (change)="onLocationChange()" aria-label="Select location">
+          <option value="">Select Location</option>
+          <option *ngFor="let city of locationOptions" [value]="city">{{ city }}</option>
+        </select>
+      </div>
     </div>
   </div>
 

@@ -9,9 +9,41 @@
           <i class="bi bi-link-45deg"></i>
           Quick Links
         </h6>
+
+        <h6 class="footer-sub-title">Walk-ins</h6>
         <ul class="footer-links">
-          <li *ngFor="let link of quickLinks">
-            <a [routerLink]="link.route" (click)="scrollToTop()">
+          <li *ngFor="let link of walkInLinks">
+            <a [routerLink]="link.route" [queryParams]="link.queryParams || null" (click)="scrollToTop()">
+              <i class="bi bi-chevron-right small me-2"></i>
+              {{ link.name }}
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="footer-sub-title">Education</h6>
+        <ul class="footer-links">
+          <li *ngFor="let link of educationLinks">
+            <a [routerLink]="link.route" [queryParams]="link.queryParams || null" (click)="scrollToTop()">
+              <i class="bi bi-chevron-right small me-2"></i>
+              {{ link.name }}
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="footer-sub-title">Location</h6>
+        <ul class="footer-links">
+          <li *ngFor="let link of locationLinks">
+            <a [routerLink]="link.route" [queryParams]="link.queryParams || null" (click)="scrollToTop()">
+              <i class="bi bi-chevron-right small me-2"></i>
+              {{ link.name }}
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="footer-sub-title">Game</h6>
+        <ul class="footer-links">
+          <li *ngFor="let link of gameLinks">
+            <a [routerLink]="link.route" [queryParams]="link.queryParams || null" (click)="scrollToTop()">
               <i class="bi bi-chevron-right small me-2"></i>
               {{ link.name }}
             </a>
@@ -25,29 +57,29 @@
           <i class="bi bi-info-circle-fill"></i>
           Information
         </h6>
-        <ul class="footer-links">
+        <ul class="footer-links info-links">
           <li>
-            <a routerLink="/about-us" (click)="scrollToTop()">
+            <a class="info-link info-about" routerLink="/about-us" (click)="scrollToTop()">
               <i class="bi bi-chevron-right small me-2"></i>
               About Us
             </a>
           </li>
           <li>
-            <a routerLink="/disclaimer" (click)="scrollToTop()">
+            <a class="info-link info-disclaimer" routerLink="/disclaimer" (click)="scrollToTop()">
               <i class="bi bi-chevron-right small me-2"></i>
               Disclaimer
             </a>
           </li>
           <li>
-            <a routerLink="/privacy-policy" (click)="scrollToTop()">
+            <a class="info-link info-privacy" routerLink="/privacy-policy" (click)="scrollToTop()">
               <i class="bi bi-chevron-right small me-2"></i>
               Privacy Policy
             </a>
           </li>
           <li>
-            <a routerLink="/terms-and-conditions" (click)="scrollToTop()">
+            <a class="info-link info-terms" routerLink="/terms-and-conditions" (click)="scrollToTop()">
               <i class="bi bi-chevron-right small me-2"></i>
-              Terms & Conditions
+              Terms and Conditions
             </a>
           </li>
         </ul>

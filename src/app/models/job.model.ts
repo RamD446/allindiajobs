@@ -29,7 +29,6 @@ export interface Job {
 export const DEFAULT_JOB_CATEGORIES = [
   'IT Walk-ins',
   'BPO/Non-IT Walk-ins',
-  'Fresher Walk-ins',
   'Sales Walk-ins',
   'Banking Walk-ins',
   'Pharma Walk-ins'

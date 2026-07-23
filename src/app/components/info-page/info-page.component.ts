@@ -14,6 +14,7 @@ export class InfoPageComponent implements OnInit {
   today: Date = new Date();
   pageKey = '';
   title = '';
+  subtitle = '';
   content = '';
   sanitizedContent: SafeHtml = '' as any;
   pageIcon = 'bi-info-circle-fill';
@@ -24,16 +25,25 @@ export class InfoPageComponent implements OnInit {
       title: 'About Us',
       content: `
         <h3>About All India Jobs</h3>
-        <p>All India Jobs is an independent job information website. We collect publicly available job information from official company websites and present it here in an easily understandable format for job seekers.</p>
+        <p>All India Jobs is an independent job information platform focused on helping candidates discover verified openings quickly. We gather publicly available opportunities from official company career pages and present them in a clean, easy-to-read format.</p>
         
-        <h4>What We Do:</h4>
+        <h4>What We Do</h4>
         <ul>
-          <li>We do not collect any fees.</li>
-          <li>We do not provide recruitment services.</li>
-          <li>We do not guarantee job placement.</li>
-          <li>We do not collect your resumes.</li>
+          <li>Publish role-wise job updates from trusted official sources.</li>
+          <li>Share direct application paths to official company portals.</li>
+          <li>Organize jobs by category, education, location, and experience.</li>
+          <li>Provide concise details so applicants can act faster.</li>
         </ul>
-        <p>Our main goal is to provide genuine job information (Job Updates) and guide you to official application pages only.</p>
+
+        <h4>Important Clarification</h4>
+        <ul>
+          <li>We never ask for money, fees, or paid registration.</li>
+          <li>We are not a recruitment agency and do not conduct hiring rounds.</li>
+          <li>We do not guarantee job selection or placement.</li>
+          <li>We do not collect resumes or personal hiring documents.</li>
+        </ul>
+
+        <p>Our mission is simple: provide reliable job information and direct candidates only to official application pages.</p>
         <p><strong>Email:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     },
@@ -41,37 +51,37 @@ export class InfoPageComponent implements OnInit {
     'contact-us': {
       title: 'Contact Us',
       content: `
-        <p>If you have any questions, need corrections in job information, or have other inquiries, please contact us:</p>
-        <p><strong>📧 Email:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
-        <p><strong>🌐 Website:</strong> <a href="https://allindajobs.com">https://allindajobs.com</a></p>
-        <p>We will respond to your email within 24–48 hours.</p>
+        <p>For questions, corrections, or business inquiries, please reach out through the contact details below.</p>
+        <p><strong>Email:</strong> <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
+        <p><strong>Website:</strong> <a href="https://allindajobs.com">https://allindajobs.com</a></p>
+        <p>Our team usually responds within 24 to 48 hours.</p>
       `
     },
 
     'privacy-policy': {
       title: 'Privacy Policy',
       content: `
-        <p><strong>Date:</strong> February 17, 2026</p>
-        <p>Welcome to the All India Jobs website. We respect your privacy.</p>
+        <p><strong>Effective Date:</strong> February 17, 2026</p>
+        <p>Your privacy matters to us. This policy explains what data we collect, how we use it, and the limits of our responsibility.</p>
         
         <h4>1. Information We Collect</h4>
-        <p>We do not collect:</p>
+        <p>We do not collect or store:</p>
         <ul>
           <li>User accounts</li>
           <li>Personal login details</li>
           <li>Payment details</li>
           <li>Uploaded documents</li>
         </ul>
-        <p>You do not need to register or provide personal information to use this website.</p>
+        <p>You can browse the website without registration or sharing personal profile data.</p>
         
         <h4>2. Job Information</h4>
-        <p>All job details published on this website are collected from official company career pages. When users click the "Apply" button, they are directed to that company's official website.</p>
+        <p>Job details are sourced from official company career pages. When you click Apply, you are redirected to the employer's official website.</p>
         
         <h4>3. Third-Party Services</h4>
-        <p>We use Google Analytics for website analysis and Google AdSense for advertising. These may use cookies.</p>
+        <p>We may use services such as Google Analytics and Google AdSense. These services may use cookies to improve analytics and ad relevance.</p>
         
         <h4>4. External Links</h4>
-        <p>Our website contains links to other official job pages. We are not responsible for the privacy policies of those websites.</p>
+        <p>Our pages may include external links. We are not responsible for privacy policies or practices followed by third-party websites.</p>
         
         <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
@@ -80,25 +90,35 @@ export class InfoPageComponent implements OnInit {
     'disclaimer': {
       title: 'Disclaimer',
       content: `
-        <p>All India Jobs is not a recruitment agency. We do not directly provide jobs, conduct interviews, or process applications. We never ask for money for jobs.</p>
-        <p>We only provide information. Candidates should verify details on official websites before applying for any job. We are not responsible for any consequences in the job selection process.</p>
+        <p>All India Jobs is an informational platform only. We do not offer jobs directly, conduct interviews, or process candidate applications.</p>
+        <p>We never demand money for jobs, referrals, registrations, or placement support.</p>
+        <p>Candidates are strongly advised to verify every detail on the official employer website before applying. Final recruitment decisions are solely made by the respective companies.</p>
         <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     },
 
     'terms-and-conditions': {
-      title: 'Terms & Conditions',
+      title: 'Terms and Conditions',
       content: `
-        <p>By using <a href="https://allindajobs.com">https://allindajobs.com</a>, you agree to the following:</p>
+        <p>By accessing <a href="https://allindajobs.com">https://allindajobs.com</a>, you agree to the following terms:</p>
         <ul>
-          <li>Use the website for legal purposes only.</li>
-          <li>Do not use job information for fraudulent activities.</li>
-          <li>Do not copy or republish website content without permission.</li>
+          <li>Use this website for lawful purposes only.</li>
+          <li>Do not misuse job information for fraudulent or misleading activity.</li>
+          <li>Do not reproduce, republish, or redistribute content without permission.</li>
+          <li>Always apply through official employer channels.</li>
         </ul>
-        <p>We reserve the right to update or remove content without prior notice.</p>
+        <p>We reserve the right to update, modify, or remove content at any time without prior notice.</p>
         <p>Contact: <a href="mailto:Ramana9000r@gmail.com">Ramana9000r@gmail.com</a></p>
       `
     }
+  };
+
+  private subtitleMap: { [key: string]: string } = {
+    'about-us': 'Trusted job information. Clear guidance. Official apply links only.',
+    'contact-us': 'Reach our team for updates, corrections, and support queries.',
+    'privacy-policy': 'Understand how your data is handled while using our platform.',
+    'disclaimer': 'Read this carefully before using any job information from this site.',
+    'terms-and-conditions': 'Rules and responsibilities for using All India Jobs services.'
   };
 
   constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer) {}
@@ -123,6 +143,8 @@ export class InfoPageComponent implements OnInit {
       this.title = 'Info';
       this.content = 'Information about this site.';
     }
+
+    this.subtitle = this.subtitleMap[this.pageKey] || 'Essential information for All India Jobs users.';
     this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.content);
 
     const iconData = this.iconMap[this.pageKey];

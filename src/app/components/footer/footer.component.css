@@ -76,33 +76,16 @@
 }
 
 .info-links .info-link {
-  border-left: 2px solid transparent;
+  color: #94a3b8;
+  text-decoration: none;
   padding-left: 0.35rem;
+  border-left: 2px solid transparent;
   border-radius: 0 4px 4px 0;
 }
 
-.info-links .info-about {
-  color: #93c5fd;
-  border-left-color: #60a5fa;
-}
-
-.info-links .info-disclaimer {
-  color: #fca5a5;
-  border-left-color: #f87171;
-}
-
-.info-links .info-privacy {
-  color: #86efac;
-  border-left-color: #4ade80;
-}
-
-.info-links .info-terms {
-  color: #fcd34d;
-  border-left-color: #fbbf24;
-}
-
 .info-links .info-link:hover {
-  filter: brightness(1.1);
+  color: #6366f1;
+  padding-left: 5px;
 }
 
 .contact-info {

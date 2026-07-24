@@ -203,6 +203,16 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  getLatestJobsHeading(): string {
+    const category = (this.selectedJobCategory || 'All').trim();
+    if (!category || category.toLowerCase() === 'all') {
+      return 'All Latest Jobs';
+    }
+
+    const normalizedCategory = category.endsWith('Jobs') ? category : `${category} Jobs`;
+    return `All Latest ${normalizedCategory}`;
+  }
+
   private matchesSelectedCategory(job: Job, selected: string): boolean {
     if (selected === 'All') {
       return true;

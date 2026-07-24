@@ -14,7 +14,7 @@
     <div class="row gx-2 gy-2 home-grid-row">
       <div class="col-12 col-lg-8">
         <div class="section-block jobs-list-block">
-          <div class="section-header">Latest Jobs</div>
+          <div class="section-header">{{ getLatestJobsHeading() }}</div>
           <div class="section-content p-2">
             <div *ngIf="hasNoData()" class="no-data-card">
               <div class="no-data-icon">

@@ -373,7 +373,7 @@ header {
   overflow-x: auto;
   overflow-y: visible;
   gap: 0;
-  padding: 0;
+  padding: 0 4px;
   scrollbar-width: none;
   align-items: center;
   -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling for iOS */
@@ -386,16 +386,16 @@ header {
 
 .jc-pill {
   white-space: nowrap;
-  padding: 8px 20px; /* Increased vertical and horizontal padding for desktop */
+  padding: 8px 18px;
   background: transparent;
   border-radius: 0;
   text-decoration: none;
   color: #ffffff;
-  font-size: 0.85rem; /* Slightly larger text */
+  font-size: 0.85rem;
   font-weight: 700;
   transition: all 0.2s;
   border: none;
-  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.55);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -406,8 +406,8 @@ header {
   display: flex;
   align-items: center;
   gap: 2px;
-  padding: 0 8px;
-  border-right: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 0 6px;
+  border-right: 1px solid rgba(255, 255, 255, 0.55);
   flex: 0 0 auto;
 }
 

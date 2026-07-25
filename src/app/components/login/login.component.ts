@@ -5,15 +5,14 @@ import { Router } from '@angular/router';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { ref, push, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
-import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES, CompanyImage } from '../../models/job.model';
-import { QuillModule } from 'ngx-quill';
+import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES, CompanyImage, getCategoryDisplayLabel } from '../../models/job.model';
 import { TiptapEditorComponent } from '../shared/tiptap-editor/tiptap-editor.component';
 import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule, TiptapEditorComponent],
+  imports: [CommonModule, FormsModule, TiptapEditorComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -69,10 +68,6 @@ export class LoginComponent implements OnInit {
     fullJobInformation: '',
     walkInDrive: true,
     description: '',
-    howToApply: '',
-    keyResponsibilities: '',
-    documentsRequired: '',
-    eligibilityCriteria: '',
     otherLink: '',
     walkInInterviewLocation: '',
     hrDetails: '',
@@ -93,19 +88,6 @@ export class LoginComponent implements OnInit {
   locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
   qualificationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
 
-  companyImageEditorModules = {
-    toolbar: {
-      container: [
-        ['image']
-      ],
-      handlers: {
-        image: () => this.handleImageInsert('companyImage')
-      }
-    }
-  };
-
-  private companyImageQuillInstance: any;
-
   constructor(private cdr: ChangeDetectorRef, private router: Router) {
     this.loadJobMetadata();
   }
@@ -122,6 +104,10 @@ export class LoginComponent implements OnInit {
     //     this.jobCategories = snapshot.val();
     //   }
     // });
+  }
+
+  getCategoryDisplayLabel(category: string): string {
+    return getCategoryDisplayLabel(category);
   }
 
   ngOnInit() {
@@ -438,10 +424,6 @@ export class LoginComponent implements OnInit {
       fullInformationTableFormat: job.fullInformationTableFormat || '',
       fullJobInformation: job.fullJobInformation || '',
       walkInDrive: job.jobType ? job.jobType === 'Walk-ins' : !!job.walkInDrive,
-      howToApply: job.howToApply || '',
-      keyResponsibilities: job.keyResponsibilities || '',
-      documentsRequired: job.documentsRequired || '',
-      eligibilityCriteria: job.eligibilityCriteria || '',
       otherLink: job.otherLink || '',
       walkInInterviewLocation: '',
       hrDetails: '',
@@ -613,10 +595,6 @@ export class LoginComponent implements OnInit {
       walkInDrive: true,
       description: '',
       jobLocation: this.locationOptions[0],
-      howToApply: '',
-      keyResponsibilities: '',
-      documentsRequired: '',
-      eligibilityCriteria: '',
       otherLink: '',
       walkInInterviewLocation: '',
       hrDetails: '',
@@ -640,10 +618,6 @@ export class LoginComponent implements OnInit {
   onCompanySelectionChange() {
     const mappedImage = this.getCompanyImageByName(this.jobForm.company);
     this.jobForm.companyImage = mappedImage;
-  }
-
-  onCompanyImageEditorCreated(editor: any) {
-    this.companyImageQuillInstance = editor;
   }
 
   async saveCompanyImage() {
@@ -747,118 +721,6 @@ export class LoginComponent implements OnInit {
     }
 
     return this.jobs.filter((job) => job.company?.toLowerCase() === companyName.toLowerCase()).length;
-  }
-
-  private async handleImageInsert(editorKey: 'companyImage') {
-    const file = await this.selectImageFile();
-    if (!file) {
-      return;
-    }
-
-    try {
-      const dataUrl = await this.compressImageForEditor(file);
-      const editor = editorKey === 'companyImage' ? this.companyImageQuillInstance : null;
-      if (!editor) {
-        return;
-      }
-
-      const range = editor.getSelection(true);
-      const index = range ? range.index : editor.getLength();
-      editor.insertEmbed(index, 'image', dataUrl, 'user');
-      editor.setSelection(index + 1, 0);
-    } catch (error) {
-      console.error('Image processing failed:', error);
-      this.showErrorToast('Unable to process this image. Please try another image.');
-    }
-  }
-
-  private selectImageFile(): Promise<File | null> {
-    return new Promise((resolve) => {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.onchange = () => resolve(input.files && input.files.length > 0 ? input.files[0] : null);
-      input.click();
-    });
-  }
-
-  private async compressImageForEditor(file: File): Promise<string> {
-    const image = await this.loadImage(file);
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-
-    if (!context) {
-      throw new Error('Canvas context not available');
-    }
-
-    // Force final image to 16:9 for consistent content layout.
-    canvas.width = 1280;
-    canvas.height = 720;
-
-    const sourceAspect = image.width / image.height;
-    const targetAspect = 16 / 9;
-
-    let sx = 0;
-    let sy = 0;
-    let sw = image.width;
-    let sh = image.height;
-
-    if (sourceAspect > targetAspect) {
-      sw = image.height * targetAspect;
-      sx = (image.width - sw) / 2;
-    } else if (sourceAspect < targetAspect) {
-      sh = image.width / targetAspect;
-      sy = (image.height - sh) / 2;
-    }
-
-    context.drawImage(image, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-
-    const minKb = 10;
-    const maxKb = 20;
-    let quality = 0.9;
-    let bestDataUrl = canvas.toDataURL('image/jpeg', quality);
-    let bestSizeKb = this.getDataUrlSizeKb(bestDataUrl);
-
-    while (quality >= 0.2) {
-      const candidate = canvas.toDataURL('image/jpeg', quality);
-      const sizeKb = this.getDataUrlSizeKb(candidate);
-
-      bestDataUrl = candidate;
-      bestSizeKb = sizeKb;
-
-      if (sizeKb <= maxKb) {
-        break;
-      }
-
-      quality -= 0.05;
-    }
-
-    if (bestSizeKb < minKb) {
-      bestDataUrl = canvas.toDataURL('image/jpeg', 0.98);
-    }
-
-    return bestDataUrl;
-  }
-
-  private loadImage(file: File): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const image = new Image();
-        image.onload = () => resolve(image);
-        image.onerror = reject;
-        image.src = reader.result as string;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  private getDataUrlSizeKb(dataUrl: string): number {
-    const payload = dataUrl.split(',')[1] || '';
-    const padding = payload.endsWith('==') ? 2 : payload.endsWith('=') ? 1 : 0;
-    const bytes = (payload.length * 3) / 4 - padding;
-    return bytes / 1024;
   }
 
   private keepOnlyImageEmbeds(html: string): string {
@@ -974,10 +836,6 @@ _Share this opportunity with your friends!_
         'Qualification',
         'JobLocationAndHRDetails',
         'JobDescription',
-        'HowToApply',
-        'KeyResponsibilities',
-        'DocumentsRequired',
-        'InterviewProcess',
         'ApplyOfficialLink',
         'FullInformationImagesHtml',
         'FullJobInformationHtml',
@@ -994,10 +852,6 @@ _Share this opportunity with your friends!_
         Qualification: job.qualification || 'Any Graduate',
         JobLocationAndHRDetails: job.jobLocation || '',
         JobDescription: job.description || '',
-        HowToApply: job.howToApply || '',
-        KeyResponsibilities: job.keyResponsibilities || '',
-        DocumentsRequired: job.documentsRequired || '',
-        InterviewProcess: job.eligibilityCriteria || '',
         ApplyOfficialLink: job.otherLink || '',
         FullInformationImagesHtml: job.fullInformationTableFormat || '',
         FullJobInformationHtml: job.fullJobInformation || '',
@@ -1141,10 +995,6 @@ _Share this opportunity with your friends!_
       'Qualification',
       'JobLocationAndHRDetails',
       'JobDescription',
-      'HowToApply',
-      'KeyResponsibilities',
-      'DocumentsRequired',
-      'InterviewProcess',
       'ApplyOfficialLink',
       'FullInformationImagesHtml',
       'FullJobInformationHtml',
@@ -1196,10 +1046,6 @@ _Share this opportunity with your friends!_
         qualification: this.getExcelValue(row, ['Qualification', 'EducationalQualification', 'Qualification Required']) || 'Any Graduate',
         jobLocation: this.getExcelValue(row, ['JobLocationAndHRDetails', 'Job Location and HR Details', 'JobLocation']) || '',
         description: this.getExcelValue(row, ['JobDescription', 'Job Description']) || '',
-        howToApply: this.getExcelValue(row, ['HowToApply', 'How To Apply']) || '',
-        keyResponsibilities: this.getExcelValue(row, ['KeyResponsibilities', 'Key Responsibilities']) || '',
-        documentsRequired: this.getExcelValue(row, ['DocumentsRequired', 'Documents Required']) || '',
-        eligibilityCriteria: this.getExcelValue(row, ['InterviewProcess', 'Interview Process']) || '',
         otherLink: this.getExcelValue(row, ['ApplyOfficialLink', 'Apply Official Link']) || '',
         fullInformationTableFormat: this.getExcelValue(row, ['FullInformationImagesHtml', 'Full Information Images Html', 'FullInformationTableFormat']) || '',
         fullJobInformation: this.getExcelValue(row, ['FullJobInformationHtml', 'Full Job Information Html', 'FullJobInformation']) || '',

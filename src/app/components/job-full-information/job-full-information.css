@@ -478,6 +478,19 @@
   margin-bottom: 0.35rem;
 }
 
+:host ::ng-deep .full-info-rich-content a {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+:host ::ng-deep .full-info-rich-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 0.45rem 0;
+}
+
 :host ::ng-deep .full-info-rich-content ul,
 :host ::ng-deep .full-info-rich-content ol {
   margin: 0.2rem 0 0.35rem 1rem;

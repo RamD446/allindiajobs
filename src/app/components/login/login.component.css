@@ -900,40 +900,6 @@
   box-shadow: 0 6px 14px rgba(37, 99, 235, 0.28);
 }
 
-:host ::ng-deep .full-info-editor {
-  width: 100%;
-  min-height: 320px;
-  max-height: 320px;
-}
-
-:host ::ng-deep .full-info-editor .ql-toolbar.ql-snow,
-:host ::ng-deep .full-info-editor .ql-container.ql-snow {
-  border-color: #d6dbe3;
-}
-
-:host ::ng-deep .full-info-editor .ql-toolbar.ql-snow {
-  border-radius: 6px 6px 0 0;
-  background: #ffffff;
-}
-
-:host ::ng-deep .full-info-editor .ql-container.ql-snow {
-  border-radius: 0 0 6px 6px;
-  height: 272px;
-}
-
-:host ::ng-deep .full-info-editor .ql-editor {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  min-height: 272px;
-  max-height: 272px;
-}
-
-:host ::ng-deep .full-info-editor .ql-editor img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
 .expanded-split-wrap {
   display: grid;
   grid-template-columns: 160px 1fr;
@@ -977,32 +943,6 @@
   font-size: 0.8rem;
   font-weight: 700;
   color: #334155;
-}
-
-:host ::ng-deep .company-image-editor {
-  width: 100%;
-  min-height: 250px;
-  max-height: 250px;
-}
-
-:host ::ng-deep .company-image-editor .ql-toolbar.ql-snow,
-:host ::ng-deep .company-image-editor .ql-container.ql-snow {
-  border-color: #d6dbe3;
-}
-
-:host ::ng-deep .company-image-editor .ql-toolbar.ql-snow {
-  border-radius: 6px 6px 0 0;
-  background: #ffffff;
-}
-
-:host ::ng-deep .company-image-editor .ql-container.ql-snow {
-  border-radius: 0 0 6px 6px;
-  height: 202px;
-}
-
-:host ::ng-deep .company-image-editor .ql-editor {
-  min-height: 202px;
-  max-height: 202px;
 }
 
 .company-image-help {
@@ -1159,31 +1099,6 @@
     display: none; /* Hide scrollbar Chrome/Safari */
   }
 
-  :host ::ng-deep .ql-toolbar.ql-snow,
-  :host ::ng-deep .ql-container.ql-snow {
-    border-color: #d6dbe3;
-  }
-
-  :host ::ng-deep .ql-container.ql-snow {
-    border-radius: 0 0 6px 6px;
-  }
-
-  :host ::ng-deep .ql-toolbar.ql-snow {
-    border-radius: 6px 6px 0 0;
-    background: #ffffff;
-  }
-
-  :host ::ng-deep .ql-editor {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  :host ::ng-deep .ql-editor img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  
   .nav-tabs .nav-link {
     white-space: nowrap;
     padding: 0.5rem 1rem;

@@ -87,45 +87,11 @@
             <div class="full-info-rich-content" [innerHTML]="getSafeHtml(job.fullJobInformation || '')"></div>
           </div>
 
-          <div class="detail-item mb-2" *ngIf="job.keyResponsibilities">
-            <div class="small fw-bold detail-label-red">Job Profile & Key Responsibilities:</div>
-            <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getHowToApplyList(job.keyResponsibilities)">{{ item }}</li>
-            </ul>
-          </div>
-
-         
-
-          <div class="detail-item mb-2" *ngIf="job.eligibilityCriteria">
-            <div class="small fw-bold detail-label-red">Interview Process:</div>
-            <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getHowToApplyList(job.eligibilityCriteria)">{{ item }}</li>
-            </ul>
-          </div>
-
-          <div class="detail-item mb-2" *ngIf="job.documentsRequired">
-            <div class="small fw-bold detail-label-red">Documents Required:</div>
-            <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getHowToApplyList(job.documentsRequired)">{{ item }}</li>
-            </ul>
-          </div>
-
-          <!-- How -->
-          <div class="detail-item mb-2" *ngIf="job.howToApply">
-            <div class="d-flex align-items-center gap-2 mb-1">
-              <div class="small fw-bold detail-label-red">How to Apply:</div>
-              <div class="small text-secondary">Follow these steps</div>
-            </div>
-            <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getHowToApplyList(job.howToApply)">{{ item }}</li>
-            </ul>
-          </div>
-
           <!-- Job Location and HR Details -->
           <div class="detail-item mb-2" *ngIf="job.jobLocation">
             <div class="small fw-bold detail-label-red">Job Location and HR Details:</div>
             <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getHowToApplyList(job.jobLocation)">{{ item }}</li>
+              <li *ngFor="let item of getDetailList(job.jobLocation)">{{ item }}</li>
             </ul>
           </div>
         </div>
@@ -140,7 +106,7 @@
 
               <tr *ngIf="job.category">
                 <th class="bg-light text-dark fw-bold px-2 py-1">Category</th>
-                <td class="px-2 py-1">{{ job.category }}</td>
+                <td class="px-2 py-1">{{ getCategoryDisplayLabel(job.category) }}</td>
               </tr>
 
               <tr *ngIf="job.jobType">
@@ -221,7 +187,7 @@
                   *ngFor="let category of getAllCategoryFilters()"
                   class="jobs-filter-tab"
                   [routerLink]="['/job-category', category === 'All' ? 'all' : category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')]">
-                  {{ category }}
+                  {{ getCategoryDisplayLabel(category) }}
                 </a>
               </div>
             </div>

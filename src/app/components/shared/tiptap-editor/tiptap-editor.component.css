@@ -12,10 +12,21 @@
 .tiptap-toolbar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.35rem;
   padding: 0.45rem 0.5rem;
   border-bottom: 1px solid #e3e8ef;
   background: #f8fafc;
+}
+
+.toolbar-select {
+  border: 1px solid #dbe3ef;
+  border-radius: 4px;
+  height: 30px;
+  padding: 0 0.35rem;
+  font-size: 0.78rem;
+  color: #334155;
+  background: #ffffff;
 }
 
 .toolbar-btn {
@@ -49,6 +60,9 @@
   outline: none;
   min-height: 118px;
   white-space: pre-wrap;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
 }
 
 :host ::ng-deep .ProseMirror p {
@@ -66,4 +80,31 @@
 
 :host ::ng-deep .ProseMirror ul li {
   margin-bottom: 0.2rem;
+}
+
+:host ::ng-deep .ProseMirror a {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+:host ::ng-deep .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 0.4rem 0;
+}
+
+@media (max-width: 768px) {
+  .toolbar-btn {
+    height: 28px;
+    min-width: 28px;
+    font-size: 0.75rem;
+    padding: 0 0.45rem;
+  }
+
+  .toolbar-select {
+    height: 28px;
+    font-size: 0.74rem;
+  }
 }

@@ -200,7 +200,7 @@
               <div class="col-md-4 mb-3">
                 <label class="form-label">Category *</label>
                 <select class="form-control" [(ngModel)]="jobForm.category" name="category" required>
-                  <option *ngFor="let category of jobCategories" [value]="category">{{ category }}</option>
+                  <option *ngFor="let category of jobCategories" [value]="category">{{ getCategoryDisplayLabel(category) }}</option>
                 </select>
               </div>
 
@@ -260,56 +260,6 @@
                   name="fullJobInformation"
                   [placeholder]="'Enter full job information with bold and bullet points...'"></app-tiptap-editor>
               </div>
-
-
-              <!-- How to Apply -->
-              <div class="col-md-6 mb-3">
-                <label class="form-label">How to Apply</label>
-                <textarea
-                  [(ngModel)]="jobForm.howToApply"
-                  name="howToApply"
-                  class="form-control description-textarea"
-                  placeholder="Application instructions..."
-                  rows="3">
-                </textarea>
-              </div>
-
-              <!-- Key Responsibilities -->
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Key Responsibilities</label>
-                <textarea
-                  [(ngModel)]="jobForm.keyResponsibilities"
-                  name="keyResponsibilities"
-                  class="form-control description-textarea"
-                  placeholder="Key job responsibilities..."
-                  rows="3">
-                </textarea>
-              </div>
-
-              <!-- Documents Required -->
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Documents Required</label>
-                <textarea
-                  [(ngModel)]="jobForm.documentsRequired"
-                  name="documentsRequired"
-                  class="form-control description-textarea"
-                  placeholder="List required documents..."
-                  rows="3">
-                </textarea>
-              </div>
-
-              <!-- Eligibility Criteria (Renamed to Interview Process) -->
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Interview Process</label>
-                <textarea
-                  [(ngModel)]="jobForm.eligibilityCriteria"
-                  name="eligibilityCriteria"
-                  class="form-control description-textarea"
-                  placeholder="Interview process details..."
-                  rows="3">
-                </textarea>
-              </div>
-
               <!-- Apply Official Link -->
               <div class="col-md-6 mb-3">
                 <label class="form-label">Apply Official Link</label>
@@ -372,15 +322,10 @@
 
             <div class="mb-2">
               <label class="form-label">Company Image (Image Only) *</label>
-              <quill-editor
-                class="company-image-editor"
+              <app-tiptap-editor
                 [(ngModel)]="companyImageForm.companyImage"
                 name="companyImage"
-                [modules]="companyImageEditorModules"
-                (onEditorCreated)="onCompanyImageEditorCreated($event)"
-                [styles]="{ height: '250px', width: '100%' }"
-                placeholder="Upload company image only...">
-              </quill-editor>
+                [placeholder]="'Insert company image URL and details if needed...'"></app-tiptap-editor>
             </div>
 
             <div class="job-form-footer">
@@ -480,7 +425,7 @@
                 class="jobs-filter-tab"
                 [class.active]="selectedJobCategory === category"
                 (click)="selectCategoryTab(category)">
-                {{ category }} - {{ getCategoryCount(category) }}
+                {{ getCategoryDisplayLabel(category) }} - {{ getCategoryCount(category) }}
               </button>
             </div>
           </div>

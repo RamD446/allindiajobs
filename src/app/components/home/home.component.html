@@ -77,7 +77,7 @@
                   class="jobs-filter-tab"
                   [class.active]="selectedJobCategory === category"
                   (click)="selectCategoryTab(category)">
-                  {{ category }}
+                  {{ getCategoryDisplayLabel(category) }}
                 </button>
               </div>
             </div>

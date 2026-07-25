@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
-import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
+import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
 
 @Component({
   selector: 'app-home',
@@ -260,6 +260,10 @@ export class HomeComponent implements OnInit {
     });
 
     return Array.from(set);
+  }
+
+  getCategoryDisplayLabel(category: string): string {
+    return getCategoryDisplayLabel(category);
   }
 
   getCategoryCount(category: string): number {

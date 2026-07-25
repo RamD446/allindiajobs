@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Job, DEFAULT_JOB_CATEGORIES } from '../../models/job.model';
+import { Job, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel } from '../../models/job.model';
 import { ref, get, query, orderByChild, limitToLast, update } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 
@@ -180,6 +180,10 @@ export class JobFullInformation implements OnInit {
     });
 
     return Array.from(set);
+  }
+
+  getCategoryDisplayLabel(category: string): string {
+    return getCategoryDisplayLabel(category);
   }
 
   getTimeAgo(dateString: string): string {
@@ -457,7 +461,7 @@ export class JobFullInformation implements OnInit {
       .filter(item => item.length > 0);
   }
 
-  getHowToApplyList(notes: string): string[] {
+  getDetailList(notes: string): string[] {
     if (!notes) return [];
 
     const normalized = notes

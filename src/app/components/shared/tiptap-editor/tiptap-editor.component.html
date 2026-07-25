@@ -1,5 +1,43 @@
 <div class="tiptap-shell">
   <div class="tiptap-toolbar">
+    <select
+      class="toolbar-select"
+      [ngModel]="selectedFontSize"
+      (ngModelChange)="setFontSize($event)"
+      aria-label="Font size">
+      <option *ngFor="let size of fontSizes" [value]="size">{{ size }}</option>
+    </select>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isParagraphActive()"
+      (mousedown)="$event.preventDefault()"
+      (click)="setParagraph()"
+      aria-label="Paragraph">
+      P
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isHeadingActive(1)"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleHeading(1)"
+      aria-label="Heading 1">
+      H1
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isHeadingActive(2)"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleHeading(2)"
+      aria-label="Heading 2">
+      H2
+    </button>
+
     <button
       type="button"
       class="toolbar-btn"
@@ -13,11 +51,128 @@
     <button
       type="button"
       class="toolbar-btn"
+      [class.active]="isItalicActive()"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleItalic()"
+      aria-label="Italic">
+      <em>I</em>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isUnderlineActive()"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleUnderline()"
+      aria-label="Underline">
+      <u>U</u>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isStrikeActive()"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleStrike()"
+      aria-label="Strike">
+      <s>S</s>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
       [class.active]="isBulletListActive()"
       (mousedown)="$event.preventDefault()"
       (click)="toggleBulletList()"
       aria-label="Bullet list">
       <i class="bi bi-list-ul"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isOrderedListActive()"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleOrderedList()"
+      aria-label="Numbered list">
+      <i class="bi bi-list-ol"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isBlockquoteActive()"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleBlockquote()"
+      aria-label="Quote">
+      <i class="bi bi-chat-quote"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isLinkActive()"
+      (mousedown)="$event.preventDefault()"
+      (click)="addLink()"
+      aria-label="Add link">
+      <i class="bi bi-link-45deg"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      (mousedown)="$event.preventDefault()"
+      (click)="addImage()"
+      aria-label="Add image">
+      <i class="bi bi-image"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isTextAlignActive('left')"
+      (mousedown)="$event.preventDefault()"
+      (click)="setTextAlign('left')"
+      aria-label="Align left">
+      <i class="bi bi-text-left"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isTextAlignActive('center')"
+      (mousedown)="$event.preventDefault()"
+      (click)="setTextAlign('center')"
+      aria-label="Align center">
+      <i class="bi bi-text-center"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      [class.active]="isTextAlignActive('right')"
+      (mousedown)="$event.preventDefault()"
+      (click)="setTextAlign('right')"
+      aria-label="Align right">
+      <i class="bi bi-text-right"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      (mousedown)="$event.preventDefault()"
+      (click)="undo()"
+      aria-label="Undo">
+      <i class="bi bi-arrow-counterclockwise"></i>
+    </button>
+
+    <button
+      type="button"
+      class="toolbar-btn"
+      (mousedown)="$event.preventDefault()"
+      (click)="redo()"
+      aria-label="Redo">
+      <i class="bi bi-arrow-clockwise"></i>
     </button>
 
     <button

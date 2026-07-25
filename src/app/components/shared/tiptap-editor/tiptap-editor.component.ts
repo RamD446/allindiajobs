@@ -1,14 +1,44 @@
 import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Editor } from '@tiptap/core';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Editor, Extension } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
+import Underline from '@tiptap/extension-underline';
+import Link from '@tiptap/extension-link';
+import Image from '@tiptap/extension-image';
+import TextAlign from '@tiptap/extension-text-align';
+import { TextStyle } from '@tiptap/extension-text-style';
+
+const FontSize = Extension.create({
+  name: 'fontSize',
+
+  addGlobalAttributes() {
+    return [
+      {
+        types: ['textStyle'],
+        attributes: {
+          fontSize: {
+            default: null,
+            parseHTML: (element) => element.style.fontSize || null,
+            renderHTML: (attributes) => {
+              if (!attributes['fontSize']) {
+                return {};
+              }
+
+              return { style: `font-size: ${attributes['fontSize']}` };
+            }
+          }
+        }
+      }
+    ];
+  }
+});
 
 @Component({
   selector: 'app-tiptap-editor',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './tiptap-editor.component.html',
   styleUrl: './tiptap-editor.component.css',
   providers: [
@@ -26,6 +56,8 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
 
   editor: Editor | null = null;
   private value = '';
+  selectedFontSize = '16px';
+  readonly fontSizes = ['12px', '14px', '16px', '18px', '20px', '24px', '28px'];
 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
@@ -35,6 +67,18 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
       element: this.editorHost.nativeElement,
       extensions: [
         StarterKit,
+        Underline,
+        Link.configure({
+          autolink: true,
+          openOnClick: true,
+          defaultProtocol: 'https'
+        }),
+        Image,
+        TextStyle,
+        FontSize,
+        TextAlign.configure({
+          types: ['heading', 'paragraph']
+        }),
         Placeholder.configure({
           placeholder: this.placeholder
         })
@@ -43,12 +87,15 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
       onUpdate: ({ editor }) => {
         const html = editor.getHTML();
         this.value = html;
+        this.selectedFontSize = this.getActiveFontSize();
         this.onChange(html);
       },
       onBlur: () => {
         this.onTouched();
       }
     });
+
+    this.selectedFontSize = this.getActiveFontSize();
   }
 
   writeValue(value: string | null): void {
@@ -73,24 +120,141 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
     }
   }
 
+  setParagraph(): void {
+    this.editor?.chain().focus().setParagraph().run();
+  }
+
+  toggleHeading(level: 1 | 2 | 3): void {
+    this.editor?.chain().focus().toggleHeading({ level }).run();
+  }
+
   toggleBold(): void {
     this.editor?.chain().focus().toggleBold().run();
+  }
+
+  toggleItalic(): void {
+    this.editor?.chain().focus().toggleItalic().run();
+  }
+
+  toggleUnderline(): void {
+    this.editor?.chain().focus().toggleUnderline().run();
+  }
+
+  toggleStrike(): void {
+    this.editor?.chain().focus().toggleStrike().run();
   }
 
   toggleBulletList(): void {
     this.editor?.chain().focus().toggleBulletList().run();
   }
 
+  toggleOrderedList(): void {
+    this.editor?.chain().focus().toggleOrderedList().run();
+  }
+
+  toggleBlockquote(): void {
+    this.editor?.chain().focus().toggleBlockquote().run();
+  }
+
+  setTextAlign(align: 'left' | 'center' | 'right'): void {
+    this.editor?.chain().focus().setTextAlign(align).run();
+  }
+
+  setFontSize(size: string): void {
+    this.selectedFontSize = size;
+    this.editor?.chain().focus().setMark('textStyle', { fontSize: size }).run();
+  }
+
+  addLink(): void {
+    const currentHref = this.editor?.getAttributes('link')['href'] || '';
+    const url = window.prompt('Enter link URL', currentHref);
+
+    if (url === null) {
+      return;
+    }
+
+    const trimmed = url.trim();
+    if (!trimmed) {
+      this.editor?.chain().focus().unsetLink().run();
+      return;
+    }
+
+    this.editor?.chain().focus().extendMarkRange('link').setLink({ href: trimmed }).run();
+  }
+
+  addImage(): void {
+    const url = window.prompt('Enter image URL');
+    if (!url) {
+      return;
+    }
+
+    const trimmed = url.trim();
+    if (!trimmed) {
+      return;
+    }
+
+    this.editor?.chain().focus().setImage({ src: trimmed }).run();
+  }
+
+  undo(): void {
+    this.editor?.chain().focus().undo().run();
+  }
+
+  redo(): void {
+    this.editor?.chain().focus().redo().run();
+  }
+
   clearFormatting(): void {
-    this.editor?.chain().focus().unsetAllMarks().clearNodes().run();
+    this.editor?.chain().focus().unsetAllMarks().clearNodes().unsetTextAlign().run();
   }
 
   isBoldActive(): boolean {
     return !!this.editor?.isActive('bold');
   }
 
+  isItalicActive(): boolean {
+    return !!this.editor?.isActive('italic');
+  }
+
+  isUnderlineActive(): boolean {
+    return !!this.editor?.isActive('underline');
+  }
+
+  isStrikeActive(): boolean {
+    return !!this.editor?.isActive('strike');
+  }
+
   isBulletListActive(): boolean {
     return !!this.editor?.isActive('bulletList');
+  }
+
+  isOrderedListActive(): boolean {
+    return !!this.editor?.isActive('orderedList');
+  }
+
+  isBlockquoteActive(): boolean {
+    return !!this.editor?.isActive('blockquote');
+  }
+
+  isHeadingActive(level: 1 | 2 | 3): boolean {
+    return !!this.editor?.isActive('heading', { level });
+  }
+
+  isParagraphActive(): boolean {
+    return !!this.editor?.isActive('paragraph');
+  }
+
+  isLinkActive(): boolean {
+    return !!this.editor?.isActive('link');
+  }
+
+  isTextAlignActive(align: 'left' | 'center' | 'right'): boolean {
+    return !!this.editor?.isActive({ textAlign: align });
+  }
+
+  private getActiveFontSize(): string {
+    const size = this.editor?.getAttributes('textStyle')['fontSize'];
+    return size || '16px';
   }
 
   ngOnDestroy(): void {

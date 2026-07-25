@@ -14,10 +14,6 @@ export interface Job {
   fullJobInformation?: string;
   walkInDrive?: boolean;
   description: string;
-  howToApply?: string;
-  keyResponsibilities?: string;
-  documentsRequired?: string;
-  eligibilityCriteria?: string;
   otherLink?: string;
   whatsappGroupLink?: string;
   walkInInterviewLocation?: string;
@@ -98,6 +94,14 @@ export const CATEGORY_SLUG_TO_LABEL: Record<string, string> = Object.entries(CAT
     [slug]: label
   }), {} as Record<string, string>);
 
+export const CATEGORY_DISPLAY_LABELS: Record<string, string> = {
+  'IT Walk-ins': 'IT Jobs',
+  'BPO/Non-IT Walk-ins': 'BPO/Non-IT Jobs',
+  'Sales Walk-ins': 'Sales Jobs',
+  'Banking Walk-ins': 'Banking Jobs',
+  'Pharma Walk-ins': 'Pharma Jobs'
+};
+
 export function getCategoryRouteSlug(category: string): string {
   return CATEGORY_ROUTE_SLUGS[category] || category
     .toLowerCase()
@@ -107,4 +111,8 @@ export function getCategoryRouteSlug(category: string): string {
 
 export function getCategoryLabelFromSlug(slug: string): string | null {
   return CATEGORY_SLUG_TO_LABEL[slug] || null;
+}
+
+export function getCategoryDisplayLabel(category: string): string {
+  return CATEGORY_DISPLAY_LABELS[category] || category;
 }

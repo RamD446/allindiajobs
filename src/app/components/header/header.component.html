@@ -52,7 +52,7 @@
                   class="list-group-item list-group-item-action py-2 px-3 d-flex flex-column border-0 border-bottom">
             <span class="text-dark fw-bold small text-truncate">{{ result.title }}</span>
             <span class="text-muted smaller d-flex justify-content-between">
-              <span>{{ result.category || 'Job' }}</span>
+              <span>{{ result.category ? getCategoryDisplayLabel(result.category) : 'Job' }}</span>
               <span class="text-secondary" *ngIf="result.createdDate">{{ result.createdDate | date:'MMM d' }}</span>
             </span>
           </button>

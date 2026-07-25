@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 import { FormsModule } from '@angular/forms';
-import { Job } from '../../models/job.model';
+import { Job, getCategoryDisplayLabel } from '../../models/job.model';
 
 @Component({
   selector: 'app-header',
@@ -38,6 +38,10 @@ export class HeaderComponent implements OnInit {
   homeFilterOptions = [
     ...this.homeCategoryOptions
   ];
+
+  getCategoryDisplayLabel(category: string): string {
+    return getCategoryDisplayLabel(category);
+  }
 
   jobTypeOptions = [
     { value: 'Walk-ins', label: 'Walk-ins Jobs' },

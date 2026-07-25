@@ -929,7 +929,7 @@
     border: 1px solid #334155;
     background: #f8fbff;
     border-radius: 10px;
-    padding: 0.55rem 0.65rem;
+    padding: 0.45rem 0.55rem;
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -952,7 +952,7 @@
   }
 
   .home-job-inner-row {
-    min-height: 74px;
+    min-height: 64px;
   }
 
   .home-job-thumb-col-wrap {
@@ -963,9 +963,9 @@
   }
 
   .home-job-thumb-col {
-    width: 72px;
-    height: 72px;
-    min-height: 72px;
+    width: 64px;
+    height: 64px;
+    min-height: 64px;
     max-width: 100%;
     border-radius: 50%;
     overflow: hidden;
@@ -1041,6 +1041,37 @@
   .home-read-more-btn:hover {
     background: #bfdbfe;
     border-color: #60a5fa;
+  }
+
+  /* Pagination */
+  .home-pagination {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .home-pagination .page-number,
+  .home-pagination .page-btn {
+    padding: 0.28rem 0.5rem;
+    border: 1px solid #dbeafe;
+    background: #f8fbff;
+    color: #1e3a8a;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .home-pagination .page-number.active {
+    background: #1e40af;
+    color: #fff;
+    border-color: #1e40af;
+  }
+
+  .home-pagination .page-btn[disabled] {
+    opacity: 0.5;
+    cursor: default;
   }
 
   .jobs-filter-item {

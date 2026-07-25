@@ -25,7 +25,7 @@
             </div>
 
             <div class="home-jobs-list" *ngIf="!hasNoData()">
-              <div *ngFor="let job of getFilteredJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
+              <div *ngFor="let job of getPaginatedJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
                 <div class="row g-2 align-items-stretch home-job-inner-row">
                   <div class="col-3">
                     <div class="home-job-thumb-col-wrap">
@@ -49,15 +49,27 @@
                       <small class="home-job-row-created" [title]="job.createdDate">
                         Created Date: {{ job.createdDate | date:'MMMM d' }}
                       </small>
-
-                      <small class="home-job-location text-muted" *ngIf="job.location || job.jobLocation">
-                        {{ job.location || job.jobLocation }}
-                      </small>
                     </div>
 
                     <button type="button" class="home-read-more-btn">Read More</button>
                   </div>
                 </div>
+              </div>
+            </div>
+            
+            <!-- Pagination Controls -->
+            <div class="home-pagination-wrap mt-2" *ngIf="getFilteredJobsForHome().length > pageSize">
+              <div class="home-pagination">
+                <button type="button" class="page-btn" (click)="prevPage()" [disabled]="currentPage===1">Prev</button>
+                <button
+                  *ngFor="let p of getVisiblePageNumbers()"
+                  type="button"
+                  class="page-number"
+                  [class.active]="p===currentPage"
+                  (click)="goToPage(p)">
+                  {{ p }}
+                </button>
+                <button type="button" class="page-btn" (click)="nextPage()" [disabled]="currentPage===totalPages">Next</button>
               </div>
             </div>
           </div>

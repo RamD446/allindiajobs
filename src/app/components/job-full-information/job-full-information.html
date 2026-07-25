@@ -82,17 +82,8 @@
             </table>
           </div>
 
-          <div class="full-info-rich-wrap mb-2" *ngIf="hasRenderableHtmlContent(job.fullJobInformation)">
-            <div class="small fw-bold detail-label-red mb-1">Full Job Information:</div>
+          <div class="full-info-rich-wrap" *ngIf="hasRenderableHtmlContent(job.fullJobInformation)">
             <div class="full-info-rich-content" [innerHTML]="getSafeHtml(job.fullJobInformation || '')"></div>
-          </div>
-
-          <!-- Job Location and HR Details -->
-          <div class="detail-item mb-2" *ngIf="job.jobLocation">
-            <div class="small fw-bold detail-label-red">Job Location and HR Details:</div>
-            <ul class="ps-3 mb-0 small text-secondary">
-              <li *ngFor="let item of getDetailList(job.jobLocation)">{{ item }}</li>
-            </ul>
           </div>
         </div>
 <!-- Job Details Table -->

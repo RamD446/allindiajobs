@@ -17,6 +17,10 @@ export class HomeComponent implements OnInit {
   walkinJobs: Job[] = [];
   selectedJobCategory: string = 'All';
   isLoading: boolean = true;
+  // Pagination
+  pageSize: number = 10;
+  currentPage: number = 1;
+  totalPages: number = 1;
   isWalkinOnlyPage: boolean = false;
   isNonWalkinOnlyPage: boolean = false;
   isHomeRootPage: boolean = false;
@@ -370,5 +374,40 @@ export class HomeComponent implements OnInit {
 
   hasNoData(): boolean {
     return this.getFilteredJobsForHome().length === 0;
+  }
+
+  getPaginatedJobsForHome(): Job[] {
+    const all = this.getFilteredJobsForHome();
+    this.totalPages = Math.max(1, Math.ceil(all.length / this.pageSize));
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages;
+    }
+    const start = (this.currentPage - 1) * this.pageSize;
+    return all.slice(start, start + this.pageSize);
+  }
+
+  getVisiblePageNumbers(maxVisible = 3): number[] {
+    const total = this.totalPages || 1;
+    const half = Math.floor(maxVisible / 2);
+    let start = Math.max(1, this.currentPage - half);
+    let end = Math.min(total, start + maxVisible - 1);
+    start = Math.max(1, end - maxVisible + 1);
+    const pages: number[] = [];
+    for (let i = start; i <= end; i++) pages.push(i);
+    return pages;
+  }
+
+  goToPage(page: number) {
+    if (page < 1) page = 1;
+    if (page > this.totalPages) page = this.totalPages;
+    this.currentPage = page;
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) this.currentPage += 1;
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) this.currentPage -= 1;
   }
 }

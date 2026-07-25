@@ -26,21 +26,19 @@
 
             <div class="home-jobs-list" *ngIf="!hasNoData()">
               <div *ngFor="let job of getFilteredJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
-                <div class="row g-2 align-items-stretch home-job-inner-row">
-                  <div class="col-3">
-                    <div class="home-job-thumb-col-wrap">
-                      <div class="home-job-thumb-col" *ngIf="getJobCardImage(job) as imageSrc; else noThumb">
-                        <img [src]="imageSrc" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
-                      </div>
-                      <ng-template #noThumb>
-                        <div class="home-job-thumb-col home-job-thumb-col-empty">
-                          <i class="bi bi-image"></i>
-                        </div>
-                      </ng-template>
+                <div class="home-job-inner-row">
+                  <div class="home-job-thumb-col-wrap">
+                    <div class="home-job-thumb-col" *ngIf="getJobCardImage(job) as imageSrc; else noThumb">
+                      <img [src]="imageSrc" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
                     </div>
+                    <ng-template #noThumb>
+                      <div class="home-job-thumb-col home-job-thumb-col-empty">
+                        <i class="bi bi-image"></i>
+                      </div>
+                    </ng-template>
                   </div>
 
-                  <div class="col-9 home-job-details-col">
+                  <div class="home-job-details-col">
                     <div class="home-job-row-title">{{ job.title }}</div>
                     <div class="home-job-description">
                       {{ getJobDescriptionPreview(job, 160) }}
@@ -54,8 +52,6 @@
                         {{ job.location || job.jobLocation }}
                       </small>
                     </div>
-
-                    <button type="button" class="home-read-more-btn">Read More</button>
                   </div>
                 </div>
               </div>

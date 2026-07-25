@@ -920,24 +920,25 @@
   }
 
   .home-jobs-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
-  }
-
-  .home-job-row {
-    border: 1px solid #334155;
-    background: #f8fbff;
-    border-radius: 10px;
-    padding: 0.55rem 0.65rem;
     display: flex;
     flex-direction: column;
     gap: 0;
+  }
+
+  .home-job-row {
+    border-bottom: 1px solid #dbe5f0;
+    background: #ffffff;
+    padding: 0.8rem 0.35rem;
     cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .home-job-row:last-child {
+    border-bottom: none;
   }
 
   .home-job-row:hover {
-    background: #f1f6ff;
+    background: #f8fbff;
   }
 
   .home-job-row-title {
@@ -953,6 +954,9 @@
 
   .home-job-inner-row {
     min-height: 74px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 
   .home-job-thumb-col-wrap {
@@ -963,11 +967,12 @@
   }
 
   .home-job-thumb-col {
-    width: 72px;
-    height: 72px;
-    min-height: 72px;
+    width: 68px;
+    height: 68px;
+    min-height: 68px;
+    min-width: 68px;
     max-width: 100%;
-    border-radius: 50%;
+    border-radius: 10px;
     overflow: hidden;
     background: #eef2f7;
     display: flex;
@@ -980,7 +985,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: 10px;
   }
 
   .home-job-thumb-col-empty {
@@ -992,6 +997,8 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
   }
 
   .home-job-description {
@@ -1021,26 +1028,6 @@
   .home-job-location {
     font-size: 0.74rem;
     text-align: left;
-  }
-
-  .home-read-more-btn {
-    align-self: stretch;
-    width: 100%;
-    margin-top: 0.35rem;
-    padding: 0.38rem 0.75rem;
-    border: 1px solid #93c5fd;
-    border-radius: 8px;
-    background: #dbeafe;
-    color: #1d4ed8;
-    font-size: 0.82rem;
-    font-weight: 800;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  .home-read-more-btn:hover {
-    background: #bfdbfe;
-    border-color: #60a5fa;
   }
 
   .jobs-filter-item {
@@ -1184,15 +1171,8 @@
       margin: 0 4px 0.5rem;
     }
 
-    .home-jobs-list {
-      grid-template-columns: 1fr;
-    }
-
     .home-job-row {
-      border-radius: 8px;
-      border-left: 1px solid #334155;
-      border-right: 1px solid #334155;
-      padding: 0.65rem 0.75rem;
+      padding: 0.65rem 0.35rem;
     }
 
     .home-job-row-title {
@@ -1202,17 +1182,14 @@
 
     .home-job-inner-row {
       min-height: 68px;
+      gap: 0.55rem;
     }
 
     .home-job-thumb-col {
-      width: 60px;
-      height: 60px;
-      min-height: 60px;
-    }
-
-    .home-read-more-btn {
-      font-size: 0.78rem;
-      padding: 0.34rem 0.62rem;
+      width: 56px;
+      height: 56px;
+      min-height: 56px;
+      min-width: 56px;
     }
 
     .whatsapp-follow-icon {

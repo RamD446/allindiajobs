@@ -47,6 +47,7 @@
                       <small class="home-job-row-created" [title]="job.createdDate">
                         Created Date: {{ job.createdDate | date:'MMMM d' }}
                       </small>
+                      <button type="button" class="home-read-more-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">Read More</button>
                     </div>
                   </div>
                 </div>

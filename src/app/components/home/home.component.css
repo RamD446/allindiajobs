@@ -1025,6 +1025,23 @@
     color: #475569;
   }
 
+  .home-read-more-btn {
+    padding: 0.28rem 0.7rem;
+    border: 1px solid #93c5fd;
+    border-radius: 8px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .home-read-more-btn:hover {
+    background: #bfdbfe;
+    border-color: #60a5fa;
+  }
+
   .home-job-location {
     font-size: 0.74rem;
     text-align: left;

@@ -25,26 +25,11 @@
             </div>
 
             <div class="home-jobs-list" *ngIf="!hasNoData()">
-<<<<<<< HEAD
-              <div *ngFor="let job of getFilteredJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
+              <div *ngFor="let job of getPaginatedJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
                 <div class="home-job-inner-row">
                   <div class="home-job-thumb-col-wrap">
                     <div class="home-job-thumb-col" *ngIf="getJobCardImage(job) as imageSrc; else noThumb">
                       <img [src]="imageSrc" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
-=======
-              <div *ngFor="let job of getPaginatedJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
-                <div class="row g-2 align-items-stretch home-job-inner-row">
-                  <div class="col-3">
-                    <div class="home-job-thumb-col-wrap">
-                      <div class="home-job-thumb-col" *ngIf="getJobCardImage(job) as imageSrc; else noThumb">
-                        <img [src]="imageSrc" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
-                      </div>
-                      <ng-template #noThumb>
-                        <div class="home-job-thumb-col home-job-thumb-col-empty">
-                          <i class="bi bi-image"></i>
-                        </div>
-                      </ng-template>
->>>>>>> 4244864e0c945506fe532861bd46ba155187a800
                     </div>
                     <ng-template #noThumb>
                       <div class="home-job-thumb-col home-job-thumb-col-empty">

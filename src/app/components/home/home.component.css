@@ -920,26 +920,13 @@
   }
 
   .home-jobs-list {
-<<<<<<< HEAD
-=======
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
-  }
-
-  .home-job-row {
-    border: 1px solid #334155;
-    background: #f8fbff;
-    border-radius: 10px;
-    padding: 0.45rem 0.55rem;
->>>>>>> 4244864e0c945506fe532861bd46ba155187a800
     display: flex;
     flex-direction: column;
     gap: 0;
   }
 
   .home-job-row {
-    border-bottom: 1px solid #dbe5f0;
+    border-bottom: 1px solid #94a3b8;
     background: #ffffff;
     padding: 0.8rem 0.35rem;
     cursor: pointer;
@@ -966,14 +953,10 @@
   }
 
   .home-job-inner-row {
-<<<<<<< HEAD
     min-height: 74px;
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-=======
-    min-height: 64px;
->>>>>>> 4244864e0c945506fe532861bd46ba155187a800
   }
 
   .home-job-thumb-col-wrap {
@@ -984,18 +967,12 @@
   }
 
   .home-job-thumb-col {
-<<<<<<< HEAD
     width: 68px;
     height: 68px;
     min-height: 68px;
     min-width: 68px;
-=======
-    width: 64px;
-    height: 64px;
-    min-height: 64px;
->>>>>>> 4244864e0c945506fe532861bd46ba155187a800
     max-width: 100%;
-    border-radius: 10px;
+    border-radius: 50%;
     overflow: hidden;
     background: #eef2f7;
     display: flex;
@@ -1008,7 +985,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 50%;
   }
 
   .home-job-thumb-col-empty {
@@ -1053,28 +1030,6 @@
     text-align: left;
   }
 
-<<<<<<< HEAD
-=======
-  .home-read-more-btn {
-    align-self: stretch;
-    width: 100%;
-    margin-top: 0.35rem;
-    padding: 0.38rem 0.75rem;
-    border: 1px solid #93c5fd;
-    border-radius: 8px;
-    background: #dbeafe;
-    color: #1d4ed8;
-    font-size: 0.82rem;
-    font-weight: 800;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  .home-read-more-btn:hover {
-    background: #bfdbfe;
-    border-color: #60a5fa;
-  }
-
   /* Pagination */
   .home-pagination {
     display: flex;
@@ -1105,8 +1060,6 @@
     opacity: 0.5;
     cursor: default;
   }
-
->>>>>>> 4244864e0c945506fe532861bd46ba155187a800
   .jobs-filter-item {
     min-width: 0;
   }

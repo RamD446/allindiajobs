@@ -11,6 +11,7 @@ export interface Job {
   experience?: string;
   qualification?: string;
   fullInformationTableFormat?: string;
+  fullJobInformation?: string;
   walkInDrive?: boolean;
   description: string;
   howToApply?: string;

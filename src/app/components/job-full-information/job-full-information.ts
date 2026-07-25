@@ -281,7 +281,35 @@ export class JobFullInformation implements OnInit {
   }
 
   getSafeHtml(html: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    const cleaned = (html || '')
+      .replace(/<wbr\s*\/?\s*>/gi, '')
+      .replace(/&shy;/gi, '')
+      .replace(/&#173;/gi, '')
+      .replace(/\u00ad/g, '')
+      .replace(/&#8203;/gi, '')
+      .replace(/&ZeroWidthSpace;/gi, '')
+      .replace(/\u200b/g, '')
+      .replace(/\u200c/g, '')
+      .replace(/\u200d/g, '')
+      .replace(/\u2060/g, '')
+      .replace(/\ufeff/g, '');
+
+    return this.sanitizer.bypassSecurityTrustHtml(cleaned);
+  }
+
+  hasRenderableHtmlContent(html?: string): boolean {
+    if (!html) {
+      return false;
+    }
+
+    const normalized = html
+      .replace(/<wbr\s*\/?\s*>/gi, '')
+      .replace(/<p><br><\/p>/gi, '')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/<[^>]*>/g, ' ')
+      .trim();
+
+    return normalized.length > 0;
   }
 
   getFullInfoImages(html: string): string[] {

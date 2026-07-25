@@ -7,12 +7,13 @@ import { ref, push, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
 import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES, CompanyImage } from '../../models/job.model';
 import { QuillModule } from 'ngx-quill';
+import { TiptapEditorComponent } from '../shared/tiptap-editor/tiptap-editor.component';
 import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule],
+  imports: [CommonModule, FormsModule, QuillModule, TiptapEditorComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -65,6 +66,7 @@ export class LoginComponent implements OnInit {
     category: '',
     experience: 'Freshers',
     fullInformationTableFormat: '',
+    fullJobInformation: '',
     walkInDrive: true,
     description: '',
     howToApply: '',
@@ -434,6 +436,7 @@ export class LoginComponent implements OnInit {
       experience: job.experience || 'Freshers',
       qualification: job.qualification || 'Any Graduate',
       fullInformationTableFormat: job.fullInformationTableFormat || '',
+      fullJobInformation: job.fullJobInformation || '',
       walkInDrive: job.jobType ? job.jobType === 'Walk-ins' : !!job.walkInDrive,
       howToApply: job.howToApply || '',
       keyResponsibilities: job.keyResponsibilities || '',
@@ -525,6 +528,7 @@ export class LoginComponent implements OnInit {
           ...jobData,
           companyImage: normalizedCurrentImage || normalizedMappedImage,
           fullInformationTableFormat: jobData.fullInformationTableFormat || '',
+          fullJobInformation: jobData.fullJobInformation || '',
           walkInDrive: jobData.jobType === 'Walk-ins',
           walkInInterviewLocation: '',
           hrDetails: ''
@@ -548,6 +552,7 @@ export class LoginComponent implements OnInit {
           ...jobData,
           companyImage: normalizedCurrentImage || normalizedMappedImage,
           fullInformationTableFormat: jobData.fullInformationTableFormat || '',
+          fullJobInformation: jobData.fullJobInformation || '',
           walkInDrive: jobData.jobType === 'Walk-ins',
           walkInInterviewLocation: '',
           hrDetails: ''
@@ -604,6 +609,7 @@ export class LoginComponent implements OnInit {
       experience: this.experienceOptions[0],
       qualification: this.qualificationOptions[2],
       fullInformationTableFormat: '',
+      fullJobInformation: '',
       walkInDrive: true,
       description: '',
       jobLocation: this.locationOptions[0],
@@ -974,6 +980,7 @@ _Share this opportunity with your friends!_
         'InterviewProcess',
         'ApplyOfficialLink',
         'FullInformationImagesHtml',
+        'FullJobInformationHtml',
         'CreatedDate'
       ];
 
@@ -993,6 +1000,7 @@ _Share this opportunity with your friends!_
         InterviewProcess: job.eligibilityCriteria || '',
         ApplyOfficialLink: job.otherLink || '',
         FullInformationImagesHtml: job.fullInformationTableFormat || '',
+        FullJobInformationHtml: job.fullJobInformation || '',
         CreatedDate: job.createdDate || ''
       }));
 
@@ -1139,6 +1147,7 @@ _Share this opportunity with your friends!_
       'InterviewProcess',
       'ApplyOfficialLink',
       'FullInformationImagesHtml',
+      'FullJobInformationHtml',
       'CreatedDate'
     ];
 
@@ -1193,6 +1202,7 @@ _Share this opportunity with your friends!_
         eligibilityCriteria: this.getExcelValue(row, ['InterviewProcess', 'Interview Process']) || '',
         otherLink: this.getExcelValue(row, ['ApplyOfficialLink', 'Apply Official Link']) || '',
         fullInformationTableFormat: this.getExcelValue(row, ['FullInformationImagesHtml', 'Full Information Images Html', 'FullInformationTableFormat']) || '',
+        fullJobInformation: this.getExcelValue(row, ['FullJobInformationHtml', 'Full Job Information Html', 'FullJobInformation']) || '',
         walkInDrive: jobType === 'Walk-ins',
         walkInInterviewLocation: '',
         hrDetails: '',

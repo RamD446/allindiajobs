@@ -454,6 +454,36 @@
   overflow-x: auto;
 }
 
+.full-info-rich-wrap {
+  border: 1px solid #cddaf0;
+  border-radius: 8px;
+  background: #f8fbff;
+  padding: 0.55rem 0.65rem;
+}
+
+.full-info-rich-content {
+  font-size: 0.84rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+:host ::ng-deep .full-info-rich-content * {
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  hyphens: none !important;
+}
+
+:host ::ng-deep .full-info-rich-content p {
+  margin-bottom: 0.35rem;
+}
+
+:host ::ng-deep .full-info-rich-content ul,
+:host ::ng-deep .full-info-rich-content ol {
+  margin: 0.2rem 0 0.35rem 1rem;
+  padding-left: 0.5rem;
+}
+
 .full-info-kv-table {
   border-color: #cddaf0;
 }

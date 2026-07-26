@@ -1,5 +1,6 @@
 {
   "projects": {
+    "default": "allindiajobs-36405",
     "allindiajobs": "allindiajobs-36405"
   },
   "targets": {},

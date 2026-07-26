@@ -34,6 +34,10 @@
 
 .jobfull-details-block {
   height: 100%;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin-top: 1.5rem;
 }
 
 .job-title-banner {
@@ -65,6 +69,14 @@
     border-left: 1px solid #dee2e6;
     border-right: 1px solid #dee2e6;
     margin: 0 4px 0.5rem;
+  }
+
+  .jobfull-details-block {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
   }
 }
 

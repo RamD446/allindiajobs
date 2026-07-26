@@ -1007,34 +1007,39 @@
     line-height: 1.25;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
   }
 
   .home-job-row-meta {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.45rem;
     margin-top: auto;
   }
 
   .home-job-row-created {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     color: #475569;
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   .home-read-more-btn {
-    padding: 0.28rem 0.7rem;
+    padding: 0.22rem 0.55rem;
     border: 1px solid #93c5fd;
     border-radius: 8px;
     background: #dbeafe;
     color: #1d4ed8;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.15s ease;
+    min-width: 72px;
+    white-space: nowrap;
+    margin-left: auto;
   }
 
   .home-read-more-btn:hover {

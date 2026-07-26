@@ -1,4 +1,4 @@
-<div class="container-fluid home-container">
+<div class="">
   <div *ngIf="isLoading" class="finding-jobs-loader">
     <div class="loader-icon-wrap">
       <i class="bi bi-briefcase-fill loader-briefcase"></i>
@@ -41,7 +41,7 @@
                   <div class="home-job-details-col">
                     <div class="home-job-row-title">{{ job.title }}</div>
                     <div class="home-job-description">
-                      {{ getJobDescriptionPreview(job, 160) }}
+                      {{ getJobDescriptionPreview(job, 500) }}
                     </div>
                     <div class="home-job-row-meta">
                       <small class="home-job-row-created" [title]="job.createdDate">

@@ -127,6 +127,22 @@
       <i class="bi bi-image"></i>
     </button>
 
+    <select
+      class="toolbar-select"
+      [ngModel]="selectedTextColor"
+      (ngModelChange)="setTextColor($event)"
+      aria-label="Text color">
+      <option *ngFor="let color of textColors" [value]="color.value">{{ color.label }}</option>
+    </select>
+
+    <select
+      class="toolbar-select"
+      [ngModel]="selectedHighlightColor"
+      (ngModelChange)="setHighlightColor($event)"
+      aria-label="Highlight color">
+      <option *ngFor="let color of highlightColors" [value]="color.value">{{ color.label }}</option>
+    </select>
+
     <button
       type="button"
       class="toolbar-btn"

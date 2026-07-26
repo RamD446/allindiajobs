@@ -336,7 +336,7 @@ export class HomeComponent implements OnInit {
     return direct;
   }
 
-  getJobDescriptionPreview(job: Job, maxLength: number = 100): string {
+  getJobDescriptionPreview(job: Job, maxLength: number = 500): string {
     const cleanText = (job.description || '').replace(/\s+/g, ' ').trim();
     if (!cleanText) {
       return 'No description available';

@@ -10,8 +10,8 @@ import Image from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 
-const FontSize = Extension.create({
-  name: 'fontSize',
+const TextStyleAttributes = Extension.create({
+  name: 'textStyleAttributes',
 
   addGlobalAttributes() {
     return [
@@ -27,6 +27,28 @@ const FontSize = Extension.create({
               }
 
               return { style: `font-size: ${attributes['fontSize']}` };
+            }
+          },
+          color: {
+            default: null,
+            parseHTML: (element) => element.style.color || null,
+            renderHTML: (attributes) => {
+              if (!attributes['color']) {
+                return {};
+              }
+
+              return { style: `color: ${attributes['color']}` };
+            }
+          },
+          backgroundColor: {
+            default: null,
+            parseHTML: (element) => element.style.backgroundColor || null,
+            renderHTML: (attributes) => {
+              if (!attributes['backgroundColor']) {
+                return {};
+              }
+
+              return { style: `background-color: ${attributes['backgroundColor']}` };
             }
           }
         }
@@ -57,7 +79,24 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
   editor: Editor | null = null;
   private value = '';
   selectedFontSize = '16px';
+  selectedTextColor = '';
+  selectedHighlightColor = '';
   readonly fontSizes = ['12px', '14px', '16px', '18px', '20px', '24px', '28px'];
+  readonly textColors = [
+    { label: 'Text color', value: '' },
+    { label: 'Black', value: '#111827' },
+    { label: 'Blue', value: '#2563eb' },
+    { label: 'Red', value: '#dc2626' },
+    { label: 'Green', value: '#15803d' },
+    { label: 'Gray', value: '#475569' }
+  ];
+  readonly highlightColors = [
+    { label: 'Highlight', value: '' },
+    { label: 'Yellow', value: '#fde68a' },
+    { label: 'Cyan', value: '#bae6fd' },
+    { label: 'Pink', value: '#fecdd3' },
+    { label: 'Mint', value: '#bbf7d0' }
+  ];
 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
@@ -75,7 +114,7 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
         }),
         Image,
         TextStyle,
-        FontSize,
+        TextStyleAttributes,
         TextAlign.configure({
           types: ['heading', 'paragraph']
         }),
@@ -88,6 +127,8 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
         const html = editor.getHTML();
         this.value = html;
         this.selectedFontSize = this.getActiveFontSize();
+        this.selectedTextColor = this.getActiveTextColor();
+        this.selectedHighlightColor = this.getActiveBackgroundColor();
         this.onChange(html);
       },
       onBlur: () => {
@@ -163,6 +204,16 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
   setFontSize(size: string): void {
     this.selectedFontSize = size;
     this.editor?.chain().focus().setMark('textStyle', { fontSize: size }).run();
+  }
+
+  setTextColor(color: string): void {
+    this.selectedTextColor = color;
+    this.editor?.chain().focus().setMark('textStyle', { color: color || null }).run();
+  }
+
+  setHighlightColor(color: string): void {
+    this.selectedHighlightColor = color;
+    this.editor?.chain().focus().setMark('textStyle', { backgroundColor: color || null }).run();
   }
 
   addLink(): void {
@@ -255,6 +306,14 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
   private getActiveFontSize(): string {
     const size = this.editor?.getAttributes('textStyle')['fontSize'];
     return size || '16px';
+  }
+
+  private getActiveTextColor(): string {
+    return this.editor?.getAttributes('textStyle')['color'] || '';
+  }
+
+  private getActiveBackgroundColor(): string {
+    return this.editor?.getAttributes('textStyle')['backgroundColor'] || '';
   }
 
   ngOnDestroy(): void {

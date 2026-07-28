@@ -128,7 +128,7 @@
 
       <div class="pill-select-block">
         <select id="jobTypeFilter" class="pill-select" [(ngModel)]="selectedJobTypeFilter" (change)="onJobTypeChange()" aria-label="Select job type">
-          <option value="">Job Type</option>
+          <option value="">Select Job type</option>
           <option *ngFor="let type of jobTypeOptions" [value]="type.value">{{ type.label }}</option>
         </select>
       </div>

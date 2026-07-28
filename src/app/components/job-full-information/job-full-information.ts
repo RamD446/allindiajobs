@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Job, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel } from '../../models/job.model';
-import { ref, get, query, orderByChild, limitToLast, update } from 'firebase/database';
+import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel } from '../../models/job.model';
+import { ref, get, onValue, query, orderByChild, limitToLast, update } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 
 @Component({
@@ -16,6 +16,7 @@ export class JobFullInformation implements OnInit {
   job: Job | null = null;
   isLoading: boolean = true;
   latestJobs: Job[] = [];
+  private companyImageMap: Record<string, string> = {};
   jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
   readonly quickFilterCategories: string[] = [
     'Walk-ins',
@@ -40,6 +41,7 @@ export class JobFullInformation implements OnInit {
   async ngOnInit() {
     console.log('Job Full Information Component Initialized');
     this.isLoading = true;
+    this.loadCompanyImages();
     
     // Get route parameters
     const jobId = this.route.snapshot.paramMap.get('id');
@@ -106,6 +108,49 @@ export class JobFullInformation implements OnInit {
       console.error('Error loading job from Firebase:', error);
       this.job = null;
     }
+  }
+
+  private loadCompanyImages(): void {
+    try {
+      const companyImagesRef = ref(db, 'companyImages');
+      onValue(companyImagesRef, (snapshot) => {
+        const data = snapshot.val();
+        const map: Record<string, string> = {};
+        if (data) {
+          const rows = Object.keys(data).map((key) => ({
+            id: key,
+            ...data[key]
+          })) as CompanyImage[];
+          for (const item of rows) {
+            const key = this.normalizeCompanyName(item.companyName || '');
+            if (key) {
+              map[key] = item.companyImage || '';
+            }
+          }
+        }
+        this.companyImageMap = map;
+        this.cdr.detectChanges();
+      });
+    } catch (error) {
+      console.error('Error loading company images:', error);
+    }
+  }
+
+  private normalizeCompanyName(value: string): string {
+    return (value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  private getMappedImageByCompany(companyName: string): string {
+    const key = this.normalizeCompanyName(companyName);
+    if (!key) { return ''; }
+    if (this.companyImageMap[key]) {
+      return this.companyImageMap[key];
+    }
+    const mapKeys = Object.keys(this.companyImageMap);
+    const partialMatch = mapKeys.find((k) => key.includes(k) || k.includes(key));
+    return partialMatch ? (this.companyImageMap[partialMatch] || '') : '';
   }
 
   private async loadLatestJobs(): Promise<void> {
@@ -271,17 +316,13 @@ export class JobFullInformation implements OnInit {
   }
 
   getRecentPostImage(job: Job): string | null {
-    return this.extractImageSrc(job.companyImage || '');
+    const mapped = this.getMappedImageByCompany(job.company || '');
+    return this.extractImageSrc(mapped) || 'assets/images/logo.png';
   }
 
   getTopJobImage(job: Job): string | null {
-    const fromCompanyImage = this.extractImageSrc(job.companyImage || '');
-    if (fromCompanyImage) {
-      return fromCompanyImage;
-    }
-
-    const descriptionImages = this.getFullInfoImages(job.description || '');
-    return descriptionImages.length > 0 ? descriptionImages[0] : null;
+    const mapped = this.getMappedImageByCompany(job.company || '');
+    return this.extractImageSrc(mapped) || 'assets/images/logo.png';
   }
 
   getSafeHtml(html: string): SafeHtml {

@@ -13,10 +13,6 @@ export const routes: Routes = [
   { path: 'Banking-Walk-ins', component: HomeComponent },
   { path: 'Pharma-Walk-ins', component: HomeComponent },
   {
-    path: 'official-company-careers',
-    loadComponent: () => import('./components/official-company-careers/official-company-careers.component').then(m => m.OfficialCompanyCareersComponent)
-  },
-  {
     path: 'thambola-game',
     loadComponent: () => import('./components/thambola-game/thambola-game.component').then(m => m.ThambolaGameComponent)
   },

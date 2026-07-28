@@ -75,6 +75,7 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
   @Input() placeholder = 'Type here...';
 
   @ViewChild('editorHost', { static: true }) editorHost!: ElementRef<HTMLDivElement>;
+  @ViewChild('imageFileInput') imageFileInput!: ElementRef<HTMLInputElement>;
 
   editor: Editor | null = null;
   private value = '';
@@ -234,17 +235,20 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
   }
 
   addImage(): void {
-    const url = window.prompt('Enter image URL');
-    if (!url) {
-      return;
-    }
+    this.imageFileInput.nativeElement.value = '';
+    this.imageFileInput.nativeElement.click();
+  }
 
-    const trimmed = url.trim();
-    if (!trimmed) {
-      return;
-    }
-
-    this.editor?.chain().focus().setImage({ src: trimmed }).run();
+  onImageFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) { return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      this.editor?.chain().focus().setImage({ src: base64 }).run();
+    };
+    reader.readAsDataURL(file);
   }
 
   undo(): void {

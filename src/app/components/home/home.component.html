@@ -28,14 +28,9 @@
               <div *ngFor="let job of getPaginatedJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
                 <div class="home-job-inner-row">
                   <div class="home-job-thumb-col-wrap">
-                    <div class="home-job-thumb-col" *ngIf="getJobCardImage(job) as imageSrc; else noThumb">
-                      <img [src]="imageSrc" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
+                    <div class="home-job-thumb-col">
+                      <img [src]="getJobCardImage(job)" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
                     </div>
-                    <ng-template #noThumb>
-                      <div class="home-job-thumb-col home-job-thumb-col-empty">
-                        <i class="bi bi-image"></i>
-                      </div>
-                    </ng-template>
                   </div>
 
                   <div class="home-job-details-col">
@@ -94,13 +89,11 @@
         </div>
 
         <div class="section-block whatsapp-follow-card">
-          <div class="section-header">Keep Job Updates</div>
+          
           <div class="section-content p-3">
             <div class="whatsapp-follow-inner">
-              <div class="whatsapp-follow-icon" aria-hidden="true">
-                <i class="bi bi-whatsapp"></i>
-              </div>
-              <h6 class="whatsapp-follow-title">Join WhatsApp Group</h6>
+           
+             
               <p class="whatsapp-follow-text">Follow us for latest jobs, walk-ins, and daily alerts.</p>
               <a
                 class="whatsapp-follow-btn"
@@ -109,7 +102,7 @@
                 rel="noopener noreferrer"
                 aria-label="Join WhatsApp group for job updates">
                 <i class="bi bi-whatsapp"></i>
-                Join Now
+                Join WhatsApp Group
               </a>
             </div>
           </div>

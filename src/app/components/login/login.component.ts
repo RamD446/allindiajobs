@@ -416,7 +416,7 @@ export class LoginComponent implements OnInit {
     
     this.jobForm = { 
       ...job,
-      companyImage: this.keepOnlyImageEmbeds(job.companyImage || '') || this.getCompanyImageByName(job.company),
+      companyImage: '',
       jobLocation: job.jobLocation || '',
       jobType: job.jobType || (job.walkInDrive ? 'Walk-ins' : 'Non-Walkins'),
       experience: job.experience || 'Freshers',
@@ -503,12 +503,10 @@ export class LoginComponent implements OnInit {
       if (this.editingJob) {
         // Update existing job
         const jobRef = ref(db, `jobs/${this.editingJob.id}`);
-        const { id, ...jobData } = this.jobForm;
-        const normalizedCurrentImage = this.keepOnlyImageEmbeds(jobData.companyImage || '');
-        const normalizedMappedImage = this.keepOnlyImageEmbeds(this.getCompanyImageByName(jobData.company) || '');
+        const { id, companyImage, ...jobData } = this.jobForm;
         const normalizedJobData = {
           ...jobData,
-          companyImage: normalizedCurrentImage || normalizedMappedImage,
+          companyImage: '',
           fullInformationTableFormat: jobData.fullInformationTableFormat || '',
           fullJobInformation: jobData.fullJobInformation || '',
           walkInDrive: jobData.jobType === 'Walk-ins',
@@ -527,12 +525,10 @@ export class LoginComponent implements OnInit {
       } else {
         // Create new job
         const jobsRef = ref(db, 'jobs');
-        const { id, ...jobData } = this.jobForm;
-        const normalizedCurrentImage = this.keepOnlyImageEmbeds(jobData.companyImage || '');
-        const normalizedMappedImage = this.keepOnlyImageEmbeds(this.getCompanyImageByName(jobData.company) || '');
+        const { id, companyImage, ...jobData } = this.jobForm;
         const normalizedJobData = {
           ...jobData,
-          companyImage: normalizedCurrentImage || normalizedMappedImage,
+          companyImage: '',
           fullInformationTableFormat: jobData.fullInformationTableFormat || '',
           fullJobInformation: jobData.fullJobInformation || '',
           walkInDrive: jobData.jobType === 'Walk-ins',
@@ -616,8 +612,7 @@ export class LoginComponent implements OnInit {
   }
 
   onCompanySelectionChange() {
-    const mappedImage = this.getCompanyImageByName(this.jobForm.company);
-    this.jobForm.companyImage = mappedImage;
+    // Image is resolved at display time from companyImages table — no need to store on job
   }
 
   async saveCompanyImage() {
@@ -845,7 +840,7 @@ _Share this opportunity with your friends!_
       const rows = this.jobs.map((job) => ({
         JobTitle: job.title || '',
         CompanyName: job.company || '',
-        CompanyImageHtml: job.companyImage || '',
+        CompanyImageHtml: this.getCompanyImageByName(job.company) || '',
         JobType: job.jobType || 'Walk-ins',
         Category: job.category || '',
         Experience: job.experience || 'Freshers',
@@ -1039,7 +1034,7 @@ _Share this opportunity with your friends!_
       const newJobData = {
         title,
         company,
-        companyImage: this.normalizeImageHtml(this.getExcelValue(row, ['CompanyImageHtml', 'Company Image Html', 'CompanyImage']) || ''),
+        companyImage: '',
         jobType,
         category,
         experience: this.getExcelValue(row, ['Experience']) || 'Freshers',

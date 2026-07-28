@@ -534,7 +534,7 @@
               </div>
 
               <div class="job-row-media-actions">
-                <div class="job-mini-image-wrap" *ngIf="getCompanyImagePreview(job.companyImage || getCompanyImageByName(job.company)) as preview; else noJobImage">
+                <div class="job-mini-image-wrap" *ngIf="getCompanyImagePreview(getCompanyImageByName(job.company)) as preview; else noJobImage">
                   <img [src]="preview" [alt]="job.company" class="job-mini-image" loading="lazy">
                 </div>
                 <ng-template #noJobImage>

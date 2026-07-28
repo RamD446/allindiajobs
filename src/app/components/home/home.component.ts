@@ -126,27 +126,11 @@ export class HomeComponent implements OnInit {
         }
 
         this.companyImageMap = map;
-        this.jobs = this.applyCompanyImageMapping(this.jobs);
-        this.walkinJobs = this.applyCompanyImageMapping(this.walkinJobs);
         this.cdr.detectChanges();
       });
     } catch (error) {
       console.error('Error loading company images on home:', error);
     }
-  }
-
-  private applyCompanyImageMapping(jobs: Job[]): Job[] {
-    return jobs.map((job) => {
-      const mappedImage = this.getMappedImageByCompany(job.company || '');
-      if (mappedImage) {
-        return {
-          ...job,
-          companyImage: mappedImage
-        };
-      }
-
-      return job;
-    });
   }
 
   private getMappedImageByCompany(companyName: string): string {
@@ -181,7 +165,7 @@ export class HomeComponent implements OnInit {
             ...data[key]
           }));
 
-          this.jobs = this.sortByLatestCreated(this.applyCompanyImageMapping(mappedJobs));
+          this.jobs = this.sortByLatestCreated(mappedJobs as Job[]);
           this.walkinJobs = this.sortByLatestCreated(this.getJobTypeFilteredList(this.jobs));
 
         }
@@ -327,13 +311,7 @@ export class HomeComponent implements OnInit {
 
   getJobCardImage(job: Job): string | null {
     const mapped = this.getMappedImageByCompany(job.company || '');
-    const mappedSrc = this.extractImageSrc(mapped);
-    if (mappedSrc) {
-      return mappedSrc;
-    }
-
-    const direct = this.extractImageSrc(job.companyImage || '');
-    return direct;
+    return this.extractImageSrc(mapped) || 'assets/images/logo.png';
   }
 
   getJobDescriptionPreview(job: Job, maxLength: number = 500): string {

@@ -955,7 +955,7 @@
   .home-job-inner-row {
     min-height: 74px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.75rem;
   }
 
@@ -1128,6 +1128,17 @@
   .whatsapp-follow-card {
     border: 1px solid #c7f0d8;
     background: linear-gradient(160deg, #f7fff9 0%, #ecfff3 100%);
+    overflow: hidden;
+  }
+
+  .whatsapp-follow-card .section-header {
+    background: linear-gradient(135deg, #25d366 0%, #18b757 100%);
+    border-bottom: 2px solid #15a34a;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    padding: 0.55rem 1rem;
   }
 
   .whatsapp-follow-inner {

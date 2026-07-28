@@ -1,4 +1,5 @@
 <div class="tiptap-shell">
+  <input #imageFileInput type="file" accept="image/*" style="display:none" (change)="onImageFileSelected($event)">
   <div class="tiptap-toolbar">
     <select
       class="toolbar-select"

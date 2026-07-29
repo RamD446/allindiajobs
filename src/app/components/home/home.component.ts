@@ -354,6 +354,14 @@ export class HomeComponent implements OnInit {
     return this.getFilteredJobsForHome().length === 0;
   }
 
+  /**
+   * Return top 20 recent jobs to suggest when current filters return no results.
+   */
+  getFallbackJobsForHome(): Job[] {
+    const fallbackSource = this.walkinJobs.length ? this.walkinJobs : this.jobs;
+    return this.sortByLatestCreated(fallbackSource).slice(0, 20);
+  }
+
   getPaginatedJobsForHome(): Job[] {
     const all = this.getFilteredJobsForHome();
     this.totalPages = Math.max(1, Math.ceil(all.length / this.pageSize));

@@ -16,12 +16,50 @@
         <div class="section-block jobs-list-block">
           <div class="section-header">{{ getLatestJobsHeading() }}</div>
           <div class="section-content p-2">
-            <div *ngIf="hasNoData()" class="no-data-card">
-              <div class="no-data-icon">
-                <i class="bi bi-inbox"></i>
+            <div *ngIf="hasNoData()" class="no-data-small-wrap">
+              <div class="no-data-small card p-2 mb-3">
+                <div class="d-flex align-items-start gap-3">
+                  <div class="no-data-icon small me-2">
+                    <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+                  </div>
+                  <div>
+                    <h6 class="no-data-small-title mb-1">Currently Not Available</h6>
+                    <div class="no-data-small-message small text-muted">The job you are looking for may be expired or no jobs match the selected filter.</div>
+                  </div>
+                </div>
               </div>
-              <h5 class="no-data-title">Currently Not Available</h5>
-              <p class="no-data-message">No jobs are available at the moment. Please try again after some time.</p>
+
+              <div class="fallback-section">
+                <div class="fallback-section-header d-flex align-items-center justify-content-between mb-2">
+                  <div class="fw-bold">Suggested jobs</div>
+                  <div class="small text-muted">Top {{ getFallbackJobsForHome().length }} results</div>
+                </div>
+
+                <div *ngIf="getFallbackJobsForHome().length > 0" class="fallback-jobs-grid">
+                  <div *ngFor="let job of getFallbackJobsForHome()" class="home-job-row fallback-job-row" (click)="viewJobDetails(job)">
+                    <div class="home-job-inner-row">
+                      <div class="home-job-thumb-col-wrap">
+                        <div class="home-job-thumb-col">
+                          <img [src]="getJobCardImage(job)" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
+                        </div>
+                      </div>
+
+                      <div class="home-job-details-col">
+                        <div class="home-job-row-title">{{ job.title }}</div>
+                        <div class="home-job-description">{{ getJobDescriptionPreview(job, 150) }}</div>
+                        <div class="home-job-row-meta">
+                          <small class="home-job-row-created" [title]="job.createdDate">Created Date: {{ job.createdDate | date:'MMMM d' }}</small>
+                          <button type="button" class="home-read-more-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">Read More</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="getFallbackJobsForHome().length === 0" class="text-muted small mt-2">
+                  No recent jobs available right now. Please try again later.
+                </div>
+              </div>
             </div>
 
             <div class="home-jobs-list" *ngIf="!hasNoData()">

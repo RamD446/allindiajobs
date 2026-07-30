@@ -95,7 +95,7 @@
                 <td class="px-2 py-1">{{ job.company }}</td>
               </tr>
 
-              <tr *ngIf="job.category">
+              <!-- <tr *ngIf="job.category">
                 <th class="bg-light text-dark fw-bold px-2 py-1">Category</th>
                 <td class="px-2 py-1">{{ getCategoryDisplayLabel(job.category) }}</td>
               </tr>
@@ -118,7 +118,7 @@
               <tr *ngIf="job.location || job.jobLocation">
                 <th class="bg-light text-dark fw-bold px-2 py-1">Location</th>
                 <td class="px-2 py-1">{{ job.location || job.jobLocation }}</td>
-              </tr>
+              </tr> -->
 
               <tr>
                 <th class="bg-light text-dark fw-bold px-2 py-1">WhatsApp</th>
@@ -186,13 +186,11 @@
         </div>
 
         <div class="jobfull-section-block whatsapp-follow-card">
-          <div class="jobfull-section-header">Keep Job Updates</div>
+          
           <div class="jobfull-section-content p-3">
             <div class="whatsapp-follow-inner">
-              <div class="whatsapp-follow-icon" aria-hidden="true">
-                <i class="bi bi-whatsapp"></i>
-              </div>
-              <h6 class="whatsapp-follow-title">Join WhatsApp Group</h6>
+             
+              
               <p class="whatsapp-follow-text">Follow us for latest jobs, walk-ins, and daily alerts.</p>
               <button
                 type="button"
@@ -200,7 +198,7 @@
                 (click)="joinWhatsAppGroup()"
                 aria-label="Join WhatsApp group for job updates">
                 <i class="bi bi-whatsapp"></i>
-                Join Now
+                Join WhatsApp Group
               </button>
             </div>
           </div>

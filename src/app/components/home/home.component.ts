@@ -354,6 +354,10 @@ export class HomeComponent implements OnInit {
     return this.getFilteredJobsForHome().length === 0;
   }
 
+  shouldShowSuggested(): boolean {
+    return this.getFilteredJobsForHome().length < 20;
+  }
+
   /**
    * Return top 20 recent jobs to suggest when current filters return no results.
    */
@@ -387,13 +391,20 @@ export class HomeComponent implements OnInit {
     if (page < 1) page = 1;
     if (page > this.totalPages) page = this.totalPages;
     this.currentPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   nextPage() {
-    if (this.currentPage < this.totalPages) this.currentPage += 1;
+    if (this.currentPage < this.totalPages) {
+      this.currentPage += 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   prevPage() {
-    if (this.currentPage > 1) this.currentPage -= 1;
+    if (this.currentPage > 1) {
+      this.currentPage -= 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 }

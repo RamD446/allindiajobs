@@ -125,34 +125,6 @@
          (click)="setHeaderCategory(filter.value)">
         <span>{{ filter.label }}</span>
       </a>
-
-      <div class="pill-select-block">
-        <select id="jobTypeFilter" class="pill-select" [(ngModel)]="selectedJobTypeFilter" (change)="onJobTypeChange()" aria-label="Select job type">
-          <option value="">Select Job type</option>
-          <option *ngFor="let type of jobTypeOptions" [value]="type.value">{{ type.label }}</option>
-        </select>
-      </div>
-
-      <div class="pill-select-block">
-        <select id="experienceFilter" class="pill-select" [(ngModel)]="selectedExperienceFilter" (change)="onExperienceChange()" aria-label="Select experience">
-          <option value="">Experience</option>
-          <option *ngFor="let exp of experienceOptions" [value]="exp">{{ exp }}</option>
-        </select>
-      </div>
-
-      <div class="pill-select-block">
-        <select id="educationFilter" class="pill-select" [(ngModel)]="selectedEducationFilter" (change)="onEducationChange()" aria-label="Select education">
-          <option value="">Education</option>
-          <option *ngFor="let edu of educationOptions" [value]="edu">{{ edu }}</option>
-        </select>
-      </div>
-
-      <div class="pill-select-block">
-        <select id="locationFilter" class="pill-select" [(ngModel)]="selectedLocationFilter" (change)="onLocationChange()" aria-label="Select location">
-          <option value="">Location</option>
-          <option *ngFor="let city of locationOptions" [value]="city">{{ city }}</option>
-        </select>
-      </div>
     </div>
   </div>
 

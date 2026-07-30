@@ -36,6 +36,10 @@ export class HeaderComponent implements OnInit {
   ];
 
   homeFilterOptions = [
+    { value: 'Walk-ins', label: 'Walk-ins' },
+    { value: 'Non-Walkins', label: 'Non-Walkins' },
+    { value: 'Freshers', label: 'Freshers' },
+    { value: 'Experienced', label: 'Experienced' },
     ...this.homeCategoryOptions
   ];
 

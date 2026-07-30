@@ -124,6 +124,9 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
         })
       ],
       content: this.value || '',
+      editorProps: {
+        handlePaste: (_view, event) => this.handleClipboardImagePaste(event)
+      },
       onUpdate: ({ editor }) => {
         const html = editor.getHTML();
         this.value = html;
@@ -243,6 +246,31 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) { return; }
+    this.insertImageFromFile(file);
+  }
+
+  private handleClipboardImagePaste(event: ClipboardEvent): boolean {
+    const clipboardItems = event.clipboardData?.items;
+    if (!clipboardItems) {
+      return false;
+    }
+
+    const imageItem = Array.from(clipboardItems).find((item) => item.type.startsWith('image/'));
+    if (!imageItem) {
+      return false;
+    }
+
+    const file = imageItem.getAsFile();
+    if (!file) {
+      return false;
+    }
+
+    event.preventDefault();
+    this.insertImageFromFile(file);
+    return true;
+  }
+
+  private insertImageFromFile(file: File): void {
     const reader = new FileReader();
     reader.onload = () => {
       const base64 = reader.result as string;

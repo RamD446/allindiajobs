@@ -42,7 +42,7 @@
                       <small class="home-job-row-created" [title]="job.createdDate">
                         Posted: {{ job.createdDate | date:'MMMM d' }}
                       </small>
-                      <button type="button" class="home-read-more-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">View</button>
+                      <span *ngIf="job.jobType" class="home-job-type-badge">{{ job.jobType }}</span>
                     </div>
                   </div>
                 </div>
@@ -85,7 +85,7 @@
                       <div class="home-job-row-title">{{ job.title }}</div>
                       <div class="home-job-row-meta">
                         <small class="home-job-row-created" [title]="job.createdDate">Posted: {{ job.createdDate | date:'MMMM d' }}</small>
-                        <button type="button" class="home-read-more-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">View</button>
+                        <span *ngIf="job.jobType" class="home-job-type-badge">{{ job.jobType }}</span>
                       </div>
                     </div>
                   </div>

@@ -209,8 +209,8 @@ export class JobFullInformation implements OnInit {
   getTopJobs(): Job[] {
     if (!this.latestJobs) return [];
     
-    // Show only top 5 recent posts in sidebar
-    return this.latestJobs.slice(0, 5);
+    // Show top 10 recent posts in sidebar
+    return this.latestJobs.slice(0, 10);
   }
 
   getAllCategoryFilters(): string[] {

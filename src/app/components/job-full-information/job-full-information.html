@@ -55,19 +55,27 @@
           </div>
         </div>
 
-        <div class="full-info-hero-split mb-3">
-          <div class="full-info-hero-image-side" *ngIf="getTopJobImage(job) as topJobImage">
-            <div class="full-info-mini-circle-image">
-              <img [src]="topJobImage" [alt]="job.title" class="full-info-feature-image" loading="lazy">
+        <ng-container *ngIf="getTopJobImage(job) as topJobImage; else heroWithoutImage">
+          <div class="row gx-3 gy-2 full-info-hero-split mb-3">
+            <div class="col-12 col-lg-4 full-info-hero-image-side">
+              <div class="full-info-mini-circle-image">
+                <img [src]="topJobImage" [alt]="job.title" class="full-info-feature-image" loading="lazy">
+              </div>
             </div>
-          </div>
 
-          <div class="full-info-hero-text-side">
-            <!-- Short Description -->
-            <div class="text-secondary small lh-sm" [innerHTML]="getSafeHtml(job.description)">
+            <div class="col-12 col-lg-8 full-info-hero-text-side">
+              <div class="text-secondary small lh-sm" [innerHTML]="getSafeHtml(job.description)"></div>
             </div>
           </div>
-        </div>
+        </ng-container>
+
+        <ng-template #heroWithoutImage>
+          <div class="row full-info-hero-split mb-3">
+            <div class="col-12 full-info-hero-text-side">
+              <div class="text-secondary small lh-sm" [innerHTML]="getSafeHtml(job.description)"></div>
+            </div>
+          </div>
+        </ng-template>
 
         <!-- Job Details List (List wise, small dark headers) -->
         <div class="job-details-list">

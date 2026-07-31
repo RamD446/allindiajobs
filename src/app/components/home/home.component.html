@@ -38,14 +38,11 @@
 
                   <div class="home-job-details-col">
                     <div class="home-job-row-title">{{ job.title }}</div>
-                    <div class="home-job-description">
-                      {{ getJobDescriptionPreview(job, 500) }}
-                    </div>
                     <div class="home-job-row-meta">
                       <small class="home-job-row-created" [title]="job.createdDate">
-                        Created Date: {{ job.createdDate | date:'MMMM d' }}
+                        Posted: {{ job.createdDate | date:'MMMM d' }}
                       </small>
-                      <button type="button" class="home-read-more-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">Read More</button>
+                      <button type="button" class="home-read-more-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">View</button>
                     </div>
                   </div>
                 </div>
@@ -86,10 +83,9 @@
 
                     <div class="home-job-details-col">
                       <div class="home-job-row-title">{{ job.title }}</div>
-                      <div class="home-job-description">{{ getJobDescriptionPreview(job, 150) }}</div>
                       <div class="home-job-row-meta">
-                        <small class="home-job-row-created" [title]="job.createdDate">Created Date: {{ job.createdDate | date:'MMMM d' }}</small>
-                        <button type="button" class="home-read-more-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">Read More</button>
+                        <small class="home-job-row-created" [title]="job.createdDate">Posted: {{ job.createdDate | date:'MMMM d' }}</small>
+                        <button type="button" class="home-read-more-btn" (click)="$event.stopPropagation(); viewJobDetails(job)">View</button>
                       </div>
                     </div>
                   </div>

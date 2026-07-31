@@ -435,6 +435,15 @@
   min-width: 0;
 }
 
+.full-info-hero-image-ratio {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #d1d5db;
+  background: #f3f4f6;
+}
+
 .full-info-mini-circle-image {
   width: 100%;
   aspect-ratio: 4 / 3;

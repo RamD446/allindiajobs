@@ -57,13 +57,13 @@
 
         <ng-container *ngIf="getTopJobImage(job) as topJobImage; else heroWithoutImage">
           <div class="row gx-3 gy-2 full-info-hero-split mb-3">
-            <div class="col-12 col-lg-4 full-info-hero-image-side">
-              <div class="full-info-mini-circle-image">
+            <div class="col-12 col-lg-6 full-info-hero-image-side">
+              <div class="full-info-hero-image-ratio">
                 <img [src]="topJobImage" [alt]="job.title" class="full-info-feature-image" loading="lazy">
               </div>
             </div>
 
-            <div class="col-12 col-lg-8 full-info-hero-text-side">
+            <div class="col-12 col-lg-6 full-info-hero-text-side">
               <div class="text-secondary small lh-sm" [innerHTML]="getSafeHtml(job.description)"></div>
             </div>
           </div>

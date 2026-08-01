@@ -43,9 +43,9 @@
       
                           Posted Date: {{ job.createdDate | date:'MMMM d' }}
                         </small>
-                        <small class="home-job-row-created" *ngIf="job.walkInDrive && job.walkInStartDate && job.walkInEndDate" [title]="job.createdDate">
+                        <!-- <small class="home-job-row-created" *ngIf="job.walkInDrive && job.walkInStartDate && job.walkInEndDate" [title]="job.createdDate">
                           Walk-in Date: {{ job.walkInStartDate | date:'MMM d' }} - {{ job.walkInEndDate | date:' d' }}
-                        </small>
+                        </small> -->
                       </div>
                   </div>
                 </div>
@@ -90,9 +90,9 @@
                         <small class="home-job-row-created" [title]="job.createdDate">
                           Posted Date: {{ job.createdDate | date:'MMMM d' }}
                         </small>
-                        <small class="home-job-row-created" *ngIf="job.walkInDrive && job.walkInStartDate && job.walkInEndDate" [title]="job.createdDate">
+                        <!-- <small class="home-job-row-created" *ngIf="job.walkInDrive && job.walkInStartDate && job.walkInEndDate" [title]="job.createdDate">
                           Walk-in Date: {{ formatWalkInRange(job.walkInStartDate, job.walkInEndDate) }}
-                        </small>
+                        </small> -->
                       </div>
                     </div>
                   </div>

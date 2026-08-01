@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   selectedJobCategory: string = 'All';
   isLoading: boolean = true;
   // Pagination
-  pageSize: number = 10;
+  pageSize: number = 20;
   currentPage: number = 1;
   totalPages: number = 1;
   isWalkinOnlyPage: boolean = false;

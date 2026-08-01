@@ -1026,7 +1026,13 @@
     font-size: 0.78rem;
     color: #475569;
     min-width: 0;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
+    background: #e6f0ff; /* light blue */
+    padding: 0.18rem 0.5rem;
+    border-radius: 8px;
+    display: inline-block;
+    line-height: 1;
+    margin-right: 0.4rem;
   }
 
   .home-job-type-badge {

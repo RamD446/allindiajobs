@@ -38,12 +38,12 @@
 
                   <div class="home-job-details-col">
                     <div class="home-job-row-title">{{ job.title }}</div>
-                    <div class="home-job-row-meta">
-                      <small class="home-job-row-created" [title]="job.createdDate">
-                        Posted: {{ job.createdDate | date:'MMMM d' }}
-                      </small>
-                      <span *ngIf="job.jobType" class="home-job-type-badge">{{ job.jobType }}</span>
-                    </div>
+                      <div class="home-job-row-meta">
+                        <small class="home-job-row-created" [title]="job.createdDate">
+                          Posted: {{ job.createdDate | date:'MMMM d' }} || {{ job.company }} || {{ job.jobType }}
+                        </small>
+                       
+                      </div>
                   </div>
                 </div>
               </div>

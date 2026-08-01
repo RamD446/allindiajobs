@@ -40,9 +40,12 @@
                     <div class="home-job-row-title">{{ job.title }}</div>
                       <div class="home-job-row-meta">
                         <small class="home-job-row-created" [title]="job.createdDate">
-                          Posted: {{ job.createdDate | date:'MMMM d' }} || {{ job.company }} || {{ job.jobType }}
+      
+                          Posted Date: {{ job.createdDate | date:'MMMM d' }}
                         </small>
-                       
+                        <small class="home-job-row-created" *ngIf="job.walkInDrive && job.walkInStartDate && job.walkInEndDate" [title]="job.createdDate">
+                          Walk-in Date: {{ job.walkInStartDate | date:'MMM d' }} - {{ job.walkInEndDate | date:' d' }}
+                        </small>
                       </div>
                   </div>
                 </div>
@@ -84,8 +87,12 @@
                     <div class="home-job-details-col">
                       <div class="home-job-row-title">{{ job.title }}</div>
                       <div class="home-job-row-meta">
-                        <small class="home-job-row-created" [title]="job.createdDate">Posted: {{ job.createdDate | date:'MMMM d' }}</small>
-                        <span *ngIf="job.jobType" class="home-job-type-badge">{{ job.jobType }}</span>
+                        <small class="home-job-row-created" [title]="job.createdDate">
+                          Posted Date: {{ job.createdDate | date:'MMMM d' }}
+                        </small>
+                        <small class="home-job-row-created" *ngIf="job.walkInDrive && job.walkInStartDate && job.walkInEndDate" [title]="job.createdDate">
+                          Walk-in Date: {{ formatWalkInRange(job.walkInStartDate, job.walkInEndDate) }}
+                        </small>
                       </div>
                     </div>
                   </div>

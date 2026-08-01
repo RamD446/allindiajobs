@@ -17,6 +17,8 @@ export interface Job {
   otherLink?: string;
   whatsappGroupLink?: string;
   walkInInterviewLocation?: string;
+  walkInStartDate?: string;
+  walkInEndDate?: string;
   hrDetails?: string;
   createdDate: string;
   updatedDate?: string;

@@ -70,6 +70,8 @@ export class LoginComponent implements OnInit {
     description: '',
     otherLink: '',
     walkInInterviewLocation: '',
+    walkInStartDate: '',
+    walkInEndDate: '',
     hrDetails: '',
     createdDate: ''
   };
@@ -425,8 +427,10 @@ export class LoginComponent implements OnInit {
       fullJobInformation: job.fullJobInformation || '',
       walkInDrive: job.jobType ? job.jobType === 'Walk-ins' : !!job.walkInDrive,
       otherLink: job.otherLink || '',
-      walkInInterviewLocation: '',
-      hrDetails: '',
+      walkInInterviewLocation: job.walkInInterviewLocation || '',
+      walkInStartDate: job.walkInStartDate || '',
+      walkInEndDate: job.walkInEndDate || '',
+      hrDetails: job.hrDetails || '',
       createdDate: job.createdDate || ''
     };
   }
@@ -510,8 +514,10 @@ export class LoginComponent implements OnInit {
           fullInformationTableFormat: jobData.fullInformationTableFormat || '',
           fullJobInformation: jobData.fullJobInformation || '',
           walkInDrive: jobData.jobType === 'Walk-ins',
-          walkInInterviewLocation: '',
-          hrDetails: ''
+          walkInInterviewLocation: jobData.jobType === 'Walk-ins' ? jobData.walkInInterviewLocation || '' : '',
+          walkInStartDate: jobData.jobType === 'Walk-ins' ? jobData.walkInStartDate || '' : '',
+          walkInEndDate: jobData.jobType === 'Walk-ins' ? jobData.walkInEndDate || '' : '',
+          hrDetails: jobData.jobType === 'Walk-ins' ? jobData.hrDetails || '' : ''
         };
         
         // Add or update updatedDate
@@ -532,8 +538,10 @@ export class LoginComponent implements OnInit {
           fullInformationTableFormat: jobData.fullInformationTableFormat || '',
           fullJobInformation: jobData.fullJobInformation || '',
           walkInDrive: jobData.jobType === 'Walk-ins',
-          walkInInterviewLocation: '',
-          hrDetails: ''
+          walkInInterviewLocation: jobData.jobType === 'Walk-ins' ? jobData.walkInInterviewLocation || '' : '',
+          walkInStartDate: jobData.jobType === 'Walk-ins' ? jobData.walkInStartDate || '' : '',
+          walkInEndDate: jobData.jobType === 'Walk-ins' ? jobData.walkInEndDate || '' : '',
+          hrDetails: jobData.jobType === 'Walk-ins' ? jobData.hrDetails || '' : ''
         };
         const newJobData = {
           ...normalizedJobData,
@@ -593,6 +601,8 @@ export class LoginComponent implements OnInit {
       jobLocation: this.locationOptions[0],
       otherLink: '',
       walkInInterviewLocation: '',
+      walkInStartDate: '',
+      walkInEndDate: '',
       hrDetails: '',
       createdDate: ''
     };
@@ -609,6 +619,10 @@ export class LoginComponent implements OnInit {
 
   onJobTypeChange() {
     this.jobForm.walkInDrive = this.jobForm.jobType === 'Walk-ins';
+    if (!this.jobForm.walkInDrive) {
+      this.jobForm.walkInStartDate = '';
+      this.jobForm.walkInEndDate = '';
+    }
   }
 
   onCompanySelectionChange() {

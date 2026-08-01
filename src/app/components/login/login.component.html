@@ -204,6 +204,16 @@
                 </select>
               </div>
 
+              <div class="col-md-4 mb-3" *ngIf="jobForm.jobType === 'Walk-ins'">
+                <label class="form-label">Walk-in Start Date</label>
+                <input type="date" class="form-control" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" />
+              </div>
+
+              <div class="col-md-4 mb-3" *ngIf="jobForm.jobType === 'Walk-ins'">
+                <label class="form-label">Walk-in End Date</label>
+                <input type="date" class="form-control" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate" />
+              </div>
+
               <div class="w-100"></div>
 
               <!-- Row 3 start: Experience -->

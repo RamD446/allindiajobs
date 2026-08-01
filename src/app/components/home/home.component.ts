@@ -327,6 +327,28 @@ export class HomeComponent implements OnInit {
     return `${cleanText.slice(0, maxLength)}...`;
   }
 
+  formatWalkInRange(startDate: string | undefined, endDate: string | undefined): string {
+    if (!startDate || !endDate) {
+      return '';
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+      return '';
+    }
+
+    const sameMonth = start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth();
+    if (sameMonth) {
+      const month = start.toLocaleString('en-US', { month: 'long' });
+      return `${start.getDate()}-${end.getDate()} ${month}`;
+    }
+
+    const startText = start.toLocaleString('en-US', { day: 'numeric', month: 'short' });
+    const endText = end.toLocaleString('en-US', { day: 'numeric', month: 'short' });
+    return `${startText} - ${endText}`;
+  }
+
   getTodayWalkinsCount(): number {
     return this.jobs.filter(job => this.isWalkInToday(job)).length;
   }

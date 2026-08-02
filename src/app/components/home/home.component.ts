@@ -377,7 +377,7 @@ export class HomeComponent implements OnInit {
   }
 
   shouldShowSuggested(): boolean {
-    return this.getFilteredJobsForHome().length < 20;
+    return this.getFilteredJobsForHome().length < 20 && this.getFallbackJobsForHome().length > 0;
   }
 
   /**

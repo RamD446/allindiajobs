@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   selectedExperienceFilter = '';
   selectedEducationFilter = '';
   selectedLocationFilter = '';
-  showScrollUp = false;
+  
   homeCategoryOptions = [
     { value: 'IT Walk-ins', label: 'IT Jobs' },
     { value: 'BPO/Non-IT Walk-ins', label: 'BPO/Non-IT Jobs' },
@@ -101,7 +101,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.loadJobs();
-    this.updateScrollButtonState();
+    
 
     this.route.queryParamMap.subscribe((params) => {
       this.selectedHeaderCategory = params.get('category') || '';
@@ -350,25 +350,5 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  joinWhatsAppGroup() {
-    window.open('https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p', '_blank');
-  }
-
-  handleScrollDirectionClick() {
-    if (this.showScrollUp) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    window.scrollTo({ top: window.scrollY + window.innerHeight, behavior: 'smooth' });
-  }
-
-  @HostListener('window:scroll')
-  onWindowScroll() {
-    this.updateScrollButtonState();
-  }
-
-  private updateScrollButtonState() {
-    this.showScrollUp = window.scrollY > 160;
-  }
+  
 }

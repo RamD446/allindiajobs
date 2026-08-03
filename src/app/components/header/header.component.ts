@@ -15,6 +15,8 @@ import { Job, getCategoryDisplayLabel } from '../../models/job.model';
 })
 export class HeaderComponent implements OnInit {
   isNavActive = false;
+  isEducationMenuOpen = false;
+  isLocationMenuOpen = false;
   isLoggedIn: boolean = false;
   isSearchModalOpen = false;
   isGamesDropdownOpen = false;
@@ -73,6 +75,23 @@ export class HeaderComponent implements OnInit {
     { name: 'Banking Jobs', route: '/job-category/banking-walk-ins', icon: 'bi-bank', color: '#6d28d9' },
     { name: 'Pharma Jobs', route: '/job-category/pharma-walk-ins', icon: 'bi-capsule', color: '#7c3aed' }
   ];
+
+  private readonly educationCategoryNames = new Set(['B.Tech', 'Degree', 'Any Graduate']);
+  private readonly locationCategoryNames = new Set(['Vishakhapatnam', 'Hyderabad', 'Bengaluru']);
+
+  get offcanvasPrimaryFilters() {
+    return this.offcanvasFilters.filter(
+      (item) => !this.educationCategoryNames.has(item.name) && !this.locationCategoryNames.has(item.name)
+    );
+  }
+
+  get educationOffcanvasFilters() {
+    return this.offcanvasFilters.filter((item) => this.educationCategoryNames.has(item.name));
+  }
+
+  get locationOffcanvasFilters() {
+    return this.offcanvasFilters.filter((item) => this.locationCategoryNames.has(item.name));
+  }
 
   private createFilterQueryParams(filters?: { category?: string }) {
     return {
@@ -265,6 +284,22 @@ export class HeaderComponent implements OnInit {
 
   closeNav() {
     this.isNavActive = false;
+    this.isEducationMenuOpen = false;
+    this.isLocationMenuOpen = false;
+  }
+
+  toggleEducationMenu(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.isEducationMenuOpen = !this.isEducationMenuOpen;
+  }
+
+  toggleLocationMenu(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.isLocationMenuOpen = !this.isLocationMenuOpen;
   }
 
   toggleSearchModal(event?: Event) {

@@ -39,8 +39,15 @@
             <div class="upcoming-number-card p-3 rounded-4 shadow-sm bg-light border">
               <p class="text-muted small mb-1 uppercase fw-bold">Upcoming</p>
               <div class="upcoming-number-display">
-                {{ upcomingNumber || '--' }}
+                {{ showUpcomingNumber ? (upcomingNumber || '--') : '--' }}
               </div>
+              <button
+                type="button"
+                class="btn btn-outline-success btn-sm rounded-pill mt-2 upcoming-toggle-btn"
+                [disabled]="!upcomingNumber"
+                (click)="toggleUpcomingNumberVisibility()">
+                {{ showUpcomingNumber ? 'Hide' : 'Show' }}
+              </button>
             </div>
           </div>
         </div>

@@ -64,6 +64,13 @@
   border-bottom: 2px solid #3b82f6;
 }
 
+.home-read-more-btn {
+  font-size: 0.62rem;
+  line-height: 1;
+  padding: 0.12rem 0.34rem;
+  border-radius: 0.28rem;
+}
+
 .sub-heading {
   font-size: 1.05rem;
   font-weight: 600;
@@ -1018,6 +1025,12 @@
     margin-top: 0;
   }
 
+  .home-job-row-meta-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
   .home-job-row-created {
     font-size: 0.72rem;
     font-weight: 600;
@@ -1048,23 +1061,34 @@
   }
 
   .home-read-more-btn {
-    padding: 0.22rem 0.6rem;
-    border: 1px solid #9ca3af;
+    padding: 0.12rem 0.34rem;
+    border: 1px solid rgba(37, 99, 235, 0.45);
     border-radius: 6px;
-    background: #ffffff;
-    color: #111827;
-    font-size: 0.72rem;
-    font-weight: 600;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.14), rgba(147, 197, 253, 0.18));
+    color: #1d4ed8;
+    font-size: 0.62rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: none;
-    min-width: 64px;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+    min-width: auto;
     white-space: nowrap;
     margin-left: auto;
+    line-height: 1;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.16);
   }
 
   .home-read-more-btn:hover {
-    background: #ffffff;
-    border-color: #9ca3af;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(125, 211, 252, 0.24));
+    border-color: rgba(29, 78, 216, 0.58);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 11px rgba(29, 78, 216, 0.24);
+  }
+
+  .home-read-more-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(29, 78, 216, 0.2);
   }
 
   .home-job-location {

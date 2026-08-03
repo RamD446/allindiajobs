@@ -13,6 +13,7 @@ export class ThambolaGameComponent implements OnInit {
   drawnNumbers: number[] = [];
   currentNumber: number | null = null;
   upcomingNumber: number | null = null;
+  showUpcomingNumber = false;
   gameStarted = false;
   isPaused = false;
 
@@ -30,6 +31,7 @@ export class ThambolaGameComponent implements OnInit {
   prepareUpcoming() {
     if (this.drawnNumbers.length >= 90) {
       this.upcomingNumber = null;
+      this.showUpcomingNumber = false;
       return;
     }
     
@@ -42,6 +44,7 @@ export class ThambolaGameComponent implements OnInit {
     } while (allDrawn.includes(next) && allDrawn.length < 90);
     
     this.upcomingNumber = next;
+    this.showUpcomingNumber = false;
   }
 
   drawNumber() {
@@ -78,6 +81,10 @@ export class ThambolaGameComponent implements OnInit {
     this.drawnNumbers = [];
     this.currentNumber = null;
     this.prepareUpcoming();
+  }
+
+  toggleUpcomingNumberVisibility() {
+    this.showUpcomingNumber = !this.showUpcomingNumber;
   }
 
   isDrawn(num: number): boolean {

@@ -172,17 +172,17 @@
               <!-- Row 2: Company Name + Job Type + Category -->
               <div class="col-md-4 mb-3">
                 <label class="form-label">Company Name *</label>
-                <select
+                <input
+                  list="companyOptions"
+                  type="text"
                   class="form-control"
                   [(ngModel)]="jobForm.company"
                   name="company"
-                  (change)="onCompanySelectionChange()"
-                  required>
-                  <option value="" disabled>Select company</option>
-                  <option *ngFor="let item of companyImages" [value]="item.companyName">
-                    {{ item.companyName }}
-                  </option>
-                </select>
+                  required
+                  placeholder="Select or enter company name">
+                <datalist id="companyOptions">
+                  <option *ngFor="let item of companyImages" [value]="item.companyName"></option>
+                </datalist>
                 <small class="company-image-help" *ngIf="companyImages.length === 0">
                   No company image records found. Use <strong>Create Company Image</strong> first.
                 </small>

@@ -317,12 +317,12 @@ export class JobFullInformation implements OnInit {
 
   getRecentPostImage(job: Job): string | null {
     const mapped = this.getMappedImageByCompany(job.company || '');
-    return this.extractImageSrc(mapped) || 'assets/images/logo.png';
+    return this.extractImageSrc(mapped) || 'assets/images/Freejobinfologo.png';
   }
 
   getTopJobImage(job: Job): string | null {
     const mapped = this.getMappedImageByCompany(job.company || '');
-    return this.extractImageSrc(mapped) || 'assets/images/logo.png';
+    return this.extractImageSrc(mapped) || 'assets/images/Freejobinfologo.png';
   }
 
   getSafeHtml(html: string): SafeHtml {

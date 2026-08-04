@@ -70,11 +70,10 @@
               </div>
             </div>
 
-            <!-- Suggested Jobs (always shown when filtered results < 20) -->
+            <!-- Suggested Jobs -->
             <div class="fallback-section mt-3" *ngIf="shouldShowSuggested()">
               <div class="fallback-section-header d-flex align-items-center justify-content-between mb-2">
                 <div class="fw-bold">Suggested jobs</div>
-                
               </div>
 
               <div *ngIf="getFallbackJobsForHome().length > 0" class="fallback-jobs-grid">
@@ -88,20 +87,21 @@
 
                     <div class="home-job-details-col">
                       <div class="home-job-row-title">{{ job.title }}</div>
-                      <div class="home-job-row-meta">
+                      <div class="home-job-row-meta home-job-row-meta-inline">
                         <small class="home-job-row-created" [title]="job.createdDate">
                           Posted Date: {{ job.createdDate | date:'MMMM d' }}
                         </small>
-                        <!-- <small class="home-job-row-created" *ngIf="job.walkInDrive && job.walkInStartDate && job.walkInEndDate" [title]="job.createdDate">
-                          Walk-in Date: {{ formatWalkInRange(job.walkInStartDate, job.walkInEndDate) }}
-                        </small> -->
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary home-read-more-btn"
+                          (click)="$event.stopPropagation(); viewJobDetails(job)">
+                          Read more
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              
             </div>
           </div>
         </div>

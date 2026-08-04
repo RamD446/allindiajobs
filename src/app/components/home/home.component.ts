@@ -311,7 +311,7 @@ export class HomeComponent implements OnInit {
 
   getJobCardImage(job: Job): string | null {
     const mapped = this.getMappedImageByCompany(job.company || '');
-    return this.extractImageSrc(mapped) || 'assets/images/logo.png';
+    return this.extractImageSrc(mapped) || 'assets/images/Freejobinfologo.png';
   }
 
   getJobDescriptionPreview(job: Job, maxLength: number = 500): string {
@@ -377,7 +377,7 @@ export class HomeComponent implements OnInit {
   }
 
   shouldShowSuggested(): boolean {
-    return this.getFilteredJobsForHome().length < 20 && this.getFallbackJobsForHome().length > 0;
+    return this.getFilteredJobsForHome().length === 0 && this.getFallbackJobsForHome().length > 0;
   }
 
   /**

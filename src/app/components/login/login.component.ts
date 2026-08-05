@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
 
   jobCategories: string[] = [];
   privateJobTypes: string[] = [...PRIVATE_JOB_TYPES];
-  jobTypeOptions: string[] = ['Walk-ins', 'Government Jobs'];
+  jobTypeOptions: string[] = ['Walk-ins'];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
   locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
   qualificationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
@@ -420,12 +420,12 @@ export class LoginComponent implements OnInit {
       ...job,
       companyImage: '',
       jobLocation: job.jobLocation || '',
-      jobType: job.jobType || (job.walkInDrive ? 'Walk-ins' : 'Government Jobs'),
+      jobType: 'Walk-ins',
       experience: job.experience || 'Freshers',
       qualification: job.qualification || 'Any Graduate',
       fullInformationTableFormat: job.fullInformationTableFormat || '',
       fullJobInformation: job.fullJobInformation || '',
-      walkInDrive: job.jobType ? job.jobType === 'Walk-ins' : !!job.walkInDrive,
+      walkInDrive: true,
       otherLink: job.otherLink || '',
       walkInInterviewLocation: job.walkInInterviewLocation || '',
       walkInStartDate: job.walkInStartDate || '',

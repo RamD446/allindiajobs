@@ -28,7 +28,6 @@ export interface Job {
 export const DEFAULT_JOB_CATEGORIES = [
   'IT Walk-ins',
   'BPO/Non-IT Walk-ins',
-  'Sales Walk-ins',
   'Banking Walk-ins',
   'Pharma Walk-ins'
 ] as const;
@@ -74,7 +73,6 @@ export const CATEGORY_ROUTE_PREFIX = 'job-category';
 export const CATEGORY_ROUTE_SLUGS: Record<string, string> = {
   'All': 'all',
   'Walk-ins': 'walk-ins',
-  'Government Jobs': 'government-jobs',
   'B.Tech': 'b-tech',
   'Degree': 'degree',
   'Any Graduate': 'any-graduate',
@@ -85,7 +83,6 @@ export const CATEGORY_ROUTE_SLUGS: Record<string, string> = {
   'Bengaluru': 'bengaluru',
   'IT Walk-ins': 'it-walk-ins',
   'BPO/Non-IT Walk-ins': 'bpo-non-it-walk-ins',
-  'Sales Walk-ins': 'sales-walk-ins',
   'Banking Walk-ins': 'banking-walk-ins',
   'Pharma Walk-ins': 'pharma-walk-ins'
 };
@@ -99,7 +96,6 @@ export const CATEGORY_SLUG_TO_LABEL: Record<string, string> = Object.entries(CAT
 export const CATEGORY_DISPLAY_LABELS: Record<string, string> = {
   'IT Walk-ins': 'IT Jobs',
   'BPO/Non-IT Walk-ins': 'BPO/Non-IT Jobs',
-  'Sales Walk-ins': 'Sales Jobs',
   'Banking Walk-ins': 'Banking Jobs',
   'Pharma Walk-ins': 'Pharma Jobs'
 };

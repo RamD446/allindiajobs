@@ -28,7 +28,6 @@ export class HomeComponent implements OnInit {
   jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
   readonly quickFilterCategories: string[] = [
     'Walk-ins',
-    'Government Jobs',
     'B.Tech',
     'Degree',
     'Any Graduate',
@@ -41,7 +40,6 @@ export class HomeComponent implements OnInit {
   private readonly categoryByPath: Record<string, string> = {
     '/IT-Walk-ins': 'IT Walk-ins',
     '/BPO-Non-IT-Walk-ins': 'BPO/Non-IT Walk-ins',
-    '/Sales-Walk-ins': 'Sales Walk-ins',
     '/Banking-Walk-ins': 'Banking Walk-ins',
     '/Pharma-Walk-ins': 'Pharma Walk-ins'
   };

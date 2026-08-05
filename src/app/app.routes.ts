@@ -9,7 +9,6 @@ export const routes: Routes = [
   { path: 'IT-Walk-ins', component: HomeComponent },
   { path: 'BPO-Non-IT-Walk-ins', component: HomeComponent },
   { path: 'Fresher-Walk-ins', component: HomeComponent },
-  { path: 'Sales-Walk-ins', component: HomeComponent },
   { path: 'Banking-Walk-ins', component: HomeComponent },
   { path: 'Pharma-Walk-ins', component: HomeComponent },
   {

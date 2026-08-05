@@ -34,14 +34,12 @@ export class HeaderComponent implements OnInit {
   homeCategoryOptions = [
     { value: 'IT Walk-ins', label: 'IT Jobs' },
     { value: 'BPO/Non-IT Walk-ins', label: 'BPO/Non-IT Jobs' },
-    { value: 'Sales Walk-ins', label: 'Sales Jobs' },
     { value: 'Banking Walk-ins', label: 'Banking Jobs' },
     { value: 'Pharma Walk-ins', label: 'Pharma Jobs' }
   ];
 
   homeFilterOptions = [
     { value: 'Walk-ins', label: 'Walk-ins' },
-    { value: 'Government Jobs', label: 'Government Jobs' },
     { value: 'Freshers', label: 'Freshers' },
     { value: 'Experienced', label: 'Experienced' },
     ...this.homeCategoryOptions
@@ -52,8 +50,7 @@ export class HeaderComponent implements OnInit {
   }
 
   jobTypeOptions = [
-    { value: 'Walk-ins', label: 'Walk-ins Jobs' },
-    { value: 'Government Jobs', label: 'Government Jobs' }
+    { value: 'Walk-ins', label: 'Walk-ins Jobs' }
   ];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
   educationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
@@ -62,7 +59,6 @@ export class HeaderComponent implements OnInit {
   offcanvasFilters = [
     { name: 'All', route: '/job-category/all', icon: 'bi-grid', color: '#0f766e' },
     { name: 'Walk-ins', route: '/job-category/walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
-    { name: 'Government Jobs', route: '/job-category/government-jobs', icon: 'bi-briefcase', color: '#1d4ed8' },
     { name: 'B.Tech', route: '/job-category/b-tech', icon: 'bi-mortarboard', color: '#0ea5e9' },
     { name: 'Degree', route: '/job-category/degree', icon: 'bi-award', color: '#0284c7' },
     { name: 'Any Graduate', route: '/job-category/any-graduate', icon: 'bi-journal-check', color: '#0369a1' },
@@ -73,7 +69,6 @@ export class HeaderComponent implements OnInit {
     { name: 'Bengaluru', route: '/job-category/bengaluru', icon: 'bi-building', color: '#155e75' },
     { name: 'IT Jobs', route: '/job-category/it-walk-ins', icon: 'bi-laptop', color: '#1e3a8a' },
     { name: 'BPO/Non-IT Jobs', route: '/job-category/bpo-non-it-walk-ins', icon: 'bi-headset', color: '#3730a3' },
-    { name: 'Sales Jobs', route: '/job-category/sales-walk-ins', icon: 'bi-graph-up-arrow', color: '#4f46e5' },
     { name: 'Banking Jobs', route: '/job-category/banking-walk-ins', icon: 'bi-bank', color: '#6d28d9' },
     { name: 'Pharma Jobs', route: '/job-category/pharma-walk-ins', icon: 'bi-capsule', color: '#7c3aed' }
   ];
@@ -238,7 +233,6 @@ export class HeaderComponent implements OnInit {
     if (categorySelection === 'bpo') return 'BPO/Non-IT Walk-ins';
     if (categorySelection === 'banking') return 'Banking Walk-ins';
     if (categorySelection === 'pharma') return 'Pharma Walk-ins';
-    if (categorySelection === 'sales') return 'Sales Walk-ins';
     return null;
   }
 
@@ -249,7 +243,6 @@ export class HeaderComponent implements OnInit {
     if (categoryParam === 'BPO/Non-IT Walk-ins') return 'bpo';
     if (categoryParam === 'Banking Walk-ins') return 'banking';
     if (categoryParam === 'Pharma Walk-ins') return 'pharma';
-    if (categoryParam === 'Sales Walk-ins') return 'sales';
     return 'all';
   }
 

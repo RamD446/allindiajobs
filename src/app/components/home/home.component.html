@@ -10,25 +10,69 @@
     <p class="loader-sub">Please wait while we load the latest opportunities</p>
   </div>
 
-  <div *ngIf="!isLoading" class="home-main-container">
+  <div *ngIf="!isLoading" class="container-fluid">
     <div class="row gx-2 gy-2 home-grid-row">
+      <!-- Jobs Column (Col-8) -->
       <div class="col-12 col-lg-8">
-        <div class="section-block jobs-list-block">
+        <div class="jobs-section">
           <div class="section-header">{{ getLatestJobsHeading() }}</div>
-          <div class="section-content p-2">
-            <!-- No data notice -->
-            <div *ngIf="hasNoData()" class="no-data-small card p-2 mb-3">
-              <div class="d-flex flex-column align-items-center justify-content-center text-center gap-2">
-                <div>
-                  <h6 class="no-data-small-title mb-1">Currently Not Available</h6>
-                  <div class="no-data-small-message small text-muted">The job you are looking for may be expired or no jobs match the selected filter.</div>
+          
+          <!-- No data notice -->
+          <div *ngIf="hasNoData()" class="no-data-small card p-2 mb-3">
+            <div class="d-flex flex-column align-items-center justify-content-center text-center gap-2">
+              <div>
+                <h6 class="no-data-small-title mb-1">Currently Not Available</h6>
+                <div class="no-data-small-message small text-muted">The job you are looking for may be expired or no jobs match the selected filter.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Normal jobs list -->
+          <div class="home-jobs-list" *ngIf="!hasNoData()">
+            <div *ngFor="let job of getPaginatedJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
+              <div class="home-job-inner-row">
+                <div class="home-job-thumb-col-wrap">
+                  <div class="home-job-thumb-col">
+                    <img [src]="getJobCardImage(job)" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
+                  </div>
+                </div>
+
+                <div class="home-job-details-col">
+                  <div class="home-job-row-title">{{ job.title }}</div>
+                  <div class="home-job-row-meta home-job-row-meta-inline">
+                    <small class="home-job-row-created" [title]="job.createdDate">
+                      Posted Date: {{ job.createdDate | date:'MMMM d' }}
+                    </small>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Normal jobs list -->
-            <div class="home-jobs-list" *ngIf="!hasNoData()">
-              <div *ngFor="let job of getPaginatedJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
+          <!-- Pagination Controls -->
+          <div class="home-pagination-wrap mt-2" *ngIf="getFilteredJobsForHome().length > pageSize">
+            <div class="home-pagination">
+              <button type="button" class="page-btn" (click)="prevPage()" [disabled]="currentPage===1">Prev</button>
+              <button
+                *ngFor="let p of getVisiblePageNumbers()"
+                type="button"
+                class="page-number"
+                [class.active]="p===currentPage"
+                (click)="goToPage(p)">
+                {{ p }}
+              </button>
+              <button type="button" class="page-btn" (click)="nextPage()" [disabled]="currentPage===totalPages">Next</button>
+            </div>
+          </div>
+
+          <!-- Suggested Jobs -->
+          <div class="fallback-section mt-3" *ngIf="shouldShowSuggested()">
+            <div class="fallback-section-header d-flex align-items-center justify-content-between mb-2">
+              <div class="fw-bold">Suggested jobs</div>
+            </div>
+
+            <div *ngIf="getFallbackJobsForHome().length > 0" class="fallback-jobs-grid">
+              <div *ngFor="let job of getFallbackJobsForHome()" class="home-job-row fallback-job-row" (click)="viewJobDetails(job)">
                 <div class="home-job-inner-row">
                   <div class="home-job-thumb-col-wrap">
                     <div class="home-job-thumb-col">
@@ -42,62 +86,6 @@
                       <small class="home-job-row-created" [title]="job.createdDate">
                         Posted Date: {{ job.createdDate | date:'MMMM d' }}
                       </small>
-                      <!-- <button
-                        type="button"
-                        class="btn btn-outline-primary home-read-more-btn"
-                        (click)="$event.stopPropagation(); viewJobDetails(job)">
-                        Read more
-                      </button> -->
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pagination Controls -->
-            <div class="home-pagination-wrap mt-2" *ngIf="getFilteredJobsForHome().length > pageSize">
-              <div class="home-pagination">
-                <button type="button" class="page-btn" (click)="prevPage()" [disabled]="currentPage===1">Prev</button>
-                <button
-                  *ngFor="let p of getVisiblePageNumbers()"
-                  type="button"
-                  class="page-number"
-                  [class.active]="p===currentPage"
-                  (click)="goToPage(p)">
-                  {{ p }}
-                </button>
-                <button type="button" class="page-btn" (click)="nextPage()" [disabled]="currentPage===totalPages">Next</button>
-              </div>
-            </div>
-
-            <!-- Suggested Jobs -->
-            <div class="fallback-section mt-3" *ngIf="shouldShowSuggested()">
-              <div class="fallback-section-header d-flex align-items-center justify-content-between mb-2">
-                <div class="fw-bold">Suggested jobs</div>
-              </div>
-
-              <div *ngIf="getFallbackJobsForHome().length > 0" class="fallback-jobs-grid">
-                <div *ngFor="let job of getFallbackJobsForHome()" class="home-job-row fallback-job-row" (click)="viewJobDetails(job)">
-                  <div class="home-job-inner-row">
-                    <div class="home-job-thumb-col-wrap">
-                      <div class="home-job-thumb-col">
-                        <img [src]="getJobCardImage(job)" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
-                      </div>
-                    </div>
-
-                    <div class="home-job-details-col">
-                      <div class="home-job-row-title">{{ job.title }}</div>
-                      <div class="home-job-row-meta home-job-row-meta-inline">
-                        <small class="home-job-row-created" [title]="job.createdDate">
-                          Posted Date: {{ job.createdDate | date:'MMMM d' }}
-                        </small>
-                        <!-- <button
-                          type="button"
-                          class="btn btn-outline-primary home-read-more-btn"
-                          (click)="$event.stopPropagation(); viewJobDetails(job)">
-                          Read more
-                        </button> -->
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -107,44 +95,38 @@
         </div>
       </div>
 
+      <!-- Sidebar Column (Col-4) -->
       <div class="col-12 col-lg-4">
-        <div class="section-block filters-block">
+        <!-- Filter Section -->
+        <div class="filter-section mb-3">
           <div class="section-header">Filter Jobs</div>
-          <div class="section-content p-2">
-            <div class="jobs-filter-item mb-2">
-              <label class="jobs-filter-label">Category</label>
-              <div class="jobs-filter-tabs">
-                <button
-                  type="button"
-                  *ngFor="let category of getAllCategoryFilters()"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedJobCategory === category"
-                  (click)="selectCategoryTab(category)">
-                  {{ getCategoryDisplayLabel(category) }}
-                </button>
-              </div>
+          <div class="jobs-filter-item">
+            <label class="jobs-filter-label">Category</label>
+            <div class="jobs-filter-tabs">
+              <button
+                type="button"
+                *ngFor="let category of getAllCategoryFilters()"
+                class="jobs-filter-tab"
+                [class.active]="selectedJobCategory === category"
+                (click)="selectCategoryTab(category)">
+                {{ getCategoryDisplayLabel(category) }}
+              </button>
             </div>
           </div>
         </div>
 
-        <div class="section-block whatsapp-follow-card">
+        <!-- WhatsApp Follow Section -->
+        <div class="whatsapp-section">
           
-          <div class="section-content p-3">
-            <div class="whatsapp-follow-inner">
-           
-             
-              <p class="whatsapp-follow-text">Follow us for latest jobs, walk-ins, and daily alerts.</p>
-              <a
-                class="whatsapp-follow-btn"
-                href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Join WhatsApp group for job updates">
-                <i class="bi bi-whatsapp"></i>
-                Join WhatsApp Group
-              </a>
-            </div>
-          </div>
+          <a
+            class="whatsapp-follow-btn"
+            href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Join WhatsApp group for job updates">
+            <i class="bi bi-whatsapp"></i>
+            Join WhatsApp Group
+          </a>
         </div>
       </div>
     </div>

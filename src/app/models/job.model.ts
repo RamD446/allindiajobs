@@ -74,7 +74,7 @@ export const CATEGORY_ROUTE_PREFIX = 'job-category';
 export const CATEGORY_ROUTE_SLUGS: Record<string, string> = {
   'All': 'all',
   'Walk-ins': 'walk-ins',
-  'Non-Walkins': 'non-walkins',
+  'Government Jobs': 'government-jobs',
   'B.Tech': 'b-tech',
   'Degree': 'degree',
   'Any Graduate': 'any-graduate',

@@ -18,7 +18,7 @@ export class FooterComponent {
   walkInLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
     { name: 'Home', route: '/job-category/all' },
     { name: 'Walk-ins', route: '/job-category/walk-ins' },
-    { name: 'Non-Walkins', route: '/job-category/non-walkins' },
+    { name: 'Government Jobs', route: '/job-category/government-jobs' },
     { name: 'IT Walk-ins', route: '/job-category/it-walk-ins' },
     { name: 'BPO/Non-IT Walk-ins', route: '/job-category/bpo-non-it-walk-ins' },
     { name: 'Sales Walk-ins', route: '/job-category/sales-walk-ins' },

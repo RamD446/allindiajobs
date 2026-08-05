@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
   readonly quickFilterCategories: string[] = [
     'Walk-ins',
-    'Non-Walkins',
+    'Government Jobs',
     'B.Tech',
     'Degree',
     'Any Graduate',
@@ -217,8 +217,8 @@ export class HomeComponent implements OnInit {
       return job.walkInDrive === true || jobType === 'walk-ins';
     }
 
-    if (normalized === 'non-walkins') {
-      return job.walkInDrive !== true || jobType === 'non-walkins';
+    if (normalized === 'government-jobs') {
+      return job.walkInDrive !== true || jobType === 'government-jobs';
     }
 
     if (normalized === 'b.tech' || normalized === 'degree' || normalized === 'any graduate') {

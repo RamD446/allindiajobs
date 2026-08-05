@@ -20,7 +20,7 @@ export class JobFullInformation implements OnInit {
   jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
   readonly quickFilterCategories: string[] = [
     'Walk-ins',
-    'Non-Walkins',
+    'Government Jobs',
     'B.Tech',
     'Degree',
     'Any Graduate',

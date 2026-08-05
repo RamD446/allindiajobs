@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
 
   homeFilterOptions = [
     { value: 'Walk-ins', label: 'Walk-ins' },
-    { value: 'Non-Walkins', label: 'Non-Walkins' },
+    { value: 'Government Jobs', label: 'Government Jobs' },
     { value: 'Freshers', label: 'Freshers' },
     { value: 'Experienced', label: 'Experienced' },
     ...this.homeCategoryOptions
@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
 
   jobTypeOptions = [
     { value: 'Walk-ins', label: 'Walk-ins Jobs' },
-    { value: 'Non-Walkins', label: 'Non-Walkins Jobs' }
+    { value: 'Government Jobs', label: 'Government Jobs' }
   ];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
   educationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit {
   offcanvasFilters = [
     { name: 'All', route: '/job-category/all', icon: 'bi-grid', color: '#0f766e' },
     { name: 'Walk-ins', route: '/job-category/walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
-    { name: 'Non-Walkins', route: '/job-category/non-walkins', icon: 'bi-briefcase', color: '#1d4ed8' },
+    { name: 'Government Jobs', route: '/job-category/government-jobs', icon: 'bi-briefcase', color: '#1d4ed8' },
     { name: 'B.Tech', route: '/job-category/b-tech', icon: 'bi-mortarboard', color: '#0ea5e9' },
     { name: 'Degree', route: '/job-category/degree', icon: 'bi-award', color: '#0284c7' },
     { name: 'Any Graduate', route: '/job-category/any-graduate', icon: 'bi-journal-check', color: '#0369a1' },

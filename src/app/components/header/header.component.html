@@ -16,10 +16,26 @@
         </a>
       </div>
 
-      <!-- Search Icon (Right) -->
-      <button class="btn btn-link text-white p-0 search-btn" (click)="toggleSearchModal($event)">
-        <i class="bi bi-search fs-4"></i>
-      </button>
+      <!-- Search Icon + Login (Right) -->
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-link text-white p-0 search-btn" (click)="toggleSearchModal($event)">
+          <i class="bi bi-search fs-4"></i>
+        </button>
+        
+        <!-- Login Dropdown (Only visible when logged in) -->
+        <div *ngIf="isLoggedIn" class="dropdown">
+          <button class="btn btn-link text-white p-0" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="User Menu">
+            <i class="bi bi-person-circle fs-4"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><span class="dropdown-item-text small text-muted">{{ currentUser?.email || currentUser?.displayName }}</span></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" routerLink="/login">Manage Jobs</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item text-danger" (click)="logout()">Logout</button></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </nav>
 

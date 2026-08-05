@@ -2,9 +2,10 @@ import { Component, HostListener, OnInit, ChangeDetectorRef, ElementRef } from '
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
-import { db } from '../../../config/firebase.config';
+import { db, auth } from '../../../config/firebase.config';
 import { FormsModule } from '@angular/forms';
 import { Job, getCategoryDisplayLabel } from '../../models/job.model';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +19,7 @@ export class HeaderComponent implements OnInit {
   isEducationMenuOpen = false;
   isLocationMenuOpen = false;
   isLoggedIn: boolean = false;
+  currentUser: any = null;
   isSearchModalOpen = false;
   isGamesDropdownOpen = false;
   searchQuery = '';
@@ -121,6 +123,18 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.loadJobs();
     
+    // Listen to authentication state
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.isLoggedIn = true;
+        this.currentUser = user;
+        this.cdr.detectChanges();
+      } else {
+        this.isLoggedIn = false;
+        this.currentUser = null;
+        this.cdr.detectChanges();
+      }
+    });
 
     this.route.queryParamMap.subscribe((params) => {
       this.selectedHeaderCategory = params.get('category') || '';
@@ -286,6 +300,17 @@ export class HeaderComponent implements OnInit {
     this.isNavActive = false;
     this.isEducationMenuOpen = false;
     this.isLocationMenuOpen = false;
+  }
+
+  async logout() {
+    try {
+      await signOut(auth);
+      this.isLoggedIn = false;
+      this.currentUser = null;
+      this.router.navigate(['/']);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   }
 
   toggleEducationMenu(event?: Event) {

@@ -132,23 +132,7 @@
         <!-- Filter Section -->
         <div class="filter-section mb-3">
           <div class="section-header">Filter Jobs</div>
-          <div class="jobs-filter-item">
-            <label class="jobs-filter-label">Category</label>
-            <div class="jobs-filter-tabs">
-              <button
-                type="button"
-                *ngFor="let category of getAllCategoryFilters()"
-                class="jobs-filter-tab"
-                [class.active]="selectedJobCategory === category"
-                (click)="selectCategoryTab(category)">
-                {{ getCategoryDisplayLabel(category) }}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- WhatsApp Follow Section -->
-        <div class="whatsapp-section">
+          <div class="whatsapp-section">
           
           <a
             class="whatsapp-follow-btn"
@@ -160,6 +144,26 @@
             Join WhatsApp Group
           </a>
         </div>
+          <div class="jobs-filter-item">
+            <label class="jobs-filter-label">Job Categories</label>
+             <!-- WhatsApp Follow Section -->
+       
+            <div class="jobs-filter-rows">
+              <div class="jobs-filter-row" *ngFor="let row of filterRows">
+                <button
+                  type="button"
+                  *ngFor="let category of row"
+                  class="jobs-filter-tab"
+                  [class.active]="selectedJobCategory === category"
+                  (click)="selectCategoryTab(category)">
+                  {{ getCategoryDisplayLabel(category) }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
       </div>
     </div>
   </div>

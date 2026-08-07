@@ -1131,43 +1131,67 @@
     min-width: 0;
   }
 
-  .jobs-filter-label {
-    display: block;
-    font-size: 0.74rem;
-    font-weight: 700;
-    color: #475569;
-    margin-bottom: 0.2rem;
+  .jobs-filter-item {
+    min-width: 0;
+    border: 1px solid #93c5fd;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+    padding: 1rem;
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.08);
   }
 
-  .jobs-filter-tabs {
+  .jobs-filter-label {
+    display: block;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .jobs-filter-tabs,
+  .jobs-filter-rows {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .jobs-filter-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.25rem;
+    align-items: stretch;
   }
 
   .jobs-filter-tab {
-    border: 1px solid #d5deeb;
-    background: #ffffff;
-    color: #475569;
-    padding: 0.3rem 0.62rem;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #7dd3fc;
+    background: #dbeafe;
+    color: #075985;
+    padding: 0.3rem 0.35rem;
     border-radius: 999px;
-    font-size: 0.76rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     line-height: 1.2;
     transition: all 0.2s ease;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
+    white-space: normal;
+    word-break: break-word;
   }
 
   .jobs-filter-tab:hover {
-    border-color: #9db5ec;
-    color: #1e3a8a;
-    background: #f1f6ff;
+    border-color: #38bdf8;
+    color: #0c4a6e;
+    background: #bae6fd;
   }
 
   .jobs-filter-tab.active {
-    background: linear-gradient(180deg, #3b82f6, #2563eb);
-    border-color: #2563eb;
+    background: linear-gradient(180deg, #2563eb 0%, #3b82f6 100%);
+    border-color: #1d4ed8;
     color: #ffffff;
-    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.22);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.24);
   }
 
   .whatsapp-follow-card {
@@ -1216,20 +1240,19 @@
 }
 
 .home-job-row {
-  border: none;
-  border-bottom: 1px solid #e5e7eb;
-  border-radius: 0;
-  background: transparent;
-  padding: 0.65rem 0;
+  border: 1px solid rgba(209, 213, 219, 0.5);
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.25s ease, border-color 0.25s ease;
   box-shadow: none;
 }
 
 .home-job-row:hover {
   box-shadow: none;
-  border-color: #1565c0;
-  background: transparent;
+  border-color: rgba(37, 99, 235, 0.25);
+  background: #f8fbff;
 }
 
 .home-job-inner-row {
@@ -1359,7 +1382,8 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.35rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.4rem;
   width: 100%;
 }
 
@@ -1368,6 +1392,16 @@
   gap: 0.35rem;
   margin-left: auto;
   align-items: center;
+}
+
+.home-job-row {
+  border: 1px solid rgba(209, 213, 219, 0.5);
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 0.95rem 0.95rem 1rem;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  box-shadow: none;
 }
 
 .job-icon-btn {
@@ -1482,6 +1516,16 @@
     font-size: 0.85rem;
   }
 
+  .jobs-filter-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .jobs-filter-tab {
+    min-height: 2.4rem;
+    white-space: normal;
+    word-break: break-word;
+  }
+
   .home-job-row-actions {
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -1525,6 +1569,7 @@
   .home-job-row-description,
   .fallback-job-row .home-job-row-description {
     font-size: 0.8rem;
+    -webkit-line-clamp: 5;
   }
 
   .home-job-row-btn,
@@ -1568,36 +1613,47 @@
     line-height: 1.35;
   }
 
+  .whatsapp-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.35rem 0;
+  }
+
   .whatsapp-follow-btn {
     margin-top: 0.2rem;
-    width: 100%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.42rem;
+    gap: 0.35rem;
     border: 1px solid #1ebc5d;
-    border-radius: 10px;
+    border-radius: 999px;
     background: linear-gradient(180deg, #25d366, #18b757);
     color: #ffffff;
     text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 800;
-    padding: 0.62rem 0.95rem;
-    box-shadow: 0 10px 18px rgba(37, 211, 102, 0.26);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.45rem 0.75rem;
+    box-shadow: 0 6px 12px rgba(37, 211, 102, 0.18);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    width: auto;
+    line-height: 1;
   }
 
   .whatsapp-follow-btn i {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .whatsapp-follow-btn:hover {
     color: #ffffff;
     text-decoration: none;
     transform: translateY(-1px);
-    filter: brightness(1.02);
-    box-shadow: 0 12px 20px rgba(37, 211, 102, 0.3);
+    filter: brightness(1.03);
+    box-shadow: 0 8px 14px rgba(37, 211, 102, 0.22);
   }
 
 /* Small no-data top card and fallback grid */

@@ -39,6 +39,14 @@ export class HomeComponent implements OnInit {
     'Hyderabad',
     'Bengaluru'
   ];
+
+  readonly filterRows: string[][] = [
+    ['All', 'Walk-ins', 'Government Jobs', 'Freshers'],
+    ['Experienced', 'B.Tech', 'Degree', 'Any Graduate'],
+    ['Vishakhapatnam', 'Hyderabad', 'Bengaluru', 'IT Jobs'],
+    ['BPO/Non-IT Jobs', 'Banking Jobs', 'Pharma Jobs']
+  ];
+
   private readonly categoryByPath: Record<string, string> = {
     '/IT-Walk-ins': 'IT Walk-ins',
     '/BPO-Non-IT-Walk-ins': 'BPO/Non-IT Walk-ins',

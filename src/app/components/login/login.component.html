@@ -104,15 +104,7 @@
             </div>
           </div>
 
-          <div class="header-account-bar">
-            <div class="header-account">
-              <div class="header-account-label">Signed in</div>
-              <div class="header-account-email">{{ currentUser?.email || currentUser?.displayName }}</div>
-              <button class="btn btn-outline-danger header-logout-btn" (click)="logout()">
-                <i class="bi bi-box-arrow-right me-1"></i>Logout
-              </button>
-            </div>
-          </div>
+          
         </div>
 
         <div class="admin-actions-row mb-3" *ngIf="activeAdminTab === 'jobs'">

@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
 
   jobCategories: string[] = [];
   privateJobTypes: string[] = [...PRIVATE_JOB_TYPES];
-  jobTypeOptions: string[] = ['Walk-ins'];
+  jobTypeOptions: string[] = ['Walk-ins', 'Government Jobs'];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
   locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
   qualificationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];

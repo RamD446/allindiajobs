@@ -29,7 +29,7 @@
 
           <!-- Normal jobs list -->
           <div class="home-jobs-list" *ngIf="!hasNoData()">
-            <div *ngFor="let job of getPaginatedJobsForHome()" class="home-job-row" (click)="viewJobDetails(job)">
+            <div *ngFor="let job of getPaginatedJobsForHome()" class="home-job-row">
               <div class="home-job-inner-row">
                 <div class="home-job-thumb-col-wrap">
                   <div class="home-job-thumb-col">
@@ -38,11 +38,27 @@
                 </div>
 
                 <div class="home-job-details-col">
-                  <div class="home-job-row-title">{{ job.title }}</div>
+                  <div class="home-job-row-title" (click)="viewJobDetails(job)">{{ job.title }}</div>
                   <div class="home-job-row-meta home-job-row-meta-inline">
                     <small class="home-job-row-created" [title]="job.createdDate">
                       Posted Date: {{ job.createdDate | date:'MMMM d' }}
                     </small>
+                  </div>
+                  <p class="home-job-row-description" (click)="viewJobDetails(job)">
+                    {{ job.description }}
+                  </p>
+                  <div class="home-job-row-actions">
+                    <button class="home-job-row-btn" (click)="viewJobDetails(job)">
+                      <i class="bi bi-arrow-right"></i> Continue Reading
+                    </button>
+                    <div class="job-card-icons">
+                      <button class="job-icon-btn share-btn" (click)="shareJob(job)" title="Share this job">
+                        <i class="bi bi-share"></i>
+                      </button>
+                      <button *ngIf="isLoggedIn" class="job-icon-btn edit-btn" (click)="editJob(job)" title="Edit this job">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -72,7 +88,7 @@
             </div>
 
             <div *ngIf="getFallbackJobsForHome().length > 0" class="fallback-jobs-grid">
-              <div *ngFor="let job of getFallbackJobsForHome()" class="home-job-row fallback-job-row" (click)="viewJobDetails(job)">
+              <div *ngFor="let job of getFallbackJobsForHome()" class="home-job-row fallback-job-row">
                 <div class="home-job-inner-row">
                   <div class="home-job-thumb-col-wrap">
                     <div class="home-job-thumb-col">
@@ -81,11 +97,27 @@
                   </div>
 
                   <div class="home-job-details-col">
-                    <div class="home-job-row-title">{{ job.title }}</div>
+                    <div class="home-job-row-title" (click)="viewJobDetails(job)">{{ job.title }}</div>
                     <div class="home-job-row-meta home-job-row-meta-inline">
                       <small class="home-job-row-created" [title]="job.createdDate">
                         Posted Date: {{ job.createdDate | date:'MMMM d' }}
                       </small>
+                    </div>
+                    <p class="home-job-row-description" (click)="viewJobDetails(job)">
+                      {{ job.description }}
+                    </p>
+                    <div class="home-job-row-actions">
+                      <button class="home-job-row-btn" (click)="viewJobDetails(job)">
+                        <i class="bi bi-arrow-right"></i> Continue Reading
+                      </button>
+                      <div class="job-card-icons">
+                        <button class="job-icon-btn share-btn" (click)="shareJob(job)" title="Share this job">
+                          <i class="bi bi-share"></i>
+                        </button>
+                        <button *ngIf="isLoggedIn" class="job-icon-btn edit-btn" (click)="editJob(job)" title="Edit this job">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

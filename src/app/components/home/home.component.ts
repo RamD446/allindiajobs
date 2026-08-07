@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
-import { db } from '../../../config/firebase.config';
+import { db, auth } from '../../../config/firebase.config';
+import { onAuthStateChanged } from 'firebase/auth';
 import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
 
 @Component({
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
   walkinJobs: Job[] = [];
   selectedJobCategory: string = 'All';
   isLoading: boolean = true;
+  isLoggedIn: boolean = false;
   // Pagination
   pageSize: number = 20;
   currentPage: number = 1;
@@ -44,7 +46,23 @@ export class HomeComponent implements OnInit {
     '/Pharma-Walk-ins': 'Pharma Walk-ins'
   };
 
-  constructor(private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef) {}
+  constructor(private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef) {
+    this.setPageSizeBasedOnScreen();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.setPageSizeBasedOnScreen();
+  }
+
+  private setPageSizeBasedOnScreen() {
+    if (window.innerWidth <= 768) {
+      this.pageSize = 5;
+    } else {
+      this.pageSize = 20;
+    }
+    this.currentPage = 1;
+  }
 
   ngOnInit() {
     const currentPath = this.router.url.split('?')[0];
@@ -66,6 +84,12 @@ export class HomeComponent implements OnInit {
 
     this.loadCompanyImages();
     this.loadJobs();
+
+    // Listen to authentication state
+    onAuthStateChanged(auth, (user) => {
+      this.isLoggedIn = !!user;
+      this.cdr.detectChanges();
+    });
   }
 
   private getJobTypeFilteredList(jobs: Job[]): Job[] {
@@ -426,5 +450,35 @@ export class HomeComponent implements OnInit {
       this.currentPage -= 1;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  }
+
+  shareJob(job: Job) {
+    const shareText = `Check out this job: ${job.title}`;
+    const shareUrl = window.location.origin + '/job/' + job.id;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: job.title,
+        text: shareText,
+        url: shareUrl
+      }).catch(err => console.log('Share cancelled or failed'));
+    } else {
+      // Fallback: Copy to clipboard
+      const fullText = `${shareText}\n${shareUrl}`;
+      navigator.clipboard.writeText(fullText).then(() => {
+        alert('Job link copied to clipboard!');
+      }).catch(err => {
+        alert('Could not copy to clipboard');
+      });
+    }
+  }
+
+  editJob(job: Job) {
+    if (!this.isLoggedIn) {
+      alert('Please login to edit jobs');
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.router.navigate(['/login'], { state: { editJobId: job.id, editJob: job } });
   }
 }

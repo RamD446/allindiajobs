@@ -26,6 +26,7 @@ export interface Job {
 
 // Job Categories - Walk-in categories
 export const DEFAULT_JOB_CATEGORIES = [
+  'Government Jobs',
   'IT Walk-ins',
   'BPO/Non-IT Walk-ins',
   'Banking Walk-ins',

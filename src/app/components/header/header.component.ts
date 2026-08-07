@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
   selectedLocationFilter = '';
   
   homeCategoryOptions = [
+    { value: 'Government Jobs', label: 'Government Jobs' },
     { value: 'IT Walk-ins', label: 'IT Jobs' },
     { value: 'BPO/Non-IT Walk-ins', label: 'BPO/Non-IT Jobs' },
     { value: 'Banking Walk-ins', label: 'Banking Jobs' },
@@ -50,6 +51,7 @@ export class HeaderComponent implements OnInit {
   }
 
   jobTypeOptions = [
+    { value: 'Government Jobs', label: 'Government Jobs' },
     { value: 'Walk-ins', label: 'Walk-ins Jobs' }
   ];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
@@ -59,6 +61,7 @@ export class HeaderComponent implements OnInit {
   offcanvasFilters = [
     { name: 'All', route: '/job-category/all', icon: 'bi-grid', color: '#0f766e' },
     { name: 'Walk-ins', route: '/job-category/walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
+    { name: 'Government Jobs', route: '/job-category/government-jobs', icon: 'bi-building-check', color: '#9333ea' },
     { name: 'B.Tech', route: '/job-category/b-tech', icon: 'bi-mortarboard', color: '#0ea5e9' },
     { name: 'Degree', route: '/job-category/degree', icon: 'bi-award', color: '#0284c7' },
     { name: 'Any Graduate', route: '/job-category/any-graduate', icon: 'bi-journal-check', color: '#0369a1' },

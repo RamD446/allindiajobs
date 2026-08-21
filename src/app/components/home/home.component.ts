@@ -47,6 +47,29 @@ export class HomeComponent implements OnInit {
     ['BPO/Non-IT Jobs', 'Banking Jobs', 'Pharma Jobs']
   ];
 
+  readonly filterGroups = [
+    {
+      label: 'Job Type',
+      options: ['All Jobs', 'Walk-ins', 'Government Jobs']
+    },
+    {
+      label: 'Location',
+      options: ['Vishakhapatnam', 'Hyderabad', 'Bengaluru']
+    },
+    {
+      label: 'Category',
+      options: ['IT Jobs', 'BPO/Non-IT Jobs', 'Banking Jobs', 'Pharma Jobs']
+    },
+    {
+      label: 'Education',
+      options: ['B.Tech', 'Degree', 'Any Graduate']
+    },
+    {
+      label: 'Fresher / Experience',
+      options: ['Freshers', 'Experienced']
+    }
+  ];
+
   private readonly categoryByPath: Record<string, string> = {
     '/IT-Walk-ins': 'IT Walk-ins',
     '/BPO-Non-IT-Walk-ins': 'BPO/Non-IT Walk-ins',
@@ -461,9 +484,10 @@ export class HomeComponent implements OnInit {
   }
 
   shareJob(job: Job) {
+    const titleSlug = this.createSlug(job.title);
     const shareText = `Check out this job: ${job.title}`;
-    const shareUrl = window.location.origin + '/job/' + job.id;
-    
+    const shareUrl = `${window.location.origin}/job/${job.id}/${titleSlug}`;
+
     if (navigator.share) {
       navigator.share({
         title: job.title,
@@ -471,7 +495,6 @@ export class HomeComponent implements OnInit {
         url: shareUrl
       }).catch(err => console.log('Share cancelled or failed'));
     } else {
-      // Fallback: Copy to clipboard
       const fullText = `${shareText}\n${shareUrl}`;
       navigator.clipboard.writeText(fullText).then(() => {
         alert('Job link copied to clipboard!');

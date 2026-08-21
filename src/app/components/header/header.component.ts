@@ -50,6 +50,13 @@ export class HeaderComponent implements OnInit {
     return getCategoryDisplayLabel(category);
   }
 
+  get topJobsTicker(): Job[] {
+    return this.jobs
+      .slice()
+      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+      .slice(0, 10);
+  }
+
   jobTypeOptions = [
     { value: 'Government Jobs', label: 'Government Jobs' },
     { value: 'Walk-ins', label: 'Walk-ins Jobs' }

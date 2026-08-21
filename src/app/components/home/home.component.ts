@@ -87,11 +87,7 @@ export class HomeComponent implements OnInit {
   }
 
   private setPageSizeBasedOnScreen() {
-    if (window.innerWidth <= 768) {
-      this.pageSize = 5;
-    } else {
-      this.pageSize = 20;
-    }
+    this.pageSize = 20;
     this.currentPage = 1;
   }
 

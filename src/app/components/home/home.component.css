@@ -1132,11 +1132,11 @@
   }
 
   .filter-section {
-    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
-    border: 1px solid #dbeafe;
+    background: linear-gradient(180deg, #eaf4ff 0%, #f8fbff 100%);
+    border: 1px solid #bfdbfe;
     border-radius: 14px;
     padding: 0.8rem 0.8rem 0.7rem;
-    box-shadow: 0 8px 18px rgba(59, 130, 246, 0.06);
+    box-shadow: 0 8px 18px rgba(59, 130, 246, 0.08);
     min-height: 100%;
   }
 
@@ -1146,9 +1146,9 @@
     padding: 0.45rem 0.55rem;
     font-size: 0.86rem;
     font-weight: 800;
-    color: #0f5ec7;
-    background: #eaf3ff;
-    border: 1px solid #dbeafe;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border: 1px solid #1d4ed8;
     border-radius: 8px;
     line-height: 1.3;
   }
@@ -1315,7 +1315,7 @@
   transition: color 0.2s ease;
   line-height: 1.4;
   display: inline-block;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
 }
 
 .home-jobs-table-title:hover {
@@ -1540,15 +1540,25 @@
 }
 
 .view-btn {
-  color: #1d4ed8;
-  background: #eff6ff;
-  border-color: #bfdbfe;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0d6efd 0%, #2563eb 100%);
+  border-color: #0d6efd;
+  box-shadow: 0 6px 14px rgba(13, 110, 253, 0.22);
+}
+
+.view-btn i {
+  color: #ffffff;
 }
 
 .view-btn:hover {
-  border-color: #60a5fa;
-  background: #dbeafe;
-  color: #1e40af;
+  border-color: #1155d9;
+  background: linear-gradient(135deg, #0b5ed7 0%, #1d4ed8 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 16px rgba(13, 110, 253, 0.26);
+}
+
+.view-btn:hover i {
+  color: #ffffff;
 }
 
 .share-btn {

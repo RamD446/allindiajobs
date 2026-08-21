@@ -40,7 +40,7 @@
               <tbody>
                 <tr *ngFor="let job of getPaginatedJobsForHome()">
                   <td class="home-jobs-table-date" [title]="job.createdDate">
-                    {{ job.createdDate | date:'MMM d' }}
+                    {{ job.createdDate | date:'dd/MM/yyyy' }}
                   </td>
                   <td class="home-jobs-table-title-cell">
                     <div class="home-jobs-table-title" (click)="viewJobDetails(job)">{{ job.title }}</div>

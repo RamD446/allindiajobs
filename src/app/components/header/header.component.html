@@ -179,24 +179,25 @@
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
 
   <!-- Top Jobs Ticker (fixed below navbar) -->
-  <div class="top-jobs-strip" *ngIf="topJobsTicker.length && !isJobDetailsPage()">
+  <div class="top-jobs-strip" *ngIf="topJobsTicker.length">
     <div class="top-jobs-track">
+      <div class="top-job-label-pill">Top Jobs</div>
+
       <button
         type="button"
         class="top-job-link"
         *ngFor="let job of topJobsTicker"
         (click)="viewJobDetails(job)">
-        <span class="top-job-label">Top Jobs</span>
-        <span class="top-job-separator">•</span>
         <span>{{ job.title }}</span>
       </button>
+
+      <div class="top-job-label-pill">Top Jobs</div>
+
       <button
         type="button"
         class="top-job-link"
         *ngFor="let job of topJobsTicker"
         (click)="viewJobDetails(job)">
-        <span class="top-job-label">Top Jobs</span>
-        <span class="top-job-separator">•</span>
         <span>{{ job.title }}</span>
       </button>
     </div>

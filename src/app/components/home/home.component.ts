@@ -29,15 +29,21 @@ export class HomeComponent implements OnInit {
   companyImageMap: Record<string, string> = {};
   jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
   readonly quickFilterCategories: string[] = [
+    'All',
     'Walk-ins',
+    'Government Jobs',
+    'Freshers',
+    'Experienced',
     'B.Tech',
     'Degree',
     'Any Graduate',
-    'Freshers',
-    'Experienced',
     'Vishakhapatnam',
     'Hyderabad',
-    'Bengaluru'
+    'Bengaluru',
+    'IT Jobs',
+    'BPO/Non-IT Jobs',
+    'Banking Jobs',
+    'Pharma Jobs'
   ];
 
   readonly filterRows: string[][] = [
@@ -255,9 +261,9 @@ export class HomeComponent implements OnInit {
       return true;
     }
 
-    const normalized = selected.trim().toLowerCase();
-    const jobType = (job.jobType || '').trim().toLowerCase();
-    const category = (job.category || '').trim().toLowerCase();
+    const normalized = selected.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const jobType = (job.jobType || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const category = (job.category || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     const qualification = (job.qualification || '').trim().toLowerCase();
     const experience = (job.experience || '').trim().toLowerCase();
     const location = `${job.location || ''} ${job.jobLocation || ''}`.trim().toLowerCase();
@@ -267,22 +273,22 @@ export class HomeComponent implements OnInit {
     }
 
     if (normalized === 'government-jobs') {
-      return job.walkInDrive !== true || jobType === 'government-jobs';
+      return job.walkInDrive !== true || jobType === 'government-jobs' || category === 'government-jobs';
     }
 
-    if (normalized === 'b.tech' || normalized === 'degree' || normalized === 'any graduate') {
-      return qualification.includes(normalized);
+    if (normalized === 'b-tech' || normalized === 'degree' || normalized === 'any-graduate') {
+      return qualification.includes(normalized.replace(/-/g, ' '));
     }
 
     if (normalized === 'freshers' || normalized === 'experienced') {
-      return experience.includes(normalized);
+      return experience.includes(normalized.replace(/-/g, ' '));
     }
 
     if (normalized === 'vishakhapatnam' || normalized === 'hyderabad' || normalized === 'bengaluru') {
       return location.includes(normalized);
     }
 
-    return category === normalized;
+    return category === normalized || category === normalized.replace(/-/g, ' ');
   }
 
   getAllCategoryFilters(): string[] {
@@ -423,18 +429,6 @@ export class HomeComponent implements OnInit {
 
   hasNoData(): boolean {
     return this.getFilteredJobsForHome().length === 0;
-  }
-
-  shouldShowSuggested(): boolean {
-    return this.getFilteredJobsForHome().length === 0 && this.getFallbackJobsForHome().length > 0;
-  }
-
-  /**
-   * Return top 20 recent jobs to suggest when current filters return no results.
-   */
-  getFallbackJobsForHome(): Job[] {
-    const fallbackSource = this.walkinJobs.length ? this.walkinJobs : this.jobs;
-    return this.sortByLatestCreated(fallbackSource).slice(0, 20);
   }
 
   getPaginatedJobsForHome(): Job[] {

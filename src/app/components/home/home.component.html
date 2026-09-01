@@ -10,14 +10,15 @@
     <p class="loader-sub">Please wait while we load the latest opportunities</p>
   </div>
 
-  <div *ngIf="!isLoading" class="container-fluid">
-    <div class="row gx-2 gy-2 home-grid-row">
-      <!-- Jobs Column (Col-8) -->
-      <div class="col-12 col-lg-8">
+ 
+
+    <div class="row gx-2 gy-2 home-grid-row home-main-row">
+      <div class="d-none d-lg-block col-lg-1"></div>
+
+      <div class="col-12 col-lg-10">
         <div class="jobs-section">
           <div class="section-header">{{ getLatestJobsHeading() }}</div>
-          
-          <!-- No data notice -->
+
           <div *ngIf="hasNoData()" class="no-data-small card p-2 mb-3">
             <div class="d-flex flex-column align-items-center justify-content-center text-center gap-2">
               <div>
@@ -26,8 +27,24 @@
               </div>
             </div>
           </div>
+           <div *ngIf="!isLoading" class="container-fluid">
+    <div class="row gx-2 gy-2 home-grid-row home-top-filters-row">
+      <div class="col-12">
+        <div class="home-top-filters-card">
+          <div class="jc-pills-row">
+            <button
+              type="button"
+              *ngFor="let category of getAllCategoryFilters()"
+              class="jc-pill"
+              [class.jc-pill-active]="selectedJobCategory === category"
+              (click)="selectCategoryTab(category)">
+              <span>{{ getCategoryDisplayLabel(category) }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-          <!-- Normal jobs list -->
           <div class="home-jobs-table-wrap" *ngIf="!hasNoData()">
             <table class="home-jobs-table">
               <thead>
@@ -63,7 +80,6 @@
             </table>
           </div>
 
-          <!-- Pagination Controls -->
           <div class="home-pagination-wrap mt-2" *ngIf="getFilteredJobsForHome().length > pageSize">
             <div class="home-pagination">
               <button type="button" class="page-btn" (click)="prevPage()" [disabled]="currentPage===1">Prev</button>
@@ -79,66 +95,10 @@
             </div>
           </div>
 
-          <!-- Suggested Jobs -->
-          <div class="fallback-section mt-3" *ngIf="shouldShowSuggested()">
-            <div class="fallback-section-header d-flex align-items-center justify-content-between mb-2">
-              <div class="fw-bold">Suggested jobs</div>
-            </div>
-
-            <div *ngIf="getFallbackJobsForHome().length > 0" class="fallback-jobs-grid">
-              <div *ngFor="let job of getFallbackJobsForHome()" class="home-job-row fallback-job-row">
-                <div class="home-job-inner-row">
-                  <div class="home-job-thumb-col-wrap">
-                    <div class="home-job-thumb-col">
-                      <img [src]="getJobCardImage(job)" [alt]="job.title" class="home-job-thumb-col-image" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="home-job-details-col">
-                    <div class="home-job-row-title" (click)="viewJobDetails(job)">{{ job.title }}</div>
-                    <div class="home-job-row-meta home-job-row-meta-inline">
-                      <small class="home-job-row-created" [title]="job.createdDate">
-                        Posted Date: {{ job.createdDate | date:'MMMM d' }}
-                      </small>
-                      <div class="job-card-icons">
-                        <button class="job-icon-btn share-btn" (click)="shareJob(job)" title="Share this job">
-                          <i class="bi bi-share"></i>
-                        </button>
-                        <button *ngIf="isLoggedIn" class="job-icon-btn edit-btn" (click)="editJob(job)" title="Edit this job">
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
-      <!-- Sidebar Column (Col-4) -->
-      <div class="col-12 col-lg-4">
-        <div class="filter-section">
-          <div class="section-header">Filter by Jobs</div>
-
-          <div class="modern-filter-panel">
-            <div class="modern-filter-group" *ngFor="let group of filterGroups">
-              <div class="modern-filter-label">{{ group.label }}</div>
-              <div class="modern-filter-options">
-                <button
-                  type="button"
-                  *ngFor="let option of group.options"
-                  class="modern-filter-btn"
-                  [class.active]="selectedJobCategory === (option === 'All Jobs' ? 'All' : option)"
-                  (click)="selectCategoryTab(option === 'All Jobs' ? 'All' : option)">
-                  {{ getCategoryDisplayLabel(option === 'All Jobs' ? 'All' : option) }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="d-none d-lg-block col-lg-1"></div>
     </div>
   </div>
 </div>

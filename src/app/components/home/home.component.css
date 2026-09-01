@@ -178,6 +178,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
+    overflow-x: visible;
   }
 }
 
@@ -245,10 +246,12 @@
 .jc-pill-active {
   background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%) !important;
   border-color: transparent !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18), 0 4px 12px rgba(37, 99, 235, 0.14) !important;
 }
 
 .jc-pill-active i, .jc-pill-active span {
   color: white !important;
+  font-weight: 800 !important;
 }
 
 .fs-header {
@@ -915,6 +918,39 @@
 
   .home-grid-row {
     margin: 0;
+  }
+
+  .home-top-filters-row {
+    margin-bottom: 0.5rem;
+  }
+
+  .home-top-filters-card {
+    background: linear-gradient(180deg, #edf6ff 0%, #ffffff 100%);
+    border: 1px solid #dbeafe;
+    border-radius: 12px;
+    padding: 0.65rem;
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.06);
+  }
+
+  .home-top-filters-card .jc-pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 0.05rem 0;
+  }
+
+  .home-top-filters-card .jc-pill {
+    flex: 0 0 auto;
+    padding: 0.38rem 0.56rem;
+  }
+
+  @media (min-width: 992px) {
+    .home-main-row {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
   }
 
   .jobs-list-block {

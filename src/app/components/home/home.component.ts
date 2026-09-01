@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   isLoading: boolean = true;
   isLoggedIn: boolean = false;
   // Pagination
-  pageSize: number = 20;
+  pageSize: number = 50;
   currentPage: number = 1;
   totalPages: number = 1;
   isWalkinOnlyPage: boolean = false;
@@ -84,16 +84,15 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef) {
-    this.setPageSizeBasedOnScreen();
+    this.currentPage = 1;
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.setPageSizeBasedOnScreen();
+    this.currentPage = 1;
   }
 
   private setPageSizeBasedOnScreen() {
-    this.pageSize = 20;
     this.currentPage = 1;
   }
 

@@ -24,6 +24,15 @@ export interface Job {
   updatedDate?: string;
 }
 
+// A user-submitted comment on a specific job, keyed by jobId in Firebase
+export interface JobComment {
+  id: string;
+  jobId: string;
+  name: string;
+  comment: string;
+  createdDate: string;
+}
+
 // Job Categories - Walk-in categories
 export const DEFAULT_JOB_CATEGORIES = [
   'Government Jobs',

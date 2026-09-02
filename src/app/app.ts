@@ -1,7 +1,5 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { CommonModule } from '@angular/common';
 import { ref, get, update } from 'firebase/database';
@@ -11,7 +9,7 @@ import { filter } from 'rxjs';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, LayoutComponent, CommonModule],
+  imports: [RouterOutlet, LayoutComponent, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

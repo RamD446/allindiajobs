@@ -4,6 +4,16 @@
     ".write": "auth != null",
     "jobs": {
       ".indexOn": ["createdDate"]
+    },
+    "comments": {
+      ".read": true,
+      ".write": true,
+      "$jobId": {
+        ".indexOn": ["createdDate"],
+        "$commentId": {
+          ".validate": "newData.hasChildren(['name', 'comment', 'createdDate']) && newData.child('name').isString() && newData.child('name').val().length <= 60 && newData.child('comment').isString() && newData.child('comment').val().length <= 500"
+        }
+      }
     }
   }
 }

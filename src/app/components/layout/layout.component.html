@@ -1,11 +1,9 @@
-<div class="app-layout">
-  <div class="layout-container">
-    <div class="row gx-2 gy-2 layout-main-row">
-      <div class="d-none d-lg-block col-lg-1" *ngIf="!isLoginPage"></div>
-      <div [class.col-12]="true" [class.col-lg-10]="!isLoginPage">
-        <ng-content></ng-content>
-      </div>
-      <div class="d-none d-lg-block col-lg-1" *ngIf="!isLoginPage"></div>
+<div class="site-shell" [class.site-shell-full]="isLoginPage">
+  <app-header></app-header>
+  <div class="app-layout">
+    <div class="layout-container">
+      <ng-content></ng-content>
     </div>
   </div>
+  <app-footer></app-footer>
 </div>

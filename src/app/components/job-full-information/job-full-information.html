@@ -14,28 +14,29 @@
 
   <div *ngIf="!isLoading && job" class="container-fluid p-0">
       <div class="row gx-3 gy-0 m-0 jobfull-grid-row">
-         <div class="jobfull-section-block whatsapp-follow-card">
-          
-          <div class="jobfull-section-content p-3">
+      <!-- Left: Job Information (70% on desktop) -->
+      <div class="col-12 col-lg-8">
+        <div class="jobfull-section-block jobfull-details-block">
+          <div class="jobfull-section-content p-2 p-lg-3">
+        <div class="jobfull-section-block whatsapp-follow-card">
+          <div class="jobfull-section-content p-2">
             <div class="whatsapp-follow-inner">
-             
-              
-              <p class="whatsapp-follow-text">Follow us for latest jobs, walk-ins, and daily alerts.</p>
+              <div class="whatsapp-follow-bell">
+                <i class="bi bi-bell-fill"></i>
+              </div>
+              <p class="whatsapp-follow-text">Follow us for latest jobs.</p>
               <button
                 type="button"
                 class="whatsapp-follow-btn"
                 (click)="joinWhatsAppGroup()"
                 aria-label="Join WhatsApp group for job updates">
                 <i class="bi bi-whatsapp"></i>
-                Join WhatsApp Group
+                Join Jobs Group
               </button>
             </div>
           </div>
         </div>
-      <!-- Left: Job Information (70% on desktop) -->
-      <div class="col-12 col-lg-8">
-        <div class="jobfull-section-block jobfull-details-block">
-          <div class="jobfull-section-content p-2 p-lg-3">
+
         <!-- Breadcrumb: Home / Job Details / Job Title -->
         <nav aria-label="breadcrumb" class="mb-3">
           <ol class="breadcrumb bg-transparent p-0 m-0 small flex-nowrap overflow-hidden">
@@ -163,6 +164,59 @@
                </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="job-comments-section mt-4">
+          <h2 class="job-comments-heading">Comments ({{ comments.length }})</h2>
+
+          <form class="job-comment-form" (ngSubmit)="submitComment()" #commentForm="ngForm">
+            <div class="row g-2">
+              <div class="col-12 col-sm-4">
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="Your name"
+                  [(ngModel)]="newCommentName"
+                  name="commentName"
+                  maxlength="60"
+                  required>
+              </div>
+              <div class="col-12 col-sm-8">
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="Write a comment..."
+                  [(ngModel)]="newCommentText"
+                  name="commentText"
+                  maxlength="500"
+                  required>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mt-2">
+              <div class="text-danger small" *ngIf="commentError">{{ commentError }}</div>
+              <button type="submit" class="btn btn-primary btn-sm ms-auto" [disabled]="isSubmittingComment">
+                {{ isSubmittingComment ? 'Posting...' : 'Post Comment' }}
+              </button>
+            </div>
+          </form>
+
+          <div class="job-comments-list mt-3" *ngIf="comments.length > 0">
+            <div class="job-comment-item" *ngFor="let c of comments">
+              <div class="job-comment-avatar">{{ c.name.charAt(0).toUpperCase() }}</div>
+              <div class="job-comment-body">
+                <div class="job-comment-header">
+                  <span class="job-comment-name">{{ c.name }}</span>
+                  <span class="job-comment-date">{{ formatDate(c.createdDate) }}</span>
+                </div>
+                <p class="job-comment-text">{{ c.comment }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="job-comments-empty mt-3" *ngIf="comments.length === 0">
+            <p class="text-muted small mb-0">No comments yet. Be the first to comment!</p>
+          </div>
         </div>
 
           </div>

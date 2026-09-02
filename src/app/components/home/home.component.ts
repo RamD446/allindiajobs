@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db, auth } from '../../../config/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
-import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
+import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, CATEGORY_DISPLAY_LABELS, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
 
 @Component({
   selector: 'app-home',
@@ -272,7 +272,7 @@ export class HomeComponent implements OnInit {
     }
 
     if (normalized === 'government-jobs') {
-      return job.walkInDrive !== true || jobType === 'government-jobs' || category === 'government-jobs';
+      return jobType === 'government-jobs' || category === 'government-jobs';
     }
 
     if (normalized === 'b-tech' || normalized === 'degree' || normalized === 'any-graduate') {
@@ -287,7 +287,17 @@ export class HomeComponent implements OnInit {
       return location.includes(normalized);
     }
 
-    return category === normalized || category === normalized.replace(/-/g, ' ');
+    // Handle categories where the walk-in raw value differs from the display label
+    // e.g. selecting "IT Jobs" should also match jobs stored with category "IT Walk-ins"
+    const rawCategoriesForDisplay = Object.entries(CATEGORY_DISPLAY_LABELS)
+      .filter(([, label]) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') === normalized)
+      .map(([rawLabel]) => rawLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''));
+
+    if (rawCategoriesForDisplay.includes(category) || rawCategoriesForDisplay.includes(jobType)) {
+      return true;
+    }
+
+    return category === normalized || category === normalized.replace(/-/g, ' ') || jobType === normalized;
   }
 
   getAllCategoryFilters(): string[] {

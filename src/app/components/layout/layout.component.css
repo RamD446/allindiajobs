@@ -1,4 +1,15 @@
 /* Main Layout Container */
+.site-shell {
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .site-shell:not(.site-shell-full) {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+}
+
 .app-layout {
   min-height: 100vh;
   background-color: #f4f4f4;

@@ -4,7 +4,7 @@
 html, body {
   overflow-x: hidden;
   max-width: 100vw;
-  background-color: #f4f4f4; /* Changed from white to match layout background */
+  background-color: #e2e8f0; /* Bright gray outside the centered content area */
   margin: 0;
   padding: 0;
 }

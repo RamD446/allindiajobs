@@ -4,6 +4,87 @@
   padding-top: 0;
 }
 
+.job-comments-section {
+  border-top: 1px solid #e5edf8;
+  padding-top: 1rem;
+}
+
+.job-comments-heading {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+}
+
+.job-comment-form .form-control {
+  font-size: 0.82rem;
+}
+
+.job-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.job-comment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.job-comment-item:last-child {
+  border-bottom: none;
+}
+
+.job-comment-avatar {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: #1565c0;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.job-comment-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.job-comment-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.job-comment-name {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #1e293b;
+}
+
+.job-comment-date {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.job-comment-text {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+
 .jobfull-grid-row {
   margin: 0;
 }
@@ -151,49 +232,89 @@
 }
 
 .whatsapp-follow-card {
-  border: none;
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
+  border: 1px solid #bdeecb;
+  background: linear-gradient(135deg, #eafff2 0%, #f4fffa 100%);
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.1);
+  border-radius: 10px;
   overflow: visible;
   transition: none;
-  border-top: 1px solid #e5edf8;
-  border-bottom: 1px solid #e5edf8;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
-  margin-bottom: 0.75rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0.9rem;
 }
 
 .whatsapp-follow-card:hover {
   transform: none;
-  box-shadow: none;
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.1);
 }
 
 .whatsapp-follow-inner {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.25rem 0.1rem;
+  text-align: left;
+  gap: 0.85rem;
+  padding: 0.7rem 0.9rem;
+  width: 100%;
 }
 
 .whatsapp-follow-icon {
-  width: 54px;
-  height: 54px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: #25d366;
   color: #ffffff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 18px rgba(37, 211, 102, 0.28);
+  box-shadow: 0 6px 14px rgba(37, 211, 102, 0.28);
+  flex-shrink: 0;
 }
 
 .whatsapp-follow-icon i {
-  font-size: 1.7rem;
+  font-size: 1.35rem;
   line-height: 1;
+}
+
+.whatsapp-follow-bell {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(37, 211, 102, 0.12);
+  color: #1ec862;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.whatsapp-follow-bell i {
+  font-size: 1.3rem;
+  transform-origin: top center;
+  animation: whatsapp-bell-ring 2.2s ease-in-out infinite;
+}
+
+@keyframes whatsapp-bell-ring {
+  0%, 6%, 14% {
+    transform: rotate(0deg);
+  }
+  8% {
+    transform: rotate(-16deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  12% {
+    transform: rotate(-8deg);
+  }
+  13% {
+    transform: rotate(4deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .whatsapp-follow-title {
@@ -205,29 +326,33 @@
 
 .whatsapp-follow-text {
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: #1f5b36;
   line-height: 1.35;
-  text-align: center;
+  text-align: left;
+  min-width: 140px;
 }
 
 .whatsapp-follow-btn {
-  margin-top: 0.1rem;
+  margin-top: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
   border: 1px solid rgba(21, 163, 73, 0.7);
-  border-radius: 8px;
+  border-radius: 6px;
   background: linear-gradient(180deg, #2ad36b 0%, #1ec862 100%);
   color: #ffffff;
   text-decoration: none;
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 0.5rem 0.9rem;
-  box-shadow: none;
+  padding: 0.32rem 0.6rem;
+  box-shadow: 0 0 0 rgba(37, 211, 102, 0.5);
   transition: transform 0.2s ease, filter 0.2s ease;
-  min-width: 150px;
+  min-width: 0;
+  flex-shrink: 0;
+  animation: whatsapp-btn-pulse 2s ease-in-out infinite;
 }
 
 .whatsapp-follow-btn:hover {
@@ -235,6 +360,19 @@
   text-decoration: none;
   transform: translateY(-1px);
   filter: brightness(1.02);
+  animation-play-state: paused;
+}
+
+@keyframes whatsapp-btn-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
 }
 
 .recent-posts-heading {

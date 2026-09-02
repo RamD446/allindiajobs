@@ -1,14 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel } from '../../models/job.model';
-import { ref, get, onValue, query, orderByChild, limitToLast, update } from 'firebase/database';
+import { Job, JobComment, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel } from '../../models/job.model';
+import { ref, get, onValue, query, orderByChild, limitToLast, update, push, set } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 
 @Component({
   selector: 'app-job-full-information',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './job-full-information.html',
   styleUrl: './job-full-information.css',
 })
@@ -18,6 +19,11 @@ export class JobFullInformation implements OnInit {
   latestJobs: Job[] = [];
   private companyImageMap: Record<string, string> = {};
   jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
+  comments: JobComment[] = [];
+  newCommentName: string = '';
+  newCommentText: string = '';
+  isSubmittingComment: boolean = false;
+  commentError: string = '';
   readonly quickFilterCategories: string[] = [
     'Walk-ins',
     'B.Tech',
@@ -77,7 +83,10 @@ export class JobFullInformation implements OnInit {
       
       // Load latest jobs for sidebar
       await this.loadLatestJobs();
-      
+
+      // Load comments for this job
+      this.loadComments(jobId);
+
     } catch (error) {
       console.error('Error loading job:', error);
       this.job = null;
@@ -139,6 +148,53 @@ export class JobFullInformation implements OnInit {
     return (value || '')
       .toLowerCase()
       .replace(/[^a-z0-9]/g, '');
+  }
+
+  private loadComments(jobId: string): void {
+    try {
+      const commentsRef = ref(db, `comments/${jobId}`);
+      onValue(commentsRef, (snapshot) => {
+        const data = snapshot.val();
+        const rows: JobComment[] = data
+          ? Object.keys(data).map((key) => ({ id: key, ...data[key] }))
+          : [];
+        this.comments = rows.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+        this.cdr.detectChanges();
+      });
+    } catch (error) {
+      console.error('Error loading comments:', error);
+    }
+  }
+
+  async submitComment(): Promise<void> {
+    const name = this.newCommentName.trim();
+    const comment = this.newCommentText.trim();
+    this.commentError = '';
+
+    if (!this.job) { return; }
+    if (!name || !comment) {
+      this.commentError = 'Please enter your name and comment.';
+      return;
+    }
+
+    this.isSubmittingComment = true;
+    try {
+      const commentsRef = ref(db, `comments/${this.job.id}`);
+      const newCommentRef = push(commentsRef);
+      await set(newCommentRef, {
+        name,
+        comment,
+        createdDate: new Date().toISOString()
+      });
+      this.newCommentName = '';
+      this.newCommentText = '';
+    } catch (error) {
+      console.error('Error submitting comment:', error);
+      this.commentError = 'Could not post your comment. Please try again.';
+    } finally {
+      this.isSubmittingComment = false;
+      this.cdr.detectChanges();
+    }
   }
 
   private getMappedImageByCompany(companyName: string): string {

@@ -12,26 +12,20 @@
 
  
 
-    <div class="row gx-2 gy-2 home-grid-row home-main-row">
-      <div class="d-none d-lg-block col-lg-1"></div>
-
-      <div class="col-12 col-lg-10">
-        <div class="jobs-section">
-          <div *ngIf="!isLoading" class="section-header">{{ getLatestJobsHeading() }}</div>
+    <div class="jobs-section">
+      <div *ngIf="!isLoading" class="section-header">{{ getLatestJobsHeading() }}</div>
 
           <div *ngIf="!isLoading" class="row gx-2 gy-2 home-grid-row home-top-filters-row">
             <div class="col-12">
-              <div class="home-top-filters-card">
-                <div class="jc-pills-row">
-                  <button
-                    type="button"
-                    *ngFor="let category of getAllCategoryFilters()"
-                    class="jc-pill"
-                    [class.jc-pill-active]="selectedJobCategory === category"
-                    (click)="selectCategoryTab(category)">
-                    <span>{{ getCategoryDisplayLabel(category) }}</span>
-                  </button>
-                </div>
+              <div class="jc-pills-row">
+                <button
+                  type="button"
+                  *ngFor="let category of getAllCategoryFilters()"
+                  class="jc-pill"
+                  [class.jc-pill-active]="selectedJobCategory === category"
+                  (click)="selectCategoryTab(category)">
+                  <span>{{ getCategoryDisplayLabel(category) }}</span>
+                </button>
               </div>
             </div>
           </div>
@@ -48,38 +42,33 @@
     
 
           <div class="home-jobs-table-wrap" *ngIf="!hasNoData()">
-            <table class="home-jobs-table">
-              <thead>
-                <tr>
-                  <th>Posted</th>
-                  <th>Title</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let job of getPaginatedJobsForHome()">
-                  <td class="home-jobs-table-date" [title]="job.createdDate">
-                    {{ job.createdDate | date:'dd/MM/yyyy' }}
-                  </td>
-                  <td class="home-jobs-table-title-cell">
-                    <div class="home-jobs-table-title" (click)="viewJobDetails(job)">{{ job.title }}</div>
-                  </td>
-                  <td class="home-jobs-table-action">
-                    <div class="home-jobs-table-actions">
-                      <button class="job-icon-btn view-btn" type="button" (click)="viewJobDetails(job)" title="View this job">
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <button class="job-icon-btn share-btn" type="button" (click)="shareJob(job)" title="Share this job">
-                        <i class="bi bi-share"></i>
-                      </button>
-                      <button *ngIf="isLoggedIn" class="job-icon-btn edit-btn" type="button" (click)="editJob(job)" title="Edit this job">
-                        <i class="bi bi-pencil"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="home-jobs-list">
+              <div class="home-job-list-row" *ngFor="let job of getPaginatedJobsForHome()">
+                <div class="home-job-list-thumb" *ngIf="getJobCardImage(job) as imageSrc">
+                  <img [src]="imageSrc" [alt]="job.title" loading="lazy">
+                </div>
+                <div class="home-jobs-table-title-cell">
+                  <div class="home-jobs-table-title" (click)="viewJobDetails(job)">{{ job.title }}</div>
+                  <div class="home-jobs-table-date" [title]="job.createdDate"><span class="home-jobs-table-date-label">Posted Date:</span> {{ job.createdDate | date:'dd/MM/yyyy' }}</div>
+                </div>
+                <div class="home-jobs-table-action">
+                  <div class="home-jobs-table-actions">
+                    <button class="job-icon-btn view-btn" type="button" (click)="viewJobDetails(job)" title="View this job">
+                      <i class="bi bi-eye-fill"></i>
+                      <span>View</span>
+                    </button>
+                    <button class="job-icon-btn share-btn" type="button" (click)="shareJob(job)" title="Share this job">
+                      <i class="bi bi-share-fill"></i>
+                      <span>Share</span>
+                    </button>
+                    <button *ngIf="isLoggedIn" class="job-icon-btn edit-btn" type="button" (click)="editJob(job)" title="Edit this job">
+                      <i class="bi bi-pencil-fill"></i>
+                      <span>Edit</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="home-pagination-wrap mt-2" *ngIf="getFilteredJobsForHome().length > pageSize">
@@ -100,7 +89,4 @@
         </div>
       </div>
 
-      <div class="d-none d-lg-block col-lg-1"></div>
     </div>
-  </div>
-</div>

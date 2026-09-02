@@ -34,3 +34,10 @@
     padding-top: 79px;
   }
 }
+
+@media (min-width: 992px) {
+  .layout-main-row {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+}

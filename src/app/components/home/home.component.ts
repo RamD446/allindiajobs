@@ -291,17 +291,26 @@ export class HomeComponent implements OnInit {
   }
 
   getAllCategoryFilters(): string[] {
-    const set = new Set<string>(['All']);
+    const seenLabels = new Set<string>();
+    const result: string[] = [];
 
-    this.quickFilterCategories.forEach((item) => set.add(item));
-    this.jobCategories.forEach((item) => {
+    const addCategory = (item: string) => {
       const trimmed = (item || '').trim();
-      if (trimmed) {
-        set.add(trimmed);
+      if (!trimmed) {
+        return;
       }
-    });
+      const label = getCategoryDisplayLabel(trimmed);
+      if (!seenLabels.has(label)) {
+        seenLabels.add(label);
+        result.push(trimmed);
+      }
+    };
 
-    return Array.from(set);
+    addCategory('All');
+    this.quickFilterCategories.forEach(addCategory);
+    this.jobCategories.forEach(addCategory);
+
+    return result;
   }
 
   getCategoryDisplayLabel(category: string): string {

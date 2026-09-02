@@ -57,6 +57,28 @@ export class HeaderComponent implements OnInit {
       .slice(0, 10);
   }
 
+  get detailPageFilterLabels(): Array<{ label: string; route: string }> {
+    return [
+      { label: 'Home', route: '/' },
+      { label: 'Walk-ins Jobs', route: '/job-category/walk-ins' },
+      { label: 'Government Jobs', route: '/job-category/government-jobs' },
+      { label: 'Freshers Jobs', route: '/job-category/freshers' },
+      { label: 'Experienced Jobs', route: '/job-category/experienced' },
+      { label: 'IT Jobs', route: '/job-category/it-walk-ins' },
+      { label: 'BPO/Non-IT Jobs', route: '/job-category/bpo-non-it-walk-ins' },
+      { label: 'Banking Jobs', route: '/job-category/banking-walk-ins' },
+      { label: 'Pharma Jobs', route: '/job-category/pharma-walk-ins' },
+      { label: 'Vishakhapatnam', route: '/job-category/vishakhapatnam' },
+      { label: 'Hyderabad', route: '/job-category/hyderabad' },
+      { label: 'Bengaluru', route: '/job-category/bengaluru' }
+    ];
+  }
+
+  get isHomePageTickerVisible(): boolean {
+    const url = this.router.url.split('?')[0];
+    return url === '/' || url.startsWith('/job-category') || url.includes('/walkinjobs') || url.includes('/non-walkinjobs');
+  }
+
   jobTypeOptions = [
     { value: 'Government Jobs', label: 'Government Jobs' },
     { value: 'Walk-ins', label: 'Walk-ins Jobs' }

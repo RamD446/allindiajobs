@@ -179,10 +179,8 @@
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
 
   <!-- Top Jobs Ticker -->
-  <div class="top-jobs-strip" *ngIf="topJobsTicker.length">
-    <div class="top-jobs-track">
-      <div class="top-job-label-pill">Top Jobs</div>
-
+  <div class="top-jobs-strip top-jobs-strip--animated" *ngIf="isHomePageTickerVisible && topJobsTicker.length">
+    <div class="top-jobs-track top-jobs-track--animated">
       <button
         type="button"
         class="top-job-link"
@@ -190,15 +188,17 @@
         (click)="viewJobDetails(job)">
         <span>{{ job.title }}</span>
       </button>
+    </div>
+  </div>
 
-      <div class="top-job-label-pill">Top Jobs</div>
-
+  <div class="top-jobs-strip top-jobs-strip--static" *ngIf="isJobDetailsPage()">
+    <div class="top-jobs-track top-jobs-track--static">
       <button
         type="button"
         class="top-job-link"
-        *ngFor="let job of topJobsTicker"
-        (click)="viewJobDetails(job)">
-        <span>{{ job.title }}</span>
+        *ngFor="let filter of detailPageFilterLabels"
+        [routerLink]="filter.route">
+        <span>{{ filter.label }}</span>
       </button>
     </div>
   </div>

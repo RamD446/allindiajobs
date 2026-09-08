@@ -108,6 +108,16 @@
         </div>
       </div>
 
+      <div class="menu-section mt-3" *ngIf="getCompanyOptions().length > 0">
+        <div class="section-label px-3 mb-1">Filter by Company</div>
+        <div class="px-3">
+          <select class="form-select form-select-sm" [(ngModel)]="selectedCompanyFilter" (change)="onCompanyFilterChange()">
+            <option value="">All Companies</option>
+            <option *ngFor="let companyName of getCompanyOptions()" [value]="companyName">{{ companyName }}</option>
+          </select>
+        </div>
+      </div>
+
       <div class="menu-section mt-3">
         <div class="section-label px-3 mb-1">Play & Win</div>
         <div class="menu-items">

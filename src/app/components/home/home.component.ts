@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   jobs: Job[] = [];
   walkinJobs: Job[] = [];
   selectedJobCategory: string = 'All';
+  selectedCompanyFilter: string = '';
   isLoading: boolean = true;
   isLoggedIn: boolean = false;
   // Pagination
@@ -64,7 +65,8 @@ export class HomeComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-    this.route.queryParamMap.subscribe(() => {
+    this.route.queryParamMap.subscribe((params) => {
+      this.selectedCompanyFilter = params.get('company') || '';
       this.updateSelectedCategory();
       this.cdr.detectChanges();
     });
@@ -195,12 +197,19 @@ export class HomeComponent implements OnInit {
   getFilteredJobsForHome(): Job[] {
     return this.sortByLatestCreated(
       this.walkinJobs.filter((job) => {
-        return this.matchesSelectedCategory(job, this.selectedJobCategory);
+        const matchesCategory = this.matchesSelectedCategory(job, this.selectedJobCategory);
+        const matchesCompany = !this.selectedCompanyFilter
+          || (job.company || '').trim().toLowerCase() === this.selectedCompanyFilter.trim().toLowerCase();
+        return matchesCategory && matchesCompany;
       })
     );
   }
 
   getLatestJobsHeading(): string {
+    if (this.selectedCompanyFilter) {
+      return `Jobs at ${this.selectedCompanyFilter}`;
+    }
+
     const category = (this.selectedJobCategory || 'All').trim();
     if (!category || category.toLowerCase() === 'all') {
       return 'All Latest Jobs';

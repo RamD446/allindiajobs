@@ -18,6 +18,7 @@ export class JobFullInformation implements OnInit {
   job: Job | null = null;
   isLoading: boolean = true;
   latestJobs: Job[] = [];
+  private topCompaniesCache: string[] | null = null;
   private companyImageMap: Record<string, string> = {};
   jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
   comments: JobComment[] = [];
@@ -231,6 +232,7 @@ export class JobFullInformation implements OnInit {
           .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
           .slice(0, 40) as Job[];
         
+        this.topCompaniesCache = null;
         console.log('Latest jobs loaded:', this.latestJobs.length);
       } else {
         this.latestJobs = [];
@@ -275,6 +277,28 @@ export class JobFullInformation implements OnInit {
     
     // Show top 10 recent posts in sidebar
     return this.latestJobs.slice(0, 10);
+  }
+
+  getTopCompanies(): string[] {
+    if (this.topCompaniesCache) return this.topCompaniesCache;
+    if (!this.latestJobs) return [];
+
+    const uniqueNames = Array.from(
+      new Set(this.latestJobs.map(j => (j.company || '').trim()).filter(name => !!name))
+    );
+
+    // Shuffle (Fisher-Yates) to show a random selection each time jobs are (re)loaded
+    for (let i = uniqueNames.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [uniqueNames[i], uniqueNames[j]] = [uniqueNames[j], uniqueNames[i]];
+    }
+
+    this.topCompaniesCache = uniqueNames.slice(0, 10);
+    return this.topCompaniesCache;
+  }
+
+  viewCompanyJobs(companyName: string): void {
+    this.router.navigate(['/'], { queryParams: { company: companyName } });
   }
 
   getAllCategoryFilters(): string[] {

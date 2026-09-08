@@ -23,19 +23,17 @@ export class HeaderComponent implements OnInit {
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
+  selectedCompanyFilter = '';
 
   getCategoryDisplayLabel(category: string): string {
     return getCategoryDisplayLabel(category);
   }
 
   get topJobsTicker(): Job[] {
-    const sortByLatest = (list: Job[]) =>
-      list.slice().sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
-
-    const govJobs = sortByLatest(this.jobs.filter(job => job.jobType === 'Government Jobs')).slice(0, 10);
-    const walkInJobs = sortByLatest(this.jobs.filter(job => job.walkInDrive === true)).slice(0, 10);
-
-    return [...govJobs, ...walkInJobs];
+    return this.jobs
+      .slice()
+      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+      .slice(0, 30);
   }
 
   get detailPageFilterLabels(): Array<{ label: string; route: string }> {
@@ -54,6 +52,20 @@ export class HeaderComponent implements OnInit {
   get isHomePageTickerVisible(): boolean {
     const url = this.router.url.split('?')[0];
     return url === '/' || url.startsWith('/job-category') || url.includes('/walkinjobs') || url.includes('/non-walkinjobs');
+  }
+
+  getCompanyOptions(): string[] {
+    const names = Array.from(new Set(this.jobs.map(job => (job.company || '').trim()).filter(name => !!name)));
+    return names.sort((a, b) => a.localeCompare(b));
+  }
+
+  onCompanyFilterChange(): void {
+    this.isNavActive = false;
+    if (!this.selectedCompanyFilter) {
+      this.router.navigate(['/']);
+      return;
+    }
+    this.router.navigate(['/'], { queryParams: { company: this.selectedCompanyFilter } });
   }
 
   offcanvasFilters = [

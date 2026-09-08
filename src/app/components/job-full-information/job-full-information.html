@@ -32,7 +32,7 @@
                 (click)="joinWhatsAppGroup()"
                 aria-label="Join WhatsApp group for job updates">
                 <i class="bi bi-whatsapp"></i>
-                Join Jobs Group
+                 Jobs Group
               </button>
             </div>
         </div>
@@ -164,6 +164,20 @@
                </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Top Companies Tags Card -->
+        <div class="job-title-card mb-3" *ngIf="getTopCompanies().length > 0">
+          <h2 class="job-comments-heading mb-2">Popular Companies</h2>
+          <div class="d-flex flex-wrap gap-2">
+            <button
+              type="button"
+              *ngFor="let companyName of getTopCompanies()"
+              class="btn btn-sm btn-outline-primary rounded-pill"
+              (click)="viewCompanyJobs(companyName)">
+              {{ companyName }}
+            </button>
+          </div>
         </div>
 
         <!-- Comments Section -->

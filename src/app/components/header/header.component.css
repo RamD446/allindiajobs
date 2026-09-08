@@ -380,6 +380,20 @@ header {
   }
 }
 
+.top-jobs-static-stack {
+  position: fixed;
+  top: 44px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-jobs-static-stack .top-jobs-strip {
+  position: static;
+}
+
 .top-jobs-track {
   display: flex;
   align-items: center;
@@ -406,6 +420,30 @@ header {
   overflow-x: auto;
   width: 100%;
   animation: none;
+}
+
+.top-jobs-strip--static select.form-select-sm {
+  width: auto;
+  max-width: 180px;
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 0.2rem 1.6rem 0.2rem 0.5rem;
+  height: auto;
+  background-color: #0b1220;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.top-jobs-strip--static select.form-select-sm option {
+  background-color: #0b1220;
+  color: #ffffff;
+}
+
+.company-filter-label {
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 @keyframes ticker-scroll {

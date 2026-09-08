@@ -151,15 +151,27 @@
     </div>
   </div>
 
-  <div class="top-jobs-strip top-jobs-strip--static" *ngIf="isJobDetailsPage()">
-    <div class="top-jobs-track top-jobs-track--static">
-      <button
-        type="button"
-        class="top-job-link"
-        *ngFor="let filter of detailPageFilterLabels"
-        [routerLink]="filter.route">
-        <span>{{ filter.label }}</span>
-      </button>
+  <div class="top-jobs-static-stack" *ngIf="isJobDetailsPage()">
+    <div class="top-jobs-strip top-jobs-strip--static">
+      <div class="top-jobs-track top-jobs-track--static">
+        <button
+          type="button"
+          class="top-job-link"
+          *ngFor="let filter of detailPageFilterLabels"
+          [routerLink]="filter.route">
+          <span>{{ filter.label }}</span>
+        </button>
+
+        <div class="px-2 py-1 d-flex align-items-center gap-2" *ngIf="getCompanyOptions().length > 0">
+          
+          <select class="form-select form-select-sm" [(ngModel)]="selectedCompanyFilter" (change)="onCompanyFilterChange()">
+            <option value="">Filter by Company</option>
+            <option *ngFor="let companyName of getCompanyOptions().slice(0, 30)" [value]="companyName">{{ companyName }}</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
+
+  
 </header>

@@ -1310,7 +1310,7 @@
 
 .home-job-list-thumb {
   width: 90px;
-  height: 45px;
+  height: 60px;
   min-width: 90px;
   border-radius: 8px;
   overflow: hidden;
@@ -1355,7 +1355,7 @@
   transition: color 0.2s ease;
   line-height: 1.4;
   display: inline-block;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
 }
 
 .home-jobs-table-title:hover {
@@ -1668,12 +1668,12 @@
   }
 
   .home-jobs-table-date {
-    font-size: 0.66rem;
+    font-size: 0.7rem;
   }
 
   .home-jobs-table-title {
     color: #0f6ad1;
-    font-size: 0.72rem;
+    font-size: 0.85rem;
   }
 
   .home-jobs-table-btn {

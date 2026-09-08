@@ -5,10 +5,10 @@
       <tbody>
         <ng-container *ngFor="let job of jobs">
           <tr class="recent-post-row" (click)="viewJobDetails(job)">
-            <td class="recent-post-cell recent-post-cell-title">{{ job.title }}</td>
+            <td class="recent-post-cell recent-post-cell-title"><i class="bi bi-chevron-double-right recent-post-arrow-icon"></i>{{ job.title }}</td>
           </tr>
           <tr class="recent-post-row" (click)="viewJobDetails(job)" *ngIf="formatWalkInDate(job.createdDate) as createdDateLabel">
-            <td class="recent-post-cell recent-post-cell-date">Created: {{ createdDateLabel }}</td>
+            <td class="recent-post-cell recent-post-cell-date">Posted date: {{ createdDateLabel }}</td>
           </tr>
         </ng-container>
       </tbody>

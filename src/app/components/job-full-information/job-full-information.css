@@ -113,6 +113,20 @@
   text-transform: uppercase;
 }
 
+.breadcrumb-card {
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+}
+
+.job-title-card {
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+}
+
 .jobfull-section-content {
   padding: 0;
 }
@@ -235,19 +249,20 @@
 }
 
 .whatsapp-follow-card {
-  border: none;
-  background: linear-gradient(135deg, #25d366 0%, #20ba5d 100%);
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+  border: 1px solid #b7ecc9;
+  background: #eafbf0;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.12);
   border-radius: 8px;
   overflow: visible;
   transition: all 0.3s ease;
   padding: 0;
-  margin-bottom: 0.9rem;
+  margin: 0 auto 0.9rem;
+  max-width: 300px;
 }
 
 .whatsapp-follow-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
 }
 
 .whatsapp-follow-inner {
@@ -255,38 +270,39 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: space-between;
-  text-align: left;
-  gap: 0.6rem;
+  justify-content: center;
+  text-align: center;
+  gap: 0.55rem;
   padding: 0.5rem 0.7rem;
   width: 100%;
-  min-height: 52px;
+  min-height: 0;
 }
 
 .whatsapp-follow-label {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.55rem;
   min-width: 0;
-  flex: 1;
+  flex: 0 1 auto;
 }
 
 .whatsapp-follow-bell {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
+  background: rgba(37, 211, 102, 0.15);
+  color: #1da851;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 2px solid rgba(24, 180, 94, 0.9);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 0 0 2px rgba(24, 180, 94, 0.09);
+  border: 2px solid rgba(37, 211, 102, 0.4);
+  box-shadow: none;
 }
 
 .whatsapp-follow-bell i {
-  font-size: 1rem;
+  font-size: 0.75rem;
   transform-origin: top center;
   animation: whatsapp-bell-ring 2.2s ease-in-out infinite;
 }
@@ -316,16 +332,16 @@
   margin: 0;
   font-size: 0.9rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #14532d;
 }
 
 .whatsapp-follow-text {
   margin: 0;
   font-size: 0.75rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  color: #1f6b3a;
   line-height: 1.3;
-  text-align: left;
+  text-align: center;
   min-width: auto;
 }
 
@@ -336,8 +352,8 @@
   gap: 0.25rem;
   border: none;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #25d366;
+  background: #25d366;
+  color: #ffffff;
   text-decoration: none;
   font-size: 0.65rem;
   font-weight: 700;
@@ -350,10 +366,10 @@
 }
 
 .whatsapp-follow-btn:hover {
-  color: #1ec862;
+  color: #ffffff;
   text-decoration: none;
   transform: scale(1.05);
-  background: #ffffff;
+  background: #1ec862;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 

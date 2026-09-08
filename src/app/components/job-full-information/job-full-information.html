@@ -19,7 +19,6 @@
         <div class="jobfull-section-block jobfull-details-block">
           <div class="jobfull-section-content p-2 p-lg-3">
         <div class="jobfull-section-block whatsapp-follow-card">
-          <div class="jobfull-section-content p-2">
             <div class="whatsapp-follow-inner">
               <div class="whatsapp-follow-label">
                 <div class="whatsapp-follow-bell" aria-hidden="true">
@@ -36,43 +35,45 @@
                 Join Jobs Group
               </button>
             </div>
-          </div>
         </div>
 
         <!-- Breadcrumb: Home / Job Details / Job Title -->
-        <nav aria-label="breadcrumb" class="mb-3">
-          <ol class="breadcrumb bg-transparent p-0 m-0 small flex-nowrap overflow-hidden">
-            <li class="breadcrumb-item flex-shrink-0">
-              <a routerLink="/" class="text-decoration-none text-primary fw-medium">Home</a>
-            </li>
-            <li class="breadcrumb-item flex-shrink-0 text-muted">Job Details</li>
-            <li class="breadcrumb-item active text-truncate text-secondary" aria-current="page">
-              {{ job.title }}
-            </li>
-          </ol>
-        </nav>
+        <div class="breadcrumb-card mb-3">
+          <nav aria-label="breadcrumb" class="mb-0">
+            <ol class="breadcrumb bg-transparent p-0 m-0 small flex-nowrap overflow-hidden">
+              <li class="breadcrumb-item flex-shrink-0">
+                <a routerLink="/" class="text-decoration-none text-primary fw-medium">Home</a>
+              </li>
+              <li class="breadcrumb-item flex-shrink-0 text-muted">Job Details</li>
+              <li class="breadcrumb-item active text-truncate text-secondary" aria-current="page">
+                {{ job.title }}
+              </li>
+            </ol>
+          </nav>
+        </div>
 
 
-        <!-- Job Title -->
-        <h1 class="h5 fw-bold mb-1 job-title-banner">{{ job.title }}</h1>
-        
+        <!-- Job Title + Date/Share -->
+        <div class="job-title-card mb-3">
+          <h1 class="h5 fw-bold mb-1 job-title-banner">{{ job.title }}</h1>
 
-        <!-- Date and Share Row -->
-        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-          <div class="text-muted" style="font-size: 0.75rem;">
-            Posted on:
-            {{ formatDate(job.createdDate) }}
-          </div>
-          <div class="d-flex align-items-center gap-3">
-             <div class="d-flex align-items-center gap-1 cursor-pointer" (click)="shareJob(job)" style="color: #0d6efd; font-size: 0.85rem; font-weight: 600;">
-               <span>Share :</span><i class="bi bi-share fs-5"></i>
+          <!-- Date and Share Row -->
+          <div class="d-flex align-items-center justify-content-between border-top pt-2 mt-2">
+            <div class="text-muted" style="font-size: 0.75rem;">
+              Posted on:
+              {{ formatDate(job.createdDate) }}
+            </div>
+            <div class="d-flex align-items-center gap-3">
+               <div class="d-flex align-items-center gap-1 cursor-pointer" (click)="shareJob(job)" style="color: #0d6efd; font-size: 0.85rem; font-weight: 600;">
+                 <span>Share :</span><i class="bi bi-share fs-5"></i>
+               
+              </div>
+              <div class="d-flex align-items-center gap-1 cursor-pointer" (click)="shareOnWhatsApp(job)" style="color: #25D366; font-size: 0.85rem; font-weight: 600;">
+                    <i class="bi bi-whatsapp fs-5"></i>
+            
+              </div>
              
             </div>
-            <div class="d-flex align-items-center gap-1 cursor-pointer" (click)="shareOnWhatsApp(job)" style="color: #25D366; font-size: 0.85rem; font-weight: 600;">
-                  <i class="bi bi-whatsapp fs-5"></i>
-          
-            </div>
-           
           </div>
         </div>
 
@@ -116,12 +117,17 @@
           </div>
         </div>
 <!-- Job Details Table -->
-        <div class="table-responsive mb-3 mt-1" *ngIf="job.company || job.jobType || job.experience || job.otherLink">
+        <div class="table-responsive mb-3 mt-1" *ngIf="job.company || job.createdBy || job.jobType || job.experience || job.otherLink || job.applyPdfLink">
           <table class="table table-sm table-bordered mb-0 small">
             <tbody>
               <tr *ngIf="job.company">
                 <th class="bg-light text-dark fw-bold px-2 py-1">Company</th>
                 <td class="px-2 py-1">{{ job.company }}</td>
+              </tr>
+
+              <tr *ngIf="job.createdBy">
+                <th class="bg-light text-dark fw-bold px-2 py-1">Job Posted By</th>
+                <td class="px-2 py-1">{{ job.createdBy }}</td>
               </tr>
 
               <!-- <tr *ngIf="job.jobType">
@@ -147,6 +153,13 @@
                  <th class="bg-light text-dark fw-bold px-2 py-1">Official Link:</th>
                  <td class="text px-2 py-1">
                    <a [href]="job.otherLink" target="_blank" class="btn btn-success btn-sm px-3 py-1 rounded-1" style="font-size: 0.8rem;">Apply Now</a>
+                 </td>
+               </tr>
+
+                <tr *ngIf="job.applyPdfLink">
+                 <th class="bg-light text-dark fw-bold px-2 py-1">Apply PDF Link:</th>
+                 <td class="text px-2 py-1">
+                   <a [href]="job.applyPdfLink" target="_blank" class="btn btn-success btn-sm px-3 py-1 rounded-1" style="font-size: 0.8rem;">View PDF</a>
                  </td>
                </tr>
             </tbody>

@@ -116,7 +116,7 @@
           </div>
         </div>
 <!-- Job Details Table -->
-        <div class="table-responsive mb-3 mt-1" *ngIf="job.company || job.category || job.jobType || job.qualification || job.experience || job.location || job.jobLocation || job.otherLink">
+        <div class="table-responsive mb-3 mt-1" *ngIf="job.company || job.jobType || job.experience || job.otherLink">
           <table class="table table-sm table-bordered mb-0 small">
             <tbody>
               <tr *ngIf="job.company">
@@ -124,29 +124,14 @@
                 <td class="px-2 py-1">{{ job.company }}</td>
               </tr>
 
-              <!-- <tr *ngIf="job.category">
-                <th class="bg-light text-dark fw-bold px-2 py-1">Category</th>
-                <td class="px-2 py-1">{{ getCategoryDisplayLabel(job.category) }}</td>
-              </tr>
-
-              <tr *ngIf="job.jobType">
+              <!-- <tr *ngIf="job.jobType">
                 <th class="bg-light text-dark fw-bold px-2 py-1">Job Type</th>
                 <td class="px-2 py-1">{{ job.jobType }}</td>
-              </tr>
-
-              <tr *ngIf="job.qualification">
-                <th class="bg-light text-dark fw-bold px-2 py-1">Qualification</th>
-                <td class="px-2 py-1">{{ job.qualification }}</td>
               </tr>
 
               <tr *ngIf="job.experience">
                 <th class="bg-light text-dark fw-bold px-2 py-1">Experience</th>
                 <td class="px-2 py-1">{{ job.experience }}</td>
-              </tr>
-
-              <tr *ngIf="job.location || job.jobLocation">
-                <th class="bg-light text-dark fw-bold px-2 py-1">Location</th>
-                <td class="px-2 py-1">{{ job.location || job.jobLocation }}</td>
               </tr> -->
 
               <tr>

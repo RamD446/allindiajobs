@@ -87,24 +87,23 @@
       <div class="dashboard-card">
         <div class="admin-top-row mb-3">
           <div class="admin-top-left">
-            <h2 class="admin-page-title mb-2">Admin Page</h2>
-            <div class="admin-tabs">
-              <button
-                class="admin-tab-btn"
-                [class.active]="activeAdminTab === 'jobs'"
-                (click)="switchAdminTab('jobs')">
-                <i class="bi bi-briefcase-fill me-1"></i>Jobs
-              </button>
-              <button
-                class="admin-tab-btn"
-                [class.active]="activeAdminTab === 'companies'"
-                (click)="switchAdminTab('companies')">
-                <i class="bi bi-building me-1"></i>Companies
-              </button>
-            </div>
+            <h2 class="admin-page-title mb-0">Admin Page</h2>
           </div>
 
-          
+          <div class="admin-tabs">
+            <button
+              class="admin-tab-btn"
+              [class.active]="activeAdminTab === 'jobs'"
+              (click)="switchAdminTab('jobs')">
+              <i class="bi bi-briefcase-fill me-1"></i>Jobs
+            </button>
+            <button
+              class="admin-tab-btn"
+              [class.active]="activeAdminTab === 'companies'"
+              (click)="switchAdminTab('companies')">
+              <i class="bi bi-building me-1"></i>Companies
+            </button>
+          </div>
         </div>
 
         <div class="admin-actions-row mb-3" *ngIf="activeAdminTab === 'jobs'">
@@ -149,16 +148,6 @@
                 <input type="text" class="form-control" [(ngModel)]="jobForm.title" name="title" required placeholder="e.g. Business Development Executive">
               </div>
 
-              <!-- <div class="col-md-6 mb-3">
-                <label class="form-label">Job Location and HR Details</label>
-                <input
-                  type="text"
-                  [(ngModel)]="jobForm.jobLocation"
-                  name="jobLocation"
-                  class="form-control"
-                  placeholder="e.g. Hyderabad, Telangana | HR: 9876543210">
-              </div> -->
-
               <div class="w-100"></div>
 
               <!-- Row 2: Company Name + Job Type + Category -->
@@ -187,52 +176,28 @@
                   <option *ngFor="let type of jobTypeOptions" [value]="type">{{ type }}</option>
                 </select>
               </div>
-              
-              <!-- Category -->
+
+              <!-- Created By -->
               <div class="col-md-4 mb-3">
-                <label class="form-label">Category *</label>
-                <select class="form-control" [(ngModel)]="jobForm.category" name="category" required>
-                  <option *ngFor="let category of jobCategories" [value]="category">{{ getCategoryDisplayLabel(category) }}</option>
+                <label class="form-label">Created By *</label>
+                <select class="form-control" [(ngModel)]="jobForm.createdBy" name="createdBy" required>
+                  <option *ngFor="let person of createdByOptions" [value]="person">{{ person }}</option>
                 </select>
-              </div>
-
-              <div class="col-md-4 mb-3" *ngIf="jobForm.jobType === 'Walk-ins'">
-                <label class="form-label">Walk-in Start Date</label>
-                <input type="date" class="form-control" [(ngModel)]="jobForm.walkInStartDate" name="walkInStartDate" />
-              </div>
-
-              <div class="col-md-4 mb-3" *ngIf="jobForm.jobType === 'Walk-ins'">
-                <label class="form-label">Walk-in End Date</label>
-                <input type="date" class="form-control" [(ngModel)]="jobForm.walkInEndDate" name="walkInEndDate" />
               </div>
 
               <div class="w-100"></div>
 
               <!-- Row 3 start: Experience -->
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6 mb-3" *ngIf="editingJob && jobForm.jobType === 'Walk-ins'">
                 <label class="form-label">Experience *</label>
                 <select class="form-control" [(ngModel)]="jobForm.experience" name="experience" required>
                   <option *ngFor="let opt of experienceOptions" [value]="opt">{{ opt }}</option>
                 </select>
               </div>
 
-              <div class="col-md-3 mb-3">
-                <label class="form-label">Location *</label>
-                <select class="form-control" [(ngModel)]="jobForm.jobLocation" name="jobLocation" required>
-                  <option *ngFor="let location of locationOptions" [value]="location">{{ location }}</option>
-                </select>
-              </div>
-
-              <div class="col-md-3 mb-3">
-                <label class="form-label">Qualification *</label>
-                <select class="form-control" [(ngModel)]="jobForm.qualification" name="qualification" required>
-                  <option *ngFor="let qualification of qualificationOptions" [value]="qualification">{{ qualification }}</option>
-                </select>
-              </div>
-
               <div class="w-100"></div>
 
-              <div class="col-md-12 mb-3">
+              <div class="col-md-12 mb-3" *ngIf="editingJob">
                 <label class="form-label">Description *</label>
                 <textarea
                   [(ngModel)]="jobForm.description"
@@ -244,7 +209,7 @@
                 </textarea>
               </div>
 
-              <div class="col-md-12 mb-3">
+              <div class="col-md-12 mb-3" *ngIf="editingJob">
                 <label class="form-label">Table Description</label>
                 <textarea
                   [(ngModel)]="jobForm.fullInformationTableFormat"
@@ -255,7 +220,7 @@
                 </textarea>
               </div>
 
-              <div class="col-md-12 mb-3">
+              <div class="col-md-12 mb-3" *ngIf="editingJob">
                 <label class="form-label">Full Job Information</label>
                 <app-tiptap-editor
                   [(ngModel)]="jobForm.fullJobInformation"
@@ -263,11 +228,20 @@
                   [placeholder]="'Enter full job information with bold and bullet points...'"></app-tiptap-editor>
               </div>
               <!-- Apply Official Link -->
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6 mb-3" *ngIf="editingJob">
                 <label class="form-label">Apply Official Link</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
                   <input type="url" class="form-control" [(ngModel)]="jobForm.otherLink" name="otherLink" placeholder="https://company.com/apply">
+                </div>
+              </div>
+
+              <!-- Apply Official PDF Link -->
+              <div class="col-md-6 mb-3" *ngIf="editingJob">
+                <label class="form-label">Apply Official PDF Link</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-file-earmark-pdf"></i></span>
+                  <input type="url" class="form-control" [(ngModel)]="jobForm.applyPdfLink" name="applyPdfLink" placeholder="https://company.com/apply.pdf">
                 </div>
               </div>
 
@@ -359,7 +333,7 @@
                     Required columns: CompanyName, CompanyImageHtml.
                   </small>
                   <small class="text-muted" *ngIf="importModalType === 'jobs'">
-                    Required columns: JobTitle, CompanyName, Category.
+                    Required columns: JobTitle, CompanyName.
                   </small>
                 </div>
                 <button type="button" class="btn btn-sm btn-outline-primary" (click)="downloadImportTemplate()">
@@ -412,115 +386,29 @@
           </div>
           
           <div class="jobs-filter-item mb-2">
-            <label class="jobs-filter-label">Category</label>
+            <label class="jobs-filter-label">Job Type</label>
             <div class="jobs-filter-tabs">
               <button
                 type="button"
                 class="jobs-filter-tab"
-                [class.active]="selectedJobCategory === 'All'"
-                (click)="selectCategoryTab('All')">
-                All - {{ getCategoryCount('All') }}
+                [class.active]="selectedFilterJobType === 'All'"
+                (click)="applyIndependentFilter('All')">
+                All
               </button>
               <button
                 type="button"
-                *ngFor="let category of jobCategories"
+                *ngFor="let item of getJobTypeFilterOptions()"
                 class="jobs-filter-tab"
-                [class.active]="selectedJobCategory === category"
-                (click)="selectCategoryTab(category)">
-                {{ getCategoryDisplayLabel(category) }} - {{ getCategoryCount(category) }}
+                [class.active]="selectedFilterJobType === item"
+                (click)="applyIndependentFilter(item)">
+                {{ item }}
               </button>
-            </div>
-          </div>
-
-          <div class="jobs-extra-filters mt-2">
-            <div class="jobs-filter-item">
-              <label class="jobs-filter-label">Job Type</label>
-              <div class="jobs-filter-tabs">
-                <button
-                  type="button"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedFilterJobType === 'All'"
-                  (click)="applyIndependentFilter('jobType', 'All')">
-                  All
-                </button>
-                <button
-                  type="button"
-                  *ngFor="let item of getJobTypeFilterOptions()"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedFilterJobType === item"
-                  (click)="applyIndependentFilter('jobType', item)">
-                  {{ item }}
-                </button>
-              </div>
-            </div>
-
-            <div class="jobs-filter-item">
-              <label class="jobs-filter-label">Experience</label>
-              <div class="jobs-filter-tabs">
-                <button
-                  type="button"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedFilterExperience === 'All'"
-                  (click)="applyIndependentFilter('experience', 'All')">
-                  All
-                </button>
-                <button
-                  type="button"
-                  *ngFor="let item of getExperienceFilterOptions()"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedFilterExperience === item"
-                  (click)="applyIndependentFilter('experience', item)">
-                  {{ item }}
-                </button>
-              </div>
-            </div>
-
-            <div class="jobs-filter-item">
-              <label class="jobs-filter-label">Education</label>
-              <div class="jobs-filter-tabs">
-                <button
-                  type="button"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedFilterQualification === 'All'"
-                  (click)="applyIndependentFilter('qualification', 'All')">
-                  All
-                </button>
-                <button
-                  type="button"
-                  *ngFor="let item of getQualificationFilterOptions()"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedFilterQualification === item"
-                  (click)="applyIndependentFilter('qualification', item)">
-                  {{ item }}
-                </button>
-              </div>
-            </div>
-
-            <div class="jobs-filter-item">
-              <label class="jobs-filter-label">Location</label>
-              <div class="jobs-filter-tabs">
-                <button
-                  type="button"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedFilterLocation === 'All'"
-                  (click)="applyIndependentFilter('location', 'All')">
-                  All
-                </button>
-                <button
-                  type="button"
-                  *ngFor="let item of getLocationFilterOptions()"
-                  class="jobs-filter-tab"
-                  [class.active]="selectedFilterLocation === item"
-                  (click)="applyIndependentFilter('location', item)">
-                  {{ item }}
-                </button>
-              </div>
             </div>
           </div>
         </div>
         
         <div class="jobs-grid" *ngIf="getSortedFilteredJobs().length > 0">
-          <div class="job-grid-item" *ngFor="let job of getSortedFilteredJobs()">
+          <div class="job-grid-item" *ngFor="let job of getPaginatedJobs()">
             <div class="job-card-compact job-card-grid">
               <div class="job-row-title">
                 <h6 class="job-title-small mb-0 text-truncate" [title]="job.title">{{ job.title }}</h6>
@@ -566,8 +454,21 @@
         
         <div *ngIf="getSortedFilteredJobs().length === 0" class="text-center py-4">
           <i class="bi bi-inbox display-4 text-muted"></i>
-          <h5 class="mt-3 text-muted">No {{ selectedJobCategory !== 'All' ? selectedJobCategory : '' }} Jobs Available</h5>
+          <h5 class="mt-3 text-muted">No {{ selectedFilterJobType !== 'All' ? selectedFilterJobType : '' }} Jobs Available</h5>
           <p class="text-muted">No jobs found in this category.</p>
+        </div>
+
+        <div class="admin-jobs-pagination mt-3" *ngIf="getSortedFilteredJobs().length > jobsPageSize">
+          <button type="button" class="page-btn" (click)="prevJobsPage()" [disabled]="jobsCurrentPage === 1">Prev</button>
+          <button
+            *ngFor="let p of getJobsVisiblePageNumbers()"
+            type="button"
+            class="page-number"
+            [class.active]="p === jobsCurrentPage"
+            (click)="goToJobsPage(p)">
+            {{ p }}
+          </button>
+          <button type="button" class="page-btn" (click)="nextJobsPage()" [disabled]="jobsCurrentPage === getJobsTotalPages()">Next</button>
         </div>
       </div>
 

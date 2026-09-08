@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db, auth } from '../../../config/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
-import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, CATEGORY_DISPLAY_LABELS, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
+import { Job, CompanyImage, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
 import { RecentPostsComponent } from '../recent-posts/recent-posts.component';
 
 @Component({
@@ -28,61 +28,16 @@ export class HomeComponent implements OnInit {
   isNonWalkinOnlyPage: boolean = false;
   isHomeRootPage: boolean = false;
   companyImageMap: Record<string, string> = {};
-  jobCategories: string[] = [...DEFAULT_JOB_CATEGORIES];
   readonly quickFilterCategories: string[] = [
     'All',
     'Walk-ins',
     'Government Jobs',
+    'Results',
+    'Syllabus',
+    'Career Tips',
     'Freshers',
-    'Experienced',
-    'B.Tech',
-    'Degree',
-    'Any Graduate',
-    'Vishakhapatnam',
-    'Hyderabad',
-    'Bengaluru',
-    'IT Jobs',
-    'BPO/Non-IT Jobs',
-    'Banking Jobs',
-    'Pharma Jobs'
+    'Experienced'
   ];
-
-  readonly filterRows: string[][] = [
-    ['All', 'Walk-ins', 'Government Jobs', 'Freshers'],
-    ['Experienced', 'B.Tech', 'Degree', 'Any Graduate'],
-    ['Vishakhapatnam', 'Hyderabad', 'Bengaluru', 'IT Jobs'],
-    ['BPO/Non-IT Jobs', 'Banking Jobs', 'Pharma Jobs']
-  ];
-
-  readonly filterGroups = [
-    {
-      label: 'Job Type',
-      options: ['All Jobs', 'Walk-ins', 'Government Jobs']
-    },
-    {
-      label: 'Location',
-      options: ['Vishakhapatnam', 'Hyderabad', 'Bengaluru']
-    },
-    {
-      label: 'Category',
-      options: ['IT Jobs', 'BPO/Non-IT Jobs', 'Banking Jobs', 'Pharma Jobs']
-    },
-    {
-      label: 'Education',
-      options: ['B.Tech', 'Degree', 'Any Graduate']
-    },
-    {
-      label: 'Fresher / Experience',
-      options: ['Freshers', 'Experienced']
-    }
-  ];
-
-  private readonly categoryByPath: Record<string, string> = {
-    '/IT-Walk-ins': 'IT Walk-ins',
-    '/BPO-Non-IT-Walk-ins': 'BPO/Non-IT Walk-ins',
-    '/Banking-Walk-ins': 'Banking Walk-ins',
-    '/Pharma-Walk-ins': 'Pharma Walk-ins'
-  };
 
   constructor(private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef) {
     this.currentPage = 1;
@@ -99,9 +54,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     const currentPath = this.router.url.split('?')[0];
-    const pathCategory = this.categoryByPath[currentPath] || null;
 
-    this.isWalkinOnlyPage = currentPath.includes('/walkinjobs') || !!pathCategory;
+    this.isWalkinOnlyPage = currentPath.includes('/walkinjobs');
     this.isNonWalkinOnlyPage = currentPath.includes('/non-walkinjobs');
     this.isHomeRootPage = !this.isWalkinOnlyPage && !this.isNonWalkinOnlyPage;
 
@@ -263,42 +217,21 @@ export class HomeComponent implements OnInit {
 
     const normalized = selected.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     const jobType = (job.jobType || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    const category = (job.category || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    const qualification = (job.qualification || '').trim().toLowerCase();
     const experience = (job.experience || '').trim().toLowerCase();
-    const location = `${job.location || ''} ${job.jobLocation || ''}`.trim().toLowerCase();
 
     if (normalized === 'walk-ins') {
       return job.walkInDrive === true || jobType === 'walk-ins';
     }
 
     if (normalized === 'government-jobs') {
-      return jobType === 'government-jobs' || category === 'government-jobs';
-    }
-
-    if (normalized === 'b-tech' || normalized === 'degree' || normalized === 'any-graduate') {
-      return qualification.includes(normalized.replace(/-/g, ' '));
+      return jobType === 'government-jobs';
     }
 
     if (normalized === 'freshers' || normalized === 'experienced') {
       return experience.includes(normalized.replace(/-/g, ' '));
     }
 
-    if (normalized === 'vishakhapatnam' || normalized === 'hyderabad' || normalized === 'bengaluru') {
-      return location.includes(normalized);
-    }
-
-    // Handle categories where the walk-in raw value differs from the display label
-    // e.g. selecting "IT Jobs" should also match jobs stored with category "IT Walk-ins"
-    const rawCategoriesForDisplay = Object.entries(CATEGORY_DISPLAY_LABELS)
-      .filter(([, label]) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') === normalized)
-      .map(([rawLabel]) => rawLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''));
-
-    if (rawCategoriesForDisplay.includes(category) || rawCategoriesForDisplay.includes(jobType)) {
-      return true;
-    }
-
-    return category === normalized || category === normalized.replace(/-/g, ' ') || jobType === normalized;
+    return jobType === normalized;
   }
 
   getAllCategoryFilters(): string[] {
@@ -319,7 +252,6 @@ export class HomeComponent implements OnInit {
 
     addCategory('All');
     this.quickFilterCategories.forEach(addCategory);
-    this.jobCategories.forEach(addCategory);
 
     return result;
   }
@@ -333,7 +265,7 @@ export class HomeComponent implements OnInit {
       return this.walkinJobs.length;
     }
 
-    return this.walkinJobs.filter((job) => job.category === category).length;
+    return this.walkinJobs.filter((job) => job.jobType === category).length;
   }
 
   selectCategoryTab(category: string) {
@@ -354,11 +286,9 @@ export class HomeComponent implements OnInit {
   private updateSelectedCategory() {
     const slug = this.route.snapshot.paramMap.get('category') || '';
     const slugCategory = slug ? getCategoryLabelFromSlug(slug) : null;
-    const currentPath = this.router.url.split('?')[0];
-    const pathCategory = this.categoryByPath[currentPath] || null;
     const queryCategory = this.route.snapshot.queryParamMap.get('category') || null;
 
-    this.selectedJobCategory = slugCategory || pathCategory || queryCategory || 'All';
+    this.selectedJobCategory = slugCategory || queryCategory || 'All';
   }
 
   private extractImageSrc(value: string): string | null {
@@ -399,28 +329,6 @@ export class HomeComponent implements OnInit {
     }
 
     return `${cleanText.slice(0, maxLength)}...`;
-  }
-
-  formatWalkInRange(startDate: string | undefined, endDate: string | undefined): string {
-    if (!startDate || !endDate) {
-      return '';
-    }
-
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-      return '';
-    }
-
-    const sameMonth = start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth();
-    if (sameMonth) {
-      const month = start.toLocaleString('en-US', { month: 'long' });
-      return `${start.getDate()}-${end.getDate()} ${month}`;
-    }
-
-    const startText = start.toLocaleString('en-US', { day: 'numeric', month: 'short' });
-    const endText = end.toLocaleString('en-US', { day: 'numeric', month: 'short' });
-    return `${startText} - ${endText}`;
   }
 
   getTodayWalkinsCount(): number {
@@ -523,9 +431,9 @@ export class HomeComponent implements OnInit {
   }
 
   getRecentGovernmentJobs(): Job[] {
-    // Filter jobs to show only Government Jobs category and return latest 10
+    // Filter jobs to show only Government Jobs type and return latest 10
     return this.jobs
-      .filter(job => job.category === 'Government Jobs')
+      .filter(job => job.jobType === 'Government Jobs')
       .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
       .slice(0, 10);
   }

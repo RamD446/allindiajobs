@@ -704,9 +704,10 @@
 
 .admin-top-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .admin-top-left {
@@ -1183,7 +1184,7 @@
   }
 
   .jobs-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1193,7 +1194,7 @@
   }
 
   .jobs-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1213,6 +1214,43 @@
   .jobs-extra-filters {
     grid-template-columns: 1fr;
   }
+}
+
+.admin-jobs-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.admin-jobs-pagination .page-btn,
+.admin-jobs-pagination .page-number {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 6px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-jobs-pagination .page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-jobs-pagination .page-number.active {
+  background: #0d6efd;
+  border-color: #0d6efd;
+  color: #ffffff;
+}
+
+.admin-jobs-pagination .page-number:hover:not(.active),
+.admin-jobs-pagination .page-btn:hover:not(:disabled) {
+  background: #eef4fd;
+  border-color: #0d6efd;
 }
 
 /* Fix layout and prevent page jumping */
@@ -1394,7 +1432,7 @@
 .jobs-grid {
   display: grid;
   gap: 0.45rem;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .job-grid-item {

@@ -264,9 +264,9 @@ export class JobFullInformation implements OnInit {
   getRelatedJobs(): Job[] {
     if (!this.job || !this.latestJobs) return [];
     
-    // Filter by the exact same category as the current job
+    // Filter by the exact same job type as the current job
     return this.latestJobs
-      .filter(j => j.category === this.job?.category)
+      .filter(j => j.jobType === this.job?.jobType)
       .slice(0, 10);
   }
 
@@ -616,9 +616,6 @@ export class JobFullInformation implements OnInit {
     }
     if (job.experience) {
       messageParts.push(`*Experience :* ${job.experience}`);
-    }
-    if (job.jobLocation) {
-      messageParts.push(`*Job Location & HR Details :* ${job.jobLocation}`);
     }
 
     messageParts.push(``);

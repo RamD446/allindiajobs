@@ -19,24 +19,11 @@ export class FooterComponent {
     { name: 'Home', route: '/job-category/all' },
     { name: 'Walk-ins', route: '/job-category/walk-ins' },
     { name: 'Government Jobs', route: '/job-category/government-jobs' },
-    { name: 'IT Walk-ins', route: '/job-category/it-walk-ins' },
-    { name: 'BPO/Non-IT Walk-ins', route: '/job-category/bpo-non-it-walk-ins' },
-    { name: 'Banking Walk-ins', route: '/job-category/banking-walk-ins' },
-    { name: 'Pharma Walk-ins', route: '/job-category/pharma-walk-ins' }
-  ];
-
-  educationLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
-    { name: 'B.Tech', route: '/job-category/b-tech' },
-    { name: 'Degree', route: '/job-category/degree' },
-    { name: 'Any Graduate', route: '/job-category/any-graduate' },
+    { name: 'Results', route: '/job-category/results' },
+    { name: 'Syllabus', route: '/job-category/syllabus' },
+    { name: 'Career Tips', route: '/job-category/career-tips' },
     { name: 'Freshers', route: '/job-category/freshers' },
     { name: 'Experienced', route: '/job-category/experienced' }
-  ];
-
-  locationLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
-    { name: 'Vishakhapatnam', route: '/job-category/vishakhapatnam' },
-    { name: 'Hyderabad', route: '/job-category/hyderabad' },
-    { name: 'Bengaluru', route: '/job-category/bengaluru' }
   ];
 
   gameLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [

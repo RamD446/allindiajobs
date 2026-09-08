@@ -16,8 +16,6 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 })
 export class HeaderComponent implements OnInit {
   isNavActive = false;
-  isEducationMenuOpen = false;
-  isLocationMenuOpen = false;
   isLoggedIn: boolean = false;
   currentUser: any = null;
   isSearchModalOpen = false;
@@ -25,26 +23,6 @@ export class HeaderComponent implements OnInit {
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
-  selectedHeaderCategory = '';
-  selectedJobTypeFilter = '';
-  selectedExperienceFilter = '';
-  selectedEducationFilter = '';
-  selectedLocationFilter = '';
-  
-  homeCategoryOptions = [
-    { value: 'Government Jobs', label: 'Government Jobs' },
-    { value: 'IT Walk-ins', label: 'IT Jobs' },
-    { value: 'BPO/Non-IT Walk-ins', label: 'BPO/Non-IT Jobs' },
-    { value: 'Banking Walk-ins', label: 'Banking Jobs' },
-    { value: 'Pharma Walk-ins', label: 'Pharma Jobs' }
-  ];
-
-  homeFilterOptions = [
-    { value: 'Walk-ins', label: 'Walk-ins' },
-    { value: 'Freshers', label: 'Freshers' },
-    { value: 'Experienced', label: 'Experienced' },
-    ...this.homeCategoryOptions
-  ];
 
   getCategoryDisplayLabel(category: string): string {
     return getCategoryDisplayLabel(category);
@@ -54,7 +32,7 @@ export class HeaderComponent implements OnInit {
     const sortByLatest = (list: Job[]) =>
       list.slice().sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
 
-    const govJobs = sortByLatest(this.jobs.filter(job => job.category === 'Government Jobs')).slice(0, 10);
+    const govJobs = sortByLatest(this.jobs.filter(job => job.jobType === 'Government Jobs')).slice(0, 10);
     const walkInJobs = sortByLatest(this.jobs.filter(job => job.walkInDrive === true)).slice(0, 10);
 
     return [...govJobs, ...walkInJobs];
@@ -65,15 +43,11 @@ export class HeaderComponent implements OnInit {
       { label: 'Home', route: '/' },
       { label: 'Walk-ins Jobs', route: '/job-category/walk-ins' },
       { label: 'Government Jobs', route: '/job-category/government-jobs' },
+      { label: 'Results', route: '/job-category/results' },
+      { label: 'Syllabus', route: '/job-category/syllabus' },
+      { label: 'Career Tips', route: '/job-category/career-tips' },
       { label: 'Freshers Jobs', route: '/job-category/freshers' },
-      { label: 'Experienced Jobs', route: '/job-category/experienced' },
-      { label: 'IT Jobs', route: '/job-category/it-walk-ins' },
-      { label: 'BPO/Non-IT Jobs', route: '/job-category/bpo-non-it-walk-ins' },
-      { label: 'Banking Jobs', route: '/job-category/banking-walk-ins' },
-      { label: 'Pharma Jobs', route: '/job-category/pharma-walk-ins' },
-      { label: 'Vishakhapatnam', route: '/job-category/vishakhapatnam' },
-      { label: 'Hyderabad', route: '/job-category/hyderabad' },
-      { label: 'Bengaluru', route: '/job-category/bengaluru' }
+      { label: 'Experienced Jobs', route: '/job-category/experienced' }
     ];
   }
 
@@ -82,71 +56,16 @@ export class HeaderComponent implements OnInit {
     return url === '/' || url.startsWith('/job-category') || url.includes('/walkinjobs') || url.includes('/non-walkinjobs');
   }
 
-  jobTypeOptions = [
-    { value: 'Government Jobs', label: 'Government Jobs' },
-    { value: 'Walk-ins', label: 'Walk-ins Jobs' }
-  ];
-  experienceOptions: string[] = ['Freshers', 'Experienced'];
-  educationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
-  locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
-
   offcanvasFilters = [
     { name: 'All', route: '/job-category/all', icon: 'bi-grid', color: '#0f766e' },
     { name: 'Walk-ins', route: '/job-category/walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
     { name: 'Government Jobs', route: '/job-category/government-jobs', icon: 'bi-building-check', color: '#9333ea' },
-    { name: 'B.Tech', route: '/job-category/b-tech', icon: 'bi-mortarboard', color: '#0ea5e9' },
-    { name: 'Degree', route: '/job-category/degree', icon: 'bi-award', color: '#0284c7' },
-    { name: 'Any Graduate', route: '/job-category/any-graduate', icon: 'bi-journal-check', color: '#0369a1' },
+    { name: 'Results', route: '/job-category/results', icon: 'bi-clipboard-check', color: '#b45309' },
+    { name: 'Syllabus', route: '/job-category/syllabus', icon: 'bi-journal-text', color: '#0891b2' },
+    { name: 'Career Tips', route: '/job-category/career-tips', icon: 'bi-lightbulb', color: '#7c3aed' },
     { name: 'Freshers', route: '/job-category/freshers', icon: 'bi-stars', color: '#0d9488' },
-    { name: 'Experienced', route: '/job-category/experienced', icon: 'bi-briefcase-fill', color: '#14b8a6' },
-    { name: 'Vishakhapatnam', route: '/job-category/vishakhapatnam', icon: 'bi-geo-alt', color: '#0891b2' },
-    { name: 'Hyderabad', route: '/job-category/hyderabad', icon: 'bi-geo-alt-fill', color: '#0e7490' },
-    { name: 'Bengaluru', route: '/job-category/bengaluru', icon: 'bi-building', color: '#155e75' },
-    { name: 'IT Jobs', route: '/job-category/it-walk-ins', icon: 'bi-laptop', color: '#1e3a8a' },
-    { name: 'BPO/Non-IT Jobs', route: '/job-category/bpo-non-it-walk-ins', icon: 'bi-headset', color: '#3730a3' },
-    { name: 'Banking Jobs', route: '/job-category/banking-walk-ins', icon: 'bi-bank', color: '#6d28d9' },
-    { name: 'Pharma Jobs', route: '/job-category/pharma-walk-ins', icon: 'bi-capsule', color: '#7c3aed' }
+    { name: 'Experienced', route: '/job-category/experienced', icon: 'bi-briefcase-fill', color: '#14b8a6' }
   ];
-
-  private readonly educationCategoryNames = new Set(['B.Tech', 'Degree', 'Any Graduate']);
-  private readonly locationCategoryNames = new Set(['Vishakhapatnam', 'Hyderabad', 'Bengaluru']);
-
-  get offcanvasPrimaryFilters() {
-    return this.offcanvasFilters.filter(
-      (item) => !this.educationCategoryNames.has(item.name) && !this.locationCategoryNames.has(item.name)
-    );
-  }
-
-  get educationOffcanvasFilters() {
-    return this.offcanvasFilters.filter((item) => this.educationCategoryNames.has(item.name));
-  }
-
-  get locationOffcanvasFilters() {
-    return this.offcanvasFilters.filter((item) => this.locationCategoryNames.has(item.name));
-  }
-
-  private createFilterQueryParams(filters?: { category?: string }) {
-    return {
-      category: filters?.category || null,
-      jobType: null,
-      experience: null,
-      education: null,
-      location: null
-    };
-  }
-
-  private getCategoryRoutePath(category: string): string {
-    if (!category || category === 'All') {
-      return '/job-category/all';
-    }
-
-    const slug = category
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-
-    return `/job-category/${slug}`;
-  }
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef, private router: Router, private route: ActivatedRoute) {}
 
@@ -165,120 +84,6 @@ export class HeaderComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
-
-    this.route.queryParamMap.subscribe((params) => {
-      this.selectedHeaderCategory = params.get('category') || '';
-      this.syncDropdownSelections(this.selectedHeaderCategory);
-    });
-  }
-
-  onHeaderQuickFilterChange() {
-    const route = this.getCategoryRoutePath(this.selectedHeaderCategory || 'All');
-    this.router.navigate([route]);
-  }
-
-  setHeaderCategory(category: string) {
-    this.selectedHeaderCategory = category;
-    this.syncDropdownSelections(category);
-    this.onHeaderQuickFilterChange();
-  }
-
-  onJobTypeChange() {
-    if (!this.selectedJobTypeFilter) {
-      return;
-    }
-
-    this.setHeaderCategory(this.selectedJobTypeFilter);
-  }
-
-  onExperienceChange() {
-    if (!this.selectedExperienceFilter) {
-      return;
-    }
-
-    this.setHeaderCategory(this.selectedExperienceFilter);
-  }
-
-  onEducationChange() {
-    if (!this.selectedEducationFilter) {
-      return;
-    }
-
-    this.setHeaderCategory(this.selectedEducationFilter);
-  }
-
-  onLocationChange() {
-    if (!this.selectedLocationFilter) {
-      return;
-    }
-
-    this.setHeaderCategory(this.selectedLocationFilter);
-  }
-
-  private syncDropdownSelections(category: string) {
-    if (this.jobTypeOptions.some((item) => item.value === category)) {
-      this.selectedJobTypeFilter = category;
-    } else {
-      this.selectedJobTypeFilter = '';
-    }
-
-    if (this.experienceOptions.includes(category)) {
-      this.selectedExperienceFilter = category;
-    } else {
-      this.selectedExperienceFilter = '';
-    }
-
-    if (this.educationOptions.includes(category)) {
-      this.selectedEducationFilter = category;
-    } else {
-      this.selectedEducationFilter = '';
-    }
-
-    if (this.locationOptions.includes(category)) {
-      this.selectedLocationFilter = category;
-    } else {
-      this.selectedLocationFilter = '';
-    }
-  }
-
-  resetToAllJobs() {
-    this.selectedHeaderCategory = '';
-    this.selectedJobTypeFilter = '';
-    this.selectedExperienceFilter = '';
-    this.selectedEducationFilter = '';
-    this.selectedLocationFilter = '';
-
-    this.router.navigate(['/job-category/all']);
-  }
-
-  private resolveHeaderTargetRoute(categorySelection: string): string {
-    if (categorySelection === 'walkin') {
-      return '/walkinjobs';
-    }
-
-    if (categorySelection === 'nonwalkin') {
-      return '/non-walkinjobs';
-    }
-
-    return '/';
-  }
-
-  private resolveHeaderCategoryFilter(categorySelection: string): string | null {
-    if (categorySelection === 'it') return 'IT Walk-ins';
-    if (categorySelection === 'bpo') return 'BPO/Non-IT Walk-ins';
-    if (categorySelection === 'banking') return 'Banking Walk-ins';
-    if (categorySelection === 'pharma') return 'Pharma Walk-ins';
-    return null;
-  }
-
-  private resolveHeaderCategorySelection(path: string, categoryParam: string | null): string {
-    if (path.includes('/walkinjobs')) return 'walkin';
-    if (path.includes('/non-walkinjobs')) return 'nonwalkin';
-    if (categoryParam === 'IT Walk-ins') return 'it';
-    if (categoryParam === 'BPO/Non-IT Walk-ins') return 'bpo';
-    if (categoryParam === 'Banking Walk-ins') return 'banking';
-    if (categoryParam === 'Pharma Walk-ins') return 'pharma';
-    return 'all';
   }
 
   loadJobs() {
@@ -307,16 +112,6 @@ export class HeaderComponent implements OnInit {
     return this.router.url.startsWith('/job/');
   }
 
-  getJobCountByCategory(category: string): number {
-    if (category === 'All') return this.jobs.length;
-    if (category === 'Banking Jobs') {
-      return this.jobs.filter(job => 
-        job.category && (job.category.toLowerCase().includes('bank') || job.category.includes('SBI') || job.category.includes('IBPS') || job.category.includes('RBI'))
-      ).length;
-    }
-    return this.jobs.filter(job => job.category === category).length;
-  }
-
   toggleNav(event?: Event) {
     if (event) {
       event.stopPropagation();
@@ -326,8 +121,6 @@ export class HeaderComponent implements OnInit {
 
   closeNav() {
     this.isNavActive = false;
-    this.isEducationMenuOpen = false;
-    this.isLocationMenuOpen = false;
   }
 
   async logout() {
@@ -339,20 +132,6 @@ export class HeaderComponent implements OnInit {
     } catch (error) {
       console.error('Logout error:', error);
     }
-  }
-
-  toggleEducationMenu(event?: Event) {
-    if (event) {
-      event.stopPropagation();
-    }
-    this.isEducationMenuOpen = !this.isEducationMenuOpen;
-  }
-
-  toggleLocationMenu(event?: Event) {
-    if (event) {
-      event.stopPropagation();
-    }
-    this.isLocationMenuOpen = !this.isLocationMenuOpen;
   }
 
   toggleSearchModal(event?: Event) {
@@ -387,7 +166,7 @@ export class HeaderComponent implements OnInit {
     const query = this.searchQuery.toLowerCase().trim();
     this.searchResults = this.jobs.filter(job => 
       job.title?.toLowerCase().includes(query) || 
-      job.category?.toLowerCase().includes(query) ||
+      job.jobType?.toLowerCase().includes(query) ||
       this.toPlainText(job.description || '').toLowerCase().includes(query)
     ).slice(0, 10);
   }

@@ -6,11 +6,6 @@ export const routes: Routes = [
   { path: 'job-category/:category', component: HomeComponent },
   { path: 'walkinjobs', component: HomeComponent },
   { path: 'non-walkinjobs', component: HomeComponent },
-  { path: 'IT-Walk-ins', component: HomeComponent },
-  { path: 'BPO-Non-IT-Walk-ins', component: HomeComponent },
-  { path: 'Fresher-Walk-ins', component: HomeComponent },
-  { path: 'Banking-Walk-ins', component: HomeComponent },
-  { path: 'Pharma-Walk-ins', component: HomeComponent },
   {
     path: 'thambola-game',
     loadComponent: () => import('./components/thambola-game/thambola-game.component').then(m => m.ThambolaGameComponent)

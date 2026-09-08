@@ -68,7 +68,7 @@
                   class="list-group-item list-group-item-action py-2 px-3 d-flex flex-column border-0 border-bottom">
             <span class="text-dark fw-bold small text-truncate">{{ result.title }}</span>
             <span class="text-muted smaller d-flex justify-content-between">
-              <span>{{ result.category ? getCategoryDisplayLabel(result.category) : 'Job' }}</span>
+              <span>{{ result.jobType ? getCategoryDisplayLabel(result.jobType) : 'Job' }}</span>
               <span class="text-secondary" *ngIf="result.createdDate">{{ result.createdDate | date:'MMM d' }}</span>
             </span>
           </button>
@@ -92,7 +92,7 @@
       <div class="menu-section mt-2">
         <div class="section-label px-3 mb-1">Job Categories</div>
         <div class="menu-items">
-          <a *ngFor="let cat of offcanvasPrimaryFilters"
+          <a *ngFor="let cat of offcanvasFilters"
              [routerLink]="cat.route"
              class="menu-item" 
              routerLinkActive="active"
@@ -105,56 +105,6 @@
             </div>
             <i class="bi bi-chevron-right ms-auto chevron"></i>
           </a>
-
-          <button
-            type="button"
-            class="menu-item menu-item-toggle"
-            [class.active]="isEducationMenuOpen"
-            (click)="toggleEducationMenu($event)">
-            <div class="menu-item-icon" style="background-color: #2563eb15">
-              <i class="bi bi-mortarboard" style="color: #1d4ed8"></i>
-            </div>
-            <div class="menu-item-content">
-              <span class="menu-item-text">Education</span>
-            </div>
-            <i class="bi bi-chevron-down ms-auto chevron" [class.chevron-open]="isEducationMenuOpen"></i>
-          </button>
-
-          <div class="education-submenu" *ngIf="isEducationMenuOpen">
-            <a *ngFor="let cat of educationOffcanvasFilters"
-               [routerLink]="cat.route"
-               class="education-submenu-item"
-               routerLinkActive="active"
-               (click)="closeNav()">
-              <span class="education-dot" [style.background-color]="cat.color"></span>
-              <span class="education-text">{{ cat.name }}</span>
-            </a>
-          </div>
-
-          <button
-            type="button"
-            class="menu-item menu-item-toggle"
-            [class.active]="isLocationMenuOpen"
-            (click)="toggleLocationMenu($event)">
-            <div class="menu-item-icon" style="background-color: #0ea5e915">
-              <i class="bi bi-geo-alt" style="color: #0284c7"></i>
-            </div>
-            <div class="menu-item-content">
-              <span class="menu-item-text">Location</span>
-            </div>
-            <i class="bi bi-chevron-down ms-auto chevron" [class.chevron-open]="isLocationMenuOpen"></i>
-          </button>
-
-          <div class="education-submenu" *ngIf="isLocationMenuOpen">
-            <a *ngFor="let cat of locationOffcanvasFilters"
-               [routerLink]="cat.route"
-               class="education-submenu-item"
-               routerLinkActive="active"
-               (click)="closeNav()">
-              <span class="education-dot" [style.background-color]="cat.color"></span>
-              <span class="education-text">{{ cat.name }}</span>
-            </a>
-          </div>
         </div>
       </div>
 

@@ -27,11 +27,9 @@ export class LoginComponent implements OnInit {
 
   // Job management
   jobs: Job[] = [];
-  selectedJobCategory: string = 'All';
   selectedFilterJobType: string = 'All';
-  selectedFilterExperience: string = 'All';
-  selectedFilterQualification: string = 'All';
-  selectedFilterLocation: string = 'All';
+  jobsPageSize: number = 25;
+  jobsCurrentPage: number = 1;
   showJobForm: boolean = false;
   editingJob: Job | null = null;
   isSaving: boolean = false;
@@ -60,19 +58,15 @@ export class LoginComponent implements OnInit {
     title: '',
     company: '',
     companyImage: '',
-    jobLocation: '',
     jobType: 'Walk-ins',
-    category: '',
     experience: 'Freshers',
     fullInformationTableFormat: '',
     fullJobInformation: '',
     walkInDrive: true,
     description: '',
     otherLink: '',
-    walkInInterviewLocation: '',
-    walkInStartDate: '',
-    walkInEndDate: '',
-    hrDetails: '',
+    applyPdfLink: '',
+    createdBy: '',
     createdDate: ''
   };
 
@@ -85,10 +79,9 @@ export class LoginComponent implements OnInit {
 
   jobCategories: string[] = [];
   privateJobTypes: string[] = [...PRIVATE_JOB_TYPES];
-  jobTypeOptions: string[] = ['Walk-ins', 'Government Jobs'];
+  jobTypeOptions: string[] = ['Walk-ins', 'Government Jobs', 'Results', 'Syllabus', 'Career Tips'];
   experienceOptions: string[] = ['Freshers', 'Experienced'];
-  locationOptions: string[] = ['Vishakhapatnam', 'Hyderabad', 'Bengaluru'];
-  qualificationOptions: string[] = ['B.Tech', 'Degree', 'Any Graduate'];
+  createdByOptions: string[] = ['Yalla Ramana', 'Pyla Divya', 'Pyla Rakshayani'];
 
   constructor(private cdr: ChangeDetectorRef, private router: Router) {
     this.loadJobMetadata();
@@ -269,15 +262,7 @@ export class LoginComponent implements OnInit {
 
   getFilteredJobs(): Job[] {
     return this.jobs.filter((job) => {
-      const categoryPass = this.selectedJobCategory === 'All' || job.category === this.selectedJobCategory;
-      const jobTypePass = this.selectedFilterJobType === 'All' || (job.jobType || '') === this.selectedFilterJobType;
-      const experiencePass = this.selectedFilterExperience === 'All' || (job.experience || '') === this.selectedFilterExperience;
-      const qualificationPass = this.selectedFilterQualification === 'All' || (job.qualification || '') === this.selectedFilterQualification;
-      const locationSource = ((job as any).location || job.jobLocation || '').toLowerCase();
-      const locationPass = this.selectedFilterLocation === 'All'
-        || locationSource.includes(this.selectedFilterLocation.toLowerCase());
-
-      return categoryPass && jobTypePass && experiencePass && qualificationPass && locationPass;
+      return this.selectedFilterJobType === 'All' || (job.jobType || '') === this.selectedFilterJobType;
     });
   }
 
@@ -285,77 +270,45 @@ export class LoginComponent implements OnInit {
     return this.sortByLatestCreated(this.getFilteredJobs());
   }
 
-  getCategoryCount(category: string): number {
-    if (category === 'All') return this.jobs.length;
-    return this.jobs.filter(job => job.category === category).length;
+  getPaginatedJobs(): Job[] {
+    const all = this.getSortedFilteredJobs();
+    const start = (this.jobsCurrentPage - 1) * this.jobsPageSize;
+    return all.slice(start, start + this.jobsPageSize);
   }
 
-  selectCategoryTab(category: string) {
-    this.selectedJobCategory = category;
-    this.selectedFilterJobType = 'All';
-    this.selectedFilterExperience = 'All';
-    this.selectedFilterQualification = 'All';
-    this.selectedFilterLocation = 'All';
+  getJobsTotalPages(): number {
+    return Math.max(1, Math.ceil(this.getSortedFilteredJobs().length / this.jobsPageSize));
+  }
+
+  goToJobsPage(page: number) {
+    const totalPages = this.getJobsTotalPages();
+    this.jobsCurrentPage = Math.min(Math.max(1, page), totalPages);
+  }
+
+  prevJobsPage() {
+    this.goToJobsPage(this.jobsCurrentPage - 1);
+  }
+
+  nextJobsPage() {
+    this.goToJobsPage(this.jobsCurrentPage + 1);
+  }
+
+  getJobsVisiblePageNumbers(): number[] {
+    const totalPages = this.getJobsTotalPages();
+    const pages: number[] = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
   }
 
   getJobTypeFilterOptions(): string[] {
     return this.getUniqueFilterOptions(this.jobs.map((job) => job.jobType), this.jobTypeOptions);
   }
 
-  getExperienceFilterOptions(): string[] {
-    return this.getUniqueFilterOptions(this.jobs.map((job) => job.experience), this.experienceOptions);
-  }
-
-  getQualificationFilterOptions(): string[] {
-    return this.getUniqueFilterOptions(this.jobs.map((job) => job.qualification), this.qualificationOptions);
-  }
-
-  getLocationFilterOptions(): string[] {
-    const jobLocations = this.jobs
-      .map((job) => (job as any).location || '')
-      .filter((value) => !!value && value.toString().trim().length > 0)
-      .map((value) => value.toString().trim());
-
-    return this.getUniqueFilterOptions(jobLocations, this.locationOptions);
-  }
-
-  onIndependentFilterChange(changedFilter: 'jobType' | 'experience' | 'qualification' | 'location') {
-    if (changedFilter !== 'jobType') {
-      this.selectedFilterJobType = 'All';
-    }
-
-    if (changedFilter !== 'experience') {
-      this.selectedFilterExperience = 'All';
-    }
-
-    if (changedFilter !== 'qualification') {
-      this.selectedFilterQualification = 'All';
-    }
-
-    if (changedFilter !== 'location') {
-      this.selectedFilterLocation = 'All';
-    }
-  }
-
-  applyIndependentFilter(changedFilter: 'jobType' | 'experience' | 'qualification' | 'location', value: string) {
-    this.onIndependentFilterChange(changedFilter);
-
-    if (changedFilter === 'jobType') {
-      this.selectedFilterJobType = value;
-      return;
-    }
-
-    if (changedFilter === 'experience') {
-      this.selectedFilterExperience = value;
-      return;
-    }
-
-    if (changedFilter === 'qualification') {
-      this.selectedFilterQualification = value;
-      return;
-    }
-
-    this.selectedFilterLocation = value;
+  applyIndependentFilter(value: string) {
+    this.selectedFilterJobType = value;
+    this.jobsCurrentPage = 1;
   }
 
   private getUniqueFilterOptions(values: Array<string | undefined>, preferred: string[] = []): string[] {
@@ -419,18 +372,14 @@ export class LoginComponent implements OnInit {
     this.jobForm = { 
       ...job,
       companyImage: '',
-      jobLocation: job.jobLocation || '',
-      jobType: 'Walk-ins',
+      jobType: job.jobType || 'Walk-ins',
       experience: job.experience || 'Freshers',
-      qualification: job.qualification || 'Any Graduate',
       fullInformationTableFormat: job.fullInformationTableFormat || '',
       fullJobInformation: job.fullJobInformation || '',
-      walkInDrive: true,
+      walkInDrive: job.jobType === 'Walk-ins',
       otherLink: job.otherLink || '',
-      walkInInterviewLocation: job.walkInInterviewLocation || '',
-      walkInStartDate: job.walkInStartDate || '',
-      walkInEndDate: job.walkInEndDate || '',
-      hrDetails: job.hrDetails || '',
+      applyPdfLink: job.applyPdfLink || '',
+      createdBy: job.createdBy || '',
       createdDate: job.createdDate || ''
     };
   }
@@ -468,33 +417,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  async deleteJobsByCategory(category: string) {
-    const jobsToDelete = this.jobs.filter(job => job.category === category);
-    
-    if (jobsToDelete.length === 0) {
-      this.showErrorToast(`No jobs found in ${category} category.`);
-      return;
-    }
-
-    const confirmMessage = `Are you sure you want to delete ALL ${jobsToDelete.length} jobs in "${category}" category?\n\nThis action cannot be undone!`;
-    
-    if (confirm(confirmMessage)) {
-      try {
-        const deletePromises = jobsToDelete.map(job => {
-          const jobRef = ref(db, `jobs/${job.id}`);
-          return remove(jobRef);
-        });
-        
-        await Promise.all(deletePromises);
-        this.showSuccessToast(`Deleted ${jobsToDelete.length} jobs from ${category} category.`);
-        console.log(`Deleted ${jobsToDelete.length} jobs from ${category}`);
-      } catch (error) {
-        console.error('Error deleting jobs by category:', error);
-        this.showErrorToast('Failed to delete some jobs. Please try again.');
-      }
-    }
-  }
-
   async saveJob() {
     // Prevent double submission
     if (this.isSaving) return;
@@ -513,11 +435,7 @@ export class LoginComponent implements OnInit {
           companyImage: '',
           fullInformationTableFormat: jobData.fullInformationTableFormat || '',
           fullJobInformation: jobData.fullJobInformation || '',
-          walkInDrive: jobData.jobType === 'Walk-ins',
-          walkInInterviewLocation: jobData.jobType === 'Walk-ins' ? jobData.walkInInterviewLocation || '' : '',
-          walkInStartDate: jobData.jobType === 'Walk-ins' ? jobData.walkInStartDate || '' : '',
-          walkInEndDate: jobData.jobType === 'Walk-ins' ? jobData.walkInEndDate || '' : '',
-          hrDetails: jobData.jobType === 'Walk-ins' ? jobData.hrDetails || '' : ''
+          walkInDrive: jobData.jobType === 'Walk-ins'
         };
         
         // Add or update updatedDate
@@ -537,11 +455,7 @@ export class LoginComponent implements OnInit {
           companyImage: '',
           fullInformationTableFormat: jobData.fullInformationTableFormat || '',
           fullJobInformation: jobData.fullJobInformation || '',
-          walkInDrive: jobData.jobType === 'Walk-ins',
-          walkInInterviewLocation: jobData.jobType === 'Walk-ins' ? jobData.walkInInterviewLocation || '' : '',
-          walkInStartDate: jobData.jobType === 'Walk-ins' ? jobData.walkInStartDate || '' : '',
-          walkInEndDate: jobData.jobType === 'Walk-ins' ? jobData.walkInEndDate || '' : '',
-          hrDetails: jobData.jobType === 'Walk-ins' ? jobData.hrDetails || '' : ''
+          walkInDrive: jobData.jobType === 'Walk-ins'
         };
         const newJobData = {
           ...normalizedJobData,
@@ -591,19 +505,14 @@ export class LoginComponent implements OnInit {
       company: '',
       companyImage: '',
       jobType: this.jobTypeOptions[0],
-      category: this.jobCategories.length > 0 ? this.jobCategories[0] : '',
       experience: this.experienceOptions[0],
-      qualification: this.qualificationOptions[2],
       fullInformationTableFormat: '',
       fullJobInformation: '',
       walkInDrive: true,
       description: '',
-      jobLocation: this.locationOptions[0],
       otherLink: '',
-      walkInInterviewLocation: '',
-      walkInStartDate: '',
-      walkInEndDate: '',
-      hrDetails: '',
+      applyPdfLink: '',
+      createdBy: '',
       createdDate: ''
     };
   }
@@ -619,10 +528,6 @@ export class LoginComponent implements OnInit {
 
   onJobTypeChange() {
     this.jobForm.walkInDrive = this.jobForm.jobType === 'Walk-ins';
-    if (!this.jobForm.walkInDrive) {
-      this.jobForm.walkInStartDate = '';
-      this.jobForm.walkInEndDate = '';
-    }
   }
 
   onCompanySelectionChange() {
@@ -790,7 +695,6 @@ export class LoginComponent implements OnInit {
 
 📌 *${job.title}*
 🏢 *Company:* ${job.company}
-📂 *Category:* ${job.category}
 
 📝 *Description:*
 ${shortDesc}
@@ -840,10 +744,7 @@ _Share this opportunity with your friends!_
         'CompanyName',
         'CompanyImageHtml',
         'JobType',
-        'Category',
         'Experience',
-        'Qualification',
-        'JobLocationAndHRDetails',
         'JobDescription',
         'ApplyOfficialLink',
         'FullInformationImagesHtml',
@@ -856,10 +757,7 @@ _Share this opportunity with your friends!_
         CompanyName: job.company || '',
         CompanyImageHtml: this.getCompanyImageByName(job.company) || '',
         JobType: job.jobType || 'Walk-ins',
-        Category: job.category || '',
         Experience: job.experience || 'Freshers',
-        Qualification: job.qualification || 'Any Graduate',
-        JobLocationAndHRDetails: job.jobLocation || '',
         JobDescription: job.description || '',
         ApplyOfficialLink: job.otherLink || '',
         FullInformationImagesHtml: job.fullInformationTableFormat || '',
@@ -999,10 +897,7 @@ _Share this opportunity with your friends!_
       'CompanyName',
       'CompanyImageHtml',
       'JobType',
-      'Category',
       'Experience',
-      'Qualification',
-      'JobLocationAndHRDetails',
       'JobDescription',
       'ApplyOfficialLink',
       'FullInformationImagesHtml',
@@ -1035,9 +930,8 @@ _Share this opportunity with your friends!_
     for (const row of rawRows) {
       const title = this.getExcelValue(row, ['JobTitle', 'Job Title', 'Title']).trim();
       const company = this.getExcelValue(row, ['CompanyName', 'Company Name', 'Company']).trim();
-      const category = this.getExcelValue(row, ['Category']).trim();
 
-      if (!title || !company || !category) {
+      if (!title || !company) {
         skipped++;
         continue;
       }
@@ -1050,17 +944,12 @@ _Share this opportunity with your friends!_
         company,
         companyImage: '',
         jobType,
-        category,
         experience: this.getExcelValue(row, ['Experience']) || 'Freshers',
-        qualification: this.getExcelValue(row, ['Qualification', 'EducationalQualification', 'Qualification Required']) || 'Any Graduate',
-        jobLocation: this.getExcelValue(row, ['JobLocationAndHRDetails', 'Job Location and HR Details', 'JobLocation']) || '',
         description: this.getExcelValue(row, ['JobDescription', 'Job Description']) || '',
         otherLink: this.getExcelValue(row, ['ApplyOfficialLink', 'Apply Official Link']) || '',
         fullInformationTableFormat: this.getExcelValue(row, ['FullInformationImagesHtml', 'Full Information Images Html', 'FullInformationTableFormat']) || '',
         fullJobInformation: this.getExcelValue(row, ['FullJobInformationHtml', 'Full Job Information Html', 'FullJobInformation']) || '',
         walkInDrive: jobType === 'Walk-ins',
-        walkInInterviewLocation: '',
-        hrDetails: '',
         createdDate
       };
 

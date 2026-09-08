@@ -65,7 +65,7 @@ export class JobService {
         if (category === 'All Latest Jobs') {
           subscriber.next(jobs);
         } else {
-          subscriber.next(jobs.filter(job => job.category === category));
+          subscriber.next(jobs.filter(job => job.jobType === category));
         }
       });
     });

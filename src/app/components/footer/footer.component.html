@@ -20,26 +20,6 @@
           </li>
         </ul>
 
-        <h6 class="footer-sub-title">Education</h6>
-        <ul class="footer-links">
-          <li *ngFor="let link of educationLinks">
-            <a [routerLink]="link.route" [queryParams]="link.queryParams || null" (click)="scrollToTop()">
-              <i class="bi bi-chevron-right small me-2"></i>
-              {{ link.name }}
-            </a>
-          </li>
-        </ul>
-
-        <h6 class="footer-sub-title">Location</h6>
-        <ul class="footer-links">
-          <li *ngFor="let link of locationLinks">
-            <a [routerLink]="link.route" [queryParams]="link.queryParams || null" (click)="scrollToTop()">
-              <i class="bi bi-chevron-right small me-2"></i>
-              {{ link.name }}
-            </a>
-          </li>
-        </ul>
-
         <h6 class="footer-sub-title">Game</h6>
         <ul class="footer-links">
           <li *ngFor="let link of gameLinks">

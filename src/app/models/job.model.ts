@@ -4,22 +4,15 @@ export interface Job {
   title: string;
   company: string;
   companyImage?: string;
-  location?: string;
-  jobLocation?: string;
   jobType?: string;
-  category: string;
   experience?: string;
-  qualification?: string;
   fullInformationTableFormat?: string;
   fullJobInformation?: string;
   walkInDrive?: boolean;
   description: string;
   otherLink?: string;
-  whatsappGroupLink?: string;
-  walkInInterviewLocation?: string;
-  walkInStartDate?: string;
-  walkInEndDate?: string;
-  hrDetails?: string;
+  applyPdfLink?: string;
+  createdBy?: string;
   createdDate: string;
   updatedDate?: string;
 }
@@ -84,6 +77,9 @@ export const CATEGORY_ROUTE_SLUGS: Record<string, string> = {
   'All': 'all',
   'Walk-ins': 'walk-ins',
   'Government Jobs': 'government-jobs',
+  'Results': 'results',
+  'Syllabus': 'syllabus',
+  'Career Tips': 'career-tips',
   'Freshers': 'freshers',
   'Experienced': 'experienced',
   'B.Tech': 'b-tech',

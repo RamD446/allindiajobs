@@ -399,7 +399,7 @@ header {
 .top-jobs-track--animated {
   width: max-content;
   min-width: max-content;
-  animation: ticker-scroll 28s linear infinite;
+  animation: ticker-scroll 120s linear infinite;
 }
 
 .top-jobs-strip--static .top-jobs-track--static {
@@ -418,7 +418,7 @@ header {
 }
 
 .top-jobs-track--animated {
-  animation-duration: 60s;
+  animation-duration: 120s;
 }
 
 .top-job-label-pill {

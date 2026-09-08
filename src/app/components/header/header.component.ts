@@ -51,10 +51,13 @@ export class HeaderComponent implements OnInit {
   }
 
   get topJobsTicker(): Job[] {
-    return this.jobs
-      .slice()
-      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
-      .slice(0, 10);
+    const sortByLatest = (list: Job[]) =>
+      list.slice().sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+
+    const govJobs = sortByLatest(this.jobs.filter(job => job.category === 'Government Jobs')).slice(0, 10);
+    const walkInJobs = sortByLatest(this.jobs.filter(job => job.walkInDrive === true)).slice(0, 10);
+
+    return [...govJobs, ...walkInJobs];
   }
 
   get detailPageFilterLabels(): Array<{ label: string; route: string }> {

@@ -105,6 +105,10 @@ export const CATEGORY_SLUG_TO_LABEL: Record<string, string> = Object.entries(CAT
   }), {} as Record<string, string>);
 
 export const CATEGORY_DISPLAY_LABELS: Record<string, string> = {
+  'All': 'All Latest Jobs',
+  'Walk-ins': 'Private Walk-ins',
+  'Freshers': 'Fresher Jobs',
+  'Experienced': 'Experienced Jobs',
   'IT Walk-ins': 'IT Jobs',
   'BPO/Non-IT Walk-ins': 'BPO/Non-IT Jobs',
   'Banking Walk-ins': 'Banking Jobs',

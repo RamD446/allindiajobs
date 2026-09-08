@@ -31,13 +31,13 @@ export class HomeComponent implements OnInit {
   companyImageMap: Record<string, string> = {};
   readonly quickFilterCategories: string[] = [
     'All',
-    'Walk-ins',
     'Government Jobs',
-    'Results',
-    'Syllabus',
-    'Career Tips',
+    'Walk-ins',
     'Freshers',
-    'Experienced'
+    'Experienced',
+    'Results',
+    'Career Tips',
+    'Syllabus'
   ];
 
   constructor(private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef) {

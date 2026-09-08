@@ -17,13 +17,13 @@ export class FooterComponent {
 
   walkInLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [
     { name: 'Home', route: '/job-category/all' },
-    { name: 'Walk-ins', route: '/job-category/walk-ins' },
     { name: 'Government Jobs', route: '/job-category/government-jobs' },
+    { name: 'Private Walk-ins', route: '/job-category/walk-ins' },
+    { name: 'Fresher Jobs', route: '/job-category/freshers' },
+    { name: 'Experienced Jobs', route: '/job-category/experienced' },
     { name: 'Results', route: '/job-category/results' },
-    { name: 'Syllabus', route: '/job-category/syllabus' },
     { name: 'Career Tips', route: '/job-category/career-tips' },
-    { name: 'Freshers', route: '/job-category/freshers' },
-    { name: 'Experienced', route: '/job-category/experienced' }
+    { name: 'Syllabus', route: '/job-category/syllabus' }
   ];
 
   gameLinks: Array<{ name: string; route: string; queryParams?: Record<string, string | null> }> = [

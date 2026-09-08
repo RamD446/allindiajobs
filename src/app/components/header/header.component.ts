@@ -39,13 +39,13 @@ export class HeaderComponent implements OnInit {
   get detailPageFilterLabels(): Array<{ label: string; route: string }> {
     return [
       { label: 'Home', route: '/' },
-      { label: 'Walk-ins Jobs', route: '/job-category/walk-ins' },
       { label: 'Government Jobs', route: '/job-category/government-jobs' },
+      { label: 'Private Walk-ins', route: '/job-category/walk-ins' },
+      { label: 'Fresher Jobs', route: '/job-category/freshers' },
+      { label: 'Experienced Jobs', route: '/job-category/experienced' },
       { label: 'Results', route: '/job-category/results' },
-      { label: 'Syllabus', route: '/job-category/syllabus' },
       { label: 'Career Tips', route: '/job-category/career-tips' },
-      { label: 'Freshers Jobs', route: '/job-category/freshers' },
-      { label: 'Experienced Jobs', route: '/job-category/experienced' }
+      { label: 'Syllabus', route: '/job-category/syllabus' }
     ];
   }
 
@@ -69,14 +69,14 @@ export class HeaderComponent implements OnInit {
   }
 
   offcanvasFilters = [
-    { name: 'All', route: '/job-category/all', icon: 'bi-grid', color: '#0f766e' },
-    { name: 'Walk-ins', route: '/job-category/walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
+    { name: 'All Latest Jobs', route: '/job-category/all', icon: 'bi-grid', color: '#0f766e' },
     { name: 'Government Jobs', route: '/job-category/government-jobs', icon: 'bi-building-check', color: '#9333ea' },
+    { name: 'Private Walk-ins', route: '/job-category/walk-ins', icon: 'bi-person-walking', color: '#1565c0' },
+    { name: 'Fresher Jobs', route: '/job-category/freshers', icon: 'bi-stars', color: '#0d9488' },
+    { name: 'Experienced Jobs', route: '/job-category/experienced', icon: 'bi-briefcase-fill', color: '#14b8a6' },
     { name: 'Results', route: '/job-category/results', icon: 'bi-clipboard-check', color: '#b45309' },
-    { name: 'Syllabus', route: '/job-category/syllabus', icon: 'bi-journal-text', color: '#0891b2' },
     { name: 'Career Tips', route: '/job-category/career-tips', icon: 'bi-lightbulb', color: '#7c3aed' },
-    { name: 'Freshers', route: '/job-category/freshers', icon: 'bi-stars', color: '#0d9488' },
-    { name: 'Experienced', route: '/job-category/experienced', icon: 'bi-briefcase-fill', color: '#14b8a6' }
+    { name: 'Syllabus', route: '/job-category/syllabus', icon: 'bi-journal-text', color: '#0891b2' }
   ];
 
   constructor(private cdr: ChangeDetectorRef, private el: ElementRef, private router: Router, private route: ActivatedRoute) {}

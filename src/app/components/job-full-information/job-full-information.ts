@@ -176,6 +176,14 @@ export class JobFullInformation implements OnInit {
       this.commentError = 'Please enter your name and comment.';
       return;
     }
+    if (name.length > 10) {
+      this.commentError = 'Name must be 10 characters or less.';
+      return;
+    }
+    if (comment.length > 50) {
+      this.commentError = 'Comment must be 50 characters or less.';
+      return;
+    }
 
     this.isSubmittingComment = true;
     try {

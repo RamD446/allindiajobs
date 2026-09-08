@@ -21,10 +21,12 @@
         <div class="jobfull-section-block whatsapp-follow-card">
           <div class="jobfull-section-content p-2">
             <div class="whatsapp-follow-inner">
-              <div class="whatsapp-follow-bell">
-                <i class="bi bi-bell-fill"></i>
+              <div class="whatsapp-follow-label">
+                <div class="whatsapp-follow-bell" aria-hidden="true">
+                  <i class="bi bi-bell-fill"></i>
+                </div>
+                <p class="whatsapp-follow-text">Follow us for latest jobs.</p>
               </div>
-              <p class="whatsapp-follow-text">Follow us for latest jobs.</p>
               <button
                 type="button"
                 class="whatsapp-follow-btn"
@@ -179,7 +181,7 @@
                   placeholder="Your name"
                   [(ngModel)]="newCommentName"
                   name="commentName"
-                  maxlength="60"
+                  maxlength="10"
                   required>
               </div>
               <div class="col-12 col-sm-8">
@@ -189,7 +191,7 @@
                   placeholder="Write a comment..."
                   [(ngModel)]="newCommentText"
                   name="commentText"
-                  maxlength="500"
+                  maxlength="50"
                   required>
               </div>
             </div>
@@ -206,10 +208,9 @@
               <div class="job-comment-avatar">{{ c.name.charAt(0).toUpperCase() }}</div>
               <div class="job-comment-body">
                 <div class="job-comment-header">
-                  <span class="job-comment-name">{{ c.name }}</span>
-                  <span class="job-comment-date">{{ formatDate(c.createdDate) }}</span>
+                  <span class="job-comment-name">{{ c.name }}: {{ c.comment }}</span>
                 </div>
-                <p class="job-comment-text">{{ c.comment }}</p>
+                <div class="job-comment-date">{{ formatDate(c.createdDate) }}</div>
               </div>
             </div>
           </div>

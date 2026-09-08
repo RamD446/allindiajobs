@@ -227,31 +227,11 @@
 
       <!-- Right: Recent Posts (30% on desktop) -->
       <div class="col-12 col-lg-4">
-          <div class="jobfull-section-block jobfull-recent-block">
-            <div class="jobfull-section-header">Recent Posts</div>
-            <div class="jobfull-section-content p-2">
-                <div class="list-group list-group-flush">
-                  <a *ngFor="let topJob of getTopJobs()" (click)="viewJobDetails(topJob)" class="list-group-item list-group-item-action border-0 px-0 py-2 bg-transparent recent-post-item">
-                    <div class="recent-post-thumb" *ngIf="getRecentPostImage(topJob) as imageSrc; else noRecentThumb">
-                      <img [src]="imageSrc" [alt]="topJob.title" loading="lazy">
-                    </div>
-                    <ng-template #noRecentThumb>
-                      <div class="recent-post-thumb recent-post-thumb-empty" aria-hidden="true">
-                        <i class="bi bi-image"></i>
-                      </div>
-                    </ng-template>
-                    <div class="recent-post-content">
-                      <div class="fw-bold recent-post-title">{{ topJob.title }}</div>
-                      <div class="recent-post-date" *ngIf="formatWalkInDate(topJob.createdDate) as createdDateLabel">Created: {{ createdDateLabel }}</div>
-                    </div>
-                  </a>
-              </div>
-            </div>
-        </div>
-
-     
-
-       
+          <app-recent-posts 
+            [jobs]="getTopJobs()" 
+            [title]="'Recent Posts'"
+            (jobSelected)="viewJobDetails($event)">
+          </app-recent-posts>
       </div>
     </div>
   </div>

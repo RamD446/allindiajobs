@@ -1,0 +1,17 @@
+<div class="jobfull-section-block jobfull-recent-block">
+  <div class="jobfull-section-header">{{ title }}</div>
+  <div class="jobfull-section-content p-2">
+    <table class="recent-post-table">
+      <tbody>
+        <ng-container *ngFor="let job of jobs">
+          <tr class="recent-post-row" (click)="viewJobDetails(job)">
+            <td class="recent-post-cell recent-post-cell-title">{{ job.title }}</td>
+          </tr>
+          <tr class="recent-post-row" (click)="viewJobDetails(job)" *ngIf="formatWalkInDate(job.createdDate) as createdDateLabel">
+            <td class="recent-post-cell recent-post-cell-date">Created: {{ createdDateLabel }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

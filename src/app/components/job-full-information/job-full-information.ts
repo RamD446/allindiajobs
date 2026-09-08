@@ -6,10 +6,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Job, JobComment, CompanyImage, DEFAULT_JOB_CATEGORIES, getCategoryDisplayLabel } from '../../models/job.model';
 import { ref, get, onValue, query, orderByChild, limitToLast, update, push, set } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
+import { RecentPostsComponent } from '../recent-posts/recent-posts.component';
 
 @Component({
   selector: 'app-job-full-information',
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RecentPostsComponent],
   templateUrl: './job-full-information.html',
   styleUrl: './job-full-information.css',
 })

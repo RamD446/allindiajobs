@@ -1,0 +1,100 @@
+.jobfull-section-block {
+  width: 100%;
+  max-width: 100%;
+  border: 3px solid #1a252f;
+  background: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(26, 37, 47, 0.15);
+  margin-bottom: 0.65rem;
+  padding: 0.7rem;
+  box-sizing: border-box;
+}
+
+.jobfull-section-header {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #1f3a5f;
+  background: transparent;
+  padding: 0.7rem 0.9rem 0.45rem;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #e5edf8;
+  text-transform: uppercase;
+}
+
+.jobfull-section-content {
+  padding: 0;
+}
+
+.jobfull-recent-block {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-group-item {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+.list-group-flush > .list-group-item {
+  border-radius: 0;
+  border: none;
+}
+
+.recent-post-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.recent-post-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.recent-post-row:hover .recent-post-cell {
+  background-color: #eef4fd;
+  border-color: #0d6efd;
+}
+
+.recent-post-cell {
+  display: table-cell;
+  border: 1.5px solid #64748b;
+  padding: 0.5rem 0.6rem;
+  background: #f8f9fa;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.recent-post-cell-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #0d6efd;
+  border-bottom: none;
+}
+
+.recent-post-cell-date {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 500;
+  border-top: none;
+}
+
+@media (max-width: 768px) {
+  .recent-post-cell-title {
+    font-size: 0.75rem;
+  }
+
+  .recent-post-cell-date {
+    font-size: 0.65rem;
+  }
+}

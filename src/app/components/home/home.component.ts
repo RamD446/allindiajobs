@@ -5,11 +5,12 @@ import { onValue, ref } from 'firebase/database';
 import { db, auth } from '../../../config/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Job, CompanyImage, DEFAULT_JOB_CATEGORIES, CATEGORY_DISPLAY_LABELS, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
+import { RecentPostsComponent } from '../recent-posts/recent-posts.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, RecentPostsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -20,7 +21,7 @@ export class HomeComponent implements OnInit {
   isLoading: boolean = true;
   isLoggedIn: boolean = false;
   // Pagination
-  pageSize: number = 50;
+  pageSize: number = 30;
   currentPage: number = 1;
   totalPages: number = 1;
   isWalkinOnlyPage: boolean = false;
@@ -519,5 +520,21 @@ export class HomeComponent implements OnInit {
       return;
     }
     this.router.navigate(['/login'], { state: { editJobId: job.id, editJob: job } });
+  }
+
+  getRecentGovernmentJobs(): Job[] {
+    // Filter jobs to show only Government Jobs category and return latest 10
+    return this.jobs
+      .filter(job => job.category === 'Government Jobs')
+      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+      .slice(0, 10);
+  }
+
+  getRecentWalkInJobs(): Job[] {
+    // Filter jobs flagged as walk-in drive and return latest 10
+    return this.jobs
+      .filter(job => job.walkInDrive === true)
+      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+      .slice(0, 10);
   }
 }

@@ -55,22 +55,24 @@
                   </div>
                   <div class="home-jobs-table-title-cell">
                     <div class="home-jobs-table-title" (click)="viewJobDetails(job)">{{ job.title }}</div>
-                    <div class="home-jobs-table-date" [title]="job.createdDate"><span class="home-jobs-table-date-label">Posted Date:</span> {{ job.createdDate | date:'dd/MM/yyyy' }}</div>
-                  </div>
-                  <div class="home-jobs-table-action">
-                    <div class="home-jobs-table-actions">
-                      <button class="job-icon-btn view-btn" type="button" (click)="viewJobDetails(job)" title="View this job">
-                        <i class="bi bi-eye-fill"></i>
-                        <span>View</span>
-                      </button>
-                      <button class="job-icon-btn share-btn" type="button" (click)="shareJob(job)" title="Share this job">
-                        <i class="bi bi-share-fill"></i>
-                        <span>Share</span>
-                      </button>
-                      <button *ngIf="isLoggedIn" class="job-icon-btn edit-btn" type="button" (click)="editJob(job)" title="Edit this job">
-                        <i class="bi bi-pencil-fill"></i>
-                        <span>Edit</span>
-                      </button>
+                    <div class="home-jobs-table-date-action-row">
+                      <div class="home-jobs-table-date" [title]="job.createdDate"><span class="home-jobs-table-date-label">Posted Date:</span> {{ job.createdDate | date:'dd/MM/yyyy' }}</div>
+                      <div class="home-jobs-table-action">
+                        <div class="home-jobs-table-actions">
+                          <button class="job-icon-btn view-btn" type="button" (click)="viewJobDetails(job)" title="View this job">
+                            <i class="bi bi-eye-fill"></i>
+                            <span>View</span>
+                          </button>
+                          <button class="job-icon-btn share-btn" type="button" (click)="shareJob(job)" title="Share this job">
+                            <i class="bi bi-share-fill"></i>
+                            <span>Share</span>
+                          </button>
+                          <button *ngIf="isLoggedIn" class="job-icon-btn edit-btn" type="button" (click)="editJob(job)" title="Edit this job">
+                            <i class="bi bi-pencil-fill"></i>
+                            <span>Edit</span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

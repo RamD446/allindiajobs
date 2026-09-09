@@ -30,6 +30,11 @@ export class LoginComponent implements OnInit {
   selectedFilterJobType: string = 'All';
   jobsPageSize: number = 25;
   jobsCurrentPage: number = 1;
+  // Cached view of jobs so template bindings don't re-filter/re-sort on every change detection cycle
+  sortedFilteredJobs: Job[] = [];
+  paginatedJobs: Job[] = [];
+  jobsTotalPages: number = 1;
+  jobsVisiblePageNumbers: number[] = [];
   showJobForm: boolean = false;
   editingJob: Job | null = null;
   isSaving: boolean = false;
@@ -192,6 +197,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.jobs = [];
         }
+        this.refreshJobsView();
         // Set loading to false after jobs are loaded
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -268,23 +274,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  getSortedFilteredJobs(): Job[] {
-    return this.sortByLatestCreated(this.getFilteredJobs());
-  }
-
-  getPaginatedJobs(): Job[] {
-    const all = this.getSortedFilteredJobs();
+  // Recomputes the cached sorted/filtered/paginated jobs view. Call after jobs, filter or page changes.
+  refreshJobsView() {
+    this.sortedFilteredJobs = this.sortByLatestCreated(this.getFilteredJobs());
+    this.jobsTotalPages = Math.max(1, Math.ceil(this.sortedFilteredJobs.length / this.jobsPageSize));
+    if (this.jobsCurrentPage > this.jobsTotalPages) {
+      this.jobsCurrentPage = this.jobsTotalPages;
+    }
     const start = (this.jobsCurrentPage - 1) * this.jobsPageSize;
-    return all.slice(start, start + this.jobsPageSize);
-  }
-
-  getJobsTotalPages(): number {
-    return Math.max(1, Math.ceil(this.getSortedFilteredJobs().length / this.jobsPageSize));
+    this.paginatedJobs = this.sortedFilteredJobs.slice(start, start + this.jobsPageSize);
+    this.jobsVisiblePageNumbers = Array.from({ length: this.jobsTotalPages }, (_, i) => i + 1);
   }
 
   goToJobsPage(page: number) {
-    const totalPages = this.getJobsTotalPages();
-    this.jobsCurrentPage = Math.min(Math.max(1, page), totalPages);
+    this.jobsCurrentPage = Math.min(Math.max(1, page), this.jobsTotalPages);
+    this.refreshJobsView();
   }
 
   prevJobsPage() {
@@ -295,15 +299,6 @@ export class LoginComponent implements OnInit {
     this.goToJobsPage(this.jobsCurrentPage + 1);
   }
 
-  getJobsVisiblePageNumbers(): number[] {
-    const totalPages = this.getJobsTotalPages();
-    const pages: number[] = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i);
-    }
-    return pages;
-  }
-
   getJobTypeFilterOptions(): string[] {
     return this.getUniqueFilterOptions(this.jobs.map((job) => job.jobType), this.jobTypeOptions);
   }
@@ -311,6 +306,7 @@ export class LoginComponent implements OnInit {
   applyIndependentFilter(value: string) {
     this.selectedFilterJobType = value;
     this.jobsCurrentPage = 1;
+    this.refreshJobsView();
   }
 
   private getUniqueFilterOptions(values: Array<string | undefined>, preferred: string[] = []): string[] {

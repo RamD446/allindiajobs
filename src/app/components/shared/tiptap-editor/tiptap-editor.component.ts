@@ -271,13 +271,72 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
   }
 
   private insertImageFromFile(file: File): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result as string;
+    this.compressImageFile(file).then((base64) => {
       this.editor?.chain().focus().setImage({ src: base64 }).run();
-    };
-    reader.readAsDataURL(file);
+    });
   }
+
+  // Downscales/compresses the image so the embedded base64 stays under MAX_IMAGE_BASE64_BYTES.
+  private static readonly MAX_IMAGE_BASE64_BYTES = 20 * 1024;
+
+  private compressImageFile(file: File, maxDimension = 1000): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(reader.error);
+      reader.onload = () => {
+        const rawBase64 = reader.result as string;
+        const img = new window.Image();
+        img.onerror = () => resolve(rawBase64);
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(rawBase64);
+            return;
+          }
+
+          const isPng = file.type === 'image/png';
+          const mimeType = isPng ? 'image/png' : 'image/jpeg';
+          let width = img.width;
+          let height = img.height;
+
+          if (Math.max(width, height) > maxDimension) {
+            const scale = maxDimension / Math.max(width, height);
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+
+          let quality = 0.75;
+          let result = rawBase64;
+
+          // Shrink quality first, then dimensions, until the output fits within the size budget.
+          for (let attempt = 0; attempt < 12; attempt++) {
+            canvas.width = width;
+            canvas.height = height;
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+            result = canvas.toDataURL(mimeType, quality);
+
+            if (result.length <= TiptapEditorComponent.MAX_IMAGE_BASE64_BYTES) {
+              break;
+            }
+
+            if (quality > 0.35) {
+              quality -= 0.1;
+            } else {
+              width = Math.round(width * 0.8);
+              height = Math.round(height * 0.8);
+            }
+          }
+
+          resolve(result);
+        };
+        img.src = rawBase64;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
 
   undo(): void {
     this.editor?.chain().focus().undo().run();

@@ -195,6 +195,18 @@
                 </select>
               </div>
 
+              <!-- Walk-in Date -->
+              <div class="col-md-6 mb-3" *ngIf="jobForm.jobType === 'Walk-ins'">
+                <label class="form-label">Walk-in Date *</label>
+                <input type="date" class="form-control" [(ngModel)]="jobForm.walkInDate" name="walkInDate" required>
+              </div>
+
+              <!-- Last Date to Apply -->
+              <div class="col-md-6 mb-3" *ngIf="jobForm.jobType === 'Government Jobs'">
+                <label class="form-label">Last Date to Apply *</label>
+                <input type="date" class="form-control" [(ngModel)]="jobForm.lastDateToApply" name="lastDateToApply" required>
+              </div>
+
               <div class="w-100"></div>
 
               <div class="col-md-12 mb-3" *ngIf="editingJob">
@@ -381,7 +393,7 @@
               <i class="bi bi-briefcase-fill me-2"></i>Jobs Management
             </h4>
             <div class="jobs-summary-chip">
-              <span class="jobs-count">{{ getSortedFilteredJobs().length }} jobs</span>
+              <span class="jobs-count">{{ sortedFilteredJobs.length }} jobs</span>
             </div>
           </div>
           
@@ -407,8 +419,8 @@
           </div>
         </div>
         
-        <div class="jobs-grid" *ngIf="getSortedFilteredJobs().length > 0">
-          <div class="job-grid-item" *ngFor="let job of getPaginatedJobs()">
+        <div class="jobs-grid" *ngIf="sortedFilteredJobs.length > 0">
+          <div class="job-grid-item" *ngFor="let job of paginatedJobs">
             <div class="job-card-compact job-card-grid">
               <div class="job-row-title">
                 <h6 class="job-title-small mb-0 text-truncate" [title]="job.title">{{ job.title }}</h6>
@@ -452,23 +464,23 @@
           </div>
         </div>
         
-        <div *ngIf="getSortedFilteredJobs().length === 0" class="text-center py-4">
+        <div *ngIf="sortedFilteredJobs.length === 0" class="text-center py-4">
           <i class="bi bi-inbox display-4 text-muted"></i>
           <h5 class="mt-3 text-muted">No {{ selectedFilterJobType !== 'All' ? selectedFilterJobType : '' }} Jobs Available</h5>
           <p class="text-muted">No jobs found in this category.</p>
         </div>
 
-        <div class="admin-jobs-pagination mt-3" *ngIf="getSortedFilteredJobs().length > jobsPageSize">
+        <div class="admin-jobs-pagination mt-3" *ngIf="sortedFilteredJobs.length > jobsPageSize">
           <button type="button" class="page-btn" (click)="prevJobsPage()" [disabled]="jobsCurrentPage === 1">Prev</button>
           <button
-            *ngFor="let p of getJobsVisiblePageNumbers()"
+            *ngFor="let p of jobsVisiblePageNumbers"
             type="button"
             class="page-number"
             [class.active]="p === jobsCurrentPage"
             (click)="goToJobsPage(p)">
             {{ p }}
           </button>
-          <button type="button" class="page-btn" (click)="nextJobsPage()" [disabled]="jobsCurrentPage === getJobsTotalPages()">Next</button>
+          <button type="button" class="page-btn" (click)="nextJobsPage()" [disabled]="jobsCurrentPage === jobsTotalPages">Next</button>
         </div>
       </div>
 

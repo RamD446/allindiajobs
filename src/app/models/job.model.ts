@@ -9,6 +9,8 @@ export interface Job {
   fullInformationTableFormat?: string;
   fullJobInformation?: string;
   walkInDrive?: boolean;
+  walkInDate?: string;
+  lastDateToApply?: string;
   description: string;
   otherLink?: string;
   applyPdfLink?: string;

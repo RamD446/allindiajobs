@@ -322,11 +322,6 @@ export class HomeComponent implements OnInit {
     return null;
   }
 
-  getJobCardImage(job: Job): string | null {
-    const mapped = this.getMappedImageByCompany(job.company || '');
-    return this.extractImageSrc(mapped) || 'assets/images/Freejobinfologo.png';
-  }
-
   getJobDescriptionPreview(job: Job, maxLength: number = 500): string {
     const cleanText = (job.description || '').replace(/\s+/g, ' ').trim();
     if (!cleanText) {

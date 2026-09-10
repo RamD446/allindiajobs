@@ -112,10 +112,13 @@
       <div class="menu-section mt-3" *ngIf="getCompanyOptions().length > 0">
         <div class="section-label px-3 mb-1">Filter by Company</div>
         <div class="px-3">
-          <select class="form-select form-select-sm" [(ngModel)]="selectedCompanyFilter" (change)="onCompanyFilterChange()">
-            <option value="">All Companies</option>
-            <option *ngFor="let companyName of getCompanyOptions()" [value]="companyName">{{ companyName }}</option>
-          </select>
+          <button 
+            type="button" 
+            class="btn btn-sm btn-dark w-100"
+            (click)="toggleCompanyFilterModal($event); closeNav()"
+            style="font-size: 0.85rem; font-weight: 600;">
+            Filter by Company
+          </button>
         </div>
       </div>
 
@@ -147,19 +150,69 @@
           class="top-job-link"
           *ngFor="let filter of detailPageFilterLabels"
           [routerLink]="filter.route">
+          <i class="bi" [ngClass]="filter.icon"></i>
           <span>{{ filter.label }}</span>
         </button>
 
-        <div class="px-2 py-1 d-flex align-items-center gap-2" *ngIf="getCompanyOptions().length > 0">
-          
-          <select class="form-select form-select-sm" [(ngModel)]="selectedCompanyFilter" (change)="onCompanyFilterChange()">
-            <option value="">Filter by Company</option>
-            <option *ngFor="let companyName of getCompanyOptions().slice(0, 30)" [value]="companyName">{{ companyName }}</option>
-          </select>
-        </div>
+        <button
+          type="button"
+          class="company-filter-btn"
+          *ngIf="getCompanyOptions().length > 0"
+          (click)="toggleCompanyFilterModal($event)">
+          <i class="bi bi-building"></i>
+          <span>Filter by Company</span>
+        </button>
       </div>
     </div>
   </div>
 
+  <!-- Company Filter Modal -->
+  <div class="company-filter-modal-backdrop" *ngIf="isCompanyFilterModalOpen" (click)="closeCompanyFilterModal()">
+    <div class="company-filter-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Filter by Company</h5>
+        <button type="button" class="btn-close btn-close-white ms-auto" aria-label="Close" (click)="closeCompanyFilterModal()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Government Jobs Companies Row -->
+        <div class="company-section mb-4">
+          <h6 class="fw-bold text-primary mb-3">
+            <i class="bi bi-building-check"></i> Government Jobs Companies
+          </h6>
+          <div class="company-grid">
+            <button 
+              type="button"
+              *ngFor="let company of getGovernmentJobsCompanies()"
+              class="company-item"
+              (click)="filterByCompany(company)">
+              {{ company }}
+            </button>
+          </div>
+          <div *ngIf="getGovernmentJobsCompanies().length === 0" class="text-muted small text-center py-3">
+            No companies found
+          </div>
+        </div>
+
+        <!-- Walk-in Jobs Companies Row -->
+        <div class="company-section">
+          <h6 class="fw-bold text-primary mb-3">
+            <i class="bi bi-person-walking"></i> Walk-in Jobs Companies
+          </h6>
+          <div class="company-grid">
+            <button 
+              type="button"
+              *ngFor="let company of getWalkInJobsCompanies()"
+              class="company-item"
+              (click)="filterByCompany(company)">
+              {{ company }}
+            </button>
+          </div>
+          <div *ngIf="getWalkInJobsCompanies().length === 0" class="text-muted small text-center py-3">
+            No companies found
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   
 </header>

@@ -18,39 +18,23 @@
       <div class="col-12 col-lg-8">
         <div class="jobfull-section-block jobfull-details-block">
           <div class="jobfull-section-content p-2 p-lg-3">
-        <div class="jobfull-section-block whatsapp-follow-card">
-            <div class="whatsapp-follow-inner">
-              <div class="whatsapp-follow-label">
-                <div class="whatsapp-follow-bell" aria-hidden="true">
-                  <i class="bi bi-bell-fill"></i>
-                </div>
-                <p class="whatsapp-follow-text">Follow us for latest jobs.</p>
-              </div>
-              <button
-                type="button"
-                class="whatsapp-follow-btn"
-                (click)="joinWhatsAppGroup()"
-                aria-label="Join WhatsApp group for job updates">
-                <i class="bi bi-whatsapp"></i>
-                 Jobs Group
-              </button>
-            </div>
-        </div>
-
-        <!-- Breadcrumb: Home / Job Details / Job Title -->
-        <div class="breadcrumb-card mb-3">
+        
+        <!-- Header with Breadcrumb Navigation -->
+        <div class="section-header">
           <nav aria-label="breadcrumb" class="mb-0">
-            <ol class="breadcrumb bg-transparent p-0 m-0 small flex-nowrap overflow-hidden">
+            <ol class="breadcrumb bg-transparent p-0 m-0 small flex-nowrap overflow-hidden" style="color: #ffffff;">
               <li class="breadcrumb-item flex-shrink-0">
-                <a routerLink="/" class="text-decoration-none text-primary fw-medium">Home</a>
+                <a routerLink="/" class="text-decoration-none" style="color: #ffffff;">Home</a>
               </li>
-              <li class="breadcrumb-item flex-shrink-0 text-muted">Job Details</li>
-              <li class="breadcrumb-item active text-truncate text-secondary" aria-current="page">
+              <li class="breadcrumb-item flex-shrink-0" style="color: #ffffff;">Job Details</li>
+              <li class="breadcrumb-item active text-truncate" aria-current="page" style="color: rgba(255, 255, 255, 0.8);">
                 {{ job.title }}
               </li>
             </ol>
           </nav>
         </div>
+
+        
 
 
         <!-- Job Title + Date/Share -->
@@ -76,7 +60,25 @@
             </div>
           </div>
         </div>
-
+<!-- WhatsApp Follow Card -->
+        <div class="jobfull-section-block whatsapp-follow-card">
+            <div class="whatsapp-follow-inner">
+              <div class="whatsapp-follow-label">
+                <div class="whatsapp-follow-bell" aria-hidden="true">
+                  <i class="bi bi-bell-fill"></i>
+                </div>
+                <p class="whatsapp-follow-text">Follow us for latest jobs.</p>
+              </div>
+              <button
+                type="button"
+                class="whatsapp-follow-btn"
+                (click)="joinWhatsAppGroup()"
+                aria-label="Join WhatsApp group for job updates">
+                <i class="bi bi-whatsapp"></i>
+                 Jobs Group
+              </button>
+            </div>
+        </div>
         <ng-container *ngIf="getTopJobImage(job) as topJobImage; else heroWithoutImage">
           <div class="row gx-3 gy-2 full-info-hero-split mb-3">
             <div class="col-12 col-lg-6 full-info-hero-image-side">

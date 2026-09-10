@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   currentUser: any = null;
   isSearchModalOpen = false;
   isGamesDropdownOpen = false;
+  isCompanyFilterModalOpen = false;
   searchQuery = '';
   searchResults: Job[] = [];
   jobs: Job[] = [];
@@ -36,16 +37,16 @@ export class HeaderComponent implements OnInit {
       .slice(0, 30);
   }
 
-  get detailPageFilterLabels(): Array<{ label: string; route: string }> {
+  get detailPageFilterLabels(): Array<{ label: string; route: string; icon: string }> {
     return [
-      { label: 'Home', route: '/' },
-      { label: 'Government Jobs', route: '/job-category/government-jobs' },
-      { label: 'Private Walk-ins', route: '/job-category/walk-ins' },
-      { label: 'Fresher Jobs', route: '/job-category/freshers' },
-      { label: 'Experienced Jobs', route: '/job-category/experienced' },
-      { label: 'Results', route: '/job-category/results' },
-      { label: 'Career Tips', route: '/job-category/career-tips' },
-      { label: 'Syllabus', route: '/job-category/syllabus' }
+      { label: 'Home', route: '/', icon: 'bi-house-door-fill' },
+      { label: 'Government Jobs', route: '/job-category/government-jobs', icon: 'bi-bank2' },
+      { label: 'Private Walk-ins', route: '/job-category/walk-ins', icon: 'bi-person-walking' },
+      { label: 'Fresher Jobs', route: '/job-category/freshers', icon: 'bi-mortarboard-fill' },
+      { label: 'Experienced Jobs', route: '/job-category/experienced', icon: 'bi-briefcase-fill' },
+      { label: 'Results', route: '/job-category/results', icon: 'bi-file-earmark-check-fill' },
+      { label: 'Career Tips', route: '/job-category/career-tips', icon: 'bi-lightbulb-fill' },
+      { label: 'Syllabus', route: '/job-category/syllabus', icon: 'bi-journal-bookmark-fill' }
     ];
   }
 
@@ -66,6 +67,43 @@ export class HeaderComponent implements OnInit {
       return;
     }
     this.router.navigate(['/'], { queryParams: { company: this.selectedCompanyFilter } });
+  }
+
+  toggleCompanyFilterModal(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.isCompanyFilterModalOpen = !this.isCompanyFilterModalOpen;
+  }
+
+  closeCompanyFilterModal() {
+    this.isCompanyFilterModalOpen = false;
+  }
+
+  getGovernmentJobsCompanies(): string[] {
+    const names = Array.from(new Set(
+      this.jobs
+        .filter(job => job.jobType === 'Government Jobs')
+        .map(job => (job.company || '').trim())
+        .filter(name => !!name)
+    ));
+    return names.sort((a, b) => a.localeCompare(b));
+  }
+
+  getWalkInJobsCompanies(): string[] {
+    const names = Array.from(new Set(
+      this.jobs
+        .filter(job => job.walkInDrive === true)
+        .map(job => (job.company || '').trim())
+        .filter(name => !!name)
+    ));
+    return names.sort((a, b) => a.localeCompare(b));
+  }
+
+  filterByCompany(companyName: string): void {
+    this.selectedCompanyFilter = companyName;
+    this.closeCompanyFilterModal();
+    this.router.navigate(['/'], { queryParams: { company: companyName } });
   }
 
   offcanvasFilters = [
@@ -168,6 +206,17 @@ export class HeaderComponent implements OnInit {
 
   closeGamesDropdown() {
     this.isGamesDropdownOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    if (this.isCompanyFilterModalOpen) {
+      const target = event.target as HTMLElement;
+      const modal = this.el.nativeElement.querySelector('.company-filter-modal');
+      if (modal && !modal.contains(target)) {
+        this.closeCompanyFilterModal();
+      }
+    }
   }
 
   performSearch() {

@@ -1239,40 +1239,143 @@
   }
 
   .whatsapp-follow-card {
-    border: 1px solid #c7f0d8;
-    background: linear-gradient(160deg, #f7fff9 0%, #ecfff3 100%);
-    overflow: hidden;
+    border: 1px solid #b7ecc9;
+    background: #eafbf0;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.12);
+    border-radius: 8px;
+    overflow: visible;
+    transition: all 0.3s ease;
+    padding: 0;
+    margin: 0 auto 0.9rem;
+    max-width: 100%;
   }
 
-  .whatsapp-follow-card .section-header {
-    background: linear-gradient(135deg, #25d366 0%, #18b757 100%);
-    border-bottom: 2px solid #15a34a;
-    color: #ffffff;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    padding: 0.55rem 1rem;
+  .whatsapp-follow-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
   }
 
   .whatsapp-follow-inner {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: 0.45rem;
+    gap: 0.55rem;
+    padding: 0.5rem 0.7rem;
+    width: 100%;
+    min-height: 0;
   }
 
-  .whatsapp-follow-icon {
-    width: 54px;
-    height: 54px;
+  .whatsapp-follow-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+
+  .whatsapp-follow-bell {
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: #25d366;
-    color: #ffffff;
+    background: rgba(37, 211, 102, 0.15);
+    color: #1da851;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 18px rgba(37, 211, 102, 0.28);
-}
+    flex-shrink: 0;
+    border: 2px solid rgba(37, 211, 102, 0.4);
+    box-shadow: none;
+  }
+
+  .whatsapp-follow-bell i {
+    font-size: 0.75rem;
+    transform-origin: top center;
+    animation: whatsapp-bell-ring 2.2s ease-in-out infinite;
+  }
+
+  @keyframes whatsapp-bell-ring {
+    0%, 6%, 14% {
+      transform: rotate(0deg);
+    }
+    8% {
+      transform: rotate(-16deg);
+    }
+    10% {
+      transform: rotate(14deg);
+    }
+    12% {
+      transform: rotate(-8deg);
+    }
+    13% {
+      transform: rotate(4deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .whatsapp-follow-text {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1f6b3a;
+    line-height: 1.3;
+    text-align: center;
+    min-width: auto;
+  }
+
+  .whatsapp-follow-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border: none;
+    border-radius: 5px;
+    background: #25d366;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.4rem 0.65rem;
+    box-shadow: none;
+    transition: all 0.2s ease;
+    min-width: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .whatsapp-follow-btn:hover {
+    color: #ffffff;
+    text-decoration: none;
+    transform: scale(1.05);
+    background: #1ec862;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    .whatsapp-follow-card {
+      margin: 0 auto 0.7rem;
+    }
+
+    .whatsapp-follow-inner {
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      padding: 0.45rem 0.6rem;
+    }
+
+    .whatsapp-follow-text {
+      font-size: 0.7rem;
+    }
+
+    .whatsapp-follow-btn {
+      font-size: 0.6rem;
+      padding: 0.35rem 0.55rem;
+    }
+  }
 
 /* ===== JOB ROW LIST LAYOUT WITH DESCRIPTION ===== */
 
@@ -1826,130 +1929,12 @@
     line-height: 1;
   }
 
-  .whatsapp-follow-title {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 800;
-    color: #14532d;
+  @media (max-width: 768px) {
+    .whatsapp-follow-icon {
+      width: 50px;
+      height: 50px;
+    }
   }
-
-  .whatsapp-follow-text {
-    margin: 0;
-    font-size: 0.78rem;
-    color: #166534;
-    line-height: 1.35;
-  }
-
-  .whatsapp-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.35rem 0;
-  }
-
-  .whatsapp-follow-btn {
-    margin-top: 0.2rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
-    border: 1px solid #1ebc5d;
-    border-radius: 999px;
-    background: linear-gradient(180deg, #25d366, #18b757);
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 700;
-    padding: 0.45rem 0.75rem;
-    box-shadow: 0 6px 12px rgba(37, 211, 102, 0.18);
-    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
-    width: auto;
-    line-height: 1;
-  }
-
-  .whatsapp-follow-btn i {
-    font-size: 0.95rem;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .whatsapp-follow-btn:hover {
-    color: #ffffff;
-    text-decoration: none;
-    transform: translateY(-1px);
-    filter: brightness(1.03);
-    box-shadow: 0 8px 14px rgba(37, 211, 102, 0.22);
-  }
-
-/* Small no-data top card and fallback grid */
-.no-data-small-wrap {
-  margin-bottom: 0.5rem;
-}
-
-.no-data-small {
-  background: #fff;
-  border: 1px solid #e6eefc;
-  border-radius: 10px;
-}
-
-.no-data-small .no-data-icon.small {
-  font-size: 1.6rem;
-  color: #7fb3ff;
-}
-
-.no-data-small-title {
-  font-size: 0.95rem;
-  margin: 0;
-  color: #1e3a8a;
-}
-
-.fallback-section-header {
-  padding: 0 0.25rem;
-}
-
-.fallback-job-row:hover {
-  background: #f8faff;
-}
-
-.fallback-job-row .home-job-inner-row {
-  min-height: 68px;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.fallback-job-row .home-job-thumb-col {
-  width: 100px;
-  height: 68px;
-  min-width: 100px;
-  min-height: 68px;
-  max-width: 100px;
-}
-
-.fallback-job-row .home-job-row-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-.fallback-job-row .home-job-row-meta-inline {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-wrap: nowrap;
-}
-
-.fallback-job-row .home-job-row-created {
-  white-space: nowrap;
-}
-
-@media (min-width: 1200px) {
-  .fallback-jobs-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
   @media (max-width: 768px) {
     .home-main-container {

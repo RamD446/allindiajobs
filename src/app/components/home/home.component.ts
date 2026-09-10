@@ -454,4 +454,10 @@ export class HomeComponent implements OnInit {
       .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
       .slice(0, 10);
   }
+
+  joinWhatsAppGroup() {
+    // Open WhatsApp group link - replace with actual group link
+    const whatsappGroupUrl = 'https://chat.whatsapp.com/'; // Update with your actual group URL
+    window.open(whatsappGroupUrl, '_blank');
+  }
 }

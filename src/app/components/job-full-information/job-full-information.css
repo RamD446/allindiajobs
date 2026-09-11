@@ -166,7 +166,12 @@
   background: #f8f9fa;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 0.75rem 0.9rem;
+  padding: 0.55rem 0.75rem;
+}
+
+.job-title-card > .border-top {
+  padding-top: 0.35rem !important;
+  margin-top: 0.35rem !important;
 }
 
 .jobfull-section-content {
@@ -291,20 +296,20 @@
 }
 
 .whatsapp-follow-card {
-  border: 1px solid #b7ecc9;
-  background: #eafbf0;
-  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.12);
-  border-radius: 8px;
-  overflow: visible;
-  transition: all 0.3s ease;
+  border: 1px solid #bce8ca;
+  background: linear-gradient(105deg, #f0fff5 0%, #e6f9ed 100%);
+  box-shadow: 0 6px 18px rgba(31, 122, 64, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   padding: 0;
   margin: 0 auto 0.9rem;
-  max-width: 300px;
+  max-width: 100%;
 }
 
 .whatsapp-follow-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+  box-shadow: 0 10px 24px rgba(31, 122, 64, 0.16);
 }
 
 .whatsapp-follow-inner {
@@ -312,10 +317,10 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
-  gap: 0.55rem;
-  padding: 0.5rem 0.7rem;
+  gap: 0.8rem;
+  padding: 0.65rem 0.8rem;
   width: 100%;
   min-height: 0;
 }
@@ -324,27 +329,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
+  gap: 0.65rem;
   min-width: 0;
   flex: 0 1 auto;
 }
 
 .whatsapp-follow-bell {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: rgba(37, 211, 102, 0.15);
-  color: #1da851;
+  background: #d3f5dd;
+  color: #168a43;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 2px solid rgba(37, 211, 102, 0.4);
-  box-shadow: none;
+  border: 1px solid #a9e4bb;
+  box-shadow: 0 2px 6px rgba(31, 122, 64, 0.1);
 }
 
 .whatsapp-follow-bell i {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   transform-origin: top center;
   animation: whatsapp-bell-ring 2.2s ease-in-out infinite;
 }
@@ -379,9 +384,9 @@
 
 .whatsapp-follow-text {
   margin: 0;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #1f6b3a;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #195c35;
   line-height: 1.3;
   text-align: center;
   min-width: auto;
@@ -392,15 +397,15 @@
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  border: none;
+  border: 1px solid #1fa653;
   border-radius: 5px;
-  background: #25d366;
+  background: #1fa653;
   color: #ffffff;
   text-decoration: none;
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 0.4rem 0.65rem;
-  box-shadow: none;
+  padding: 0.45rem 0.75rem;
+  box-shadow: 0 4px 10px rgba(31, 122, 64, 0.18);
   transition: all 0.2s ease;
   min-width: 0;
   flex-shrink: 0;
@@ -411,8 +416,38 @@
   color: #ffffff;
   text-decoration: none;
   transform: scale(1.05);
-  background: #1ec862;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: #168a43;
+  box-shadow: 0 6px 14px rgba(31, 122, 64, 0.26);
+}
+
+.job-share-action,
+.job-whatsapp-action {
+  border-radius: 999px;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.job-share-action {
+  color: #2563eb;
+}
+
+.job-whatsapp-action {
+  color: #168a43;
+}
+
+.job-share-action:hover,
+.job-whatsapp-action:hover {
+  transform: translateY(-1px);
+}
+
+.job-share-action:hover {
+  background: #eff6ff;
+}
+
+.job-whatsapp-action:hover {
+  background: #e7f8ed;
 }
 
 @keyframes whatsapp-btn-pulse {
@@ -535,6 +570,22 @@
 
   .job-title-banner {
     padding: 0;
+    line-height: 1.15;
+  }
+
+  .job-title-card {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .job-title-card > .border-top {
+    padding-top: 0.3rem !important;
+    margin-top: 0.3rem !important;
+  }
+
+  .job-share-action,
+  .job-whatsapp-action {
+    padding: 0.15rem 0.35rem;
+    font-size: 0.7rem;
   }
   
   .d-flex.gap-2 {
@@ -557,8 +608,8 @@
   }
 
   .whatsapp-follow-btn {
-    font-size: 0.6rem;
-    padding: 0.35rem 0.55rem;
+    font-size: 0.68rem;
+    padding: 0.4rem 0.65rem;
   }
 }
 

@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { onValue, ref } from 'firebase/database';
 import { db, auth } from '../../../config/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
-import { Job, CompanyImage, JOB_ICONS, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
+import { Job, CompanyImage, getCategoryDisplayLabel, getCategoryLabelFromSlug, getCategoryRouteSlug } from '../../models/job.model';
 import { RecentPostsComponent } from '../recent-posts/recent-posts.component';
 
 @Component({
@@ -19,7 +19,6 @@ export class HomeComponent implements OnInit {
   walkinJobs: Job[] = [];
   selectedJobCategory: string = 'All';
   selectedCompanyFilter: string = '';
-  selectedJobTypeFilter: string = '';
   isLoading: boolean = true;
   isLoggedIn: boolean = false;
   // Pagination
@@ -30,9 +29,7 @@ export class HomeComponent implements OnInit {
   isNonWalkinOnlyPage: boolean = false;
   isHomeRootPage: boolean = false;
   companyImageMap: Record<string, string> = {};
-  private companySampleKey = '';
-  private sampledCompanies: string[] = [];
-  readonly defaultJobImage = 'assets/images/Favicon.ico';
+  readonly defaultJobImage = 'assets/images/Freejobinfologo.png';
   readonly quickFilterCategories: string[] = [
     'All',
     'Government Jobs',
@@ -71,8 +68,6 @@ export class HomeComponent implements OnInit {
 
     this.route.queryParamMap.subscribe((params) => {
       this.selectedCompanyFilter = params.get('company') || '';
-      this.selectedJobTypeFilter = params.get('jobType') || '';
-      this.currentPage = 1;
       this.updateSelectedCategory();
       this.cdr.detectChanges();
     });
@@ -204,10 +199,9 @@ export class HomeComponent implements OnInit {
     return this.sortByLatestCreated(
       this.walkinJobs.filter((job) => {
         const matchesCategory = this.matchesSelectedCategory(job, this.selectedJobCategory);
-        const matchesJobType = !this.selectedJobTypeFilter || (job.jobType || '').trim() === this.selectedJobTypeFilter;
         const matchesCompany = !this.selectedCompanyFilter
           || (job.company || '').trim().toLowerCase() === this.selectedCompanyFilter.trim().toLowerCase();
-        return matchesCategory && matchesJobType && matchesCompany;
+        return matchesCategory && matchesCompany;
       })
     );
   }
@@ -217,17 +211,9 @@ export class HomeComponent implements OnInit {
       return `Jobs at ${this.selectedCompanyFilter}`;
     }
 
-    if (this.selectedJobTypeFilter) {
-      return `All Latest ${this.selectedJobTypeFilter}`;
-    }
-
     const category = (this.selectedJobCategory || 'All').trim();
     if (!category || category.toLowerCase() === 'all') {
       return 'All Latest Jobs';
-    }
-
-    if (category === 'Results' || category === 'Career Tips' || category === 'Syllabus') {
-      return `All Latest ${category}`;
     }
 
     const normalizedCategory = category.endsWith('Jobs') ? category : `${category} Jobs`;
@@ -290,52 +276,6 @@ export class HomeComponent implements OnInit {
     }
 
     return this.walkinJobs.filter((job) => job.jobType === category).length;
-  }
-
-  getSidebarJobTypes(): string[] {
-    return [...new Set(this.walkinJobs.map(job => (job.jobType || '').trim()).filter(Boolean))]
-      .sort((a, b) => a.localeCompare(b));
-  }
-
-  getSidebarCompanies(): string[] {
-    const companies = [...new Set(this.walkinJobs
-      .filter(job => this.matchesSelectedCategory(job, this.selectedJobCategory)
-        && (!this.selectedJobTypeFilter || (job.jobType || '').trim() === this.selectedJobTypeFilter))
-      .map(job => (job.company || '').trim())
-      .filter(Boolean))]
-      .sort((a, b) => a.localeCompare(b));
-    const key = JSON.stringify(companies);
-    if (key !== this.companySampleKey) {
-      this.companySampleKey = key;
-      const shuffled = [...companies];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      this.sampledCompanies = shuffled.slice(0, 50);
-    }
-
-    const selected = companies.find(company => company.toLowerCase() === this.selectedCompanyFilter.trim().toLowerCase());
-    if (selected && !this.sampledCompanies.includes(selected)) {
-      return [selected, ...this.sampledCompanies.slice(0, 49)];
-    }
-    return this.sampledCompanies;
-  }
-
-  filterByJobType(jobType: string): void {
-    this.currentPage = 1;
-    this.router.navigate(['/'], {
-      queryParams: { jobType: jobType || null, company: this.selectedCompanyFilter || null }
-    });
-  }
-
-  filterByCompany(company: string): void {
-    this.currentPage = 1;
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { company: company || null },
-      queryParamsHandling: 'merge'
-    });
   }
 
   selectCategoryTab(category: string) {
@@ -401,10 +341,6 @@ export class HomeComponent implements OnInit {
       || this.extractImageSrc(job.companyImage || '')
       || this.extractImageSrc(this.getMappedImageByCompany(job.company || ''))
       || this.defaultJobImage;
-  }
-
-  getJobIcon(job: Job): string {
-    return JOB_ICONS.find(icon => icon === job.jobIcon) || '';
   }
 
   onJobCardImageError(event: Event): void {

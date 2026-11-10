@@ -4,7 +4,6 @@ export interface Job {
   title: string;
   company: string;
   companyImage?: string;
-  jobIcon?: string;
   jobType?: string;
   experience?: string;
   fullInformationTableFormat?: string;
@@ -19,14 +18,6 @@ export interface Job {
   createdDate: string;
   updatedDate?: string;
 }
-
-export const JOB_ICONS = [
-  'bi-briefcase-fill', 'bi-building', 'bi-bank', 'bi-laptop', 'bi-code-slash',
-  'bi-mortarboard-fill', 'bi-hospital', 'bi-heart-pulse-fill', 'bi-truck',
-  'bi-airplane-fill', 'bi-gear-fill', 'bi-tools', 'bi-people-fill',
-  'bi-shop', 'bi-currency-rupee', 'bi-graph-up-arrow', 'bi-book-fill',
-  'bi-pc-display', 'bi-telephone-fill', 'bi-globe'
-] as const;
 
 // A user-submitted comment on a specific job, keyed by jobId in Firebase
 export interface JobComment {

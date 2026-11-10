@@ -13,12 +13,13 @@ export class RecentPostsComponent {
   @Input() jobs: Job[] = [];
   @Input() title: string = 'Recent Posts';
   @Input() showImages: boolean = true;
+  @Input() modern: boolean = false;
   @Output() jobSelected = new EventEmitter<Job>();
 
   getRecentPostImage(job: Job): string | null {
     const imageHtml = job.companyImage || '';
     const imageSrc = this.extractImageSrc(imageHtml);
-    return imageSrc || 'assets/images/Freejobinfologo.png';
+    return imageSrc || 'assets/images/Favicon.ico';
   }
 
   private extractImageSrc(value: string): string | null {

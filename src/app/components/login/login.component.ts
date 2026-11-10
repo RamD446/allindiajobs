@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { ref, push, update, remove, onValue } from 'firebase/database';
 import { auth, db } from '../../../config/firebase.config';
-import { Job, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES, CompanyImage, getCategoryDisplayLabel } from '../../models/job.model';
+import { Job, JOB_ICONS, DEFAULT_JOB_CATEGORIES, PRIVATE_JOB_TYPES, CompanyImage, getCategoryDisplayLabel } from '../../models/job.model';
 import { TiptapEditorComponent } from '../shared/tiptap-editor/tiptap-editor.component';
 import * as XLSX from 'xlsx';
 
@@ -45,16 +45,13 @@ export class LoginComponent implements OnInit {
   showToast: boolean = false;
   toastMessage: string = '';
   toastType: 'success' | 'error' = 'success';
-  activeAdminTab: 'jobs' | 'companies' = 'jobs';
-  showCompanyImageForm: boolean = false;
   showImportModal: boolean = false;
-  importModalType: 'jobs' | 'companies' | null = null;
   selectedImportFileName: string = '';
   pendingImportRows: Record<string, any>[] = [];
   importModalError: string = '';
-  isSavingCompanyImage: boolean = false;
   isImportingData: boolean = false;
   companyImages: CompanyImage[] = [];
+  readonly jobIcons = JOB_ICONS;
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Job form
@@ -63,6 +60,7 @@ export class LoginComponent implements OnInit {
     title: '',
     company: '',
     companyImage: '',
+    jobIcon: JOB_ICONS[0],
     jobType: 'Walk-ins',
     experience: 'Freshers',
     fullInformationTableFormat: '',
@@ -74,13 +72,6 @@ export class LoginComponent implements OnInit {
     otherLink: '',
     applyPdfLink: '',
     createdBy: '',
-    createdDate: ''
-  };
-
-  companyImageForm: CompanyImage = {
-    id: '',
-    companyName: '',
-    companyImage: '',
     createdDate: ''
   };
 
@@ -171,7 +162,6 @@ export class LoginComponent implements OnInit {
       this.loginError = '';
       this.isLoading = false;
       this.showJobForm = false;
-      this.showCompanyImageForm = false;
       this.editingJob = null;
       this.jobs = [];
       this.companyImages = [];
@@ -330,20 +320,12 @@ export class LoginComponent implements OnInit {
   }
 
   showCreateForm() {
-    this.activeAdminTab = 'jobs';
     this.showJobForm = true;
     this.editingJob = null;
     this.resetJobForm();
   }
 
-  showCreateCompanyImageForm() {
-    this.activeAdminTab = 'companies';
-    this.showCompanyImageForm = true;
-    this.resetCompanyImageForm();
-  }
-
-  openImportModal(type: 'jobs' | 'companies') {
-    this.importModalType = type;
+  openImportModal() {
     this.showImportModal = true;
     this.selectedImportFileName = '';
     this.pendingImportRows = [];
@@ -352,15 +334,10 @@ export class LoginComponent implements OnInit {
 
   closeImportModal() {
     this.showImportModal = false;
-    this.importModalType = null;
     this.selectedImportFileName = '';
     this.pendingImportRows = [];
     this.importModalError = '';
     this.isImportingData = false;
-  }
-
-  switchAdminTab(tab: 'jobs' | 'companies') {
-    this.activeAdminTab = tab;
   }
 
   editJob(job: Job) {
@@ -370,6 +347,7 @@ export class LoginComponent implements OnInit {
     this.jobForm = { 
       ...job,
       companyImage: '',
+      jobIcon: JOB_ICONS.find(icon => icon === job.jobIcon) || '',
       jobType: job.jobType || 'Walk-ins',
       experience: job.experience || 'Freshers',
       fullInformationTableFormat: job.fullInformationTableFormat || '',
@@ -418,6 +396,10 @@ export class LoginComponent implements OnInit {
   async saveJob() {
     // Prevent double submission
     if (this.isSaving) return;
+    if (this.jobForm.jobIcon && !this.getJobIcon(this.jobForm)) {
+      this.showErrorToast('Please select a valid job icon.');
+      return;
+    }
     const isUpdateFlow = !!this.editingJob;
     
     try {
@@ -490,18 +472,13 @@ export class LoginComponent implements OnInit {
     this.resetJobForm();
   }
 
-  cancelCompanyImageForm() {
-    this.showCompanyImageForm = false;
-    this.isSavingCompanyImage = false;
-    this.resetCompanyImageForm();
-  }
-
   resetJobForm() {
     this.jobForm = {
       id: '',
       title: '',
       company: '',
       companyImage: '',
+      jobIcon: JOB_ICONS[0],
       jobType: this.jobTypeOptions[0],
       experience: this.experienceOptions[0],
       fullInformationTableFormat: '',
@@ -517,139 +494,8 @@ export class LoginComponent implements OnInit {
     };
   }
 
-  resetCompanyImageForm() {
-    this.companyImageForm = {
-      id: '',
-      companyName: '',
-      companyImage: '',
-      createdDate: ''
-    };
-  }
-
   onJobTypeChange() {
     this.jobForm.walkInDrive = this.jobForm.jobType === 'Walk-ins';
-  }
-
-  onCompanySelectionChange() {
-    // Image is resolved at display time from companyImages table — no need to store on job
-  }
-
-  async saveCompanyImage() {
-    const companyName = this.companyImageForm.companyName.trim();
-    const normalizedImageHtml = this.normalizeImageHtml(this.companyImageForm.companyImage || '');
-    const editingId = this.companyImageForm.id;
-
-    if (!companyName || !normalizedImageHtml) {
-      this.showErrorToast('Company name and company image are required.');
-      return;
-    }
-
-    if (this.isSavingCompanyImage) {
-      return;
-    }
-
-    try {
-      this.isSavingCompanyImage = true;
-      this.cdr.detectChanges();
-
-      const existingById = editingId
-        ? this.companyImages.find((item) => item.id === editingId)
-        : null;
-
-      const existingByName = this.companyImages.find(
-        (item) => this.normalizeCompanyName(item.companyName) === this.normalizeCompanyName(companyName)
-      );
-
-      const payload = {
-        companyName,
-        companyImage: normalizedImageHtml,
-        updatedDate: new Date().toISOString()
-      };
-
-      const targetId = existingById?.id || existingByName?.id;
-
-      if (targetId) {
-        const updateRef = ref(db, `companyImages/${targetId}`);
-        await update(updateRef, payload);
-      } else {
-        const createRef = ref(db, 'companyImages');
-        await push(createRef, {
-          ...payload,
-          createdDate: new Date().toISOString()
-        });
-      }
-
-      if (this.jobForm.company && this.normalizeCompanyName(this.jobForm.company) === this.normalizeCompanyName(companyName)) {
-        this.jobForm.companyImage = normalizedImageHtml;
-      }
-
-      this.showSuccessToast('Company image saved successfully.');
-      this.cancelCompanyImageForm();
-    } catch (error) {
-      console.error('Error saving company image:', error);
-      this.showErrorToast('Failed to save company image. Please try again.');
-      this.isSavingCompanyImage = false;
-      this.cdr.detectChanges();
-    }
-  }
-
-  editCompanyImage(item: CompanyImage) {
-    this.activeAdminTab = 'companies';
-    this.showCompanyImageForm = true;
-    this.companyImageForm = {
-      id: item.id,
-      companyName: item.companyName,
-      companyImage: item.companyImage,
-      createdDate: item.createdDate
-    };
-  }
-
-  async deleteCompanyImage(item: CompanyImage) {
-    const isConfirmed = confirm(`Delete company image for "${item.companyName}"?`);
-    if (!isConfirmed) {
-      return;
-    }
-
-    try {
-      const companyRef = ref(db, `companyImages/${item.id}`);
-      await remove(companyRef);
-      this.showSuccessToast('Company image deleted successfully.');
-    } catch (error) {
-      console.error('Error deleting company image:', error);
-      this.showErrorToast('Failed to delete company image. Please try again.');
-    }
-  }
-
-  getCompanyImagePreview(html: string): string | null {
-    if (!html) {
-      return null;
-    }
-
-    const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
-    return match && match[1] ? match[1] : null;
-  }
-
-  getCompanyUsageCount(companyName: string): number {
-    if (!companyName) {
-      return 0;
-    }
-
-    return this.jobs.filter((job) => job.company?.toLowerCase() === companyName.toLowerCase()).length;
-  }
-
-  private keepOnlyImageEmbeds(html: string): string {
-    if (!html) {
-      return '';
-    }
-
-    const matches = [...html.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)];
-    if (matches.length === 0) {
-      return '';
-    }
-
-    return matches
-      .map((match) => `<p><img src="${match[1]}" alt="Job image"></p>`)
-      .join('');
   }
 
   getCompanyImageByName(companyName: string): string {
@@ -672,6 +518,15 @@ export class LoginComponent implements OnInit {
     });
 
     return partial?.companyImage || '';
+  }
+
+  getCompanyImagePreview(html: string): string | null {
+    const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+    return match?.[1] || null;
+  }
+
+  getJobIcon(job: Job): string {
+    return JOB_ICONS.find(icon => icon === job.jobIcon) || '';
   }
 
   shareJobOnWhatsApp(job: Job) {
@@ -743,6 +598,7 @@ _Share this opportunity with your friends!_
         'JobTitle',
         'CompanyName',
         'CompanyImageHtml',
+        'JobIcon',
         'JobType',
         'Experience',
         'JobDescription',
@@ -756,6 +612,7 @@ _Share this opportunity with your friends!_
         JobTitle: job.title || '',
         CompanyName: job.company || '',
         CompanyImageHtml: this.getCompanyImageByName(job.company) || '',
+        JobIcon: this.getJobIcon(job),
         JobType: job.jobType || 'Walk-ins',
         Experience: job.experience || 'Freshers',
         JobDescription: job.description || '',
@@ -775,35 +632,6 @@ _Share this opportunity with your friends!_
     } catch (error) {
       console.error('Excel export failed:', error);
       this.showErrorToast('Unable to download XLS file. Please try again.');
-    }
-  }
-
-  exportCompaniesToExcel() {
-    try {
-      const headers = [
-        'CompanyName',
-        'CompanyImageHtml',
-        'CreatedDate',
-        'UpdatedDate'
-      ];
-
-      const rows = this.companyImages.map((item) => ({
-        CompanyName: item.companyName || '',
-        CompanyImageHtml: item.companyImage || '',
-        CreatedDate: item.createdDate || '',
-        UpdatedDate: item.updatedDate || ''
-      }));
-
-      const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Companies');
-
-      const dateTag = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(workbook, `companies-${dateTag}.xls`, { bookType: 'biff8', compression: true });
-      this.showSuccessToast('Company XLS file downloaded successfully.');
-    } catch (error) {
-      console.error('Company export failed:', error);
-      this.showErrorToast('Unable to download company XLS file. Please try again.');
     }
   }
 
@@ -854,7 +682,7 @@ _Share this opportunity with your friends!_
   }
 
   async saveImportedData() {
-    if (!this.importModalType || this.pendingImportRows.length === 0 || this.isImportingData) {
+    if (this.pendingImportRows.length === 0 || this.isImportingData) {
       return;
     }
 
@@ -863,18 +691,14 @@ _Share this opportunity with your friends!_
       this.importModalError = '';
       this.cdr.detectChanges();
 
-      if (this.importModalType === 'jobs') {
-        await this.importJobsFromRows(this.pendingImportRows);
-      } else {
-        await this.importCompaniesFromRows(this.pendingImportRows);
-      }
-
-      const importedLabel = this.importModalType === 'jobs' ? 'Jobs' : 'Companies';
+      await this.importJobsFromRows(this.pendingImportRows);
       this.closeImportModal();
-      this.showSuccessToast(`${importedLabel} imported successfully.`);
+      this.showSuccessToast('Jobs imported successfully.');
     } catch (error) {
       console.error('Import failed:', error);
-      this.importModalError = 'Failed to import data. Please verify the XLS columns and try again.';
+      this.importModalError = error instanceof Error && error.message.startsWith('Invalid JobIcon ')
+        ? `${error.message} Choose an icon from the Create Job form.`
+        : 'Failed to import data. Please verify the XLS columns and try again.';
       this.showErrorToast(this.importModalError);
     } finally {
       this.isImportingData = false;
@@ -883,11 +707,6 @@ _Share this opportunity with your friends!_
   }
 
   downloadImportTemplate() {
-    if (this.importModalType === 'companies') {
-      this.downloadCompanyTemplateXls();
-      return;
-    }
-
     this.downloadJobsTemplateXls();
   }
 
@@ -896,6 +715,7 @@ _Share this opportunity with your friends!_
       'JobTitle',
       'CompanyName',
       'CompanyImageHtml',
+      'JobIcon',
       'JobType',
       'Experience',
       'JobDescription',
@@ -912,20 +732,17 @@ _Share this opportunity with your friends!_
     XLSX.writeFile(workbook, 'jobs-import-template.xls', { bookType: 'biff8', compression: true });
   }
 
-  private downloadCompanyTemplateXls() {
-    const worksheet = XLSX.utils.aoa_to_sheet([
-      ['CompanyName', 'CompanyImageHtml', 'CreatedDate']
-    ]);
-
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Companies');
-    XLSX.writeFile(workbook, 'companies-import-template.xls', { bookType: 'biff8', compression: true });
-  }
-
   private async importJobsFromRows(rawRows: Record<string, any>[]) {
     const jobsRef = ref(db, 'jobs');
     let imported = 0;
     let skipped = 0;
+
+    for (const row of rawRows) {
+      const importedIcon = this.getExcelValue(row, ['JobIcon', 'Job Icon']).trim();
+      if (importedIcon && !JOB_ICONS.some(icon => icon === importedIcon)) {
+        throw new Error(`Invalid JobIcon "${importedIcon}" in XLS row.`);
+      }
+    }
 
     for (const row of rawRows) {
       const title = this.getExcelValue(row, ['JobTitle', 'Job Title', 'Title']).trim();
@@ -937,12 +754,14 @@ _Share this opportunity with your friends!_
       }
 
       const jobType = this.getExcelValue(row, ['JobType', 'Job Type']) || 'Walk-ins';
+      const importedIcon = this.getExcelValue(row, ['JobIcon', 'Job Icon']).trim();
       const createdDate = this.getExcelValue(row, ['CreatedDate', 'Created Date']) || new Date().toISOString();
 
       const newJobData = {
         title,
         company,
         companyImage: '',
+        jobIcon: importedIcon,
         jobType,
         experience: this.getExcelValue(row, ['Experience']) || 'Freshers',
         description: this.getExcelValue(row, ['JobDescription', 'Job Description']) || '',
@@ -954,32 +773,6 @@ _Share this opportunity with your friends!_
       };
 
       await push(jobsRef, newJobData);
-      imported++;
-    }
-
-    this.showSuccessToast(`Import complete. Imported: ${imported}, Skipped: ${skipped}.`);
-  }
-
-  private async importCompaniesFromRows(rawRows: Record<string, any>[]) {
-    const companyImagesRef = ref(db, 'companyImages');
-    let imported = 0;
-    let skipped = 0;
-
-    for (const row of rawRows) {
-      const companyName = this.getExcelValue(row, ['CompanyName', 'Company Name']).trim();
-      const imageValue = this.getExcelValue(row, ['CompanyImageHtml', 'Company Image Html', 'CompanyImage', 'CompanyImageUrl', 'Company Image Url']).trim();
-      const createdDate = this.getExcelValue(row, ['CreatedDate', 'Created Date']) || new Date().toISOString();
-
-      if (!companyName || !imageValue) {
-        skipped++;
-        continue;
-      }
-
-      await push(companyImagesRef, {
-        companyName,
-        companyImage: this.normalizeImageHtml(imageValue),
-        createdDate
-      });
       imported++;
     }
 
@@ -1029,22 +822,4 @@ _Share this opportunity with your friends!_
     return '';
   }
 
-  private normalizeImageHtml(value: string): string {
-    const trimmed = (value || '').trim();
-    if (!trimmed) {
-      return '';
-    }
-
-    const embeddedImages = this.keepOnlyImageEmbeds(trimmed);
-    if (embeddedImages) {
-      return embeddedImages;
-    }
-
-    if (/^(https?:\/\/|data:image\/)/i.test(trimmed)) {
-      return `<p><img src="${trimmed}" alt="Company image"></p>`;
-    }
-
-    return '';
-  }
 }
-

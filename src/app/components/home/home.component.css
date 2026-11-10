@@ -498,7 +498,7 @@
   width: 96px;
   min-width: 96px;
   height: 60px;
-  border-radius: 10px;
+  border-radius: 0;
   overflow: hidden;
   background: #e2e8f0;
 }
@@ -1414,6 +1414,12 @@
 .home-jobs-table-title-row {
   display: flex;
   align-items: center;
+  min-width: 0;
+}
+
+.home-jobs-table-meta-row {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
 }
@@ -1423,7 +1429,7 @@
   white-space: nowrap;
   font-size: 0.66rem;
   font-weight: 600;
-  margin-top: 0.1rem;
+  min-width: 0;
 }
 
 .home-jobs-table-date-label {

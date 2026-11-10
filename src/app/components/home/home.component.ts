@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
   isNonWalkinOnlyPage: boolean = false;
   isHomeRootPage: boolean = false;
   companyImageMap: Record<string, string> = {};
+  readonly defaultJobImage = 'assets/images/Freejobinfologo.png';
   readonly quickFilterCategories: string[] = [
     'All',
     'Government Jobs',
@@ -333,6 +334,19 @@ export class HomeComponent implements OnInit {
     }
 
     return `${cleanText.slice(0, maxLength)}...`;
+  }
+
+  getJobCardImage(job: Job): string {
+    return this.extractImageSrc(job.description || '')
+      || this.extractImageSrc(job.companyImage || '')
+      || this.extractImageSrc(this.getMappedImageByCompany(job.company || ''))
+      || this.defaultJobImage;
+  }
+
+  onJobCardImageError(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    image.onerror = null;
+    image.src = this.defaultJobImage;
   }
 
   getTodayWalkinsCount(): number {

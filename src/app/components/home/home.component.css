@@ -663,7 +663,7 @@
     width: 84px;
     min-width: 84px;
     height: 56px;
-    border-radius: 10px;
+    border-radius: 0;
   }
 }
 

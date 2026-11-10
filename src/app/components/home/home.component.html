@@ -65,7 +65,7 @@
                   </div>
                   <div class="home-jobs-table-title-cell">
                     <div class="home-jobs-table-title-row">
-                      <div class="home-jobs-table-title" (click)="viewJobDetails(job)"><i class="bi bi-briefcase-fill home-jobs-table-title-icon"></i>{{ job.title }}</div>
+                      <div class="home-jobs-table-title" (click)="viewJobDetails(job)">{{ job.title }}</div>
                     </div>
                     <div class="home-jobs-table-meta-row">
                       <div class="home-jobs-table-date" [title]="job.createdDate"><span class="home-jobs-table-date-label">Posted Date:</span> {{ job.createdDate | date:'dd/MM/yyyy' }}</div>

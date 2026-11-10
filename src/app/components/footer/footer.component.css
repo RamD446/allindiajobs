@@ -135,6 +135,16 @@
   max-width: 170px;
 }
 
+.login-btn {
+  background: #e0e7ff;
+  color: #1e1b4b;
+}
+
+.login-btn:hover {
+  background: #c7d2fe;
+  transform: translateY(-2px);
+}
+
 .share-btn {
   background: #6366f1;
   color: white;

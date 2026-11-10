@@ -405,12 +405,12 @@ export class JobFullInformation implements OnInit {
 
   getRecentPostImage(job: Job): string | null {
     const mapped = this.getMappedImageByCompany(job.company || '');
-    return this.extractImageSrc(mapped) || 'assets/images/Freejobinfologo.png';
+    return this.extractImageSrc(mapped) || 'assets/images/Favicon.ico';
   }
 
   getTopJobImage(job: Job): string | null {
     const mapped = this.getMappedImageByCompany(job.company || '');
-    return this.extractImageSrc(mapped) || 'assets/images/Freejobinfologo.png';
+    return this.extractImageSrc(mapped) || 'assets/images/Favicon.ico';
   }
 
   getSafeHtml(html: string): SafeHtml {

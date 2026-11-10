@@ -86,10 +86,18 @@
               <i class="bi bi-share-fill"></i>
               <span>Share</span>
             </button>
-            <button *ngIf="showInstallBtn" class="footer-btn install-btn" (click)="installApp()">
-              <i class="bi bi-cloud-arrow-down-fill"></i>
-              <span>Download</span>
+            <button *ngIf="!isInstalled" type="button" class="footer-btn install-btn"
+              [class.install-btn--manual]="!showInstallBtn"
+              [attr.aria-expanded]="showInstallInstructions"
+              aria-controls="footer-install-instructions"
+              (click)="installApp()">
+              <i class="bi bi-phone" aria-hidden="true"></i>
+              <span>Install app</span>
             </button>
+          </div>
+          <div *ngIf="showInstallInstructions && !isInstalled" id="footer-install-instructions" class="footer-install-instructions" role="status">
+            <p *ngIf="isIos">On iPhone, open this site in Safari, tap Share, then Add to Home Screen.</p>
+            <p *ngIf="!isIos">Open your browser menu and choose Install app or Add to Home screen.</p>
           </div>
         </div>
       </div>

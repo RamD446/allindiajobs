@@ -9,6 +9,16 @@ html, body {
   padding: 0;
 }
 
+@media (max-width: 768px) {
+  html:has(:is(app-home, app-job-full-information)) {
+    scrollbar-width: none;
+  }
+
+  html:has(:is(app-home, app-job-full-information))::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Modal Improvements */
 .modal-xl {
   max-width: 990px;

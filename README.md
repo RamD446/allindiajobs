@@ -2,6 +2,16 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
 
+## Job icons
+
+Sign in to the admin page and choose one of 20 icons in the Create Job or Edit Job modal. The selected icon appears in place of the job thumbnail on the home page. Older jobs without an icon continue to use their existing image or default thumbnail. Job XLS downloads include a `JobIcon` column; imports accept the same optional column with a `bi-*` name from the admin icon picker.
+
+The home page displays job cards with an image or icon above the company name, alongside recent government and walk-in opportunities. Below the recent lists, job type and company filters narrow the main listings. The company filter shows a stable random sample of up to 50 available companies, keeping the selected company visible. Listings, WhatsApp updates, sharing, and pagination remain available on desktop and mobile.
+
+The logo, search, and menu bar stays fixed while the scrollable category navigation moves with the page. The compact mobile menu groups job categories and the game link in a scrollable panel.
+
+On mobile, the footer offers an Install app button. It opens the browser's installation prompt when available; otherwise it shows Add to Home Screen instructions for the user's browser. Installation availability depends on the browser and its requirements.
+
 ## Development server
 
 To start a local development server, run:

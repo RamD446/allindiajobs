@@ -1,17 +1,29 @@
-<div class="jobfull-section-block jobfull-recent-block">
+<div class="jobfull-section-block jobfull-recent-block" [class.modern-recent-block]="modern">
   <div class="jobfull-section-header">{{ title }}</div>
-  <div class="jobfull-section-content p-2">
-    <table class="recent-post-table">
-      <tbody>
-        <ng-container *ngFor="let job of jobs">
-          <tr class="recent-post-row" (click)="viewJobDetails(job)">
-            <td class="recent-post-cell recent-post-cell-title"><i class="bi bi-chevron-double-right recent-post-arrow-icon"></i>{{ job.title }}</td>
-          </tr>
-          <tr class="recent-post-row" (click)="viewJobDetails(job)" *ngIf="formatWalkInDate(job.createdDate) as createdDateLabel">
-            <td class="recent-post-cell recent-post-cell-date">Posted date: {{ createdDateLabel }}</td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
+  <div *ngIf="modern; else legacyRecentPosts" class="modern-recent-list">
+    <button *ngFor="let job of jobs" type="button" class="modern-recent-item" [title]="job.title" (click)="viewJobDetails(job)">
+      <span class="modern-recent-icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
+      <span class="modern-recent-info">
+        <span class="modern-recent-title">{{ job.title }}</span>
+        <span *ngIf="formatWalkInDate(job.createdDate) as createdDateLabel" class="modern-recent-date">Posted {{ createdDateLabel }}</span>
+      </span>
+    </button>
+    <p *ngIf="jobs.length === 0" class="modern-recent-empty">No recent jobs available.</p>
   </div>
+  <ng-template #legacyRecentPosts>
+    <div class="jobfull-section-content p-2">
+      <table class="recent-post-table">
+        <tbody>
+          <ng-container *ngFor="let job of jobs">
+            <tr class="recent-post-row" (click)="viewJobDetails(job)">
+              <td class="recent-post-cell recent-post-cell-title"><i class="bi bi-chevron-double-right recent-post-arrow-icon"></i>{{ job.title }}</td>
+            </tr>
+            <tr class="recent-post-row" (click)="viewJobDetails(job)" *ngIf="formatWalkInDate(job.createdDate) as createdDateLabel">
+              <td class="recent-post-cell recent-post-cell-date">Posted date: {{ createdDateLabel }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
 </div>

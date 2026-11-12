@@ -1,0 +1,63 @@
+<main class="admin-page" *ngIf="!authLoading && user; else loginView">
+  <section class="admin-wrap">
+    <header class="admin-heading"><div><p class="eyebrow">PUBLISHER WORKSPACE</p><h1>Job management</h1><p>Signed in as <strong>{{ user.email }}</strong></p></div><button class="secondary-button" type="button" (click)="logout()">Sign out</button></header>
+    <div class="admin-summary"><strong>{{ jobs.length }}</strong><span>published listings</span><i></i><span>Manage the live freejob-info feed</span></div>
+    <div class="admin-toolbar"><div class="admin-controls"><label class="visually-hidden" for="admin-search">Search jobs</label><input id="admin-search" [(ngModel)]="search" placeholder="Search title or company"><label class="visually-hidden" for="admin-type">Filter by job type</label><select id="admin-type" [(ngModel)]="filter"><option>All job types</option><option *ngFor="let type of jobTypes">{{ type }}</option></select></div><div class="admin-actions"><label class="secondary-button import-button">{{ importing ? 'Importing...' : 'Import XLS' }}<input type="file" accept=".xls,.xlsx" (change)="importJobs($event)" [disabled]="importing"></label><button class="secondary-button" type="button" (click)="exportJobs()">Export XLS</button><button class="primary-button" type="button" (click)="startCreate()">+ Create job</button></div></div>
+    <p *ngIf="notice" class="admin-notice" role="status">{{ notice }}</p>
+
+    <div class="admin-table-heading"><h2>Published jobs</h2><span>{{ filteredJobs.length }} shown</span></div>
+    <div class="admin-job-list" *ngIf="!isLoading && filteredJobs.length; else noJobs">
+      <article class="admin-job-row" *ngFor="let job of filteredJobs">
+        <div class="admin-job-badge" aria-hidden="true"><img *ngIf="imageSource(job.companyImage) as image; else jobIcon" [src]="image" [alt]="job.company"><ng-template #jobIcon><i *ngIf="job.jobIcon; else fallbackInitial" class="bi" [ngClass]="job.jobIcon"></i><ng-template #fallbackInitial>{{ companyInitial(job) }}</ng-template></ng-template></div>
+        <div class="admin-job-info"><strong>{{ job.title }}</strong><span>{{ job.company }} <i></i> {{ job.jobType || 'Opportunity' }}</span></div>
+        <time>{{ job.createdDate | date:'dd MMM yyyy' }}</time>
+        <div class="admin-job-actions"><button class="text-action" type="button" (click)="startEdit(job)">Edit</button><button class="text-action danger-action" type="button" (click)="deleteJob(job)">Delete</button></div>
+      </article>
+    </div>
+    <ng-template #noJobs><div class="state-panel">{{ isLoading ? 'Loading jobs...' : 'No jobs match this view.' }}</div></ng-template>
+  </section>
+
+  <div *ngIf="formOpen" class="job-modal-backdrop" (mousedown)="$event.target === $event.currentTarget && closeForm()">
+    <section class="job-editor" role="dialog" aria-modal="true" aria-labelledby="job-editor-title"><form (ngSubmit)="saveJob()">
+      <div class="editor-heading"><div><p class="eyebrow">{{ editingId ? 'UPDATE LISTING' : 'NEW LISTING' }}</p><h2 id="job-editor-title">{{ editingId ? 'Edit job' : 'Create a job' }}</h2></div><button type="button" class="icon-button" aria-label="Close form" (click)="closeForm()">×</button></div>
+      <div class="editor-grid">
+        <label><span>Job title *</span><input [(ngModel)]="draft.title" name="title" required></label>
+        <label><span>Company *</span><input [(ngModel)]="draft.company" name="company" required></label>
+        <label><span>Sector</span><select [(ngModel)]="draft.sector" name="sector" (ngModelChange)="onSectorChange()"><option value="Government">Government</option><option value="Private">Private</option></select></label>
+        <ng-container *ngIf="draft.sector === 'Government'; else privateFields">
+          <label><span>Government type</span><select [(ngModel)]="draft.jobType" name="jobType" (ngModelChange)="onGovernmentTypeChange()"><option *ngFor="let type of governmentJobTypes" [value]="type">{{ type === 'Government Jobs' ? 'Jobs' : type }}</option></select></label>
+          <label *ngIf="draft.jobType === 'Government Jobs'"><span>Last date to apply</span><input type="date" [(ngModel)]="draft.lastDateToApply" name="lastDateToApply"></label>
+        </ng-container>
+        <ng-template #privateFields>
+          <label><span>Private hiring type</span><select [(ngModel)]="draft.privateJobType" name="privateJobType" (ngModelChange)="onPrivateHiringChange()"><option *ngFor="let type of privateHiringTypes" [value]="type">{{ type }}</option></select></label>
+          <label><span>Private job type</span><select [(ngModel)]="draft.jobType" name="jobType"><option *ngFor="let type of privateJobTypes" [value]="type">{{ type }}</option></select></label>
+          <label *ngIf="draft.privateJobType === 'Walk-in'"><span>Walk-in date</span><input type="date" [(ngModel)]="draft.walkInDate" name="walkInDate"></label>
+        </ng-template>
+        <fieldset class="experience-picker editor-wide"><legend>Experience type</legend><label><input type="checkbox" [checked]="isExperienceSelected('Freshers')" (change)="toggleExperience('Freshers', $any($event.target).checked)"> Fresher</label><label><input type="checkbox" [checked]="isExperienceSelected('Experienced')" (change)="toggleExperience('Experienced', $any($event.target).checked)"> Experienced</label></fieldset>
+        <label><span>Company image URL</span><input type="url" [(ngModel)]="draft.companyImage" name="companyImage"></label>
+        <label><span>Official application URL</span><input type="url" [(ngModel)]="draft.otherLink" name="otherLink"></label>
+        <label><span>PDF URL</span><input type="url" [(ngModel)]="draft.applyPdfLink" name="applyPdfLink"></label>
+        <label><span>Created by</span><input [(ngModel)]="draft.createdBy" name="createdBy"></label>
+        <fieldset class="job-icon-picker editor-wide"><legend>Job icon</legend><div class="job-icon-options"><label *ngFor="let icon of jobIcons" class="job-icon-option" [class.selected]="draft.jobIcon === icon.id" [title]="icon.label"><input class="visually-hidden" type="radio" name="jobIcon" [value]="icon.id" [(ngModel)]="draft.jobIcon"><i class="bi" [ngClass]="icon.id"></i><span>{{ icon.label }}</span></label></div></fieldset>
+        <label class="editor-wide"><span>Description</span><textarea rows="5" [(ngModel)]="draft.description" name="description"></textarea></label>
+        <label class="editor-wide"><span>Job information rows (one "Label: Value" per line)</span><textarea rows="3" [(ngModel)]="draft.fullInformationTableFormat" name="fullInformationTableFormat"></textarea></label>
+        <label class="editor-wide"><span>Full notification</span><textarea rows="6" [(ngModel)]="draft.fullJobInformation" name="fullJobInformation"></textarea></label>
+      </div>
+      <div class="editor-footer"><button class="secondary-button" type="button" (click)="closeForm()" [disabled]="saving">Cancel</button><button class="primary-button" type="submit" [disabled]="saving">{{ saving ? 'Saving...' : editingId ? 'Update job' : 'Publish job' }}</button></div>
+    </form></section>
+  </div>
+</main>
+
+<ng-template #loginView>
+  <main class="login-page" *ngIf="!authLoading; else authCheck">
+    <section class="login-intro"><p class="eyebrow">PUBLISHER ACCESS</p><h1>Welcome<br><em>back.</em></h1><p>Sign in to manage freejob-info listings.</p><a routerLink="/">← Back to job listings</a></section>
+    <form class="login-form" (ngSubmit)="login()"><div class="login-form-heading"><span class="login-shield">FJ</span><div><p class="eyebrow">ADMINISTRATOR</p><h2>Sign in</h2></div></div>
+      <label><span>Email address</span><input type="email" autocomplete="username" [(ngModel)]="email" name="email" placeholder="you@example.com" required></label>
+      <label><span>Password</span><input type="password" autocomplete="current-password" [(ngModel)]="password" name="password" placeholder="Enter your password" required></label>
+      <p *ngIf="loginError" class="form-error" role="alert">{{ loginError }}</p>
+      <button class="primary-button login-submit" type="submit" [disabled]="isLoading">{{ isLoading ? 'Signing in...' : 'Sign in to dashboard →' }}</button>
+      <p class="login-note">Use your registered Firebase admin account.</p>
+    </form>
+  </main>
+</ng-template>
+<ng-template #authCheck><div class="detail-state">Checking sign-in...</div></ng-template>

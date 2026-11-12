@@ -1,0 +1,12 @@
+.portal-shell {
+  background: #f4f6f8;
+  color: #202a34;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+.portal-content {
+  flex: 1;
+}

@@ -4,6 +4,9 @@ export interface Job {
   title: string;
   company: string;
   companyImage?: string;
+  jobIcon?: string;
+  sector?: 'Government' | 'Private';
+  privateJobType?: 'Walk-in' | 'Non-walk-in';
   jobType?: string;
   experience?: string;
   fullInformationTableFormat?: string;
@@ -41,6 +44,8 @@ export const DEFAULT_JOB_CATEGORIES = [
 export const PRIVATE_JOB_TYPES = [
   'IT Jobs',
   'Non-IT Jobs',
+  'Pharma Jobs',
+  'Sales Jobs',
   'Pharmaceutical Jobs',
   'Bank Jobs',
   'Other'

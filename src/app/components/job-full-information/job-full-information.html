@@ -1,0 +1,39 @@
+<main class="detail-wrap" *ngIf="!loading && job as currentJob; else detailLoading">
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a routerLink="/">All jobs</a><span>/</span><span>{{ currentJob.jobType || 'Job details' }}</span><span>/</span><span class="breadcrumb-title">{{ currentJob.title }}</span></nav>
+
+  <div class="detail-grid">
+    <article class="detail-main">
+      <header class="detail-heading">
+        <div class="company-badge large" aria-hidden="true">
+          <img *ngIf="imageSource(currentJob.companyImage) as image; else detailJobIcon" [src]="image" [alt]="currentJob.company" loading="lazy">
+          <ng-template #detailJobIcon><i *ngIf="currentJob.jobIcon; else detailInitial" class="bi" [ngClass]="currentJob.jobIcon"></i><ng-template #detailInitial>{{ (currentJob.company || currentJob.title || 'J').charAt(0).toUpperCase() }}</ng-template></ng-template>
+        </div>
+        <div class="detail-title-block"><p class="eyebrow">{{ currentJob.company || 'EMPLOYER' }}</p><h1>{{ currentJob.title }}</h1><div class="detail-tags"><span>{{ currentJob.jobType || 'Opportunity' }}</span><span *ngIf="currentJob.experience">{{ currentJob.experience }}</span><span *ngIf="currentJob.walkInDrive">Walk-in drive</span></div></div>
+        <div class="detail-heading-actions"><button class="icon-button" type="button" title="Share job" aria-label="Share job" (click)="shareJob()"><i class="bi bi-share"></i></button><a class="detail-whatsapp-link" href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" rel="noreferrer"><i class="bi bi-whatsapp"></i> Join job alerts</a></div>
+      </header>
+
+      <div class="detail-facts"><div><span>Posted</span><strong>{{ displayDate(currentJob.createdDate) }}</strong></div><div *ngIf="currentJob.walkInDate"><span>Walk-in date</span><strong>{{ displayDate(currentJob.walkInDate) }}</strong></div><div *ngIf="currentJob.lastDateToApply"><span>Apply by</span><strong>{{ displayDate(currentJob.lastDateToApply) }}</strong></div></div>
+
+      <section class="detail-section"><p class="eyebrow">THE OPPORTUNITY</p><h2>About this role</h2><p class="rich-text">{{ plainText(currentJob.description || '') || 'No description has been provided for this listing.' }}</p></section>
+      <section class="detail-section" *ngIf="detailRows.length"><p class="eyebrow">AT A GLANCE</p><h2>Job information</h2><table class="info-table" aria-label="Job information"><tbody><tr *ngFor="let row of detailRows"><th scope="row">{{ row[0] }}</th><td>{{ row[1] }}</td></tr></tbody></table></section>
+      <section class="detail-section" *ngIf="currentJob.fullJobInformation"><p class="eyebrow">MORE INFORMATION</p><h2>Full notification</h2><p class="rich-text">{{ plainText(currentJob.fullJobInformation) }}</p></section>
+
+      <div class="detail-action-links" *ngIf="currentJob.otherLink || currentJob.applyPdfLink">
+        <a *ngIf="currentJob.otherLink" class="apply-button" [href]="currentJob.otherLink" target="_blank" rel="noreferrer">Apply on official site <span>↗</span></a>
+        <a *ngIf="currentJob.applyPdfLink" class="pdf-link" [href]="currentJob.applyPdfLink" target="_blank" rel="noreferrer">View official PDF <span>↗</span></a>
+      </div>
+
+      <section class="detail-section popular-companies" *ngIf="popularCompanies.length"><p class="eyebrow">EXPLORE EMPLOYERS</p><h2>Popular companies</h2><div class="company-chips"><button *ngFor="let company of popularCompanies" class="company-chip" type="button" (click)="filterByCompany(company)">{{ company }}</button></div></section>
+
+      <section class="comments-section"><div class="comments-title"><div><p class="eyebrow">JOIN THE CONVERSATION</p><h2>Comments <span>{{ comments.length }}</span></h2></div></div>
+        <form class="comment-form" (ngSubmit)="submitComment()"><label><span>Your name</span><input name="commentName" [(ngModel)]="name" maxlength="10" required></label><label><span>Comment</span><textarea name="comment" [(ngModel)]="comment" maxlength="50" rows="3" required></textarea></label><p *ngIf="commentError" class="form-error">{{ commentError }}</p><button class="primary-button" type="submit" [disabled]="savingComment">{{ savingComment ? 'Posting...' : 'Post comment' }}</button></form>
+        <article class="comment-item" *ngFor="let item of comments"><span class="comment-avatar">{{ item.name.charAt(0).toUpperCase() }}</span><div><strong>{{ item.name }}</strong><p>{{ item.comment }}</p><time>{{ displayDate(item.createdDate) }}</time></div></article>
+        <p *ngIf="!comments.length" class="quiet-note">No comments yet. Start the conversation.</p>
+      </section>
+    </article>
+
+    <aside class="related-sidebar"><p class="eyebrow">KEEP EXPLORING</p><h2>Recent openings</h2><a class="related-job" *ngFor="let item of recentJobs" [routerLink]="jobLink(item)"><span>{{ item.company }}</span><strong>{{ item.title }}</strong><small>{{ displayDate(item.createdDate) }}</small></a><a class="all-jobs-link" routerLink="/">Browse all jobs <span>→</span></a></aside>
+  </div>
+</main>
+
+<ng-template #detailLoading><div class="detail-state"><p class="eyebrow">JOB INFORMATION</p><h1>{{ loading ? 'Loading job...' : 'This listing may have expired.' }}</h1><a class="primary-link" routerLink="/">Back to jobs <span>→</span></a></div></ng-template>

@@ -1,0 +1,75 @@
+.home-page { color: #202a34; }
+.portal-content { margin: 0 auto; max-width: 1180px; padding: 38px 28px 64px; }
+.browse-layout { align-items: start; display: grid; gap: 42px; grid-template-columns: minmax(0, 1fr) 248px; }
+.jobs-column { min-width: 0; }
+.whatsapp-follow-card { align-items: center; background: #effaf2; border: 1px solid #cce8d3; border-radius: 5px; color: #202a34; display: flex; gap: 12px; margin-bottom: 14px; padding: 12px 14px; text-decoration: none; }
+.whatsapp-follow-icon { align-items: center; background: #d7f0df; border-radius: 50%; color: #178344; display: flex; flex: 0 0 36px; height: 36px; justify-content: center; }
+.whatsapp-follow-copy { display: grid; gap: 3px; }
+.whatsapp-follow-copy strong { color: #195c35; font-size: 12px; }
+.whatsapp-follow-copy small { color: #587565; font-size: 10px; }
+.whatsapp-follow-action { align-items: center; background: #19864a; border-radius: 4px; color: #fff; display: inline-flex; font-size: 10px; font-weight: 700; gap: 7px; margin-left: auto; padding: 9px 11px; white-space: nowrap; }
+.search-bar { align-items: center; background: #fff; border: 1px solid #d9e0e7; border-radius: 5px; display: flex; gap: 10px; min-height: 50px; padding: 5px; }
+.home-search-bar { margin-bottom: 12px; }
+.search-bar > i { color: #687581; margin-left: 9px; }
+.search-bar input { background: transparent; border: 0; color: #202a34; flex: 1; font-size: 12px; min-width: 0; outline: 0; }
+.search-bar button { align-items: center; background: #c85131; border: 0; border-radius: 3px; color: #fff; cursor: pointer; display: inline-flex; height: 38px; justify-content: center; width: 42px; }
+.jobs-toolbar { align-items: center; color: #687581; display: flex; font-size: 10px; justify-content: space-between; min-height: 48px; }
+.job-list { display: grid; gap: 10px; }
+.job-row { background: #fff; border: 1px solid #d9e0e7; border-radius: 5px; display: grid; gap: 8px; padding: 14px; transition: border-color 180ms ease, box-shadow 180ms ease; }
+.job-row:hover { border-color: #b7c8d7; box-shadow: 0 4px 12px rgba(25,45,65,.09); }
+.job-card-heading { align-items: center; display: flex; gap: 11px; min-width: 0; }
+.company-badge { align-items: center; background: #e4ecdf; border: 1px solid #d5e0d1; border-radius: 5px; color: #16466b; display: flex; flex: 0 0 42px; font: 20px Georgia, 'Times New Roman', serif; height: 42px; justify-content: center; overflow: hidden; text-transform: uppercase; }
+.company-badge img { height: 100%; object-fit: contain; width: 100%; }
+.job-meta-top, .job-meta-bottom { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
+.job-company { color: #536258; font-size: 10px; font-weight: 650; }
+.tag { border-radius: 2px; font-size: 8px; font-weight: 700; line-height: 1; padding: 4px 6px; }
+.tag-walkin { background: #f8e5d7; color: #8c431f; }
+.tag-new { background: #e6edc9; color: #435b24; }
+.job-title-link { color: #202a34; display: block; font: 18px/1.35 Georgia, 'Times New Roman', serif; overflow-wrap: anywhere; text-decoration: none; }
+.job-title-link:hover { color: #16466b; text-decoration: underline; text-underline-offset: 3px; }
+.job-meta-bottom { color: #687581; font-size: 9px; min-height: 14px; }
+.job-meta-bottom i { background: #a6b0a7; border-radius: 50%; height: 3px; width: 3px; }
+.job-card-footer { align-items: center; border-top: 1px solid #edf1f4; display: flex; gap: 10px; justify-content: space-between; padding-top: 7px; }
+.posted-date { color: #7d887f; font-size: 9px; }
+.job-row-actions { align-items: center; display: flex; gap: 9px; }
+.icon-button { align-items: center; background: transparent; border: 1px solid #d9e0e7; border-radius: 3px; color: #16466b; cursor: pointer; display: inline-flex; font-size: 14px; height: 30px; justify-content: center; text-decoration: none; width: 30px; }
+.icon-button:hover { background: #e5ecdf; }
+.view-job { gap: 6px; padding: 0 8px; white-space: nowrap; width: auto; }
+.pagination { align-items: center; display: flex; justify-content: space-between; padding: 18px 0; }
+.pagination button { background: #fff; border: 1px solid #d9e0e7; border-radius: 3px; color: #202a34; cursor: pointer; font-size: 10px; min-height: 34px; padding: 0 12px; }
+.pagination button:disabled { color: #9ba39c; cursor: default; }
+.pagination span { color: #687581; font-size: 10px; }
+.browse-sidebar { align-self: start; background: #fff; border: 1px solid #d9e0e7; border-radius: 5px; padding: 17px; }
+.side-section { border-bottom: 1px solid #d9e0e7; padding: 0 0 20px; scroll-margin-top: 120px; }
+.side-section + .side-section { padding-top: 20px; }
+.eyebrow { color: #687581; font-size: 9px; font-weight: 750; letter-spacing: 1.2px; margin: 0 0 9px; }
+.side-section h2 { color: #202a34; font: 17px/1.3 Georgia, 'Times New Roman', serif; margin: 0 0 10px; }
+.sidebar-job { align-items: center; border-top: 1px solid #d9e0e7; display: grid; gap: 7px; grid-template-columns: 14px minmax(0, 1fr); padding: 9px 0; text-decoration: none; }
+.sidebar-job > i { color: #1565c0; font-size: 12px; }
+.sidebar-job-copy { display: grid; gap: 4px; min-width: 0; }
+.sidebar-job strong { color: #202a34; font-size: 10px; font-weight: 650; line-height: 1.4; }
+.sidebar-job small, .sidebar-empty { color: #687581; font-size: 9px; }
+.sidebar-job:hover strong { color: #16466b; }
+.sidebar-empty { margin: 0 0 10px; }
+.side-link { background: #edf5fd; border: 1px solid #cfe0f0; border-radius: 4px; color: #16466b; cursor: pointer; display: block; font-size: 10px; font-weight: 700; margin: 14px auto 0; min-height: 34px; padding: 0 12px; }
+.walkin-section .eyebrow { color: #c85131; }
+.state-panel { align-items: center; color: #687581; display: flex; flex-direction: column; font-size: 11px; gap: 8px; justify-content: center; min-height: 190px; text-align: center; }
+.state-panel strong { color: #202a34; font-size: 14px; }
+.error-panel { color: #a33c29; }
+.loader-dot { animation: pulse 900ms ease-in-out infinite alternate; background: #c85131; border-radius: 50%; height: 8px; width: 8px; }
+@keyframes pulse { to { opacity: .35; transform: scale(.75); } }
+
+@media (max-width: 860px) { .browse-layout { gap: 26px; grid-template-columns: minmax(0,1fr) 220px; } }
+@media (max-width: 650px) {
+  .portal-content { padding: 24px 16px 40px; }
+  .browse-layout { display: block; }
+  .browse-sidebar { margin-top: 28px; }
+  .whatsapp-follow-card { gap: 8px; padding: 9px; }
+  .whatsapp-follow-icon { flex-basis: 30px; height: 30px; }
+  .whatsapp-follow-action { font-size: 0; gap: 0; padding: 9px; }
+  .whatsapp-follow-action i { font-size: 14px; }
+  .job-title-link { font-size: 16px; }
+  .job-row { padding: 12px; }
+  .pagination { gap: 8px; }
+  .pagination button { padding: 0 8px; }
+}

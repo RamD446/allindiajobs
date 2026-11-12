@@ -1,0 +1,65 @@
+<main class="home-page">
+  <section class="portal-content" aria-label="Browse jobs">
+    <div class="browse-layout">
+      <section class="jobs-column">
+        <a class="whatsapp-follow-card" href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" rel="noreferrer">
+          <span class="whatsapp-follow-icon"><i class="bi bi-whatsapp" aria-hidden="true"></i></span>
+          <span class="whatsapp-follow-copy"><strong>New job openings</strong><small>Never miss job alerts</small></span>
+          <span class="whatsapp-follow-action"><i class="bi bi-whatsapp" aria-hidden="true"></i>Follow latest jobs</span>
+        </a>
+
+        <form class="search-bar home-search-bar" (ngSubmit)="applySearch()">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <label class="visually-hidden" for="job-search">Search jobs and companies</label>
+          <input id="job-search" type="search" name="q" [(ngModel)]="query" placeholder="Search jobs, companies, or keywords">
+          <button type="submit" aria-label="Search jobs"><i class="bi bi-search" aria-hidden="true"></i></button>
+        </form>
+
+        <div class="jobs-toolbar"><span>Sorted by newest</span></div>
+
+        <div *ngIf="loading" class="state-panel"><span class="loader-dot"></span><strong>Finding jobs</strong><span>Loading the latest opportunities</span></div>
+        <div *ngIf="error" class="state-panel error-panel">{{ error }}</div>
+        <div *ngIf="!loading && !error && !filteredJobs.length" class="state-panel"><strong>No matching jobs yet.</strong><span>Try another category or search term.</span></div>
+
+        <div class="job-list" *ngIf="!loading && !error">
+          <article class="job-row" *ngFor="let job of visibleJobs; let first = first">
+            <div class="job-card-heading">
+              <span class="company-badge" aria-hidden="true">
+                <img *ngIf="jobImage(job) as image; else jobIcon" [src]="image" [alt]="job.company" loading="lazy">
+                <ng-template #jobIcon><i *ngIf="job.jobIcon; else fallbackInitial" class="bi" [ngClass]="job.jobIcon"></i><ng-template #fallbackInitial>{{ companyInitial(job) }}</ng-template></ng-template>
+              </span>
+              <div class="job-meta-top"><span class="job-company">{{ job.company || 'Employer' }}</span><span *ngIf="job.walkInDrive" class="tag tag-walkin">Walk-in</span><span *ngIf="first && page === 1" class="tag tag-new">New</span></div>
+            </div>
+            <a class="job-title-link" [routerLink]="jobLink(job)">{{ job.title || 'Untitled opportunity' }}</a>
+            <div class="job-meta-bottom"><span>{{ job.jobType || 'Opportunity' }}</span><i *ngIf="job.experience"></i><span *ngIf="job.experience">{{ job.experience }}</span><i *ngIf="job.walkInDate"></i><span *ngIf="job.walkInDate">Walk-in {{ postedDate(job.walkInDate) }}</span></div>
+            <div class="job-card-footer"><span class="posted-date">Posted {{ postedDate(job.createdDate) }}</span><div class="job-row-actions">
+              <button class="icon-button" type="button" title="Share job" aria-label="Share job" (click)="shareJob(job)"><i class="bi bi-share" aria-hidden="true"></i></button>
+              <a class="icon-button view-job" [routerLink]="jobLink(job)" title="View job details"><i class="bi bi-eye" aria-hidden="true"></i><span>Details</span></a>
+            </div></div>
+          </article>
+        </div>
+
+        <nav *ngIf="pageCount > 1" class="pagination" aria-label="Job pages">
+          <button type="button" [disabled]="page === 1" (click)="setPage(page - 1)">← Previous</button>
+          <span>Page {{ page }} of {{ pageCount }}</span>
+          <button type="button" [disabled]="page === pageCount" (click)="setPage(page + 1)">Next →</button>
+        </nav>
+      </section>
+
+      <aside class="browse-sidebar">
+        <section class="side-section" id="government">
+          <p class="eyebrow">LATEST UPDATES</p><h2>Recent government jobs</h2>
+          <a class="sidebar-job" *ngFor="let job of recentGovernmentJobs" [routerLink]="jobLink(job)"><i class="bi bi-chevron-right" aria-hidden="true"></i><span class="sidebar-job-copy"><strong>{{ job.title }}</strong><small>{{ job.company }} · {{ postedDate(job.createdDate) }}</small></span></a>
+          <p *ngIf="!recentGovernmentJobs.length" class="sidebar-empty">No recent listings.</p>
+          <button class="side-link" type="button" (click)="filterSidebar('Government Jobs')">More government jobs →</button>
+        </section>
+        <section class="side-section walkin-section" id="walk-ins">
+          <p class="eyebrow">MEET THEM IN PERSON</p><h2>Recent walk-ins</h2>
+          <a class="sidebar-job" *ngFor="let job of recentWalkIns" [routerLink]="jobLink(job)"><i class="bi bi-chevron-right" aria-hidden="true"></i><span class="sidebar-job-copy"><strong>{{ job.title }}</strong><small>{{ job.company }} · {{ postedDate(job.createdDate) }}</small></span></a>
+          <p *ngIf="!recentWalkIns.length" class="sidebar-empty">No recent walk-ins.</p>
+          <button class="side-link" type="button" (click)="filterSidebar('Walk-ins')">More walk-ins →</button>
+        </section>
+      </aside>
+    </div>
+  </section>
+</main>

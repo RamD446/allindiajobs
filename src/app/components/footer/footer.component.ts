@@ -2,16 +2,6 @@ import { Component, HostListener } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-interface InstallPromptEvent extends Event {
-  prompt(): Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-}
-
-function isInstallPromptEvent(event: Event): event is InstallPromptEvent {
-  return 'prompt' in event && typeof event.prompt === 'function' &&
-    'userChoice' in event && event.userChoice instanceof Promise;
-}
-
 @Component({
   selector: 'app-footer',
   standalone: true,
@@ -20,12 +10,8 @@ function isInstallPromptEvent(event: Event): event is InstallPromptEvent {
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
-  private deferredPrompt: InstallPromptEvent | null = null;
+  deferredPrompt: any;
   showInstallBtn = false;
-  showInstallInstructions = false;
-  isInstalled = (window.matchMedia?.('(display-mode: standalone)').matches ?? false) ||
-    (navigator as Navigator & { standalone?: boolean }).standalone === true;
-  isIos = /iPad|iPhone|iPod/.test(navigator.userAgent);
   
   constructor(private router: Router) {}
 
@@ -45,42 +31,21 @@ export class FooterComponent {
   ];
 
   @HostListener('window:beforeinstallprompt', ['$event'])
-  onBeforeInstallPrompt(event: Event) {
-    if (!isInstallPromptEvent(event)) {
-      console.error('Browser sent an invalid app installation prompt.');
-      return;
-    }
-    event.preventDefault();
-    this.deferredPrompt = event;
-    this.showInstallBtn = !this.isInstalled;
+  onBeforeInstallPrompt(e: any) {
+    e.preventDefault();
+    this.deferredPrompt = e;
+    this.showInstallBtn = true;
   }
 
-  @HostListener('window:appinstalled')
-  onAppInstalled() {
-    this.isInstalled = true;
-    this.showInstallBtn = false;
-    this.showInstallInstructions = false;
-    this.deferredPrompt = null;
-  }
-
-  async installApp() {
-    const prompt = this.deferredPrompt;
-    if (!prompt) {
-      this.showInstallInstructions = !this.showInstallInstructions;
-      return;
-    }
-
-    this.deferredPrompt = null;
-    this.showInstallBtn = false;
-    try {
-      await prompt.prompt();
-      const choice = await prompt.userChoice;
-      if (choice.outcome === 'dismissed') {
-        this.showInstallInstructions = true;
-      }
-    } catch (error) {
-      console.error('Unable to open app installation prompt:', error);
-      this.showInstallInstructions = true;
+  installApp() {
+    if (this.deferredPrompt) {
+      this.deferredPrompt.prompt();
+      this.deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          this.showInstallBtn = false;
+        }
+        this.deferredPrompt = null;
+      });
     }
   }
 

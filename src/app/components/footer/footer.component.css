@@ -135,16 +135,6 @@
   max-width: 170px;
 }
 
-.login-btn {
-  background: #e0e7ff;
-  color: #1e1b4b;
-}
-
-.login-btn:hover {
-  background: #c7d2fe;
-  transform: translateY(-2px);
-}
-
 .share-btn {
   background: #6366f1;
   color: white;
@@ -163,39 +153,6 @@
 .install-btn:hover {
   background: #059669;
   transform: translateY(-2px);
-}
-
-.install-btn--manual {
-  display: none;
-}
-
-.footer-install-instructions {
-  max-width: 20rem;
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  border: 1px solid #475569;
-  border-radius: 8px;
-  background: #1e293b;
-  color: #e2e8f0;
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
-
-.footer-install-instructions p {
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  .install-btn--manual {
-    display: flex;
-  }
-
-  .footer-action-buttons .install-btn {
-    flex-basis: 100%;
-    max-width: none;
-    min-height: 44px;
-    border-radius: 9px;
-  }
 }
 
 @media (max-width: 576px) {

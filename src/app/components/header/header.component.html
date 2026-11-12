@@ -2,32 +2,30 @@
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid px-2 d-flex justify-content-between align-items-center">
       <!-- Menu Icon (Left) -->
-      <button class="btn btn-link text-white p-0 menu-btn header-icon-btn" type="button" (click)="toggleNav($event)" [attr.aria-expanded]="isNavActive" aria-controls="header-navigation-menu" aria-label="Open navigation menu">
+      <button class="btn btn-link text-white p-0 menu-btn" (click)="toggleNav($event)">
         <i class="bi bi-list fs-2"></i>
       </button>
 
       <!-- Logo Centered -->
       <div class="navbar-brand-center">
-        <a routerLink="/" class="navbar-brand logo mb-0 d-flex align-items-center" aria-label="Allindiajobs.com - Free job information">
-          <span class="logo-mark">
-            <img src="assets/images/Favicon.ico" alt="" class="logo-img">
-          </span>
-          <span class="logo-main" title="Allindiajobs.com - Free job information">
+        <a routerLink="/" class="navbar-brand logo mb-0 d-flex align-items-center">
+          <img src="favicon.ico" alt="Icon" class="logo-img me-2" style="width: 24px; height: 24px;">
+          <span class="logo-main" title="Allindiajobs.com - Free job information" aria-label="Allindiajobs.com - Free job information">
             <span class="logo-part1">Allindiajobs.com</span>
-            <span class="logo-subtitle"><i class="bi bi-patch-check-fill" aria-hidden="true"></i> Free job information</span>
+            <span class="logo-subtitle">Free job information</span>
           </span>
         </a>
       </div>
 
       <!-- Search Icon + Login (Right) -->
       <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-link text-white p-0 search-btn header-icon-btn" type="button" (click)="toggleSearchModal($event)" [attr.aria-expanded]="isSearchModalOpen" aria-label="Search jobs">
+        <button class="btn btn-link text-white p-0 search-btn" (click)="toggleSearchModal($event)">
           <i class="bi bi-search fs-4"></i>
         </button>
         
         <!-- Login Dropdown (Only visible when logged in) -->
         <div *ngIf="isLoggedIn" class="dropdown">
-          <button class="btn btn-link text-white p-0 header-icon-btn" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="User Menu" aria-label="User menu">
+          <button class="btn btn-link text-white p-0" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="User Menu">
             <i class="bi bi-person-circle fs-4"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -44,19 +42,18 @@
 
   <!-- Search Modal Overlay -->
   <div class="search-modal-backdrop" *ngIf="isSearchModalOpen" (click)="closeSearchModal()">
-    <div class="search-modal-content" role="dialog" aria-modal="true" aria-label="Search jobs" (click)="$event.stopPropagation()">
-      <div class="search-modal-header d-flex align-items-center gap-2">
+    <div class="search-modal-content" (click)="$event.stopPropagation()">
+      <div class="p-2 border-bottom bg-light d-flex align-items-center gap-2">
         <div class="input-group input-group-sm flex-grow-1">
           <input type="text" 
-                 class="form-control ps-3"
-                 aria-label="Search jobs"
+                 class="form-control rounded-pill ps-3" 
                  placeholder="Search jobs..." 
                  [(ngModel)]="searchQuery"
                  (ngModelChange)="performSearch()"
                  (keyup.enter)="performSearch()">
         </div>
         <div class="d-flex gap-1 align-items-center">
-          <button class="btn btn-link text-muted p-0 ms-1" (click)="closeSearchModal()" aria-label="Close search">
+          <button class="btn btn-link text-muted p-0 ms-1" (click)="closeSearchModal()">
             <i class="bi bi-x-lg fs-5"></i>
           </button>
         </div>
@@ -85,41 +82,55 @@
   </div>
 
   <!-- Offcanvas Menu -->
-  <div id="header-navigation-menu" class="mobile-offcanvas" [class.active]="isNavActive" [attr.aria-hidden]="!isNavActive">
+  <div class="mobile-offcanvas" [class.active]="isNavActive">
     <div class="offcanvas-header-nav">
-      <div class="offcanvas-brand">
-        <span class="offcanvas-brand-mark"><i class="bi bi-briefcase-fill" aria-hidden="true"></i></span>
-        <span>Allindiajobs.com</span>
-      </div>
-      <button class="btn-close-custom" (click)="closeNav()" aria-label="Close navigation menu">
+      <span class="text-white fw-bold">Allindiajobs.com</span>
+      <button class="btn-close-custom" (click)="closeNav()">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
     <div class="offcanvas-body p-0">
-      <div class="menu-section">
-        <div class="section-label">Job Categories</div>
+      <div class="menu-section mt-2">
+        <div class="section-label px-3 mb-1">Job Categories</div>
         <div class="menu-items">
           <a *ngFor="let cat of offcanvasFilters"
              [routerLink]="cat.route"
              class="menu-item" 
              routerLinkActive="active"
              (click)="closeNav()">
-            <span class="menu-item-icon"><i class="bi" [ngClass]="cat.icon" aria-hidden="true"></i></span>
+            <div class="menu-item-icon" [style.background-color]="cat.color + '15'">
+              <i class="bi" [ngClass]="cat.icon" [style.color]="cat.color"></i>
+            </div>
             <div class="menu-item-content">
               <span class="menu-item-text">{{ cat.name }}</span>
             </div>
-            <i class="bi bi-chevron-right ms-auto chevron" aria-hidden="true"></i>
+            <i class="bi bi-chevron-right ms-auto chevron"></i>
           </a>
         </div>
       </div>
 
-      <div class="menu-section">
-        <div class="section-label">Play & Win</div>
+      <div class="menu-section mt-3" *ngIf="getCompanyOptions().length > 0">
+        <div class="section-label px-3 mb-1">Filter by Company</div>
+        <div class="px-3">
+          <button 
+            type="button" 
+            class="btn btn-sm btn-dark w-100"
+            (click)="toggleCompanyFilterModal($event); closeNav()"
+            style="font-size: 0.85rem; font-weight: 600;">
+            Filter by Company
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-section mt-3">
+        <div class="section-label px-3 mb-1">Play & Win</div>
         <div class="menu-items">
           <a routerLink="/thambola-game" class="menu-item" (click)="closeNav()">
-            <span class="menu-item-icon"><i class="bi bi-grid-3x3" aria-hidden="true"></i></span>
-            <span class="menu-item-content"><span class="menu-item-text">Thambola High Five</span></span>
-            <i class="bi bi-chevron-right ms-auto chevron" aria-hidden="true"></i>
+            <div class="menu-item-icon" style="background-color: #ffeb3b15">
+              <i class="bi bi-grid-3x3" style="color: #ffeb3b"></i>
+            </div>
+            <span class="menu-item-text">Thambola High Five</span>
+            <i class="bi bi-chevron-right ms-auto chevron"></i>
           </a>
         </div>
       </div>
@@ -131,45 +142,50 @@
   </div>
   <div class="offcanvas-overlay" *ngIf="isNavActive" (click)="closeNav()"></div>
 
-  <nav class="top-jobs-static-stack" aria-label="Job categories">
+  <div class="top-jobs-static-stack">
     <div class="top-jobs-strip top-jobs-strip--static">
       <div class="top-jobs-track top-jobs-track--static">
-        <a
+        <button
+          type="button"
           class="top-job-link"
           *ngFor="let filter of detailPageFilterLabels"
-          [routerLink]="filter.route"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: filter.route === '/' }">
-          <i class="bi" [ngClass]="filter.icon" aria-hidden="true"></i>
+          [routerLink]="filter.route">
+          <i class="bi" [ngClass]="filter.icon"></i>
           <span>{{ filter.label }}</span>
-        </a>
+        </button>
+
+        <button
+          type="button"
+          class="company-filter-btn"
+          *ngIf="getCompanyOptions().length > 0"
+          (click)="toggleCompanyFilterModal($event)">
+          <i class="bi bi-building"></i>
+          <span>Filter by Company</span>
+        </button>
       </div>
     </div>
-  </nav>
+  </div>
 
   <!-- Company Filter Modal -->
   <div class="company-filter-modal-backdrop" *ngIf="isCompanyFilterModalOpen" (click)="closeCompanyFilterModal()">
-    <div class="company-filter-modal" role="dialog" aria-modal="true" aria-labelledby="company-filter-title" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h5 class="modal-title" id="company-filter-title"><i class="bi bi-buildings" aria-hidden="true"></i> Filter by Company</h5>
+    <div class="company-filter-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Filter by Company</h5>
         <button type="button" class="btn-close btn-close-white ms-auto" aria-label="Close" (click)="closeCompanyFilterModal()"></button>
       </div>
       <div class="modal-body">
-        <div class="company-section">
-          <h6>
+        <!-- Government Jobs Companies Row -->
+        <div class="company-section mb-4">
+          <h6 class="fw-bold text-primary mb-3">
             <i class="bi bi-building-check"></i> Government Jobs Companies
-            <span class="company-count">{{ getGovernmentJobsCompanies().length }}</span>
           </h6>
-          <div class="company-list">
-            <button
+          <div class="company-grid">
+            <button 
               type="button"
               *ngFor="let company of getGovernmentJobsCompanies()"
               class="company-item"
-              [attr.aria-label]="'Filter by ' + company"
               (click)="filterByCompany(company)">
-              <i class="bi bi-building company-item-icon" aria-hidden="true"></i>
-              <span>{{ company }}</span>
-              <i class="bi bi-chevron-right company-item-chevron" aria-hidden="true"></i>
+              {{ company }}
             </button>
           </div>
           <div *ngIf="getGovernmentJobsCompanies().length === 0" class="text-muted small text-center py-3">
@@ -177,21 +193,18 @@
           </div>
         </div>
 
+        <!-- Walk-in Jobs Companies Row -->
         <div class="company-section">
-          <h6>
+          <h6 class="fw-bold text-primary mb-3">
             <i class="bi bi-person-walking"></i> Walk-in Jobs Companies
-            <span class="company-count">{{ getWalkInJobsCompanies().length }}</span>
           </h6>
-          <div class="company-list">
-            <button
+          <div class="company-grid">
+            <button 
               type="button"
               *ngFor="let company of getWalkInJobsCompanies()"
               class="company-item"
-              [attr.aria-label]="'Filter by ' + company"
               (click)="filterByCompany(company)">
-              <i class="bi bi-building company-item-icon" aria-hidden="true"></i>
-              <span>{{ company }}</span>
-              <i class="bi bi-chevron-right company-item-chevron" aria-hidden="true"></i>
+              {{ company }}
             </button>
           </div>
           <div *ngIf="getWalkInJobsCompanies().length === 0" class="text-muted small text-center py-3">

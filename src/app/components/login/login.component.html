@@ -90,16 +90,42 @@
             <h2 class="admin-page-title mb-0">Admin Page</h2>
           </div>
 
+          <div class="admin-tabs">
+            <button
+              class="admin-tab-btn"
+              [class.active]="activeAdminTab === 'jobs'"
+              (click)="switchAdminTab('jobs')">
+              <i class="bi bi-briefcase-fill me-1"></i>Jobs
+            </button>
+            <button
+              class="admin-tab-btn"
+              [class.active]="activeAdminTab === 'companies'"
+              (click)="switchAdminTab('companies')">
+              <i class="bi bi-building me-1"></i>Companies
+            </button>
+          </div>
         </div>
 
-        <div class="admin-actions-row mb-3">
+        <div class="admin-actions-row mb-3" *ngIf="activeAdminTab === 'jobs'">
           <button class="btn btn-success" (click)="showCreateForm()">
             <i class="bi bi-plus-circle me-1"></i>Create Job
           </button>
           <button class="btn btn-outline-primary" (click)="requestExportConfirmation()">
             <i class="bi bi-file-earmark-excel me-1"></i>Download XLS
           </button>
-          <button class="btn btn-outline-success" (click)="openImportModal()">
+          <button class="btn btn-outline-success" (click)="openImportModal('jobs')">
+            <i class="bi bi-upload me-1"></i>Import XLS
+          </button>
+        </div>
+
+        <div class="admin-actions-row mb-3" *ngIf="activeAdminTab === 'companies'">
+          <button class="btn btn-success" (click)="showCreateCompanyImageForm()">
+            <i class="bi bi-image me-1"></i>Create Company Image
+          </button>
+          <button class="btn btn-outline-primary" (click)="exportCompaniesToExcel()">
+            <i class="bi bi-file-earmark-excel me-1"></i>Download XLS
+          </button>
+          <button class="btn btn-outline-success" (click)="openImportModal('companies')">
             <i class="bi bi-upload me-1"></i>Import XLS
           </button>
         </div>
@@ -138,20 +164,9 @@
                 <datalist id="companyOptions">
                   <option *ngFor="let item of companyImages" [value]="item.companyName"></option>
                 </datalist>
-              </div>
-
-              <div class="col-12 mb-3">
-                <fieldset class="job-icon-picker">
-                  <legend class="form-label">Job Icon</legend>
-                  <div class="job-icon-options">
-                    <label class="job-icon-option" *ngFor="let icon of jobIcons" [class.selected]="jobForm.jobIcon === icon">
-                      <input type="radio" name="jobIcon" [value]="icon" [(ngModel)]="jobForm.jobIcon"
-                        [attr.aria-label]="icon.replace('bi-', '').replaceAll('-', ' ')">
-                      <i class="bi" [ngClass]="icon" aria-hidden="true"></i>
-                      <span class="visually-hidden">{{ icon.replace('bi-', '').replaceAll('-', ' ') }}</span>
-                    </label>
-                  </div>
-                </fieldset>
+                <small class="company-image-help" *ngIf="companyImages.length === 0">
+                  No company image records found. Use <strong>Create Company Image</strong> first.
+                </small>
               </div>
 
               <!-- Job Type -->
@@ -273,11 +288,51 @@
         </div>
       </div>
 
+      <!-- Company Image Modal -->
+      <div *ngIf="showCompanyImageForm" class="job-form-modal" (click)="cancelCompanyImageForm()">
+        <div class="job-form-content company-image-content" (click)="$event.stopPropagation()">
+          <div class="job-form-header">
+            <h5 class="mb-0">{{ companyImageForm.id ? 'Edit Company Image' : 'Create Company Image' }}</h5>
+            <button class="btn-close" (click)="cancelCompanyImageForm()"></button>
+          </div>
+
+          <form (ngSubmit)="saveCompanyImage()" #companyImageFormRef="ngForm" class="job-form-body">
+            <div class="mb-3">
+              <label class="form-label">Company Name *</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="companyImageForm.companyName"
+                name="companyName"
+                required
+                placeholder="e.g. Tech Solutions Pvt Ltd">
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Company Image (Image Only) *</label>
+              <app-tiptap-editor
+                [(ngModel)]="companyImageForm.companyImage"
+                name="companyImage"
+                [placeholder]="'Insert company image URL and details if needed...'"></app-tiptap-editor>
+            </div>
+
+            <div class="job-form-footer">
+              <button type="button" class="btn btn-secondary me-2" (click)="cancelCompanyImageForm()" [disabled]="isSavingCompanyImage">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="!companyImageFormRef.valid || isSavingCompanyImage">
+                <span *ngIf="isSavingCompanyImage" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span *ngIf="isSavingCompanyImage">Saving...</span>
+                <span *ngIf="!isSavingCompanyImage">{{ companyImageForm.id ? 'Update Company Image' : 'Save Company Image' }}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <!-- XLS Import Modal -->
       <div *ngIf="showImportModal" class="job-form-modal" (click)="closeImportModal()">
         <div class="job-form-content import-modal-content" (click)="$event.stopPropagation()">
           <div class="job-form-header">
-            <h5 class="mb-0">Import Jobs from XLS</h5>
+            <h5 class="mb-0">{{ importModalType === 'companies' ? 'Import Companies from XLS' : 'Import Jobs from XLS' }}</h5>
             <button class="btn-close" (click)="closeImportModal()"></button>
           </div>
 
@@ -286,7 +341,12 @@
               <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <div>
                   <div class="fw-semibold mb-1">XLS only format</div>
-                  <small class="text-muted">Required columns: JobTitle, CompanyName. Optional: JobIcon.</small>
+                  <small class="text-muted" *ngIf="importModalType === 'companies'">
+                    Required columns: CompanyName, CompanyImageHtml.
+                  </small>
+                  <small class="text-muted" *ngIf="importModalType === 'jobs'">
+                    Required columns: JobTitle, CompanyName.
+                  </small>
                 </div>
                 <button type="button" class="btn btn-sm btn-outline-primary" (click)="downloadImportTemplate()">
                   <i class="bi bi-download me-1"></i>Download XLS Template
@@ -326,7 +386,7 @@
       </div>
 
       <!-- Jobs List -->
-      <div class="jobs-section">
+      <div *ngIf="activeAdminTab === 'jobs'" class="jobs-section">
         <div class="jobs-header jobs-header-modern mb-3">
           <div class="d-flex justify-content-between align-items-center mb-3 jobs-header-row">
             <h4 class="text-primary mb-0 jobs-title-modern">
@@ -376,14 +436,9 @@
               </div>
 
               <div class="job-row-media-actions">
-                <div class="job-mini-image-wrap" *ngIf="getJobIcon(job) as icon; else noJobIcon">
-                  <i class="bi" [ngClass]="icon" aria-hidden="true"></i>
+                <div class="job-mini-image-wrap" *ngIf="getCompanyImagePreview(getCompanyImageByName(job.company)) as preview; else noJobImage">
+                  <img [src]="preview" [alt]="job.company" class="job-mini-image" loading="lazy">
                 </div>
-                <ng-template #noJobIcon>
-                  <div class="job-mini-image-wrap" *ngIf="getCompanyImagePreview(getCompanyImageByName(job.company)) as preview; else noJobImage">
-                    <img [src]="preview" [alt]="job.company" class="job-mini-image" loading="lazy">
-                  </div>
-                </ng-template>
                 <ng-template #noJobImage>
                   <div class="job-mini-image-wrap job-mini-image-empty">
                     <i class="bi bi-image"></i>
@@ -426,6 +481,54 @@
             {{ p }}
           </button>
           <button type="button" class="page-btn" (click)="nextJobsPage()" [disabled]="jobsCurrentPage === jobsTotalPages">Next</button>
+        </div>
+      </div>
+
+      <!-- Companies List -->
+      <div *ngIf="activeAdminTab === 'companies'" class="jobs-section">
+        <div class="jobs-header jobs-header-modern mb-3">
+          <div class="d-flex justify-content-between align-items-center jobs-header-row">
+            <h4 class="text-primary mb-0 jobs-title-modern">
+              <i class="bi bi-building me-2"></i>Companies Management
+            </h4>
+            <div class="jobs-summary-chip">
+              <span class="jobs-count">{{ companyImages.length }} companies</span>
+              <span class="jobs-order">Image Mapped</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="company-list" *ngIf="companyImages.length > 0">
+          <div class="company-row" *ngFor="let item of companyImages">
+            <div class="company-image-wrap company-image-wrap-small" *ngIf="getCompanyImagePreview(item.companyImage) as preview; else noCompanyImage">
+              <img [src]="preview" [alt]="item.companyName" class="company-image-thumb" loading="lazy">
+            </div>
+            <ng-template #noCompanyImage>
+              <div class="company-image-wrap company-image-wrap-small company-image-empty">
+                <i class="bi bi-image"></i>
+              </div>
+            </ng-template>
+
+            <div class="company-row-body">
+              <div class="company-row-title">{{ item.companyName }}</div>
+              <small class="text-muted d-block">Used in {{ getCompanyUsageCount(item.companyName) }} jobs</small>
+            </div>
+
+            <div class="company-row-actions">
+              <button class="btn btn-sm btn-outline-primary" (click)="editCompanyImage(item)">
+                <i class="bi bi-pencil me-1"></i>Edit
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteCompanyImage(item)">
+                <i class="bi bi-trash me-1"></i>Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="companyImages.length === 0" class="text-center py-4">
+          <i class="bi bi-building display-4 text-muted"></i>
+          <h5 class="mt-3 text-muted">No Companies Available</h5>
+          <p class="text-muted">Create company image records to map them during job creation.</p>
         </div>
       </div>
 

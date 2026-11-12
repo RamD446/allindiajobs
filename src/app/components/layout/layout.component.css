@@ -13,6 +13,7 @@
 .app-layout {
   min-height: 100vh;
   background-color: #f4f4f4;
+  padding-top: 72px; /* 44px navbar + 28px pills bar */
 }
 
 .layout-container {
@@ -38,6 +39,10 @@
 @media (max-width: 576px) {
   .layout-container {
     padding: 0.5rem 0.25rem;
+  }
+  
+  .app-layout {
+    padding-top: 79px;
   }
 }
 

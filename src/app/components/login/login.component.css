@@ -1283,41 +1283,6 @@
   border: none;
 }
 
-.job-icon-picker {
-  border: 0;
-  padding: 0;
-  margin: 0;
-}
-
-.job-icon-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
-  gap: 0.5rem;
-}
-
-.job-icon-option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  min-height: 54px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  color: #1d4ed8;
-  cursor: pointer;
-  font-size: 1.4rem;
-}
-
-.job-icon-option.selected,
-.job-icon-option:focus-within {
-  border-color: #2563eb;
-  background: #eff6ff;
-}
-
-.job-icon-option input {
-  accent-color: #2563eb;
-}
-
 .export-confirm-content {
   width: 92%;
   max-width: 420px;
@@ -1710,3 +1675,4 @@
     grid-template-columns: 1fr;
   }
 }
+

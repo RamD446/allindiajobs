@@ -83,6 +83,12 @@
 .experience-picker legend, .job-icon-picker legend { margin-bottom: 8px; }
 .experience-picker label { align-items: center; display: inline-flex; gap: 6px; margin-right: 14px; }
 .experience-picker input, .job-icon-option input { accent-color: #16466b; }
+.editor-choice-group { border: 0; margin: 0; min-width: 0; padding: 0; }
+.editor-choice-group legend { margin-bottom: 7px; }
+.editor-choice-options { display: flex; flex-wrap: wrap; gap: 6px; }
+.editor-choice-option { align-items: center; background: #fff; border: 1px solid #d9e0e7; border-radius: 3px; cursor: pointer; display: flex !important; flex: 1 1 110px; gap: 8px !important; min-height: 38px; padding: 7px 9px; }
+.editor-grid .editor-choice-option input[type="radio"] { accent-color: #16466b; flex: 0 0 16px; height: 16px; margin: 0; min-height: 16px; padding: 0; width: 16px; }
+.editor-choice-option.selected, .editor-choice-option:focus-within { background: #edf4fa; border-color: #16466b; color: #16466b; }
 .job-icon-options { display: grid; gap: 7px; grid-template-columns: repeat(auto-fill, minmax(72px,1fr)); }
 .job-icon-option { align-items: center; background: #fff; border: 1px solid #d9e0e7; border-radius: 3px; color: #536258; cursor: pointer; display: flex; flex-direction: column; gap: 6px; justify-content: center; min-height: 62px; padding: 6px 3px; }
 .job-icon-option.selected, .job-icon-option:hover, .job-icon-option:focus-within { background: #edf4fa; border-color: #16466b; color: #16466b; }

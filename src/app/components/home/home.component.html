@@ -1,5 +1,13 @@
 <main class="home-page">
-  <section class="portal-content" aria-label="Browse jobs">
+  <div *ngIf="loading" class="portal-loading-state" role="status" aria-live="polite">
+    <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+    <span class="visually-hidden">Loading...</span>
+    <strong>Finding jobs</strong>
+    <span>Loading the latest opportunities</span>
+  </div>
+  <div *ngIf="!loading && error" class="home-load-error" role="alert">{{ error }}</div>
+
+  <section *ngIf="!loading && !error" class="portal-content" aria-label="Browse jobs">
     <div class="browse-layout">
       <section class="jobs-column">
         <a class="whatsapp-follow-card" href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" rel="noreferrer">
@@ -17,9 +25,7 @@
 
         <div class="jobs-toolbar"><span>Sorted by newest</span></div>
 
-        <div *ngIf="loading" class="state-panel"><span class="loader-dot"></span><strong>Finding jobs</strong><span>Loading the latest opportunities</span></div>
-        <div *ngIf="error" class="state-panel error-panel">{{ error }}</div>
-        <div *ngIf="!loading && !error && !filteredJobs.length" class="state-panel"><strong>No matching jobs yet.</strong><span>Try another category or search term.</span></div>
+        <div *ngIf="!filteredJobs.length" class="state-panel"><strong>No matching jobs yet.</strong><span>Try another category or search term.</span></div>
 
         <div class="job-list" *ngIf="!loading && !error">
           <article class="job-row" *ngFor="let job of visibleJobs; let first = first">

@@ -1,4 +1,5 @@
 .home-page { color: #202a34; }
+.home-load-error { align-items: center; color: #a33c29; display: flex; justify-content: center; min-height: 50vh; padding: 28px; text-align: center; }
 .portal-content { margin: 0 auto; max-width: 1180px; padding: 38px 28px 64px; }
 .browse-layout { align-items: start; display: grid; gap: 42px; grid-template-columns: minmax(0, 1fr) 248px; }
 .jobs-column { min-width: 0; }

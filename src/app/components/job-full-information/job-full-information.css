@@ -50,8 +50,10 @@
 .related-sidebar h2 { font-size: 20px; margin-bottom: 12px; }
 .related-job { border-top: 1px solid #d9e0e7; display: grid; gap: 5px; padding: 12px 0; text-decoration: none; }
 .related-job > span, .related-job small { color: #687581; font-size: 8px; }
-.related-job strong { color: #202a34; font: 400 13px/1.4 Georgia, 'Times New Roman', serif; }
-.related-job:hover strong { color: #16466b; }
+.related-job-title { align-items: flex-start; color: #202a34; display: flex; font: 400 13px/1.4 Georgia, 'Times New Roman', serif; gap: 7px; }
+.related-job-title i { color: #16466b; flex: 0 0 12px; font-size: 10px; line-height: 1.7; }
+.related-job-title span { min-width: 0; overflow-wrap: anywhere; }
+.related-job:hover .related-job-title { color: #16466b; }
 .all-jobs-link, .primary-link { color: #16466b; font-size: 11px; font-weight: 700; text-decoration: none; }
 .all-jobs-link { border-top: 1px solid #d9e0e7; display: block; padding-top: 13px; }
 .detail-state { align-items: flex-start; display: flex; flex-direction: column; justify-content: center; margin: 0 auto; min-height: 55vh; max-width: 650px; padding: 50px 28px; }

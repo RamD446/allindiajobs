@@ -56,6 +56,30 @@ html, body {
   font-size: 0.75em;
   padding: 0.35em 0.65em;
 }
+.portal-loading-state {
+  align-items: center;
+  color: #687581;
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  gap: 9px;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 48px 20px;
+  text-align: center;
+}
+
+.portal-loading-state .spinner-grow {
+  color: #16466b;
+  height: 1rem;
+  width: 1rem;
+}
+
+.portal-loading-state strong {
+  color: #16466b;
+  font-size: 16px;
+  font-weight: 700;
+}
 
 /* Finding Jobs Loader - Global */
 .finding-jobs-loader {

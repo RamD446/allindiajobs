@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { browserSessionPersistence, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
-import { onValue, push, ref, remove, update } from 'firebase/database';
+import { onValue, push, ref, remove, set, update } from 'firebase/database';
 import * as XLSX from 'xlsx';
 import { auth, db } from '../../../config/firebase.config';
 import { Job } from '../../models/job.model';
@@ -44,6 +44,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   password = '';
   loginError = '';
   jobs: Job[] = [];
+  pendingDeleteJob: Job | null = null;
+  deleting = false;
   search = '';
   filter = 'All job types';
   draft = emptyDraft();
@@ -52,6 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   saving = false;
   importing = false;
   notice = '';
+  noticeType: 'success' | 'error' | 'info' = 'info';
   governmentJobTypes = GOVERNMENT_JOB_TYPES;
   privateJobTypes = PRIVATE_JOB_TYPES;
   privateHiringTypes = ['Walk-in', 'Non-walk-in'];
@@ -59,6 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   jobIcons = JOB_ICONS;
   private stopAuth: (() => void) | null = null;
   private stopJobs: (() => void) | null = null;
+  private noticeTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -78,6 +82,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.stopAuth?.();
     this.stopJobs?.();
+    if (this.noticeTimer) clearTimeout(this.noticeTimer);
   }
 
   get filteredJobs(): Job[] {
@@ -129,7 +134,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.draft = emptyDraft();
     this.editingId = null;
     this.formOpen = true;
-    this.notice = '';
+    this.dismissNotice();
   }
 
   startEdit(job: Job): void {
@@ -146,7 +151,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     };
     this.editingId = job.id;
     this.formOpen = true;
-    this.notice = '';
+    this.dismissNotice();
   }
 
   onSectorChange(): void {
@@ -176,6 +181,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.draft.experience = values.join(', ');
   }
 
+  focusEditorControl(event: PointerEvent): void {
+    const target = event.target;
+    if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) {
+      target.focus({ preventScroll: true });
+    }
+  }
+
   closeForm(): void {
     if (this.saving) return;
     this.formOpen = false;
@@ -184,14 +196,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    this.closeForm();
+    if (this.pendingDeleteJob) this.cancelDelete();
+    else this.closeForm();
   }
 
   async saveJob(): Promise<void> {
     if (this.saving) return;
     const wasEditing = Boolean(this.editingId);
-    this.saving = true;
-    this.notice = '';
+    this.dismissNotice();
     const sector = this.draft.sector || 'Government';
     const privateJobType = this.draft.privateJobType || 'Non-walk-in';
     const record = {
@@ -205,28 +217,73 @@ export class LoginComponent implements OnInit, OnDestroy {
       lastDateToApply: sector === 'Government' && this.draft.jobType === 'Government Jobs' ? this.draft.lastDateToApply || '' : ''
     };
     const { id, ...data } = record;
+    const jobRef = this.editingId ? ref(db, `jobs/${this.editingId}`) : push(ref(db, 'jobs'));
+    const jobId = this.editingId || jobRef.key;
+    if (!jobId) {
+      this.showNotice('Unable to save this job. Please try again.', 'error');
+      return;
+    }
+
+    const originalJob = this.jobs.find((job) => job.id === jobId) || null;
+    const savedAt = new Date().toISOString();
+    const createdDate = wasEditing ? data.createdDate || savedAt : savedAt;
+    const optimisticJob: Job = {
+      ...data,
+      id: jobId,
+      createdDate,
+      ...(wasEditing ? { updatedDate: savedAt } : {})
+    };
+
+    if (wasEditing) this.jobs = this.jobs.map((job) => job.id === jobId ? optimisticJob : job);
+    else this.jobs = [optimisticJob, ...this.jobs];
+    this.jobs.sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate));
+    this.formOpen = false;
+    this.editingId = null;
+    this.draft = emptyDraft();
+    this.saving = true;
+    this.showNotice('Saving job...', 'info', false);
+    this.cdr.detectChanges();
+
     try {
-      if (this.editingId) await update(ref(db, `jobs/${this.editingId}`), { ...data, updatedDate: new Date().toISOString() });
-      else await push(ref(db, 'jobs'), { ...data, createdDate: new Date().toISOString() });
-      this.formOpen = false;
-      this.editingId = null;
-      this.draft = emptyDraft();
-      this.notice = wasEditing ? 'Job updated.' : 'Job published.';
+      if (wasEditing) await update(jobRef, { ...data, updatedDate: savedAt });
+      else await set(jobRef, { ...data, createdDate: createdDate });
+      this.showNotice(wasEditing ? 'Job updated.' : 'Job published.', 'success');
     } catch {
-      this.notice = 'Unable to save. Check the Firebase database rules for this account.';
+      if (originalJob) this.jobs = this.jobs.map((job) => job.id === jobId ? originalJob : job);
+      else this.jobs = this.jobs.filter((job) => job.id !== jobId);
+      this.showNotice('Unable to save. Check the Firebase database rules for this account.', 'error');
     } finally {
       this.saving = false;
       this.cdr.detectChanges();
     }
   }
 
-  async deleteJob(job: Job): Promise<void> {
-    if (!window.confirm(`Delete "${job.title}" at ${job.company}?`)) return;
+  requestDelete(job: Job): void {
+    this.pendingDeleteJob = job;
+  }
+
+  cancelDelete(): void {
+    if (this.deleting) return;
+    this.pendingDeleteJob = null;
+  }
+
+  async confirmDelete(): Promise<void> {
+    const job = this.pendingDeleteJob;
+    if (!job || this.deleting) return;
+    const previousJobs = this.jobs;
+    this.deleting = true;
+    this.pendingDeleteJob = null;
+    this.jobs = this.jobs.filter((item) => item.id !== job.id);
+    this.showNotice('Deleting job...', 'info', false);
     try {
       await remove(ref(db, `jobs/${job.id}`));
-      this.notice = 'Job deleted.';
+      this.showNotice('Job deleted.', 'success');
     } catch {
-      this.notice = 'Unable to delete this job. Check database permissions.';
+      this.jobs = previousJobs;
+      this.showNotice('Unable to delete this job. Check database permissions.', 'error');
+    } finally {
+      this.deleting = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -250,7 +307,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     input.value = '';
     if (!file) return;
     this.importing = true;
-    this.notice = '';
+    this.dismissNotice();
     try {
       const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' });
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -276,9 +333,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
         imported += 1;
       }
-      this.notice = `Imported ${imported} jobs.`;
+      this.showNotice(`Imported ${imported} jobs.`, 'success');
     } catch {
-      this.notice = 'Could not import this spreadsheet. Check its format and try again.';
+      this.showNotice('Could not import this spreadsheet. Check its format and try again.', 'error');
     } finally {
       this.importing = false;
       this.cdr.detectChanges();
@@ -294,6 +351,28 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   companyInitial(job: Job): string {
     return (job.company || job.title || 'J').trim().charAt(0).toUpperCase();
+  }
+
+  dismissNotice(): void {
+    this.notice = '';
+    if (this.noticeTimer) {
+      clearTimeout(this.noticeTimer);
+      this.noticeTimer = null;
+    }
+  }
+
+  private showNotice(message: string, type: 'success' | 'error' | 'info', autoDismiss = true): void {
+    this.notice = message;
+    this.noticeType = type;
+    if (this.noticeTimer) clearTimeout(this.noticeTimer);
+    this.noticeTimer = autoDismiss
+      ? setTimeout(() => {
+          this.notice = '';
+          this.noticeTimer = null;
+          this.cdr.detectChanges();
+        }, 4000)
+      : null;
+    this.cdr.detectChanges();
   }
 
   private excelValue(row: Record<string, unknown>, names: string[]): string {

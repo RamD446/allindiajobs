@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { onValue, push, ref, runTransaction, set } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 import { Job, JobComment } from '../../models/job.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-job-full-information',
@@ -22,18 +23,44 @@ export class JobFullInformation implements OnInit, OnDestroy {
   comment = '';
   commentError = '';
   savingComment = false;
-  private stops: Array<() => void> = [];
+  private routeSubscription: Subscription | null = null;
+  private stopJob: (() => void) | null = null;
+  private stopRecentJobs: (() => void) | null = null;
+  private stopComments: (() => void) | null = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    const jobId = this.route.snapshot.paramMap.get('id');
-    if (!jobId) {
-      this.loading = false;
-      return;
-    }
+    this.routeSubscription = this.route.paramMap.subscribe((params) => {
+      const jobId = params.get('id');
+      if (jobId) this.loadJob(jobId);
+      else {
+        this.job = null;
+        this.loading = false;
+      }
+    });
+  }
 
-    this.stops.push(onValue(ref(db, `jobs/${jobId}`), (snapshot) => {
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe();
+    this.stopJob?.();
+    this.stopRecentJobs?.();
+    this.stopComments?.();
+  }
+
+  private loadJob(jobId: string): void {
+    this.loading = true;
+    this.job = null;
+    this.comments = [];
+    this.commentError = '';
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    this.cdr.detectChanges();
+
+    this.stopJob?.();
+    this.stopRecentJobs?.();
+    this.stopComments?.();
+
+    this.stopJob = onValue(ref(db, `jobs/${jobId}`), (snapshot) => {
       this.job = snapshot.exists() ? { id: jobId, ...snapshot.val() } as Job : null;
       this.loading = false;
       this.cdr.detectChanges();
@@ -41,28 +68,30 @@ export class JobFullInformation implements OnInit, OnDestroy {
       this.job = null;
       this.loading = false;
       this.cdr.detectChanges();
-    }));
+    });
 
-    this.stops.push(onValue(ref(db, 'jobs'), (snapshot) => {
+    this.stopRecentJobs = onValue(ref(db, 'jobs'), (snapshot) => {
       const data = snapshot.val() as Record<string, Omit<Job, 'id'>> | null;
       this.recentJobs = data ? Object.entries(data).map(([id, item]) => ({ id, ...item })) : [];
       this.recentJobs = this.recentJobs.filter((job) => job.id !== jobId)
-        .sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate)).slice(0, 7);
+        .sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate)).slice(0, 10);
       this.cdr.detectChanges();
-    }));
+    }, () => {
+      this.recentJobs = [];
+      this.cdr.detectChanges();
+    });
 
-    this.stops.push(onValue(ref(db, `comments/${jobId}`), (snapshot) => {
+    this.stopComments = onValue(ref(db, `comments/${jobId}`), (snapshot) => {
       const data = snapshot.val() as Record<string, Omit<JobComment, 'id'>> | null;
       this.comments = data ? Object.entries(data).map(([id, item]) => ({ id, ...item })) : [];
       this.comments.sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate));
       this.cdr.detectChanges();
-    }));
+    }, () => {
+      this.comments = [];
+      this.cdr.detectChanges();
+    });
 
     void runTransaction(ref(db, 'stats/jobClicks'), (count) => (count || 0) + 1);
-  }
-
-  ngOnDestroy(): void {
-    this.stops.forEach((stop) => stop());
   }
 
   get detailRows(): Array<[string, string]> {

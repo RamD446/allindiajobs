@@ -26,14 +26,22 @@
       <section class="detail-section popular-companies" *ngIf="popularCompanies.length"><p class="eyebrow">EXPLORE EMPLOYERS</p><h2>Popular companies</h2><div class="company-chips"><button *ngFor="let company of popularCompanies" class="company-chip" type="button" (click)="filterByCompany(company)">{{ company }}</button></div></section>
 
       <section class="comments-section"><div class="comments-title"><div><p class="eyebrow">JOIN THE CONVERSATION</p><h2>Comments <span>{{ comments.length }}</span></h2></div></div>
-        <form class="comment-form" (ngSubmit)="submitComment()"><label><span>Your name</span><input name="commentName" [(ngModel)]="name" maxlength="10" required></label><label><span>Comment</span><textarea name="comment" [(ngModel)]="comment" maxlength="50" rows="3" required></textarea></label><p *ngIf="commentError" class="form-error">{{ commentError }}</p><button class="primary-button" type="submit" [disabled]="savingComment">{{ savingComment ? 'Posting...' : 'Post comment' }}</button></form>
+        <form class="comment-form" (ngSubmit)="submitComment()"><label><span>Your name</span><input name="commentName" [(ngModel)]="name" maxlength="10" required></label><label><span>Comment</span><textarea name="comment" [(ngModel)]="comment" maxlength="50" rows="3" required></textarea></label><p *ngIf="commentError" class="form-error">{{ commentError }}</p><button class="primary-button" type="submit" [disabled]="savingComment"><span *ngIf="savingComment" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>{{ savingComment ? 'Posting...' : 'Post comment' }}</button></form>
         <article class="comment-item" *ngFor="let item of comments"><span class="comment-avatar">{{ item.name.charAt(0).toUpperCase() }}</span><div><strong>{{ item.name }}</strong><p>{{ item.comment }}</p><time>{{ displayDate(item.createdDate) }}</time></div></article>
         <p *ngIf="!comments.length" class="quiet-note">No comments yet. Start the conversation.</p>
       </section>
     </article>
 
-    <aside class="related-sidebar"><p class="eyebrow">KEEP EXPLORING</p><h2>Recent openings</h2><a class="related-job" *ngFor="let item of recentJobs" [routerLink]="jobLink(item)"><span>{{ item.company }}</span><strong>{{ item.title }}</strong><small>{{ displayDate(item.createdDate) }}</small></a><a class="all-jobs-link" routerLink="/">Browse all jobs <span>→</span></a></aside>
+    <aside class="related-sidebar"><p class="eyebrow">KEEP EXPLORING</p><h2>Recent openings</h2><a class="related-job" *ngFor="let item of recentJobs" [routerLink]="jobLink(item)"><span>{{ item.company }}</span><strong class="related-job-title"><i class="bi bi-chevron-right" aria-hidden="true"></i><span>{{ item.title }}</span></strong><small>{{ displayDate(item.createdDate) }}</small></a><a class="all-jobs-link" routerLink="/">Browse all jobs <span>→</span></a></aside>
   </div>
 </main>
 
-<ng-template #detailLoading><div class="detail-state"><p class="eyebrow">JOB INFORMATION</p><h1>{{ loading ? 'Loading job...' : 'This listing may have expired.' }}</h1><a class="primary-link" routerLink="/">Back to jobs <span>→</span></a></div></ng-template>
+<ng-template #detailLoading>
+  <div *ngIf="loading; else expiredJob" class="portal-loading-state" role="status" aria-live="polite">
+    <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+    <span class="visually-hidden">Loading...</span>
+    <strong>Loading job</strong>
+    <span>Loading the latest opportunity details</span>
+  </div>
+  <ng-template #expiredJob><div class="detail-state"><p class="eyebrow">JOB NOT AVAILABLE</p><h1>This listing may have expired.</h1><a class="primary-link" routerLink="/">Back to jobs <span>→</span></a></div></ng-template>
+</ng-template>

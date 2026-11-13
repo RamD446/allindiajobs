@@ -53,10 +53,25 @@
 .admin-job-actions { display: flex; gap: 11px; }
 .text-action { background: transparent; border: 0; color: #16466b; cursor: pointer; font-size: 9px; font-weight: 700; padding: 5px 0; }
 .danger-action { color: #a94329; }
-.admin-notice { background: #eff3e8; border-left: 3px solid #16466b; color: #16466b; font-size: 10px; margin: 5px 0 12px; padding: 10px 12px; }
+.admin-toast { box-shadow: 0 8px 24px rgba(8,29,49,.22); max-width: min(380px, calc(100vw - 32px)); position: fixed; right: 16px; top: 80px; width: 100%; z-index: 1200; }
+.admin-toast .toast-header { align-items: center; display: flex; gap: 6px; }
+.admin-toast .toast-body { overflow-wrap: anywhere; }
 .state-panel { align-items: center; color: #687581; display: flex; font-size: 11px; justify-content: center; min-height: 140px; }
-.job-modal-backdrop { align-items: center; background: rgba(4,17,30,.48); backdrop-filter: blur(2px); display: flex; inset: 0; justify-content: center; padding: 20px; position: fixed; z-index: 1100; }
-.job-editor { background: #fff; border: 1px solid #d9e0e7; border-radius: 5px; max-height: calc(100vh - 40px); max-width: 920px; overflow: auto; padding: 20px; width: 100%; }
+.job-modal-layer { inset: 0; position: fixed; z-index: 1050; }
+.job-modal-backdrop { z-index: 1050; }
+.delete-confirm-layer { inset: 0; position: fixed; z-index: 1205; }
+.delete-confirm-layer > .modal-backdrop { z-index: 1205; }
+.delete-confirm-modal { display: block; inset: 0; overflow-y: auto; z-index: 1210; }
+.delete-confirm-modal .modal-dialog { margin: .5rem auto; max-width: 430px; min-height: calc(100% - 1rem); }
+.delete-confirm-modal .modal-content { border: 1px solid #d9e0e7; border-radius: 5px; }
+.job-modal { display: block; inset: 0; overflow-y: auto; pointer-events: auto; z-index: 1055; }
+.job-modal-dialog { max-width: 920px; pointer-events: auto !important; }
+.job-editor { background: #fff; border: 1px solid #d9e0e7; border-radius: 5px; max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); overflow: hidden; pointer-events: auto !important; width: 100%; }
+.job-editor input, .job-editor select, .job-editor textarea, .job-editor button { pointer-events: auto !important; touch-action: manipulation; }
+.job-editor form { display: flex; flex-direction: column; max-height: inherit; min-height: 0; }
+.job-editor .modal-header { background: #fff; flex: 0 0 auto; padding: 18px 22px; }
+.job-editor-body { -webkit-overflow-scrolling: touch; flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; padding: 18px 22px; touch-action: pan-y; }
+.job-editor .modal-footer { background: #fff; flex: 0 0 auto; }
 .editor-heading { align-items: center; border-bottom: 1px solid #d9e0e7; display: flex; justify-content: space-between; margin-bottom: 17px; padding-bottom: 13px; }
 .editor-heading .eyebrow { color: #c85131; margin-bottom: 4px; }
 .editor-heading h2 { font: 400 20px Georgia, 'Times New Roman', serif; margin: 0; }
@@ -91,8 +106,13 @@
   .admin-controls input, .admin-controls select { flex: 1; max-width: none; min-width: 0; }
   .editor-grid { grid-template-columns: 1fr; }
   .editor-grid .editor-wide { grid-column: auto; }
-  .job-modal-backdrop { align-items: flex-end; padding: 0; }
-  .job-editor { border-radius: 5px 5px 0 0; max-height: 94vh; padding: 15px; }
+  .job-modal { overflow-y: hidden; padding: 0; }
+  .job-modal .modal-dialog { align-items: flex-end; display: flex; height: 100%; margin: 0; max-width: none; min-height: 0; width: 100%; }
+  .job-editor { border-radius: 5px 5px 0 0; height: 96vh; height: 96dvh; max-height: 96vh; max-height: 96dvh; width: 100%; }
+  .job-editor .modal-header { padding: 14px 15px; }
+  .job-editor-body { padding: 15px 15px calc(15px + env(safe-area-inset-bottom)); scroll-padding-block: 16px; }
+  .job-editor .modal-footer { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+  .job-editor input, .job-editor select, .job-editor textarea { font-size: 16px; min-height: 44px; touch-action: manipulation; }
   .admin-job-row { align-items: flex-start; flex-wrap: wrap; gap: 9px; }
   .admin-job-info { flex-basis: calc(100% - 52px); }
   .admin-job-row time { margin-left: 51px; }

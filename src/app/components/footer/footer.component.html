@@ -3,7 +3,7 @@
     <div class="footer-grid">
       <section><a class="footer-brand" routerLink="/"><span class="footer-brand-mark"><i class="bi bi-briefcase-fill"></i></span><span>freejob-info</span></a><p>Find recent government jobs, private openings, and walk-in drives.</p></section>
       <section><h2 class="footer-title">Quick links</h2><a routerLink="/">All latest jobs</a><a routerLink="/" fragment="government">Government jobs</a><a routerLink="/" fragment="walk-ins">Walk-in drives</a><a routerLink="/login">Publisher sign in</a></section>
-      <section><h2 class="footer-title">Contact & actions</h2><a [href]="whatsappUrl" target="_blank" rel="noreferrer"><i class="bi bi-whatsapp"></i> Job alerts on WhatsApp</a><div class="footer-install-wrap"><button class="footer-install-button" type="button" (click)="installApp()"><i class="bi bi-download" aria-hidden="true"></i>Install app</button><span *ngIf="installMessage" class="footer-install-message" role="status">{{ installMessage }}</span></div></section>
+      <section><h2 class="footer-title">Contact & actions</h2><a [href]="whatsappUrl" target="_blank" rel="noreferrer"><i class="bi bi-whatsapp"></i> Job alerts on WhatsApp</a><div class="footer-install-wrap"><button class="footer-install-button" type="button" (click)="installApp()"><i class="bi bi-download" aria-hidden="true"></i>Download app</button><span *ngIf="installMessage" class="footer-install-message" role="status">{{ installMessage }}</span></div></section>
     </div>
     <div class="footer-bottom"><span>© 2026 freejob-info. All rights reserved.</span><span>Opportunities, updated daily.</span></div>
   </div>

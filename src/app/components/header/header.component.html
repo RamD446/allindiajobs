@@ -28,10 +28,11 @@
   <button *ngIf="categoriesOpen" class="category-drawer-overlay" type="button" aria-label="Close categories" (click)="closeMenus()"></button>
   <aside class="category-drawer" [class.open]="categoriesOpen" [attr.aria-hidden]="!categoriesOpen">
     <div class="category-drawer-header"><strong>Browse jobs</strong><button class="header-icon-button" type="button" (click)="closeMenus()" aria-label="Close categories"><i class="bi bi-x-lg"></i></button></div>
-    <nav aria-label="Job categories">
+    <nav aria-label="Browse jobs and links">
       <a *ngFor="let category of categories" [routerLink]="['/']" [queryParams]="{category: category.slug}" (click)="closeMenus()">
         <span>{{ category.label }}</span><i class="bi bi-chevron-right" aria-hidden="true"></i>
       </a>
+      <a routerLink="/official-career-links" (click)="closeMenus()"><span>Official Career Links</span><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
     </nav>
   </aside>
 </header>

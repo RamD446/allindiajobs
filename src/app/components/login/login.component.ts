@@ -8,6 +8,14 @@ import * as XLSX from 'xlsx';
 import { auth, db } from '../../../config/firebase.config';
 import { Job } from '../../models/job.model';
 
+interface CareerLink {
+  id: string;
+  companyName: string;
+  officialUrl: string;
+  sector?: 'Government' | 'Private';
+  jobType?: string;
+}
+
 const GOVERNMENT_JOB_TYPES = ['Government Jobs', 'Results', 'Syllabus'];
 const PRIVATE_JOB_TYPES = ['IT Jobs', 'Non-IT Jobs', 'Pharma Jobs', 'Sales Jobs', 'Pharmaceutical Jobs', 'Bank Jobs', 'Other'];
 const JOB_TYPES = [...GOVERNMENT_JOB_TYPES, ...PRIVATE_JOB_TYPES];
@@ -44,11 +52,19 @@ export class LoginComponent implements OnInit, OnDestroy {
   password = '';
   loginError = '';
   jobs: Job[] = [];
+  careerLinks: CareerLink[] = [];
+  activeTab: 'jobs' | 'careerLinks' = 'jobs';
+  careerDraft = { companyName: '', officialUrl: '', sector: 'Government' as 'Government' | 'Private', jobType: 'Government Jobs' };
+  editingCareerId: string | null = null;
+  careerFormOpen = false;
+  savingCareer = false;
+  importingCareers = false;
   pendingDeleteJob: Job | null = null;
   deleting = false;
   search = '';
   filter = 'All job types';
   draft = emptyDraft();
+  titleError = false;
   editingId: string | null = null;
   formOpen = false;
   saving = false;
@@ -62,6 +78,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   jobIcons = JOB_ICONS;
   private stopAuth: (() => void) | null = null;
   private stopJobs: (() => void) | null = null;
+  private stopCareers: (() => void) | null = null;
   private noticeTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {}
@@ -70,10 +87,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.stopAuth = onAuthStateChanged(auth, (user) => {
       this.user = user;
       this.authLoading = false;
-      if (user) this.loadJobs();
+      if (user) {
+        this.loadJobs();
+        this.loadCareers();
+      }
       else {
         this.stopJobs?.();
+        this.stopCareers?.();
         this.jobs = [];
+        this.careerLinks = [];
         this.cdr.detectChanges();
       }
     });
@@ -82,6 +104,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.stopAuth?.();
     this.stopJobs?.();
+    this.stopCareers?.();
     if (this.noticeTimer) clearTimeout(this.noticeTimer);
   }
 
@@ -112,6 +135,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     await signOut(auth);
     this.formOpen = false;
     this.editingId = null;
+    this.careerFormOpen = false;
+    this.editingCareerId = null;
   }
 
   private loadJobs(): void {
@@ -130,8 +155,118 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
+  private loadCareers(): void {
+    this.stopCareers?.();
+    this.stopCareers = onValue(ref(db, 'careerLinks'), (snapshot) => {
+      const data = snapshot.val() as Record<string, Omit<CareerLink, 'id'>> | null;
+      this.careerLinks = data ? Object.entries(data).map(([id, item]) => ({ id, ...item })) : [];
+      this.careerLinks.sort((first, second) => first.companyName.localeCompare(second.companyName));
+      this.cdr.detectChanges();
+    }, () => this.showNotice('Could not load career links. Check your database access rules.', 'error'));
+  }
+
+  startCreateCareer(): void {
+    this.careerDraft = { companyName: '', officialUrl: '', sector: 'Government', jobType: 'Government Jobs' };
+    this.editingCareerId = null;
+    this.careerFormOpen = true;
+    this.dismissNotice();
+  }
+
+  startEditCareer(link: CareerLink): void {
+    this.careerDraft = { companyName: link.companyName, officialUrl: link.officialUrl, sector: link.sector || 'Government', jobType: link.jobType || 'Government Jobs' };
+    this.editingCareerId = link.id;
+    this.careerFormOpen = true;
+    this.dismissNotice();
+  }
+
+  closeCareerForm(): void {
+    if (this.savingCareer) return;
+    this.careerFormOpen = false;
+    this.editingCareerId = null;
+  }
+
+  onCareerSectorChange(): void {
+    this.careerDraft.jobType = this.careerDraft.sector === 'Government' ? 'Government Jobs' : 'IT Jobs';
+  }
+
+  async saveCareer(): Promise<void> {
+    if (this.savingCareer) return;
+    const companyName = this.careerDraft.companyName.trim();
+    const officialUrl = this.careerDraft.officialUrl.trim();
+    if (!companyName || !/^https?:\/\/\S+$/i.test(officialUrl)) {
+      this.showNotice('Enter a company name and a valid official URL.', 'error');
+      return;
+    }
+    this.savingCareer = true;
+    const wasEditing = Boolean(this.editingCareerId);
+    try {
+      const record = { companyName, officialUrl, sector: this.careerDraft.sector, jobType: this.careerDraft.jobType };
+      if (this.editingCareerId) await set(ref(db, `careerLinks/${this.editingCareerId}`), record);
+      else await push(ref(db, 'careerLinks'), record);
+      this.closeCareerFormAfterSave();
+      this.showNotice(wasEditing ? 'Career link updated.' : 'Career link created.', 'success');
+    } catch {
+      this.showNotice('Unable to save career link. Check database permissions.', 'error');
+    } finally {
+      this.savingCareer = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  private closeCareerFormAfterSave(): void {
+    this.careerFormOpen = false;
+    this.careerDraft = { companyName: '', officialUrl: '', sector: 'Government', jobType: 'Government Jobs' };
+    this.editingCareerId = null;
+  }
+
+  async deleteCareer(link: CareerLink): Promise<void> {
+    if (!window.confirm(`Delete the career link for ${link.companyName}?`)) return;
+    try {
+      await remove(ref(db, `careerLinks/${link.id}`));
+      this.showNotice('Career link deleted.', 'success');
+    } catch {
+      this.showNotice('Unable to delete career link. Check database permissions.', 'error');
+    }
+  }
+
+  exportCareers(): void {
+    const rows = this.careerLinks.map(({ companyName, officialUrl }) => ({ CompanyName: companyName, OfficialURL: officialUrl }));
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: ['CompanyName', 'OfficialURL'] }), 'Career Links');
+    XLSX.writeFile(workbook, `career-links-${new Date().toISOString().slice(0, 10)}.xls`, { bookType: 'xls' });
+  }
+
+  async importCareers(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file || this.importingCareers) return;
+    this.importingCareers = true;
+    this.dismissNotice();
+    try {
+      const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: '' });
+      let imported = 0;
+      for (const row of rows) {
+        const companyName = this.excelValue(row, ['CompanyName', 'Company Name']).trim();
+        const officialUrl = this.excelValue(row, ['OfficialURL', 'Official URL']).trim();
+        if (!companyName || !/^https?:\/\/\S+$/i.test(officialUrl)) continue;
+        await push(ref(db, 'careerLinks'), { companyName, officialUrl });
+        imported += 1;
+      }
+      this.showNotice(`Imported ${imported} career links.`, 'success');
+    } catch {
+      this.showNotice('Could not import career links. Check the spreadsheet and try again.', 'error');
+    } finally {
+      this.importingCareers = false;
+      this.cdr.detectChanges();
+    }
+  }
+
   startCreate(): void {
     this.draft = emptyDraft();
+    this.titleError = false;
     this.editingId = null;
     this.formOpen = true;
     this.dismissNotice();
@@ -149,6 +284,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       privateJobType: job.privateJobType || (job.walkInDrive || oldType === 'Walk-ins' ? 'Walk-in' : 'Non-walk-in'),
       experience: job.experience || '', walkInDrive: job.walkInDrive || oldType === 'Walk-ins'
     };
+    this.titleError = false;
     this.editingId = job.id;
     this.formOpen = true;
     this.dismissNotice();
@@ -181,13 +317,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.draft.experience = values.join(', ');
   }
 
-  focusEditorControl(event: PointerEvent): void {
-    const target = event.target;
-    if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) {
-      target.focus({ preventScroll: true });
-    }
-  }
-
   closeForm(): void {
     if (this.saving) return;
     this.formOpen = false;
@@ -197,17 +326,24 @@ export class LoginComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.escape')
   onEscape(): void {
     if (this.pendingDeleteJob) this.cancelDelete();
+    else if (this.careerFormOpen) this.closeCareerForm();
     else this.closeForm();
   }
 
   async saveJob(): Promise<void> {
     if (this.saving) return;
+    if (!this.draft.title.trim()) {
+      this.titleError = true;
+      return;
+    }
+    this.titleError = false;
     const wasEditing = Boolean(this.editingId);
     this.dismissNotice();
     const sector = this.draft.sector || 'Government';
     const privateJobType = this.draft.privateJobType || 'Non-walk-in';
     const record = {
       ...this.draft,
+      title: this.draft.title.trim(),
       sector,
       privateJobType,
       companyImage: (this.draft.companyImage || '').trim(),

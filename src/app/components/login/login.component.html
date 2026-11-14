@@ -1,13 +1,17 @@
 <main class="admin-page" *ngIf="!authLoading && user; else loginView">
   <section class="admin-wrap">
     <header class="admin-heading"><div><p class="eyebrow">PUBLISHER WORKSPACE</p><h1>Job management</h1><p>Signed in as <strong>{{ user.email }}</strong></p></div><button class="secondary-button" type="button" (click)="logout()">Sign out</button></header>
+    <nav class="admin-tabs" aria-label="Dashboard sections"><button type="button" [class.active]="activeTab === 'jobs'" [attr.aria-current]="activeTab === 'jobs' ? 'page' : null" (click)="activeTab = 'jobs'">Jobs</button><button type="button" [class.active]="activeTab === 'careerLinks'" [attr.aria-current]="activeTab === 'careerLinks' ? 'page' : null" (click)="activeTab = 'careerLinks'">Official Career Links</button></nav>
+    <ng-container *ngIf="activeTab === 'jobs'">
     <div class="admin-summary"><strong>{{ jobs.length }}</strong><span>published listings</span><i></i><span>Manage the live freejob-info feed</span></div>
     <div class="admin-toolbar"><div class="admin-controls"><label class="visually-hidden" for="admin-search">Search jobs</label><input id="admin-search" [(ngModel)]="search" placeholder="Search title or company"><label class="visually-hidden" for="admin-type">Filter by job type</label><select id="admin-type" [(ngModel)]="filter"><option>All job types</option><option *ngFor="let type of jobTypes">{{ type }}</option></select></div><div class="admin-actions"><label class="secondary-button import-button"><span *ngIf="importing" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>{{ importing ? 'Importing...' : 'Import XLS' }}<input type="file" accept=".xls,.xlsx" (change)="importJobs($event)" [disabled]="importing"></label><button class="secondary-button" type="button" (click)="exportJobs()">Export XLS</button><button class="primary-button" type="button" (click)="startCreate()">+ Create job</button></div></div>
+    </ng-container>
     <div *ngIf="notice" class="toast show admin-toast" [ngClass]="'text-bg-' + (noticeType === 'success' ? 'success' : noticeType === 'error' ? 'danger' : 'primary')" role="status" aria-live="polite" aria-atomic="true">
       <div class="toast-header"><i class="bi me-2" [ngClass]="noticeType === 'success' ? 'bi-check-circle-fill' : noticeType === 'error' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill'"></i><strong class="me-auto">{{ noticeType === 'success' ? 'Success' : noticeType === 'error' ? 'Error' : 'Working' }}</strong><button type="button" class="btn-close" [class.btn-close-white]="noticeType !== 'info'" aria-label="Dismiss" (click)="dismissNotice()"></button></div>
       <div class="toast-body">{{ notice }}</div>
     </div>
 
+    <ng-container *ngIf="activeTab === 'jobs'; else careerLinksView">
     <div class="admin-table-heading"><h2>Published jobs</h2><span>{{ filteredJobs.length }} shown</span></div>
     <div class="admin-job-list" *ngIf="!isLoading && filteredJobs.length; else noJobs">
       <article class="admin-job-row" *ngFor="let job of filteredJobs">
@@ -18,27 +22,54 @@
       </article>
     </div>
     <ng-template #noJobs><div *ngIf="isLoading; else emptyJobs" class="portal-loading-state" role="status" aria-live="polite"><span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span><span class="visually-hidden">Loading...</span><span>Loading jobs...</span></div><ng-template #emptyJobs><div class="state-panel">No jobs match this view.</div></ng-template></ng-template>
+    </ng-container>
+    <ng-template #careerLinksView>
+      <div class="admin-toolbar career-toolbar"><div class="admin-table-heading"><h2>Official Career Links</h2><span>{{ careerLinks.length }} links</span></div><div class="admin-actions"><label class="secondary-button import-button"><span *ngIf="importingCareers" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>{{ importingCareers ? 'Importing...' : 'Import XLS' }}<input type="file" accept=".xls,.xlsx" (change)="importCareers($event)" [disabled]="importingCareers"></label><button class="secondary-button" type="button" (click)="exportCareers()">Export XLS</button><button class="primary-button" type="button" (click)="startCreateCareer()">+ Create career link</button></div></div>
+      <div class="admin-job-list" *ngIf="careerLinks.length; else noCareers">
+        <article class="admin-job-row" *ngFor="let link of careerLinks"><div class="admin-job-info"><strong>{{ link.companyName }}</strong><a [href]="link.officialUrl" target="_blank" rel="noopener noreferrer">{{ link.officialUrl }}</a></div><div class="admin-job-actions"><button class="text-action" type="button" (click)="startEditCareer(link)">Edit</button><button class="text-action danger-action" type="button" (click)="deleteCareer(link)">Delete</button></div></article>
+      </div>
+      <ng-template #noCareers><div class="state-panel">No career links yet.</div></ng-template>
+    </ng-template>
   </section>
+
+  <ng-container *ngIf="careerFormOpen">
+    <div class="job-modal-layer">
+      <div class="modal-backdrop fade show job-modal-backdrop" (click)="closeCareerForm()"></div>
+      <div class="modal fade show d-block job-modal" role="dialog" aria-modal="true" aria-labelledby="career-editor-title" (mousedown)="$event.target === $event.currentTarget ? closeCareerForm() : null">
+        <div class="modal-dialog modal-dialog-scrollable career-modal-dialog">
+          <section class="modal-content job-editor"><form (ngSubmit)="saveCareer()">
+            <div class="modal-header editor-heading"><div><p class="eyebrow">OFFICIAL CAREER LINKS</p><h2 id="career-editor-title">{{ editingCareerId ? 'Edit career link' : 'Create career link' }}</h2></div><button type="button" class="icon-button" aria-label="Close form" (click)="closeCareerForm()">×</button></div>
+            <div class="modal-body job-editor-body"><div class="editor-grid">
+              <label><span>Company name *</span><input [(ngModel)]="careerDraft.companyName" name="companyName" required></label>
+              <label><span>Official URL *</span><input type="url" [(ngModel)]="careerDraft.officialUrl" name="officialUrl" placeholder="https://example.com/careers" required></label>
+              <fieldset class="editor-choice-group"><legend>Sector</legend><div class="editor-choice-options"><label class="editor-choice-option" [class.selected]="careerDraft.sector === 'Government'"><input type="radio" name="careerSector" value="Government" [(ngModel)]="careerDraft.sector" (ngModelChange)="onCareerSectorChange()"><span>Government</span></label><label class="editor-choice-option" [class.selected]="careerDraft.sector === 'Private'"><input type="radio" name="careerSector" value="Private" [(ngModel)]="careerDraft.sector" (ngModelChange)="onCareerSectorChange()"><span>Private</span></label></div></fieldset>
+              <fieldset class="editor-choice-group editor-wide"><legend>Job type</legend><div class="editor-choice-options"><label *ngFor="let type of (careerDraft.sector === 'Government' ? governmentJobTypes : privateJobTypes)" class="editor-choice-option" [class.selected]="careerDraft.jobType === type"><input type="radio" name="careerJobType" [value]="type" [(ngModel)]="careerDraft.jobType"><span>{{ type === 'Government Jobs' ? 'Jobs' : type }}</span></label></div></fieldset>
+            </div></div>
+            <div class="modal-footer editor-footer"><button class="secondary-button" type="button" (click)="closeCareerForm()" [disabled]="savingCareer">Cancel</button><button class="primary-button" type="submit" [disabled]="savingCareer">{{ savingCareer ? 'Saving...' : editingCareerId ? 'Update link' : 'Create link' }}</button></div>
+          </form></section>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 
   <ng-container *ngIf="formOpen">
     <div class="job-modal-layer">
       <div class="modal-backdrop fade show job-modal-backdrop" (click)="closeForm()"></div>
-      <div class="modal fade show d-block job-modal" role="dialog" aria-modal="true" aria-labelledby="job-editor-title" (mousedown)="$event.target === $event.currentTarget && closeForm()">
+      <div class="modal fade show d-block job-modal" role="dialog" aria-modal="true" aria-labelledby="job-editor-title" (mousedown)="$event.target === $event.currentTarget ? closeForm() : null">
         <div class="modal-dialog modal-dialog-scrollable job-modal-dialog">
           <section class="modal-content job-editor"><form (ngSubmit)="saveJob()">
       <div class="modal-header editor-heading"><div><p class="eyebrow">{{ editingId ? 'UPDATE LISTING' : 'NEW LISTING' }}</p><h2 id="job-editor-title">{{ editingId ? 'Edit job' : 'Create a job' }}</h2></div><button type="button" class="icon-button" aria-label="Close form" (click)="closeForm()">×</button></div>
-      <div class="modal-body job-editor-body" (pointerdown)="focusEditorControl($event)">
+      <div class="modal-body job-editor-body">
       <div class="editor-grid">
-        <label><span>Job title *</span><input [(ngModel)]="draft.title" name="title" required></label>
+        <label><span>Job title *</span><input [(ngModel)]="draft.title" (ngModelChange)="titleError = false" name="title" required [attr.aria-invalid]="titleError ? 'true' : null"><small *ngIf="titleError" class="form-error" role="alert">Enter a job title.</small></label>
         <label><span>Company *</span><input [(ngModel)]="draft.company" name="company" required></label>
         <fieldset class="editor-choice-group"><legend>Sector</legend><div class="editor-choice-options"><label class="editor-choice-option" [class.selected]="draft.sector === 'Government'"><input type="radio" name="sector" value="Government" [(ngModel)]="draft.sector" (ngModelChange)="onSectorChange()"><span>Government</span></label><label class="editor-choice-option" [class.selected]="draft.sector === 'Private'"><input type="radio" name="sector" value="Private" [(ngModel)]="draft.sector" (ngModelChange)="onSectorChange()"><span>Private</span></label></div></fieldset>
+        <fieldset class="editor-choice-group editor-wide"><legend>Job type</legend><div class="editor-choice-options"><label *ngFor="let type of (draft.sector === 'Government' ? governmentJobTypes : privateJobTypes)" class="editor-choice-option" [class.selected]="draft.jobType === type"><input type="radio" name="jobType" [value]="type" [(ngModel)]="draft.jobType" (ngModelChange)="onGovernmentTypeChange()"><span>{{ type === 'Government Jobs' ? 'Jobs' : type }}</span></label></div></fieldset>
         <ng-container *ngIf="draft.sector === 'Government'; else privateFields">
-          <fieldset class="editor-choice-group"><legend>Government type</legend><div class="editor-choice-options"><label *ngFor="let type of governmentJobTypes" class="editor-choice-option" [class.selected]="draft.jobType === type"><input type="radio" name="governmentJobType" [value]="type" [(ngModel)]="draft.jobType" (ngModelChange)="onGovernmentTypeChange()"><span>{{ type === 'Government Jobs' ? 'Jobs' : type }}</span></label></div></fieldset>
           <label *ngIf="draft.jobType === 'Government Jobs'"><span>Last date to apply</span><input type="date" [(ngModel)]="draft.lastDateToApply" name="lastDateToApply"></label>
         </ng-container>
         <ng-template #privateFields>
           <fieldset class="editor-choice-group"><legend>Private hiring type</legend><div class="editor-choice-options"><label *ngFor="let type of privateHiringTypes" class="editor-choice-option" [class.selected]="draft.privateJobType === type"><input type="radio" name="privateJobType" [value]="type" [(ngModel)]="draft.privateJobType" (ngModelChange)="onPrivateHiringChange()"><span>{{ type }}</span></label></div></fieldset>
-          <fieldset class="editor-choice-group"><legend>Private job type</legend><div class="editor-choice-options"><label *ngFor="let type of privateJobTypes" class="editor-choice-option" [class.selected]="draft.jobType === type"><input type="radio" name="privateJobCategory" [value]="type" [(ngModel)]="draft.jobType"><span>{{ type }}</span></label></div></fieldset>
           <label *ngIf="draft.privateJobType === 'Walk-in'"><span>Walk-in date</span><input type="date" [(ngModel)]="draft.walkInDate" name="walkInDate"></label>
         </ng-template>
         <fieldset class="experience-picker editor-wide"><legend>Experience type</legend><label><input type="checkbox" [checked]="isExperienceSelected('Freshers')" (change)="toggleExperience('Freshers', $any($event.target).checked)"> Fresher</label><label><input type="checkbox" [checked]="isExperienceSelected('Experienced')" (change)="toggleExperience('Experienced', $any($event.target).checked)"> Experienced</label></fieldset>

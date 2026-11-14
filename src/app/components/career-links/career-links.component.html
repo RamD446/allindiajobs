@@ -1,0 +1,23 @@
+<main class="career-page">
+  <div class="career-page-inner">
+    <header class="career-heading"><p>CAREER DIRECTORIES</p><h1>Official Career Links</h1></header>
+    <div *ngIf="loading" class="career-state" role="status">Loading career links...</div>
+    <div *ngIf="!loading && error" class="career-state" role="alert">{{ error }}</div>
+    <ng-container *ngIf="!loading && !error">
+      <section class="career-section" aria-labelledby="government-careers">
+        <div class="career-section-heading"><h2 id="government-careers">Government</h2><span>{{ governmentLinks.length }} links</span></div>
+        <div class="career-grid" *ngIf="governmentLinks.length; else noGovernment">
+          <a class="career-card" *ngFor="let link of governmentLinks" [href]="link.officialUrl" target="_blank" rel="noopener noreferrer"><strong>{{ link.companyName }}</strong><span>{{ link.officialUrl }}</span><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+        <ng-template #noGovernment><p class="career-empty">No government career links yet.</p></ng-template>
+      </section>
+      <section class="career-section" aria-labelledby="private-careers">
+        <div class="career-section-heading"><h2 id="private-careers">Private</h2><span>{{ privateLinks.length }} links</span></div>
+        <div class="career-grid" *ngIf="privateLinks.length; else noPrivate">
+          <a class="career-card" *ngFor="let link of privateLinks" [href]="link.officialUrl" target="_blank" rel="noopener noreferrer"><strong>{{ link.companyName }}</strong><span>{{ link.officialUrl }}</span><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+        <ng-template #noPrivate><p class="career-empty">No private career links yet.</p></ng-template>
+      </section>
+    </ng-container>
+  </div>
+</main>

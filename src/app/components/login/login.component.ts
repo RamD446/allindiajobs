@@ -173,7 +173,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   startEditCareer(link: CareerLink): void {
-    this.careerDraft = { companyName: link.companyName, officialUrl: link.officialUrl, sector: link.sector || 'Government', jobType: link.jobType || 'Government Jobs' };
+    const sector = link.sector || 'Government';
+    this.careerDraft = {
+      companyName: link.companyName, officialUrl: link.officialUrl, sector,
+      jobType: link.jobType || (sector === 'Private' ? 'IT Jobs' : 'Government Jobs')
+    };
     this.editingCareerId = link.id;
     this.careerFormOpen = true;
     this.dismissNotice();
@@ -230,9 +234,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   exportCareers(): void {
-    const rows = this.careerLinks.map(({ companyName, officialUrl }) => ({ CompanyName: companyName, OfficialURL: officialUrl }));
+    const rows = this.careerLinks.map(({ companyName, officialUrl, sector, jobType }) => ({
+      'Company name': companyName, 'Official URL': officialUrl,
+      Sector: sector || 'Government', 'Job type': jobType || (sector === 'Private' ? 'IT Jobs' : 'Government Jobs')
+    }));
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: ['CompanyName', 'OfficialURL'] }), 'Career Links');
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: ['Company name', 'Official URL', 'Sector', 'Job type'] }), 'Career Links');
     XLSX.writeFile(workbook, `career-links-${new Date().toISOString().slice(0, 10)}.xls`, { bookType: 'xls' });
   }
 
@@ -252,7 +259,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         const companyName = this.excelValue(row, ['CompanyName', 'Company Name']).trim();
         const officialUrl = this.excelValue(row, ['OfficialURL', 'Official URL']).trim();
         if (!companyName || !/^https?:\/\/\S+$/i.test(officialUrl)) continue;
-        await push(ref(db, 'careerLinks'), { companyName, officialUrl });
+        const sector = this.excelValue(row, ['Sector']).trim() === 'Private' ? 'Private' : 'Government';
+        const importedType = this.excelValue(row, ['Job type']).trim();
+        const types = sector === 'Government' ? GOVERNMENT_JOB_TYPES : PRIVATE_JOB_TYPES;
+        const jobType = types.includes(importedType) ? importedType : types[0];
+        await push(ref(db, 'careerLinks'), { companyName, officialUrl, sector, jobType });
         imported += 1;
       }
       this.showNotice(`Imported ${imported} career links.`, 'success');
@@ -424,16 +435,30 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   exportJobs(): void {
-    const rows = this.jobs.map((job) => ({
-      JobTitle: job.title || '', CompanyName: job.company || '', CompanyImageHtml: job.companyImage || '',
-      JobIcon: job.jobIcon || 'bi-briefcase-fill', Sector: job.sector || '', PrivateJobType: job.privateJobType || '',
-      JobType: job.jobType || '', Experience: job.experience || '', JobDescription: job.description || '',
-      ApplyOfficialLink: job.otherLink || '', ApplyPdfLink: job.applyPdfLink || '',
-      FullInformationImagesHtml: job.fullInformationTableFormat || '', FullJobInformationHtml: job.fullJobInformation || '',
-      WalkInDate: job.walkInDate || '', LastDateToApply: job.lastDateToApply || '', CreatedBy: job.createdBy || '', CreatedDate: job.createdDate || ''
-    }));
+    const rows = this.jobs.map((job) => {
+      const oldType = job.jobType || '';
+      const sector = job.sector || (GOVERNMENT_JOB_TYPES.includes(oldType) ? 'Government' : 'Private');
+      const types = sector === 'Government' ? GOVERNMENT_JOB_TYPES : PRIVATE_JOB_TYPES;
+      const jobType = types.includes(oldType) ? oldType : types[0];
+      const privateJobType = job.privateJobType || (job.walkInDrive || oldType === 'Walk-ins' ? 'Walk-in' : 'Non-walk-in');
+      return {
+        'Job title': job.title || '', Company: job.company || '', Sector: sector,
+        'Job type': jobType, 'Last date to apply': sector === 'Government' && jobType === 'Government Jobs' ? job.lastDateToApply || '' : '',
+        'Private hiring type': sector === 'Private' ? privateJobType : '',
+        'Walk-in date': sector === 'Private' && privateJobType === 'Walk-in' ? job.walkInDate || '' : '',
+        'Experience type': job.experience || '',
+        'Company image URL': job.companyImage || '', 'Official application URL': job.otherLink || '',
+        'PDF URL': job.applyPdfLink || '', 'Created by': job.createdBy || '',
+        'Job icon': job.jobIcon || 'bi-briefcase-fill', Description: job.description || '',
+        'Job information rows': job.fullInformationTableFormat || '', 'Full notification': job.fullJobInformation || ''
+      };
+    });
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows), 'Jobs');
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: [
+      'Job title', 'Company', 'Sector', 'Job type', 'Last date to apply', 'Private hiring type',
+      'Walk-in date', 'Experience type', 'Company image URL', 'Official application URL',
+      'PDF URL', 'Created by', 'Job icon', 'Description', 'Job information rows', 'Full notification'
+    ] }), 'Jobs');
     XLSX.writeFile(workbook, `freejob-jobs-${new Date().toISOString().slice(0, 10)}.xls`, { bookType: 'xls' });
   }
 
@@ -450,22 +475,27 @@ export class LoginComponent implements OnInit, OnDestroy {
       const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: '' });
       let imported = 0;
       for (const row of rows) {
-        const title = this.excelValue(row, ['JobTitle', 'Job Title', 'Title']).trim();
-        const company = this.excelValue(row, ['CompanyName', 'Company Name', 'Company']).trim();
+        const title = this.excelValue(row, ['Job title', 'Title']).trim();
+        const company = this.excelValue(row, ['Company', 'Company name']).trim();
         if (!title || !company) continue;
-        const jobType = this.excelValue(row, ['JobType', 'Job Type']) || 'Government Jobs';
-        const sector = this.excelValue(row, ['Sector']) || (GOVERNMENT_JOB_TYPES.includes(jobType) ? 'Government' : 'Private');
-        const privateJobType = this.excelValue(row, ['PrivateJobType', 'Private Job Type']) || 'Non-walk-in';
+        const importedType = this.excelValue(row, ['Job type']).trim();
+        const importedSector = this.excelValue(row, ['Sector']).trim();
+        const sector = importedSector === 'Government' || importedSector === 'Private'
+          ? importedSector : PRIVATE_JOB_TYPES.includes(importedType) ? 'Private' : 'Government';
+        const types = sector === 'Private' ? PRIVATE_JOB_TYPES : GOVERNMENT_JOB_TYPES;
+        const jobType = types.includes(importedType) ? importedType : types[0];
+        const privateJobType = this.excelValue(row, ['Private hiring type', 'PrivateJobType']) === 'Walk-in' ? 'Walk-in' : 'Non-walk-in';
         await push(ref(db, 'jobs'), {
-          title, company, companyImage: this.excelValue(row, ['CompanyImageHtml', 'CompanyImage']),
+          title, company, companyImage: this.excelValue(row, ['Company image URL', 'CompanyImageHtml', 'CompanyImage']),
           jobIcon: this.excelValue(row, ['JobIcon']) || 'bi-briefcase-fill', sector, privateJobType, jobType,
-          experience: this.excelValue(row, ['Experience']), description: this.excelValue(row, ['JobDescription', 'Job Description']),
-          otherLink: this.excelValue(row, ['ApplyOfficialLink', 'Apply Official Link']), applyPdfLink: this.excelValue(row, ['ApplyPdfLink', 'Apply PDF Link']),
-          fullInformationTableFormat: this.excelValue(row, ['FullInformationImagesHtml', 'FullInformationTableFormat']),
-          fullJobInformation: this.excelValue(row, ['FullJobInformationHtml', 'FullJobInformation']),
-          walkInDate: this.excelValue(row, ['WalkInDate']), lastDateToApply: this.excelValue(row, ['LastDateToApply']),
+          experience: this.excelValue(row, ['Experience type', 'Experience']), description: this.excelValue(row, ['Description', 'JobDescription']),
+          otherLink: this.excelValue(row, ['Official application URL', 'ApplyOfficialLink']), applyPdfLink: this.excelValue(row, ['PDF URL', 'ApplyPdfLink']),
+          fullInformationTableFormat: this.excelValue(row, ['Job information rows', 'FullInformationImagesHtml', 'FullInformationTableFormat']),
+          fullJobInformation: this.excelValue(row, ['Full notification', 'FullJobInformationHtml', 'FullJobInformation']),
+          walkInDate: sector === 'Private' && privateJobType === 'Walk-in' ? this.excelValue(row, ['Walk-in date']) : '',
+          lastDateToApply: sector === 'Government' && jobType === 'Government Jobs' ? this.excelValue(row, ['Last date to apply']) : '',
           createdBy: this.excelValue(row, ['CreatedBy']), walkInDrive: sector === 'Private' && privateJobType === 'Walk-in',
-          createdDate: this.excelValue(row, ['CreatedDate']) || new Date().toISOString()
+          createdDate: new Date().toISOString()
         });
         imported += 1;
       }

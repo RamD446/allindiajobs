@@ -12,10 +12,17 @@
       <button class="header-icon-button" type="button" (click)="toggleSearch()" aria-label="Search jobs" [attr.aria-expanded]="searchOpen">
         <i class="bi" [ngClass]="searchOpen ? 'bi-x-lg' : 'bi-search'" aria-hidden="true"></i>
       </button>
-      <a *ngIf="!authLoading" class="header-login-link" routerLink="/login">
-        <i class="bi" [ngClass]="isSignedIn ? 'bi-briefcase' : 'bi-box-arrow-in-right'" aria-hidden="true"></i>
-        <span>{{ isSignedIn ? 'Manage jobs' : 'Login' }}</span>
-      </a>
+      <div *ngIf="!authLoading" class="header-account">
+        <ng-container *ngIf="isSignedIn; else loginLink">
+          <button class="header-icon-button" type="button" aria-label="Open profile menu" [attr.aria-expanded]="profileOpen" aria-haspopup="menu" (click)="toggleProfile()"><i class="bi bi-person-circle" aria-hidden="true"></i></button>
+          <div *ngIf="profileOpen" class="profile-menu" role="menu">
+            <div class="profile-menu-email"><span>Signed in as</span><strong>{{ userEmail }}</strong></div>
+            <a role="menuitem" routerLink="/login" (click)="closeMenus()"><i class="bi bi-speedometer2" aria-hidden="true"></i>Dashboard</a>
+            <button type="button" role="menuitem" (click)="signOutFromHeader()"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>Sign out</button>
+          </div>
+        </ng-container>
+        <ng-template #loginLink><a class="header-login-link" routerLink="/login"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i><span>Login</span></a></ng-template>
+      </div>
     </div>
   </div>
 

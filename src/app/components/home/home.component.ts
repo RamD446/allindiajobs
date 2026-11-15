@@ -17,6 +17,8 @@ type JobFilter = 'All jobs' | 'Government Jobs' | 'Walk-ins' | 'Freshers' | 'Exp
 })
 export class HomeComponent implements OnInit, OnDestroy {
   jobs: Job[] = [];
+  topJobIds: string[] = [];
+  topJobs: Job[] = [];
   loading = true;
   error = '';
   query = '';
@@ -25,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   page = 1;
   readonly pageSize = 30;
   private stopJobs: (() => void) | null = null;
+  private stopTopJobs: (() => void) | null = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
 
@@ -40,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     const updateJobs = (data: Record<string, Omit<Job, 'id'>> | null): void => {
       this.jobs = data ? Object.entries(data).map(([id, job]) => ({ id, ...job })) : [];
       this.jobs.sort((first, second) => this.createdTime(second) - this.createdTime(first));
+      this.updateTopJobs();
       this.loading = false;
       this.error = '';
       this.cdr.detectChanges();
@@ -52,10 +56,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     void get(jobsRef).then((snapshot) => updateJobs(snapshot.val()), showLoadError);
     this.stopJobs = onValue(jobsRef, (snapshot) => updateJobs(snapshot.val()), showLoadError);
+    this.stopTopJobs = onValue(ref(db, 'topJobs'), (snapshot) => {
+      const value = snapshot.val();
+      this.topJobIds = Array.isArray(value)
+        ? value.filter((id: unknown): id is string => typeof id === 'string').slice(0, 6)
+        : [];
+      this.updateTopJobs();
+      this.cdr.detectChanges();
+    }, () => {
+      this.topJobIds = [];
+      this.topJobs = [];
+      this.cdr.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {
     this.stopJobs?.();
+    this.stopTopJobs?.();
   }
 
   get filteredJobs(): Job[] {
@@ -74,6 +91,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   get visibleJobs(): Job[] {
     const start = (this.page - 1) * this.pageSize;
     return this.filteredJobs.slice(start, start + this.pageSize);
+  }
+
+  private updateTopJobs(): void {
+    const jobsById = new Map(this.jobs.map((job) => [job.id, job]));
+    this.topJobs = this.topJobIds.map((id) => jobsById.get(id)).filter((job): job is Job => Boolean(job));
   }
 
   get listingHeading(): string {

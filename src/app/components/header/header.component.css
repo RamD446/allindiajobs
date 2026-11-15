@@ -11,6 +11,14 @@
 .header-icon-button:hover, .header-icon-button[aria-expanded='true'] { background: rgba(255,255,255,.18); }
 .header-login-link { align-items: center; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.27); border-radius: 3px; color: #fff; display: inline-flex; font-size: 11px; font-weight: 650; gap: 7px; min-height: 36px; padding: 0 10px; text-decoration: none; }
 .header-login-link:hover { background: rgba(255,255,255,.18); color: #fff; }
+.header-account { position: relative; }
+.profile-menu { background: #fff; border: 1px solid #d9e0e7; border-radius: 4px; box-shadow: 0 10px 24px rgba(8,29,49,.2); color: #202a34; min-width: 220px; padding: 7px; position: absolute; right: 0; top: calc(100% + 10px); z-index: 30; }
+.profile-menu-email { border-bottom: 1px solid #d9e0e7; display: grid; gap: 4px; padding: 8px 9px 10px; }
+.profile-menu-email span { color: #687581; font-size: 9px; }
+.profile-menu-email strong { color: #202a34; font-size: 10px; overflow-wrap: anywhere; }
+.profile-menu a, .profile-menu button { align-items: center; background: transparent; border: 0; border-radius: 3px; color: #202a34; cursor: pointer; display: flex; font: inherit; font-size: 10px; gap: 9px; min-height: 36px; padding: 0 9px; text-align: left; text-decoration: none; width: 100%; }
+.profile-menu a:hover, .profile-menu button:hover { background: #edf4fa; color: #16466b; }
+.profile-menu i { color: #16466b; font-size: 13px; }
 .header-search-panel { align-items: center; background: #fff; border: 1px solid #d9e0e7; border-radius: 4px; box-shadow: 0 12px 30px rgba(8,29,49,.22); display: flex; gap: 7px; padding: 8px; position: absolute; right: max(28px, calc((100vw - 1180px) / 2 + 28px)); top: 72px; width: min(390px, calc(100vw - 32px)); }
 .header-search-panel input { border: 1px solid #d9e0e7; border-radius: 3px; color: #202a34; font-size: 12px; min-height: 36px; min-width: 0; padding: 0 10px; width: 100%; }
 .header-search-panel button { background: #16466b; border: 0; border-radius: 3px; color: #fff; cursor: pointer; flex: 0 0 38px; height: 36px; }

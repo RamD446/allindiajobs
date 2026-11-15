@@ -9,6 +9,7 @@ export interface Job {
   privateJobType?: 'Walk-in' | 'Non-walk-in';
   jobType?: string;
   experience?: string;
+  totalPosts?: number | null;
   fullInformationTableFormat?: string;
   fullJobInformation?: string;
   walkInDrive?: boolean;

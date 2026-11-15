@@ -1,7 +1,7 @@
 <main class="admin-page" *ngIf="!authLoading && user; else loginView">
   <section class="admin-wrap">
-    <header class="admin-heading"><div><p class="eyebrow">PUBLISHER WORKSPACE</p><h1>Job management</h1><p>Signed in as <strong>{{ user.email }}</strong></p></div><button class="secondary-button" type="button" (click)="logout()">Sign out</button></header>
-    <nav class="admin-tabs" aria-label="Dashboard sections"><button type="button" [class.active]="activeTab === 'jobs'" [attr.aria-current]="activeTab === 'jobs' ? 'page' : null" (click)="activeTab = 'jobs'">Jobs</button><button type="button" [class.active]="activeTab === 'careerLinks'" [attr.aria-current]="activeTab === 'careerLinks' ? 'page' : null" (click)="activeTab = 'careerLinks'">Official Career Links</button></nav>
+    <header class="admin-heading"><div><p class="eyebrow">PUBLISHER WORKSPACE:</p><p>Signed in as <strong>{{ user.email }}</strong></p></div><button class="secondary-button" type="button" (click)="logout()">Sign out</button></header>
+    <nav class="admin-tabs" aria-label="Dashboard sections"><button type="button" [class.active]="activeTab === 'jobs'" [attr.aria-current]="activeTab === 'jobs' ? 'page' : null" (click)="activeTab = 'jobs'">Jobs</button><button type="button" [class.active]="activeTab === 'topJobs'" [attr.aria-current]="activeTab === 'topJobs' ? 'page' : null" (click)="activeTab = 'topJobs'">Top 6 Jobs</button><button type="button" [class.active]="activeTab === 'careerLinks'" [attr.aria-current]="activeTab === 'careerLinks' ? 'page' : null" (click)="activeTab = 'careerLinks'">Official Career Links</button></nav>
     <ng-container *ngIf="activeTab === 'jobs'">
     <div class="admin-summary"><strong>{{ jobs.length }}</strong><span>published listings</span><i></i><span>Manage the live freejob-info feed</span></div>
     <div class="admin-toolbar"><div class="admin-controls"><label class="visually-hidden" for="admin-search">Search jobs</label><input id="admin-search" [(ngModel)]="search" placeholder="Search title or company"><label class="visually-hidden" for="admin-type">Filter by job type</label><select id="admin-type" [(ngModel)]="filter"><option>All job types</option><option *ngFor="let type of jobTypes">{{ type }}</option></select></div><div class="admin-actions"><label class="secondary-button import-button"><span *ngIf="importing" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>{{ importing ? 'Importing...' : 'Import XLS' }}<input type="file" accept=".xls,.xlsx" (change)="importJobs($event)" [disabled]="importing"></label><button class="secondary-button" type="button" (click)="exportJobs()">Export XLS</button><button class="primary-button" type="button" (click)="startCreate()">+ Create job</button></div></div>
@@ -24,6 +24,7 @@
     <ng-template #noJobs><div *ngIf="isLoading; else emptyJobs" class="portal-loading-state" role="status" aria-live="polite"><span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span><span class="visually-hidden">Loading...</span><span>Loading jobs...</span></div><ng-template #emptyJobs><div class="state-panel">No jobs match this view.</div></ng-template></ng-template>
     </ng-container>
     <ng-template #careerLinksView>
+      <ng-container *ngIf="activeTab === 'careerLinks'; else topJobsView">
       <div class="admin-toolbar career-toolbar"><div class="admin-table-heading"><h2>Official Career Links</h2><span>{{ careerLinks.length }} links</span></div><div class="admin-actions"><label class="secondary-button import-button"><span *ngIf="importingCareers" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>{{ importingCareers ? 'Importing...' : 'Import XLS' }}<input type="file" accept=".xls,.xlsx" (change)="importCareers($event)" [disabled]="importingCareers"></label><button class="secondary-button" type="button" (click)="exportCareers()">Export XLS</button><button class="primary-button" type="button" (click)="startCreateCareer('Government')">+ Government career</button><button class="primary-button" type="button" (click)="startCreateCareer('Private')">+ Private career</button></div></div>
       <div class="career-table-scroll" *ngIf="careerLinks.length; else noCareers">
         <div class="career-table" role="table" aria-label="Official career links">
@@ -35,6 +36,14 @@
         </div>
       </div>
       <ng-template #noCareers><div class="state-panel">No career links yet.</div></ng-template>
+      </ng-container>
+    </ng-template>
+    <ng-template #topJobsView>
+      <div class="career-toolbar admin-toolbar"><div class="admin-table-heading"><h2>Top 6 Jobs</h2><span>{{ selectedTopJobs.length }} of 6 selected</span></div></div>
+      <p class="top-jobs-help">Choose published jobs to feature below the homepage search bar.</p>
+      <div class="top-jobs-picker"><label for="top-job-select">Job title</label><select id="top-job-select" [(ngModel)]="selectedTopJobId" [disabled]="savingTopJobs || selectedTopJobs.length >= 6 || !availableTopJobs.length"><option value="">{{ availableTopJobs.length ? 'Select a published job' : 'No jobs available' }}</option><option *ngFor="let job of availableTopJobs" [value]="job.id">{{ job.title }} — {{ job.company }}</option></select><button class="primary-button" type="button" (click)="addTopJob()" [disabled]="!selectedTopJobId || savingTopJobs || selectedTopJobs.length >= 6">Add to Top 6</button></div>
+      <div class="top-jobs-admin-list" *ngIf="selectedTopJobs.length; else emptyTopJobs"><article class="admin-job-row" *ngFor="let job of selectedTopJobs; let index = index"><span class="top-job-number">{{ index + 1 }}</span><div class="admin-job-info"><strong>{{ job.title }}</strong><span>{{ job.company }} <i></i> {{ job.jobType || 'Opportunity' }}</span></div><button class="text-action danger-action" type="button" (click)="removeTopJob(job.id)" [disabled]="savingTopJobs">Remove</button></article></div>
+      <ng-template #emptyTopJobs><div class="state-panel">No featured jobs selected.</div></ng-template>
     </ng-template>
   </section>
 
@@ -70,6 +79,7 @@
       <div class="editor-grid">
         <label><span>Job title *</span><input [(ngModel)]="draft.title" (ngModelChange)="titleError = false" name="title" required [attr.aria-invalid]="titleError ? 'true' : null"><small *ngIf="titleError" class="form-error" role="alert">Enter a job title.</small></label>
         <label><span>Company *</span><input [(ngModel)]="draft.company" name="company" required></label>
+        <label><span>Total posts</span><input type="number" [(ngModel)]="draft.totalPosts" name="totalPosts" min="1" step="1" placeholder="Number of vacancies"></label>
         <fieldset class="editor-choice-group"><legend>Sector</legend><div class="editor-choice-options"><label class="editor-choice-option" [class.selected]="draft.sector === 'Government'"><input type="radio" name="sector" value="Government" [(ngModel)]="draft.sector" (ngModelChange)="onSectorChange()"><span>Government</span></label><label class="editor-choice-option" [class.selected]="draft.sector === 'Private'"><input type="radio" name="sector" value="Private" [(ngModel)]="draft.sector" (ngModelChange)="onSectorChange()"><span>Private</span></label></div></fieldset>
         <fieldset class="editor-choice-group editor-wide"><legend>Job type</legend><div class="editor-choice-options"><label *ngFor="let type of (draft.sector === 'Government' ? governmentJobTypes : privateJobTypes)" class="editor-choice-option" [class.selected]="draft.jobType === type"><input type="radio" name="jobType" [value]="type" [(ngModel)]="draft.jobType" (ngModelChange)="onGovernmentTypeChange()"><span>{{ type === 'Government Jobs' ? 'Jobs' : type }}</span></label></div></fieldset>
         <ng-container *ngIf="draft.sector === 'Government'; else privateFields">

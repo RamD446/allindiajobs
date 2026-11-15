@@ -85,6 +85,7 @@ export class JobFullInformation implements OnInit, OnDestroy {
       const data = snapshot.val() as Record<string, Omit<JobComment, 'id'>> | null;
       this.comments = data ? Object.entries(data).map(([id, item]) => ({ id, ...item })) : [];
       this.comments.sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate));
+      this.comments = this.comments.slice(0, 20);
       this.cdr.detectChanges();
     }, () => {
       this.comments = [];

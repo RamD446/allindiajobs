@@ -33,7 +33,7 @@ const JOB_ICONS = [
 function emptyDraft(): Job {
   return {
     id: '', title: '', company: '', companyImage: '', jobIcon: 'bi-briefcase-fill', sector: 'Government',
-    privateJobType: 'Non-walk-in', jobType: 'Government Jobs', experience: '', fullInformationTableFormat: '',
+    privateJobType: 'Non-walk-in', jobType: 'Government Jobs', experience: '', totalPosts: null, fullInformationTableFormat: '',
     fullJobInformation: '', walkInDrive: false, walkInDate: '', lastDateToApply: '', description: '',
     otherLink: '', applyPdfLink: '', createdBy: '', createdDate: ''
   };
@@ -55,8 +55,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginError = '';
   jobs: Job[] = [];
   careerLinks: CareerLink[] = [];
-  activeTab: 'jobs' | 'careerLinks' = 'jobs';
+  activeTab: 'jobs' | 'careerLinks' | 'topJobs' = 'jobs';
   careerDraft = { companyName: '', officialUrl: '', sector: 'Government' as 'Government' | 'Private', governmentType: '', state: '' };
+  topJobIds: string[] = [];
+  selectedTopJobId = '';
+  savingTopJobs = false;
   editingCareerId: string | null = null;
   careerFormOpen = false;
   savingCareer = false;
@@ -81,6 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private stopAuth: (() => void) | null = null;
   private stopJobs: (() => void) | null = null;
   private stopCareers: (() => void) | null = null;
+  private stopTopJobs: (() => void) | null = null;
   private noticeTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {}
@@ -92,12 +96,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (user) {
         this.loadJobs();
         this.loadCareers();
+        this.loadTopJobs();
       }
       else {
         this.stopJobs?.();
         this.stopCareers?.();
+        this.stopTopJobs?.();
         this.jobs = [];
         this.careerLinks = [];
+        this.topJobIds = [];
         this.cdr.detectChanges();
       }
     });
@@ -107,6 +114,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.stopAuth?.();
     this.stopJobs?.();
     this.stopCareers?.();
+    this.stopTopJobs?.();
     if (this.noticeTimer) clearTimeout(this.noticeTimer);
   }
 
@@ -116,6 +124,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       const matchesType = this.filter === 'All job types' || job.jobType === this.filter;
       return matchesType && (!query || `${job.title} ${job.company}`.toLowerCase().includes(query));
     });
+  }
+
+  get availableTopJobs(): Job[] {
+    const selectedIds = new Set(this.selectedTopJobs.map((job) => job.id));
+    return this.jobs.filter((job) => !selectedIds.has(job.id));
+  }
+
+  get selectedTopJobs(): Job[] {
+    const jobsById = new Map(this.jobs.map((job) => [job.id, job]));
+    return this.topJobIds.map((id) => jobsById.get(id)).filter((job): job is Job => Boolean(job));
   }
 
   async login(): Promise<void> {
@@ -165,6 +183,45 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.careerLinks.sort((first, second) => first.companyName.localeCompare(second.companyName));
       this.cdr.detectChanges();
     }, () => this.showNotice('Could not load career links. Check your database access rules.', 'error'));
+  }
+
+  private loadTopJobs(): void {
+    this.stopTopJobs?.();
+    this.stopTopJobs = onValue(ref(db, 'topJobs'), (snapshot) => {
+      const value = snapshot.val();
+      this.topJobIds = Array.isArray(value)
+        ? value.filter((id: unknown): id is string => typeof id === 'string').slice(0, 6)
+        : [];
+      this.cdr.detectChanges();
+    }, () => this.showNotice('Could not load the Top 6 Jobs selection.', 'error'));
+  }
+
+  async addTopJob(): Promise<void> {
+    const jobId = this.selectedTopJobId;
+    if (!jobId || this.selectedTopJobs.length >= 6 || !this.jobs.some((job) => job.id === jobId) || this.savingTopJobs) return;
+    const nextIds = [...this.selectedTopJobs.map((job) => job.id), jobId];
+    await this.saveTopJobIds(nextIds, 'Job added to the Top 6.');
+    if (this.topJobIds.includes(jobId)) this.selectedTopJobId = '';
+  }
+
+  async removeTopJob(jobId: string): Promise<void> {
+    if (this.savingTopJobs) return;
+    const nextIds = this.selectedTopJobs.map((job) => job.id).filter((id) => id !== jobId);
+    await this.saveTopJobIds(nextIds, 'Job removed from the Top 6.');
+  }
+
+  private async saveTopJobIds(ids: string[], successMessage: string): Promise<void> {
+    this.savingTopJobs = true;
+    try {
+      await set(ref(db, 'topJobs'), ids);
+      this.topJobIds = ids;
+      this.showNotice(successMessage, 'success');
+    } catch {
+      this.showNotice('Unable to update Top 6 Jobs. Check database permissions.', 'error');
+    } finally {
+      this.savingTopJobs = false;
+      this.cdr.detectChanges();
+    }
   }
 
   startCreateCareer(sector: 'Government' | 'Private'): void {
@@ -420,7 +477,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       jobIcon: this.draft.jobIcon || 'bi-briefcase-fill',
       walkInDrive: sector === 'Private' && privateJobType === 'Walk-in',
       walkInDate: sector === 'Private' && privateJobType === 'Walk-in' ? this.draft.walkInDate || '' : '',
-      lastDateToApply: sector === 'Government' && this.draft.jobType === 'Government Jobs' ? this.draft.lastDateToApply || '' : ''
+      lastDateToApply: sector === 'Government' && this.draft.jobType === 'Government Jobs' ? this.draft.lastDateToApply || '' : '',
+      totalPosts: Number.isInteger(Number(this.draft.totalPosts)) && Number(this.draft.totalPosts) > 0 ? Number(this.draft.totalPosts) : null
     };
     const { id, ...data } = record;
     const jobRef = this.editingId ? ref(db, `jobs/${this.editingId}`) : push(ref(db, 'jobs'));
@@ -503,6 +561,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       return {
         'Job title': job.title || '', Company: job.company || '', Sector: sector,
         'Job type': jobType, 'Last date to apply': sector === 'Government' && jobType === 'Government Jobs' ? job.lastDateToApply || '' : '',
+        'Total posts': job.totalPosts || '',
         'Private hiring type': sector === 'Private' ? privateJobType : '',
         'Walk-in date': sector === 'Private' && privateJobType === 'Walk-in' ? job.walkInDate || '' : '',
         'Experience type': job.experience || '',
@@ -516,7 +575,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: [
       'Job title', 'Company', 'Sector', 'Job type', 'Last date to apply', 'Private hiring type',
       'Walk-in date', 'Experience type', 'Company image URL', 'Official application URL',
-      'PDF URL', 'Created by', 'Job icon', 'Description', 'Job information rows', 'Full notification'
+      'PDF URL', 'Created by', 'Total posts', 'Job icon', 'Description', 'Job information rows', 'Full notification'
     ] }), 'Jobs');
     XLSX.writeFile(workbook, `freejob-jobs-${new Date().toISOString().slice(0, 10)}.xls`, { bookType: 'xls' });
   }
@@ -544,9 +603,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         const types = sector === 'Private' ? PRIVATE_JOB_TYPES : GOVERNMENT_JOB_TYPES;
         const jobType = types.includes(importedType) ? importedType : types[0];
         const privateJobType = this.excelValue(row, ['Private hiring type', 'PrivateJobType']) === 'Walk-in' ? 'Walk-in' : 'Non-walk-in';
+        const totalPosts = Number(this.excelValue(row, ['Total posts', 'Total vacancies', 'Vacancies']));
         await push(ref(db, 'jobs'), {
           title, company, companyImage: this.excelValue(row, ['Company image URL', 'CompanyImageHtml', 'CompanyImage']),
           jobIcon: this.excelValue(row, ['JobIcon']) || 'bi-briefcase-fill', sector, privateJobType, jobType,
+          totalPosts: Number.isInteger(totalPosts) && totalPosts > 0 ? totalPosts : null,
           experience: this.excelValue(row, ['Experience type', 'Experience']), description: this.excelValue(row, ['Description', 'JobDescription']),
           otherLink: this.excelValue(row, ['Official application URL', 'ApplyOfficialLink']), applyPdfLink: this.excelValue(row, ['PDF URL', 'ApplyPdfLink']),
           fullInformationTableFormat: this.excelValue(row, ['Job information rows', 'FullInformationImagesHtml', 'FullInformationTableFormat']),

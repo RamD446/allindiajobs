@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../../config/firebase.config';
 
 @Component({
@@ -18,6 +18,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   searchQuery = '';
   authLoading = true;
   isSignedIn = false;
+  userEmail = '';
+  profileOpen = false;
   private stopAuth: (() => void) | null = null;
 
   readonly categories = [
@@ -28,11 +30,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Experienced', slug: 'experienced' }
   ];
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef, private hostElement: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {
     this.stopAuth = onAuthStateChanged(auth, (user) => {
       this.isSignedIn = Boolean(user);
+      this.userEmail = user?.email || '';
+      if (!user) this.profileOpen = false;
       this.authLoading = false;
       this.cdr.detectChanges();
     });
@@ -45,11 +49,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleSearch(): void {
     this.searchOpen = !this.searchOpen;
     this.categoriesOpen = false;
+    this.profileOpen = false;
   }
 
   toggleCategories(): void {
     this.categoriesOpen = !this.categoriesOpen;
     this.searchOpen = false;
+    this.profileOpen = false;
+  }
+
+  toggleProfile(): void {
+    if (!this.isSignedIn) return;
+    this.profileOpen = !this.profileOpen;
+    this.searchOpen = false;
+    this.categoriesOpen = false;
+  }
+
+  async signOutFromHeader(): Promise<void> {
+    this.closeMenus();
+    await signOut(auth);
   }
 
   submitSearch(): void {
@@ -61,10 +79,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   closeMenus(): void {
     this.searchOpen = false;
     this.categoriesOpen = false;
+    this.profileOpen = false;
   }
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
     this.closeMenus();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.profileOpen && !this.hostElement.nativeElement.contains(event.target as Node)) {
+      this.profileOpen = false;
+    }
   }
 }

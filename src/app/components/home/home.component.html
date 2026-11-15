@@ -11,7 +11,7 @@
     <div class="browse-layout">
       <section class="jobs-column">
         <section class="top-jobs-section" *ngIf="topJobs.length" aria-label="Selected jobs">
-          <div class="top-jobs-grid"><a class="top-job-link" *ngFor="let job of topJobs; let index = index" [ngClass]="'top-job-tone-' + (index % 6)" [routerLink]="jobLink(job)"><span>{{ job.company || 'Employer' }}</span><strong>{{ job.title || 'Untitled opportunity' }}</strong></a></div>
+          <div class="top-jobs-grid"><a class="top-job-link" *ngFor="let job of topJobs; let index = index" [ngClass]="'top-job-tone-' + (index % 6)" [routerLink]="jobLink(job)"><strong>{{ job.title || 'Untitled opportunity' }}</strong></a></div>
         </section>
 
         <a class="whatsapp-follow-card" href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" rel="noreferrer">
@@ -33,14 +33,14 @@
 
         <div class="job-table-scroll" *ngIf="!loading && !error">
           <table class="job-table" aria-label="Job listings">
-            <thead><tr><th scope="col">Job title</th><th scope="col">Walk-in / Apply by</th><th scope="col">Actions</th></tr></thead>
+            <colgroup><col class="job-title-column"><col class="job-actions-column"></colgroup>
+            <thead><tr><th class="visually-hidden" scope="col">Job title</th><th class="visually-hidden" scope="col">Actions</th></tr></thead>
             <tbody>
               <tr *ngFor="let job of visibleJobs; let first = first">
                 <td><div class="job-table-identity">
                   <span class="company-badge" aria-hidden="true"><img *ngIf="jobImage(job) as image; else jobIcon" [src]="image" [alt]="job.company" loading="lazy"><ng-template #jobIcon><i *ngIf="job.jobIcon; else fallbackInitial" class="bi" [ngClass]="job.jobIcon"></i><ng-template #fallbackInitial>{{ companyInitial(job) }}</ng-template></ng-template></span>
-                  <div class="job-identity-copy"><div class="job-company-line"><span class="job-company">{{ job.company || 'Employer' }}</span><span *ngIf="job.totalPosts" class="job-post-count" [class.hot-job-post-count]="job.totalPosts >= 200" [attr.title]="'Total posts: ' + job.totalPosts"><i *ngIf="job.totalPosts >= 200" class="bi bi-fire" aria-hidden="true"></i>{{ job.totalPosts }} {{ job.totalPosts === 1 ? 'job' : 'jobs' }}</span><span *ngIf="first && page === 1" class="tag tag-new">New</span></div><div class="job-title-line"><a class="job-title-link" [routerLink]="jobLink(job)">{{ job.title || 'Untitled opportunity' }}</a></div><div class="job-listing-meta"><span>{{ job.jobType || 'Opportunity' }}</span><span *ngIf="job.privateJobType">{{ job.privateJobType }}</span><span *ngIf="job.experience">{{ job.experience }}</span><span>Posted: {{ postedDate(job.createdDate) }}</span></div></div>
+                  <div class="job-identity-copy"><div class="job-company-line"><span class="job-company">{{ job.company || 'Employer' }}</span><span *ngIf="job.walkInDate" class="job-company-date">Walk-in: {{ postedDate(job.walkInDate) }}</span><span *ngIf="job.lastDateToApply" class="job-company-date">Apply by: {{ postedDate(job.lastDateToApply) }}</span><span *ngIf="job.totalPosts" class="job-post-count" [class.hot-job-post-count]="job.totalPosts >= 200 || job.sector === 'Government' || job.jobType === 'Government Jobs'" [attr.title]="'Total posts: ' + job.totalPosts"><i *ngIf="job.totalPosts >= 200 || job.sector === 'Government' || job.jobType === 'Government Jobs'" class="bi bi-fire" aria-hidden="true"></i>{{ job.totalPosts }} {{ job.totalPosts === 1 ? 'job' : 'jobs' }}</span><span *ngIf="first && page === 1" class="tag tag-new">New</span></div><div class="job-title-line"><a class="job-title-link" [routerLink]="jobLink(job)">{{ job.title || 'Untitled opportunity' }}</a></div><div class="job-listing-meta"><span>{{ job.jobType || 'Opportunity' }}</span><span *ngIf="job.privateJobType">{{ job.privateJobType }}</span><span *ngIf="job.experience">{{ job.experience }}</span><span>Posted: {{ postedDate(job.createdDate) }}</span></div></div>
                 </div></td>
-                <td class="job-deadline"><span *ngIf="job.walkInDate">Walk-in: {{ postedDate(job.walkInDate) }}</span><span *ngIf="job.lastDateToApply">Apply by: {{ postedDate(job.lastDateToApply) }}</span><span *ngIf="!job.walkInDate && !job.lastDateToApply">—</span></td>
                 <td><div class="job-row-actions"><button class="icon-button" type="button" title="Share job" aria-label="Share job" (click)="shareJob(job)"><i class="bi bi-share" aria-hidden="true"></i></button><a class="icon-button view-job" [routerLink]="jobLink(job)" title="View job details" aria-label="View job details"><i class="bi bi-eye" aria-hidden="true"></i><span>View</span></a></div></td>
               </tr>
             </tbody>

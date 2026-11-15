@@ -47,7 +47,14 @@
 .admin-table-heading span { color: #687581; font-size: 9px; }
 .career-toolbar { gap: 14px; padding-top: 23px; }
 .career-toolbar .admin-table-heading { border: 0; gap: 12px; padding: 0; }
-.career-toolbar + .admin-job-list { margin-top: 6px; }
+.career-table-scroll { margin-top: 6px; overflow-x: auto; }
+.career-table { min-width: 980px; }
+.career-table-head, .career-table-row { align-items: center; display: grid; gap: 12px; grid-template-columns: minmax(140px, 1.15fr) minmax(155px, 1.4fr) minmax(85px, .7fr) minmax(110px, .8fr) minmax(90px, .7fr) 92px; }
+.career-table-head { background: #edf1f3; color: #536258; font-size: 9px; font-weight: 700; min-height: 38px; padding: 8px; }
+.career-table-row { background: #fff; border-top: 1px solid #d9e0e7; color: #687581; font-size: 9px; min-height: 58px; padding: 8px; }
+.career-table-row strong { color: #202a34; font: 400 12px Georgia, 'Times New Roman', serif; overflow-wrap: anywhere; }
+.career-table-row > a { color: #16466b; overflow-wrap: anywhere; }
+.career-table-row .admin-job-actions { gap: 8px; }
 .admin-job-list { background: #fff; border-top: 1px solid #d9e0e7; }
 .admin-job-row { align-items: center; border-bottom: 1px solid #d9e0e7; display: flex; gap: 12px; min-height: 68px; padding: 11px 8px; }
 .admin-job-badge { align-items: center; background: #e4ecdf; border: 1px solid #d5e0d1; border-radius: 5px; color: #16466b; display: flex; flex: 0 0 42px; font: 20px Georgia, 'Times New Roman', serif; height: 42px; justify-content: center; overflow: hidden; text-transform: uppercase; }

@@ -8,10 +8,12 @@
 .career-section-heading h2 { color: #202a34; font: 400 23px Georgia, 'Times New Roman', serif; margin: 0; }
 .career-section-heading span { color: #687581; font-size: 11px; }
 .career-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
-.career-card { background: #fff; border: 1px solid #d9e0e7; border-radius: 5px; color: #202a34; display: grid; gap: 10px; min-height: 100px; padding: 18px 42px 18px 18px; position: relative; text-decoration: none; }
+.career-card { background: #fff; border: 1px solid #d9e0e7; border-radius: 5px; color: #202a34; display: grid; gap: 8px; min-height: 138px; padding: 16px 42px 16px 18px; position: relative; text-decoration: none; }
 .career-card:hover, .career-card:focus-visible { border-color: #16466b; box-shadow: 0 3px 12px rgba(25,45,65,.09); color: #16466b; }
 .career-card strong { font: 400 17px Georgia, 'Times New Roman', serif; overflow-wrap: anywhere; }
 .career-card span { color: #536258; font-size: 11px; overflow-wrap: anywhere; }
+.career-card .career-detail { color: #c85131; font-size: 10px; font-weight: 700; }
+.career-card .career-official-url { color: #536258; font-size: 10px; }
 .career-card i { color: #16466b; font-size: 15px; position: absolute; right: 18px; top: 18px; }
 .career-state, .career-empty { color: #687581; font-size: 13px; padding: 18px 0; }
 @media (max-width: 650px) { .career-page-inner { padding: 28px 16px 55px; } .career-heading h1 { font-size: 28px; } .career-section { margin-top: 26px; } }

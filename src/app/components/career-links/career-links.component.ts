@@ -8,6 +8,8 @@ interface CareerLink {
   companyName: string;
   officialUrl: string;
   sector?: 'Government' | 'Private';
+  governmentType?: string;
+  state?: string;
 }
 
 @Component({

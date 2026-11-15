@@ -12,13 +12,15 @@ interface CareerLink {
   id: string;
   companyName: string;
   officialUrl: string;
-  sector?: 'Government' | 'Private';
-  jobType?: string;
+  sector: 'Government' | 'Private';
+  governmentType?: string;
+  state?: string;
 }
 
 const GOVERNMENT_JOB_TYPES = ['Government Jobs', 'Results', 'Syllabus'];
 const PRIVATE_JOB_TYPES = ['IT Jobs', 'Non-IT Jobs', 'Pharma Jobs', 'Sales Jobs', 'Pharmaceutical Jobs', 'Bank Jobs', 'Other'];
 const JOB_TYPES = [...GOVERNMENT_JOB_TYPES, ...PRIVATE_JOB_TYPES];
+const CAREER_COLUMNS = ['Company Name', 'Official URL', 'Sector', 'Government Type', 'State'] as const;
 
 const JOB_ICONS = [
   ['bi-briefcase-fill', 'Briefcase'], ['bi-building', 'Building'], ['bi-bank', 'Bank'], ['bi-laptop', 'Laptop'],
@@ -54,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   jobs: Job[] = [];
   careerLinks: CareerLink[] = [];
   activeTab: 'jobs' | 'careerLinks' = 'jobs';
-  careerDraft = { companyName: '', officialUrl: '', sector: 'Government' as 'Government' | 'Private', jobType: 'Government Jobs' };
+  careerDraft = { companyName: '', officialUrl: '', sector: 'Government' as 'Government' | 'Private', governmentType: '', state: '' };
   editingCareerId: string | null = null;
   careerFormOpen = false;
   savingCareer = false;
@@ -165,18 +167,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     }, () => this.showNotice('Could not load career links. Check your database access rules.', 'error'));
   }
 
-  startCreateCareer(): void {
-    this.careerDraft = { companyName: '', officialUrl: '', sector: 'Government', jobType: 'Government Jobs' };
+  startCreateCareer(sector: 'Government' | 'Private'): void {
+    this.careerDraft = { companyName: '', officialUrl: '', sector, governmentType: '', state: '' };
     this.editingCareerId = null;
     this.careerFormOpen = true;
     this.dismissNotice();
   }
 
   startEditCareer(link: CareerLink): void {
-    const sector = link.sector || 'Government';
     this.careerDraft = {
-      companyName: link.companyName, officialUrl: link.officialUrl, sector,
-      jobType: link.jobType || (sector === 'Private' ? 'IT Jobs' : 'Government Jobs')
+      companyName: link.companyName, officialUrl: link.officialUrl, sector: link.sector || 'Government',
+      governmentType: link.governmentType || '', state: link.state || ''
     };
     this.editingCareerId = link.id;
     this.careerFormOpen = true;
@@ -189,22 +190,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.editingCareerId = null;
   }
 
-  onCareerSectorChange(): void {
-    this.careerDraft.jobType = this.careerDraft.sector === 'Government' ? 'Government Jobs' : 'IT Jobs';
-  }
-
   async saveCareer(): Promise<void> {
     if (this.savingCareer) return;
     const companyName = this.careerDraft.companyName.trim();
     const officialUrl = this.careerDraft.officialUrl.trim();
     if (!companyName || !/^https?:\/\/\S+$/i.test(officialUrl)) {
-      this.showNotice('Enter a company name and a valid official URL.', 'error');
+      this.showNotice('Enter a company name and a valid Official URL.', 'error');
       return;
     }
     this.savingCareer = true;
     const wasEditing = Boolean(this.editingCareerId);
     try {
-      const record = { companyName, officialUrl, sector: this.careerDraft.sector, jobType: this.careerDraft.jobType };
+      const record = {
+        companyName, officialUrl, sector: this.careerDraft.sector,
+        governmentType: this.careerDraft.governmentType.trim(), state: this.careerDraft.state.trim()
+      };
       if (this.editingCareerId) await set(ref(db, `careerLinks/${this.editingCareerId}`), record);
       else await push(ref(db, 'careerLinks'), record);
       this.closeCareerFormAfterSave();
@@ -219,7 +219,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private closeCareerFormAfterSave(): void {
     this.careerFormOpen = false;
-    this.careerDraft = { companyName: '', officialUrl: '', sector: 'Government', jobType: 'Government Jobs' };
+    this.careerDraft = { companyName: '', officialUrl: '', sector: 'Government', governmentType: '', state: '' };
     this.editingCareerId = null;
   }
 
@@ -234,12 +234,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   exportCareers(): void {
-    const rows = this.careerLinks.map(({ companyName, officialUrl, sector, jobType }) => ({
-      'Company name': companyName, 'Official URL': officialUrl,
-      Sector: sector || 'Government', 'Job type': jobType || (sector === 'Private' ? 'IT Jobs' : 'Government Jobs')
+    const rows = this.careerLinks.map(({ companyName, officialUrl, sector, governmentType, state }) => ({
+      'Company Name': companyName, 'Official URL': officialUrl, Sector: sector || 'Government',
+      'Government Type': governmentType || '', State: state || ''
     }));
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: ['Company name', 'Official URL', 'Sector', 'Job type'] }), 'Career Links');
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: [...CAREER_COLUMNS] }), 'Career Links');
     XLSX.writeFile(workbook, `career-links-${new Date().toISOString().slice(0, 10)}.xls`, { bookType: 'xls' });
   }
 
@@ -250,25 +250,84 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (!file || this.importingCareers) return;
     this.importingCareers = true;
     this.dismissNotice();
+    let imported = 0;
     try {
       const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' });
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: '' });
-      let imported = 0;
-      for (const row of rows) {
-        const companyName = this.excelValue(row, ['CompanyName', 'Company Name']).trim();
-        const officialUrl = this.excelValue(row, ['OfficialURL', 'Official URL']).trim();
-        if (!companyName || !/^https?:\/\/\S+$/i.test(officialUrl)) continue;
-        const sector = this.excelValue(row, ['Sector']).trim() === 'Private' ? 'Private' : 'Government';
-        const importedType = this.excelValue(row, ['Job type']).trim();
-        const types = sector === 'Government' ? GOVERNMENT_JOB_TYPES : PRIVATE_JOB_TYPES;
-        const jobType = types.includes(importedType) ? importedType : types[0];
-        await push(ref(db, 'careerLinks'), { companyName, officialUrl, sector, jobType });
-        imported += 1;
+      let skipped = 0;
+      let foundHeaders = false;
+      let foundData = false;
+      let observedHeaders = '';
+      for (const sheetName of workbook.SheetNames) {
+        const sheet = workbook.Sheets[sheetName];
+        const rows = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1, defval: '' });
+        if (!observedHeaders) {
+          observedHeaders = rows.slice(0, 10)
+            .map((row) => row.map((value) => String(value ?? '').trim()).filter(Boolean).join(' | '))
+            .filter(Boolean).slice(0, 2).join(' / ').slice(0, 180);
+        }
+        const headerIndex = rows.findIndex((row) => {
+          const headers = row.map((value) => this.normalizeExcelHeader(value));
+          const hasCompany = headers.some((header) =>
+            ['companyname', 'company', 'organizationname', 'organisationname', 'organization', 'organisation', 'department', 'name', 'nameoforganization', 'nameoforganisation', 'institutionname', 'agencyname', 'authorityname', 'ministryname', 'boardname'].includes(header) ||
+            /(company|organization|organisation|department|institution|agency|authority|ministry|board|commission|employer)/.test(header)
+          );
+          const hasUrl = headers.some((header) =>
+            /(url|website|webpage|weblink|portal|site|hyperlink|link)/.test(header)
+          );
+          return hasCompany && hasUrl;
+        });
+        if (headerIndex < 0) continue;
+
+        foundHeaders = true;
+        const headers = rows[headerIndex].map((value) => this.normalizeExcelHeader(value));
+        const column = (names: string[], pattern?: RegExp): number => {
+          const exactIndex = headers.findIndex((header) => names.some((name) => header === this.normalizeExcelHeader(name)));
+          return exactIndex >= 0 ? exactIndex : pattern ? headers.findIndex((header) => pattern.test(header)) : -1;
+        };
+        const companyColumn = column(
+          ['Company Name', 'Company', 'Organization Name', 'Organisation Name', 'Organization', 'Organisation', 'Department', 'Name', 'Name of Organization', 'Name of Organisation', 'Institution Name', 'Agency Name', 'Authority Name', 'Ministry Name', 'Board Name'],
+          /(company|organization|organisation|department|institution|agency|authority|ministry|board|commission|employer)/
+        );
+        const officialColumn = column(
+          ['Official URL', 'Official Website', 'Website', 'Official Site', 'Official Website URL', 'Website URL', 'Official Website Link', 'Official Link'],
+          /(official|website|webpage|weblink|url|link)/
+        );
+        const sectorColumn = column(['Sector', 'Category']);
+        const governmentTypeColumn = column(['Government Type', 'Organization Type', 'Organisation Type', 'Type of Government']);
+        const stateColumn = column(
+          ['State', 'State Name', 'State/UT', 'State / UT', 'State/UT Name', 'State / UT Name', 'Union Territory', 'Location'],
+          /(state|unionterritory|location)/
+        );
+
+        for (const row of rows.slice(headerIndex + 1)) {
+          if (!row.some((value) => String(value ?? '').trim())) continue;
+          foundData = true;
+          const companyName = String(row[companyColumn] ?? '').trim();
+          const officialUrl = this.normalizeImportedUrl(officialColumn >= 0 ? row[officialColumn] : '');
+          if (!companyName || !officialUrl) {
+            skipped += 1;
+            continue;
+          }
+          const sector = String(row[sectorColumn] ?? '').trim().toLowerCase().includes('private') ? 'Private' : 'Government';
+          const governmentType = String(row[governmentTypeColumn] ?? '').trim();
+          const state = String(stateColumn >= 0 ? row[stateColumn] : '').trim();
+          await push(ref(db, 'careerLinks'), { companyName, officialUrl, sector, governmentType, state });
+          imported += 1;
+        }
       }
-      this.showNotice(`Imported ${imported} career links.`, 'success');
+      if (!foundHeaders) {
+        this.showNotice(`No data imported. Could not identify company and website columns. Found: ${observedHeaders || 'no readable headers'}.`, 'error');
+      } else if (!foundData) {
+        this.showNotice('No career data rows found below the column headers.', 'error');
+      } else if (!imported) {
+        this.showNotice(`No career links imported. ${skipped} row(s) have a missing company name or invalid URL.`, 'error');
+      } else if (skipped) {
+        this.showNotice(`Imported ${imported} career links. Skipped ${skipped} row(s) with missing company names or invalid URLs.`, 'info');
+      } else {
+        this.showNotice(`Imported ${imported} career links.`, 'success');
+      }
     } catch {
-      this.showNotice('Could not import career links. Check the spreadsheet and try again.', 'error');
+      this.showNotice(imported ? `Imported ${imported} career links before an error. Check database permissions and retry the remaining rows.` : 'Could not import career links. Check the spreadsheet and database permissions.', 'error');
     } finally {
       this.importingCareers = false;
       this.cdr.detectChanges();
@@ -542,13 +601,25 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private excelValue(row: Record<string, unknown>, names: string[]): string {
-    const entries = Object.entries(row).map(([key, value]) => [key.toLowerCase().replace(/[^a-z0-9]/g, ''), String(value ?? '')]);
+    const entries = Object.entries(row).map(([key, value]) => [this.normalizeExcelHeader(key), String(value ?? '')]);
     for (const name of names) {
-      const key = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const key = this.normalizeExcelHeader(name);
       const match = entries.find(([entry]) => entry === key);
       if (match) return match[1];
     }
     return '';
+  }
+
+  private normalizeExcelHeader(value: unknown): string {
+    return String(value ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  private normalizeImportedUrl(value: unknown): string {
+    const url = String(value ?? '').trim();
+    if (!url) return '';
+    if (/^[a-z][a-z0-9+.-]*:\/\//i.test(url) && !/^https?:\/\//i.test(url)) return '';
+    const normalized = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+    return /^https?:\/\/\S+$/i.test(normalized) ? normalized : '';
   }
 
   private time(value?: string): number {

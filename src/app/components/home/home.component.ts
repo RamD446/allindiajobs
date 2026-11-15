@@ -76,6 +76,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.filteredJobs.slice(start, start + this.pageSize);
   }
 
+  get listingHeading(): string {
+    if (this.appliedQuery) return 'Search results';
+    switch (this.filter) {
+      case 'Government Jobs': return 'Latest government jobs';
+      case 'Walk-ins': return 'Latest walk-in jobs';
+      case 'Freshers': return 'Latest fresher jobs';
+      case 'Experienced': return 'Latest experienced jobs';
+      default: return 'All latest jobs';
+    }
+  }
+
   get recentGovernmentJobs(): Job[] {
     return this.jobs.filter((job) => job.jobType === 'Government Jobs').slice(0, 10);
   }

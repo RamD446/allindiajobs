@@ -23,26 +23,24 @@
           <button type="submit" aria-label="Search jobs"><i class="bi bi-search" aria-hidden="true"></i></button>
         </form>
 
-        <div class="jobs-toolbar"><span>Sorted by newest</span></div>
+        <div class="jobs-toolbar"><span>Sorted by newest: {{ listingHeading }}</span></div>
 
         <div *ngIf="!filteredJobs.length" class="state-panel"><strong>No matching jobs yet.</strong><span>Try another category or search term.</span></div>
 
-        <div class="job-list" *ngIf="!loading && !error">
-          <article class="job-row" *ngFor="let job of visibleJobs; let first = first">
-            <div class="job-card-heading">
-              <span class="company-badge" aria-hidden="true">
-                <img *ngIf="jobImage(job) as image; else jobIcon" [src]="image" [alt]="job.company" loading="lazy">
-                <ng-template #jobIcon><i *ngIf="job.jobIcon; else fallbackInitial" class="bi" [ngClass]="job.jobIcon"></i><ng-template #fallbackInitial>{{ companyInitial(job) }}</ng-template></ng-template>
-              </span>
-              <div class="job-meta-top"><span class="job-company">{{ job.company || 'Employer' }}</span><span *ngIf="job.walkInDrive" class="tag tag-walkin">Walk-in</span><span *ngIf="first && page === 1" class="tag tag-new">New</span></div>
-            </div>
-            <a class="job-title-link" [routerLink]="jobLink(job)">{{ job.title || 'Untitled opportunity' }}</a>
-            <div class="job-meta-bottom"><span>{{ job.jobType || 'Opportunity' }}</span><i *ngIf="job.experience"></i><span *ngIf="job.experience">{{ job.experience }}</span><i *ngIf="job.walkInDate"></i><span *ngIf="job.walkInDate">Walk-in {{ postedDate(job.walkInDate) }}</span></div>
-            <div class="job-card-footer"><span class="posted-date">Posted {{ postedDate(job.createdDate) }}</span><div class="job-row-actions">
-              <button class="icon-button" type="button" title="Share job" aria-label="Share job" (click)="shareJob(job)"><i class="bi bi-share" aria-hidden="true"></i></button>
-              <a class="icon-button view-job" [routerLink]="jobLink(job)" title="View job details"><i class="bi bi-eye" aria-hidden="true"></i><span>Details</span></a>
-            </div></div>
-          </article>
+        <div class="job-table-scroll" *ngIf="!loading && !error">
+          <table class="job-table" aria-label="Job listings">
+            <thead><tr><th scope="col">Job title</th><th scope="col">Walk-in / Apply by</th><th scope="col">Actions</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let job of visibleJobs; let first = first">
+                <td><div class="job-table-identity">
+                  <span class="company-badge" aria-hidden="true"><img *ngIf="jobImage(job) as image; else jobIcon" [src]="image" [alt]="job.company" loading="lazy"><ng-template #jobIcon><i *ngIf="job.jobIcon; else fallbackInitial" class="bi" [ngClass]="job.jobIcon"></i><ng-template #fallbackInitial>{{ companyInitial(job) }}</ng-template></ng-template></span>
+                  <div class="job-identity-copy"><div class="job-company-line"><span class="job-company">{{ job.company || 'Employer' }}</span><span *ngIf="first && page === 1" class="tag tag-new">New</span></div><a class="job-title-link" [routerLink]="jobLink(job)">{{ job.title || 'Untitled opportunity' }}</a><div class="job-listing-meta"><span>{{ job.jobType || 'Opportunity' }}</span><span *ngIf="job.privateJobType">{{ job.privateJobType }}</span><span *ngIf="job.experience">{{ job.experience }}</span><span>Posted {{ postedDate(job.createdDate) }}</span></div></div>
+                </div></td>
+                <td class="job-deadline"><span *ngIf="job.walkInDate">Walk-in: {{ postedDate(job.walkInDate) }}</span><span *ngIf="job.lastDateToApply">Apply by: {{ postedDate(job.lastDateToApply) }}</span><span *ngIf="!job.walkInDate && !job.lastDateToApply">—</span></td>
+                <td><div class="job-row-actions"><button class="icon-button" type="button" title="Share job" aria-label="Share job" (click)="shareJob(job)"><i class="bi bi-share" aria-hidden="true"></i></button><a class="icon-button view-job" [routerLink]="jobLink(job)" title="View job details" aria-label="View job details"><i class="bi bi-eye" aria-hidden="true"></i><span>View</span></a></div></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <nav *ngIf="pageCount > 1" class="pagination" aria-label="Job pages">

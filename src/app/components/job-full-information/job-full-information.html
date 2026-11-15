@@ -32,7 +32,7 @@
       </section>
     </article>
 
-    <aside class="related-sidebar"><p class="eyebrow">KEEP EXPLORING</p><h2>Recent openings</h2><a class="related-job" *ngFor="let item of recentJobs" [routerLink]="jobLink(item)"><span>{{ item.company }}</span><strong class="related-job-title"><i class="bi bi-chevron-right" aria-hidden="true"></i><span>{{ item.title }}</span></strong><small>{{ displayDate(item.createdDate) }}</small></a><a class="all-jobs-link" routerLink="/">Browse all jobs <span>→</span></a></aside>
+    <aside class="related-sidebar"><p class="eyebrow">KEEP EXPLORING</p><h2>Recent openings</h2><article class="related-job" *ngFor="let item of recentOpenings"><a class="related-job-link" [routerLink]="jobLink(item)"><i class="bi bi-chevron-right" aria-hidden="true"></i><span class="related-job-copy"><strong>{{ item.title }}</strong><small>{{ item.company }} · {{ displayDate(item.createdDate) }}</small></span></a><a *ngIf="item.otherLink" class="related-apply-link" [href]="item.otherLink" target="_blank" rel="noopener noreferrer">Apply <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a></article><a class="all-jobs-link" routerLink="/">Browse all jobs <span>→</span></a></aside>
   </div>
 </main>
 

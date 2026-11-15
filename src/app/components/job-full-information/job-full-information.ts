@@ -74,7 +74,7 @@ export class JobFullInformation implements OnInit, OnDestroy {
       const data = snapshot.val() as Record<string, Omit<Job, 'id'>> | null;
       this.recentJobs = data ? Object.entries(data).map(([id, item]) => ({ id, ...item })) : [];
       this.recentJobs = this.recentJobs.filter((job) => job.id !== jobId)
-        .sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate)).slice(0, 10);
+        .sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate)).slice(0, 20);
       this.cdr.detectChanges();
     }, () => {
       this.recentJobs = [];
@@ -97,8 +97,6 @@ export class JobFullInformation implements OnInit, OnDestroy {
   get detailRows(): Array<[string, string]> {
     if (!this.job) return [];
     const rows: Array<[string, string]> = [];
-    if (this.job.company) rows.push(['Company', this.job.company]);
-    if (this.job.createdBy) rows.push(['Job posted by', this.job.createdBy]);
     for (const line of this.plainText(this.job.fullInformationTableFormat || '').split('\n')) {
       const divider = line.indexOf(':');
       if (divider > 0) {
@@ -111,7 +109,11 @@ export class JobFullInformation implements OnInit, OnDestroy {
   }
 
   get popularCompanies(): string[] {
-    return [...new Set(this.recentJobs.map((job) => job.company?.trim()).filter((value): value is string => Boolean(value)))].slice(0, 6);
+    return [...new Set(this.recentJobs.map((job) => job.company?.trim()).filter((value): value is string => Boolean(value)))].slice(0, 20);
+  }
+
+  get recentOpenings(): Job[] {
+    return this.recentJobs.slice(0, 10);
   }
 
   imageSource(value?: string): string | null {

@@ -15,23 +15,26 @@
 .search-bar input { background: transparent; border: 0; color: #202a34; flex: 1; font-size: 12px; min-width: 0; outline: 0; }
 .search-bar button { align-items: center; background: #c85131; border: 0; border-radius: 3px; color: #fff; cursor: pointer; display: inline-flex; height: 38px; justify-content: center; width: 42px; }
 .jobs-toolbar { align-items: center; color: #687581; display: flex; font-size: 10px; justify-content: space-between; min-height: 48px; }
-.job-list { display: grid; gap: 10px; }
-.job-row { background: #fff; border: 1px solid #d9e0e7; border-radius: 5px; display: grid; gap: 8px; padding: 14px; transition: border-color 180ms ease, box-shadow 180ms ease; }
-.job-row:hover { border-color: #b7c8d7; box-shadow: 0 4px 12px rgba(25,45,65,.09); }
-.job-card-heading { align-items: center; display: flex; gap: 11px; min-width: 0; }
-.company-badge { align-items: center; background: #e4ecdf; border: 1px solid #d5e0d1; border-radius: 5px; color: #16466b; display: flex; flex: 0 0 42px; font: 20px Georgia, 'Times New Roman', serif; height: 42px; justify-content: center; overflow: hidden; text-transform: uppercase; }
+.job-table-scroll { overflow-x: auto; }
+.job-table { background: #fff; border-collapse: collapse; min-width: 790px; table-layout: fixed; width: 100%; }
+.job-table th { background: #edf1f4; color: #536258; font-size: 9px; font-weight: 700; padding: 10px; text-align: left; }
+.job-table td { border-top: 1px solid #d9e0e7; color: #536258; font-size: 10px; line-height: 1.4; overflow-wrap: anywhere; padding: 9px 10px; vertical-align: middle; }
+.job-table tbody tr:hover td { background: #f8fafb; }
+.job-table th:first-child { width: 58%; }
+.job-table th:nth-child(2) { width: 27%; }
+.job-table th:last-child { width: 15%; }
+.job-table-identity { align-items: center; display: flex; gap: 9px; min-width: 0; }
+.job-identity-copy { min-width: 0; }
+.company-badge { align-items: center; background: #e4ecdf; border: 1px solid #d5e0d1; border-radius: 4px; color: #16466b; display: flex; flex: 0 0 32px; font: 16px Georgia, 'Times New Roman', serif; height: 32px; justify-content: center; overflow: hidden; text-transform: uppercase; }
 .company-badge img { height: 100%; object-fit: contain; width: 100%; }
-.job-meta-top, .job-meta-bottom { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
-.job-company { color: #536258; font-size: 10px; font-weight: 650; }
+.job-company-line { align-items: center; display: flex; flex-wrap: wrap; gap: 7px; }
+.job-company { color: #536258; font-size: 10px; font-weight: 700; }
 .tag { border-radius: 2px; font-size: 8px; font-weight: 700; line-height: 1; padding: 4px 6px; }
-.tag-walkin { background: #f8e5d7; color: #8c431f; }
 .tag-new { background: #e6edc9; color: #435b24; }
-.job-title-link { color: #202a34; display: block; font: 18px/1.35 Georgia, 'Times New Roman', serif; overflow-wrap: anywhere; text-decoration: none; }
+.job-title-link { color: #202a34; display: block; font: 14px/1.35 Georgia, 'Times New Roman', serif; margin-top: 2px; overflow-wrap: anywhere; text-decoration: none; }
 .job-title-link:hover { color: #16466b; text-decoration: underline; text-underline-offset: 3px; }
-.job-meta-bottom { color: #687581; font-size: 9px; min-height: 14px; }
-.job-meta-bottom i { background: #a6b0a7; border-radius: 50%; height: 3px; width: 3px; }
-.job-card-footer { align-items: center; border-top: 1px solid #edf1f4; display: flex; gap: 10px; justify-content: space-between; padding-top: 7px; }
-.posted-date { color: #7d887f; font-size: 9px; }
+.job-listing-meta { color: #687581; display: flex; flex-wrap: wrap; font-size: 9px; gap: 3px 8px; line-height: 1.35; margin-top: 3px; }
+.job-deadline span { color: #687581; display: block; font-size: 9px; margin-top: 3px; }
 .job-row-actions { align-items: center; display: flex; gap: 9px; }
 .icon-button { align-items: center; background: transparent; border: 1px solid #d9e0e7; border-radius: 3px; color: #16466b; cursor: pointer; display: inline-flex; font-size: 14px; height: 30px; justify-content: center; text-decoration: none; width: 30px; }
 .icon-button:hover { background: #e5ecdf; }
@@ -69,8 +72,23 @@
   .whatsapp-follow-icon { flex-basis: 30px; height: 30px; }
   .whatsapp-follow-action { font-size: 0; gap: 0; padding: 9px; }
   .whatsapp-follow-action i { font-size: 14px; }
-  .job-title-link { font-size: 16px; }
-  .job-row { padding: 12px; }
+  .job-table-scroll { overflow-x: hidden; }
+  .job-table { min-width: 0; width: 100%; }
+  .job-table th { font-size: 8px; padding: 7px 4px; }
+  .job-table td { font-size: 9px; padding: 7px 4px; }
+  .job-table th:first-child { width: 52%; }
+  .job-table th:nth-child(2) { width: 25%; }
+  .job-table th:last-child { width: 23%; }
+  .job-table-identity { gap: 5px; }
+  .company-badge { flex-basis: 24px; font-size: 12px; height: 24px; }
+  .job-company { font-size: 9px; }
+  .job-title-link { font-size: 12px; }
+  .job-listing-meta { font-size: 8px; gap: 2px 5px; }
+  .job-deadline span { font-size: 8px; }
+  .job-row-actions { gap: 3px; }
+  .job-row-actions .icon-button { height: 24px; width: 24px; }
+  .job-row-actions .view-job span { display: none; }
+  .job-row-actions .view-job { padding: 0; }
   .pagination { gap: 8px; }
   .pagination button { padding: 0 8px; }
 }

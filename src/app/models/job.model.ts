@@ -18,6 +18,7 @@ export interface Job {
   description: string;
   otherLink?: string;
   applyPdfLink?: string;
+  youtubeUrl?: string;
   createdBy?: string;
   createdDate: string;
   updatedDate?: string;

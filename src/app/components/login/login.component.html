@@ -92,6 +92,7 @@
         <fieldset class="experience-picker editor-wide"><legend>Experience type</legend><label><input type="checkbox" [checked]="isExperienceSelected('Freshers')" (change)="toggleExperience('Freshers', $any($event.target).checked)"> Fresher</label><label><input type="checkbox" [checked]="isExperienceSelected('Experienced')" (change)="toggleExperience('Experienced', $any($event.target).checked)"> Experienced</label></fieldset>
         <label><span>Official application URL</span><input type="url" [(ngModel)]="draft.otherLink" name="otherLink"></label>
         <label><span>PDF URL</span><input type="url" [(ngModel)]="draft.applyPdfLink" name="applyPdfLink"></label>
+        <label><span>YouTube video URL (optional)</span><input type="url" [(ngModel)]="draft.youtubeUrl" name="youtubeUrl" placeholder="https://www.youtube.com/watch?v=..."></label>
         <label><span>Created by</span><input [(ngModel)]="draft.createdBy" name="createdBy"></label>
         <fieldset class="job-icon-picker editor-wide"><legend>Job icon</legend><div class="job-icon-options"><label *ngFor="let icon of jobIcons" class="job-icon-option" [class.selected]="draft.jobIcon === icon.id" [title]="icon.label"><input class="visually-hidden" type="radio" name="jobIcon" [value]="icon.id" [(ngModel)]="draft.jobIcon"><i class="bi" [ngClass]="icon.id"></i><span>{{ icon.label }}</span></label></div></fieldset>
         <label class="editor-wide"><span>Description</span><textarea rows="5" [(ngModel)]="draft.description" name="description"></textarea></label>

@@ -142,4 +142,32 @@ describe('LoginComponent job editor', () => {
     component.onSectorChange();
     expect(component.draft.privateJobType).toBeNull();
   });
+
+  it('leaves the video empty by default and preserves a supplied video through save and edit', async () => {
+    const fixture = await createEditor();
+    const component = fixture.componentInstance;
+    expect(component.draft.youtubeUrl).toBe('');
+    component.draft.title = 'New role';
+    component.draft.company = 'Employer';
+    const youtubeUrl = 'https://www.youtube.com/watch?v=8Tr_JiktpBk&list=PLVlQHNRLflP-jc5Fbhfdhzv52AWYq836j&index=2';
+    component.draft.youtubeUrl = youtubeUrl;
+    const save = vi.spyOn(database, 'set');
+    await component.saveJob();
+    expect(save).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ youtubeUrl }));
+    component.startEdit(component.jobs[0]);
+    expect(component.draft.youtubeUrl).toBe(youtubeUrl);
+  });
+
+  it('rejects invalid video URLs without publishing', async () => {
+    const fixture = await createEditor();
+    const component = fixture.componentInstance;
+    component.draft.title = 'New role';
+    component.draft.youtubeUrl = 'https://example.test/video';
+    const save = vi.spyOn(database, 'set');
+    await component.saveJob();
+    expect(save).not.toHaveBeenCalled();
+    expect(component.noticeType).toBe('error');
+    expect(component.notice).toContain('valid YouTube video URL');
+    expect(component.formOpen).toBe(true);
+  });
 });

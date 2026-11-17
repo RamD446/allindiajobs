@@ -31,6 +31,15 @@ Job sharing includes the title, job-details link, available application/walk-in
 dates, and a message encouraging sharing with job seekers. Browsers without
 native sharing copy the complete message to the clipboard instead.
 
+Create/Edit job includes an optional YouTube video URL, empty by default.
+Valid watch, short-link, Shorts, live, and embed URLs display a responsive video
+on the job-details page using YouTube's privacy-enhanced player. Spreadsheet
+import/export preserves this field as `YouTube URL`.
+The site's Content Security Policy permits `https://www.youtube-nocookie.com`
+in `frame-src` for this embedded player.
+The video section also offers a direct YouTube link for browsers that cannot
+play the embed, including embedded previews with limited media-codec support.
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:

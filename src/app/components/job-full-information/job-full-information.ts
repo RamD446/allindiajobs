@@ -7,6 +7,8 @@ import { db } from '../../../config/firebase.config';
 import { Job, JobComment } from '../../models/job.model';
 import { Subscription } from 'rxjs';
 import { shareJobMessage } from '../../utils/job-share';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { youtubeEmbedUrl } from '../../utils/youtube';
 
 @Component({
   selector: 'app-job-full-information',
@@ -30,7 +32,22 @@ export class JobFullInformation implements OnInit, OnDestroy {
   private stopRecentJobs: (() => void) | null = null;
   private stopComments: (() => void) | null = null;
 
-  constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private sanitizer: DomSanitizer) {}
+
+  private cachedYoutubeUrl = '';
+  private cachedVideoUrl: SafeResourceUrl | null = null;
+  videoWatchUrl = '';
+
+  get videoUrl(): SafeResourceUrl | null {
+    const value = this.job?.youtubeUrl || '';
+    if (value !== this.cachedYoutubeUrl) {
+      this.cachedYoutubeUrl = value;
+      const embedUrl = youtubeEmbedUrl(value);
+      this.cachedVideoUrl = embedUrl ? this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl) : null;
+      this.videoWatchUrl = embedUrl ? `https://www.youtube.com/watch?v=${embedUrl.split('/').pop()}` : '';
+    }
+    return this.cachedVideoUrl;
+  }
 
   ngOnInit(): void {
     this.routeSubscription = this.route.paramMap.subscribe((params) => {
@@ -53,6 +70,7 @@ export class JobFullInformation implements OnInit, OnDestroy {
   private loadJob(jobId: string): void {
     this.loading = true;
     this.job = null;
+    this.recentJobs = [];
     this.comments = [];
     this.commentError = '';
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -63,7 +81,7 @@ export class JobFullInformation implements OnInit, OnDestroy {
     this.stopComments?.();
 
     this.stopJob = onValue(ref(db, `jobs/${jobId}`), (snapshot) => {
-      this.job = snapshot.exists() ? { id: jobId, ...snapshot.val() } as Job : null;
+      this.job = snapshot.exists() ? { ...snapshot.val(), id: jobId } as Job : null;
       this.loading = false;
       this.cdr.detectChanges();
     }, () => {
@@ -74,7 +92,7 @@ export class JobFullInformation implements OnInit, OnDestroy {
 
     this.stopRecentJobs = onValue(ref(db, 'jobs'), (snapshot) => {
       const data = snapshot.val() as Record<string, Omit<Job, 'id'>> | null;
-      this.recentJobs = data ? Object.entries(data).map(([id, item]) => ({ id, ...item })) : [];
+      this.recentJobs = data ? Object.entries(data).map(([id, item]) => ({ ...item, id })) : [];
       this.recentJobs = this.recentJobs.filter((job) => job.id !== jobId)
         .sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate)).slice(0, 20);
       this.cdr.detectChanges();
@@ -117,6 +135,15 @@ export class JobFullInformation implements OnInit, OnDestroy {
 
   get recentOpenings(): Job[] {
     return this.recentJobs.slice(0, 10);
+  }
+
+  get readAlsoJob(): Job | undefined {
+    const currentJob = this.job;
+    if (!currentJob) return undefined;
+    const currentTitle = currentJob.title.trim().toLowerCase();
+    return this.recentJobs.find((job) =>
+      job.id !== currentJob.id && job.title.trim().toLowerCase() !== currentTitle
+    );
   }
 
   imageSource(value?: string): string | null {

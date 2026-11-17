@@ -7,6 +7,7 @@ import { onValue, push, ref, remove, set, update } from 'firebase/database';
 import * as XLSX from 'xlsx';
 import { auth, db } from '../../../config/firebase.config';
 import { GOVERNMENT_JOB_TYPES, Job, PRIVATE_JOB_TYPES } from '../../models/job.model';
+import { youtubeEmbedUrl } from '../../utils/youtube';
 
 interface CareerLink {
   id: string;
@@ -31,7 +32,7 @@ function emptyDraft(): Job {
     id: '', title: '', company: '', companyImage: '', jobIcon: 'bi-globe', sector: 'Government',
     privateJobType: null, jobType: 'Government Jobs', experience: '', totalPosts: null, fullInformationTableFormat: '',
     fullJobInformation: '', walkInDrive: false, walkInDate: '', lastDateToApply: '', description: '',
-    otherLink: '', applyPdfLink: '', createdBy: DEFAULT_CREATED_BY, createdDate: ''
+    otherLink: '', applyPdfLink: '', youtubeUrl: '', createdBy: DEFAULT_CREATED_BY, createdDate: ''
   };
 }
 
@@ -460,6 +461,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     this.titleError = false;
+    const youtubeUrl = this.draft.youtubeUrl?.trim() || '';
+    if (youtubeUrl && !youtubeEmbedUrl(youtubeUrl)) {
+      this.showNotice('Enter a valid YouTube video URL or leave it empty.', 'error');
+      return;
+    }
     const wasEditing = Boolean(this.editingId);
     this.dismissNotice();
     const sector = this.draft.sector || 'Government';
@@ -467,6 +473,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const record = {
       ...this.draft,
       title: this.draft.title.trim(),
+      youtubeUrl,
       createdBy: this.draft.createdBy?.trim() || DEFAULT_CREATED_BY,
       sector,
       privateJobType,
@@ -563,7 +570,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         'Walk-in date': sector === 'Private' && privateJobType === 'Walk-in' ? job.walkInDate || '' : '',
         'Experience type': job.experience || '',
         'Company image URL': job.companyImage || '', 'Official application URL': job.otherLink || '',
-        'PDF URL': job.applyPdfLink || '', 'Created by': job.createdBy || '',
+        'PDF URL': job.applyPdfLink || '', 'YouTube URL': job.youtubeUrl || '', 'Created by': job.createdBy || '',
         'Job icon': job.jobIcon || 'bi-globe', Description: job.description || '',
         'Job information rows': job.fullInformationTableFormat || '', 'Full notification': job.fullJobInformation || ''
       };
@@ -572,7 +579,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: [
       'Job title', 'Company', 'Sector', 'Job type', 'Last date to apply', 'Private hiring type',
       'Walk-in date', 'Experience type', 'Company image URL', 'Official application URL',
-      'PDF URL', 'Created by', 'Total posts', 'Job icon', 'Description', 'Job information rows', 'Full notification'
+      'PDF URL', 'YouTube URL', 'Created by', 'Total posts', 'Job icon', 'Description', 'Job information rows', 'Full notification'
     ] }), 'Jobs');
     XLSX.writeFile(workbook, `freejob-jobs-${new Date().toISOString().slice(0, 10)}.xls`, { bookType: 'xls' });
   }
@@ -602,7 +609,12 @@ export class LoginComponent implements OnInit, OnDestroy {
         const hiringType = this.excelValue(row, ['Private hiring type', 'PrivateJobType']);
         const privateJobType = hiringType === 'Walk-in' || hiringType === 'Non-walk-in' ? hiringType : null;
         const totalPosts = Number(this.excelValue(row, ['Total posts', 'Total vacancies', 'Vacancies']));
+        const youtubeUrl = this.excelValue(row, ['YouTube URL', 'youtubeUrl']).trim();
+        if (youtubeUrl && !youtubeEmbedUrl(youtubeUrl)) {
+          throw new Error(`Invalid YouTube video URL for job: ${title}`);
+        }
         await push(ref(db, 'jobs'), {
+          youtubeUrl,
           title, company, companyImage: this.excelValue(row, ['Company image URL', 'CompanyImageHtml', 'CompanyImage']),
           jobIcon: this.excelValue(row, ['JobIcon']) || 'bi-globe', sector, privateJobType, jobType,
           totalPosts: Number.isInteger(totalPosts) && totalPosts > 0 ? totalPosts : null,

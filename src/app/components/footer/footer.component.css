@@ -8,6 +8,14 @@
 .footer-title { color: #fff; font-size: 13px; font-weight: 700; margin: 0 0 3px; }
 .footer-grid section > a:not(.footer-brand) { align-items: center; color: #b7c6d5; display: inline-flex; font-size: 11px; gap: 8px; text-decoration: none; width: fit-content; }
 .footer-grid section > a:hover { color: #fff; }
+.footer-category-group summary { align-items: center; border-bottom: 1px solid rgba(210,225,240,.16); color: #d3deea; cursor: pointer; display: flex; font-size: 11px; justify-content: space-between; list-style: none; min-height: 30px; }
+.footer-category-group summary::-webkit-details-marker { display: none; }
+.footer-category-group .footer-collapse, .footer-category-group[open] .footer-expand { display: none; }
+.footer-category-group[open] .footer-collapse { display: inline-block; }
+.footer-category-links { border-left: 1px solid #377da8; display: grid; margin: 6px 0 0 4px; padding-left: 10px; }
+.footer-category-links a { align-items: center; color: #b7c6d5; display: flex; font-size: 11px; min-height: 30px; text-decoration: none; }
+.footer-category-links a:hover, .footer-category-group summary:hover { color: #fff; }
+.footer-category-links a:focus-visible, .footer-category-group summary:focus-visible { outline: 2px solid #4e8ac3; outline-offset: 2px; }
 .footer-install-wrap { display: grid; gap: 8px; justify-items: start; }
 .footer-install-button { align-items: center; background: #1c6797; border: 1px solid #377da8; border-radius: 4px; color: #fff; cursor: pointer; display: inline-flex; font: inherit; font-size: 11px; font-weight: 650; gap: 8px; min-height: 34px; padding: 0 11px; }
 .footer-install-button:hover { background: #15547c; }

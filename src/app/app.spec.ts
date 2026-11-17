@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { HeaderComponent } from './components/header/header.component';
 import { App } from './app';
 import { routes } from './app.routes';
 
@@ -22,5 +25,25 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('app-layout')).toBeTruthy();
+  });
+
+  it('includes every expanded menu link in the footer Quick links', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const headerElement = fixture.debugElement.query(By.directive(HeaderComponent));
+    const header: HeaderComponent = headerElement.componentInstance;
+    header.categoriesOpen = true;
+    header.governmentOpen = true;
+    header.privateOpen = true;
+    headerElement.injector.get(ChangeDetectorRef).markForCheck();
+    fixture.detectChanges();
+
+    const compiled: HTMLElement = fixture.nativeElement;
+    const menuLinks = [...compiled.querySelectorAll('.category-drawer nav a')]
+      .map((link) => link.getAttribute('href'));
+    const footerLinks = [...compiled.querySelectorAll('.footer-quick-links a')]
+      .map((link) => link.getAttribute('href'));
+    expect(menuLinks.length).toBeGreaterThan(2);
+    expect(footerLinks).toEqual(expect.arrayContaining(menuLinks));
   });
 });

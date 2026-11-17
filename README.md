@@ -24,6 +24,9 @@ and Fresher/Experienced options. Each option opens its own category URL; private
 options exclude government listings. The drawer scrolls to keep all links
 accessible on mobile.
 
+Footer Quick links include the same category options in expandable Government
+and Private groups, alongside all jobs, walk-in drives, and official career links.
+
 Job sharing includes the title, job-details link, available application/walk-in
 dates, and a message encouraging sharing with job seekers. Browsers without
 native sharing copy the complete message to the clipboard instead.

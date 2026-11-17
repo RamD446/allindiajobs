@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CATEGORY_ROUTE_PREFIX, GOVERNMENT_JOB_FILTERS, JOB_FILTER_CATEGORIES } from '../../models/job.model';
 
 interface InstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -15,6 +16,9 @@ interface InstallPromptEvent extends Event {
   styleUrl: './footer.component.css'
 })
 export class FooterComponent implements OnInit, OnDestroy {
+  readonly categoryRoutePrefix = CATEGORY_ROUTE_PREFIX;
+  readonly governmentJobFilters = GOVERNMENT_JOB_FILTERS;
+  readonly privateJobFilters = JOB_FILTER_CATEGORIES.filter((category) => category.sector === 'Private');
   readonly whatsappUrl = 'https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p';
   installPrompt: InstallPromptEvent | null = null;
   installMessage = '';

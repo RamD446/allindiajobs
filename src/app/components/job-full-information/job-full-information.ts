@@ -6,6 +6,7 @@ import { onValue, push, ref, runTransaction, set } from 'firebase/database';
 import { db } from '../../../config/firebase.config';
 import { Job, JobComment } from '../../models/job.model';
 import { Subscription } from 'rxjs';
+import { shareJobMessage } from '../../utils/job-share';
 
 @Component({
   selector: 'app-job-full-information',
@@ -23,6 +24,7 @@ export class JobFullInformation implements OnInit, OnDestroy {
   comment = '';
   commentError = '';
   savingComment = false;
+  shareMessage = '';
   private routeSubscription: Subscription | null = null;
   private stopJob: (() => void) | null = null;
   private stopRecentJobs: (() => void) | null = null;
@@ -138,11 +140,12 @@ export class JobFullInformation implements OnInit, OnDestroy {
     return ['/job', job.id, (job.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')];
   }
 
-  shareJob(): void {
+  async shareJob(): Promise<void> {
     if (!this.job) return;
+    this.shareMessage = '';
     const url = window.location.href;
-    if (navigator.share) void navigator.share({ title: this.job.title, url });
-    else void navigator.clipboard?.writeText(url);
+    this.shareMessage = await shareJobMessage(this.job, url);
+    this.cdr.markForCheck();
   }
 
   async submitComment(): Promise<void> {

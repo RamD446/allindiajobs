@@ -3,10 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { get, onValue, ref } from 'firebase/database';
+import { combineLatest, Subscription } from 'rxjs';
 import { db } from '../../../config/firebase.config';
-import { Job } from '../../models/job.model';
-
-type JobFilter = 'All jobs' | 'Government Jobs' | 'Walk-ins' | 'Freshers' | 'Experienced';
+import {
+  CATEGORY_ROUTE_PREFIX, getCategoryRouteSlug, GOVERNMENT_JOB_TYPES,
+  JOB_FILTER_CATEGORIES, Job, JobFilterCategory
+} from '../../models/job.model';
+import { shareJobMessage } from '../../utils/job-share';
 
 @Component({
   selector: 'app-home',
@@ -21,22 +24,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   topJobs: Job[] = [];
   loading = true;
   error = '';
+  shareMessage = '';
   query = '';
   appliedQuery = '';
-  filter: JobFilter = 'All jobs';
+  filter = 'All jobs';
   page = 1;
   readonly pageSize = 30;
   private stopJobs: (() => void) | null = null;
   private stopTopJobs: (() => void) | null = null;
+  private routeSubscription: Subscription | null = null;
+  private activeCategory: JobFilterCategory | undefined;
 
   constructor(private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe((params) => {
+    this.routeSubscription = combineLatest([this.route.paramMap, this.route.queryParamMap]).subscribe(([routeParams, params]) => {
       this.query = params.get('q') || '';
       this.appliedQuery = this.query.trim();
-      this.filter = this.filterFromQuery(params.get('category'));
+      const category = routeParams.get('category') || params.get('category');
+      this.activeCategory = JOB_FILTER_CATEGORIES.find((item) => item.slug === category);
+      this.filter = this.activeCategory?.label || this.filterFromQuery(category);
       this.page = 1;
+      this.cdr.markForCheck();
     });
 
     const jobsRef = ref(db, 'jobs');
@@ -73,6 +82,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.stopJobs?.();
     this.stopTopJobs?.();
+    this.routeSubscription?.unsubscribe();
   }
 
   get filteredJobs(): Job[] {
@@ -100,6 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   get listingHeading(): string {
     if (this.appliedQuery) return 'Search results';
+    if (this.activeCategory) return this.activeCategory.label;
     switch (this.filter) {
       case 'Government Jobs': return 'Latest government jobs';
       case 'Walk-ins': return 'Latest walk-in jobs';
@@ -127,19 +138,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectFilter(filter: JobFilter): void {
+  selectFilter(filter: string): void {
     this.filter = filter;
     this.page = 1;
-    const category = filter === 'All jobs' ? 'all' : filter === 'Government Jobs' ? 'government'
-      : filter === 'Walk-ins' ? 'walk-ins' : filter.toLowerCase();
-    void this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { category: category === 'all' ? null : category, q: this.appliedQuery || null },
-      queryParamsHandling: 'merge'
+    const commands = filter === 'All jobs' ? ['/'] : ['/', CATEGORY_ROUTE_PREFIX, getCategoryRouteSlug(filter)];
+    void this.router.navigate(commands, {
+      queryParams: { q: this.appliedQuery || null }
     });
   }
 
-  filterSidebar(filter: JobFilter): void {
+  filterSidebar(filter: string): void {
     this.selectFilter(filter);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -167,17 +175,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     return Number.isNaN(date.getTime()) ? 'Recently posted' : date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
-  shareJob(job: Job): void {
+  async shareJob(job: Job): Promise<void> {
+    this.shareMessage = '';
     const url = `${window.location.origin}${this.jobLink(job).join('/')}`;
-    if (navigator.share) {
-      void navigator.share({ title: job.title, url });
-      return;
-    }
-    void navigator.clipboard?.writeText(url);
+    this.shareMessage = await shareJobMessage(job, url);
+    this.cdr.markForCheck();
   }
 
-  private filterFromQuery(value: string | null): JobFilter {
-    if (value === 'government') return 'Government Jobs';
+  private filterFromQuery(value: string | null): string {
+    if (value === 'government' || value === getCategoryRouteSlug('Government Jobs')) return 'Government Jobs';
     if (value === 'walk-ins') return 'Walk-ins';
     if (value === 'freshers') return 'Freshers';
     if (value === 'experienced') return 'Experienced';
@@ -185,6 +191,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private matchesFilter(job: Job): boolean {
+    if (this.activeCategory) {
+      const category = this.activeCategory;
+      const sector = job.sector || (GOVERNMENT_JOB_TYPES.includes(job.jobType || '') ? 'Government' : 'Private');
+      if (sector !== category.sector) return false;
+      if (category.jobType && job.jobType !== category.jobType) return false;
+      if (category.privateJobType) {
+        const hiringType = job.privateJobType || (job.walkInDrive || job.jobType === 'Walk-ins' ? 'Walk-in' : null);
+        if (hiringType !== category.privateJobType) return false;
+      }
+      return !category.experience || (job.experience || '').toLowerCase().includes(category.experience.toLowerCase());
+    }
     if (this.filter === 'All jobs') return true;
     if (this.filter === 'Government Jobs') return job.sector === 'Government' || job.jobType === 'Government Jobs';
     if (this.filter === 'Walk-ins') return job.walkInDrive === true || job.privateJobType === 'Walk-in' || job.jobType === 'Walk-ins';

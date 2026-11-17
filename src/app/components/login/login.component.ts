@@ -6,7 +6,7 @@ import { browserSessionPersistence, onAuthStateChanged, setPersistence, signInWi
 import { onValue, push, ref, remove, set, update } from 'firebase/database';
 import * as XLSX from 'xlsx';
 import { auth, db } from '../../../config/firebase.config';
-import { Job } from '../../models/job.model';
+import { GOVERNMENT_JOB_TYPES, Job, PRIVATE_JOB_TYPES } from '../../models/job.model';
 
 interface CareerLink {
   id: string;
@@ -17,25 +17,21 @@ interface CareerLink {
   state?: string;
 }
 
-const GOVERNMENT_JOB_TYPES = ['Government Jobs', 'Results', 'Syllabus'];
-const PRIVATE_JOB_TYPES = ['IT Jobs', 'Non-IT Jobs', 'Pharma Jobs', 'Sales Jobs', 'Pharmaceutical Jobs', 'Bank Jobs', 'Other'];
 const JOB_TYPES = [...GOVERNMENT_JOB_TYPES, ...PRIVATE_JOB_TYPES];
+const DEFAULT_CREATED_BY = 'Freejobinfoartmation -team';
 const CAREER_COLUMNS = ['Company Name', 'Official URL', 'Sector', 'Government Type', 'State'] as const;
 
 const JOB_ICONS = [
-  ['bi-briefcase-fill', 'Briefcase'], ['bi-building', 'Building'], ['bi-bank', 'Bank'], ['bi-laptop', 'Laptop'],
-  ['bi-code-slash', 'Code'], ['bi-mortarboard-fill', 'Education'], ['bi-hospital', 'Hospital'], ['bi-heart-pulse-fill', 'Healthcare'],
-  ['bi-truck', 'Transport'], ['bi-airplane-fill', 'Aviation'], ['bi-gear-fill', 'Engineering'], ['bi-tools', 'Tools'],
-  ['bi-people-fill', 'People'], ['bi-shop', 'Retail'], ['bi-currency-rupee', 'Finance'], ['bi-graph-up-arrow', 'Growth'],
-  ['bi-book-fill', 'Books'], ['bi-pc-display', 'Computer'], ['bi-telephone-fill', 'Telephone'], ['bi-globe', 'Global']
+  ['bi-bank', 'Bank'], ['bi-mortarboard-fill', 'Education'], ['bi-people-fill', 'People'], ['bi-globe', 'Global'],
+  ['bi-gear-fill', 'Engineering'], ['bi-heart-pulse-fill', 'Healthcare'], ['bi-laptop', 'Laptop'], ['bi-code-slash', 'Code']
 ].map(([id, label]) => ({ id, label }));
 
 function emptyDraft(): Job {
   return {
-    id: '', title: '', company: '', companyImage: '', jobIcon: 'bi-briefcase-fill', sector: 'Government',
-    privateJobType: 'Non-walk-in', jobType: 'Government Jobs', experience: '', totalPosts: null, fullInformationTableFormat: '',
+    id: '', title: '', company: '', companyImage: '', jobIcon: 'bi-globe', sector: 'Government',
+    privateJobType: null, jobType: 'Government Jobs', experience: '', totalPosts: null, fullInformationTableFormat: '',
     fullJobInformation: '', walkInDrive: false, walkInDate: '', lastDateToApply: '', description: '',
-    otherLink: '', applyPdfLink: '', createdBy: '', createdDate: ''
+    otherLink: '', applyPdfLink: '', createdBy: DEFAULT_CREATED_BY, createdDate: ''
   };
 }
 
@@ -407,8 +403,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       : PRIVATE_JOB_TYPES.includes(oldType) ? oldType : 'IT Jobs';
     this.draft = {
       ...emptyDraft(), ...job, sector, jobType,
-      companyImage: job.companyImage || '', jobIcon: job.jobIcon || 'bi-briefcase-fill',
-      privateJobType: job.privateJobType || (job.walkInDrive || oldType === 'Walk-ins' ? 'Walk-in' : 'Non-walk-in'),
+      companyImage: job.companyImage || '', jobIcon: job.jobIcon || 'bi-globe',
+      privateJobType: job.privateJobType || (job.walkInDrive || oldType === 'Walk-ins' ? 'Walk-in' : null),
       experience: job.experience || '', walkInDrive: job.walkInDrive || oldType === 'Walk-ins'
     };
     this.titleError = false;
@@ -419,7 +415,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSectorChange(): void {
     this.draft.jobType = this.draft.sector === 'Government' ? 'Government Jobs' : 'IT Jobs';
-    this.draft.privateJobType = 'Non-walk-in';
+    this.draft.privateJobType = null;
     this.draft.walkInDate = '';
     this.draft.lastDateToApply = '';
     this.draft.walkInDrive = false;
@@ -467,14 +463,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     const wasEditing = Boolean(this.editingId);
     this.dismissNotice();
     const sector = this.draft.sector || 'Government';
-    const privateJobType = this.draft.privateJobType || 'Non-walk-in';
+    const privateJobType = this.draft.privateJobType || null;
     const record = {
       ...this.draft,
       title: this.draft.title.trim(),
+      createdBy: this.draft.createdBy?.trim() || DEFAULT_CREATED_BY,
       sector,
       privateJobType,
       companyImage: (this.draft.companyImage || '').trim(),
-      jobIcon: this.draft.jobIcon || 'bi-briefcase-fill',
+      jobIcon: this.draft.jobIcon || 'bi-globe',
       walkInDrive: sector === 'Private' && privateJobType === 'Walk-in',
       walkInDate: sector === 'Private' && privateJobType === 'Walk-in' ? this.draft.walkInDate || '' : '',
       lastDateToApply: sector === 'Government' && this.draft.jobType === 'Government Jobs' ? this.draft.lastDateToApply || '' : '',
@@ -557,7 +554,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       const sector = job.sector || (GOVERNMENT_JOB_TYPES.includes(oldType) ? 'Government' : 'Private');
       const types = sector === 'Government' ? GOVERNMENT_JOB_TYPES : PRIVATE_JOB_TYPES;
       const jobType = types.includes(oldType) ? oldType : types[0];
-      const privateJobType = job.privateJobType || (job.walkInDrive || oldType === 'Walk-ins' ? 'Walk-in' : 'Non-walk-in');
+      const privateJobType = job.privateJobType || (job.walkInDrive || oldType === 'Walk-ins' ? 'Walk-in' : '');
       return {
         'Job title': job.title || '', Company: job.company || '', Sector: sector,
         'Job type': jobType, 'Last date to apply': sector === 'Government' && jobType === 'Government Jobs' ? job.lastDateToApply || '' : '',
@@ -567,7 +564,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         'Experience type': job.experience || '',
         'Company image URL': job.companyImage || '', 'Official application URL': job.otherLink || '',
         'PDF URL': job.applyPdfLink || '', 'Created by': job.createdBy || '',
-        'Job icon': job.jobIcon || 'bi-briefcase-fill', Description: job.description || '',
+        'Job icon': job.jobIcon || 'bi-globe', Description: job.description || '',
         'Job information rows': job.fullInformationTableFormat || '', 'Full notification': job.fullJobInformation || ''
       };
     });
@@ -602,11 +599,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           ? importedSector : PRIVATE_JOB_TYPES.includes(importedType) ? 'Private' : 'Government';
         const types = sector === 'Private' ? PRIVATE_JOB_TYPES : GOVERNMENT_JOB_TYPES;
         const jobType = types.includes(importedType) ? importedType : types[0];
-        const privateJobType = this.excelValue(row, ['Private hiring type', 'PrivateJobType']) === 'Walk-in' ? 'Walk-in' : 'Non-walk-in';
+        const hiringType = this.excelValue(row, ['Private hiring type', 'PrivateJobType']);
+        const privateJobType = hiringType === 'Walk-in' || hiringType === 'Non-walk-in' ? hiringType : null;
         const totalPosts = Number(this.excelValue(row, ['Total posts', 'Total vacancies', 'Vacancies']));
         await push(ref(db, 'jobs'), {
           title, company, companyImage: this.excelValue(row, ['Company image URL', 'CompanyImageHtml', 'CompanyImage']),
-          jobIcon: this.excelValue(row, ['JobIcon']) || 'bi-briefcase-fill', sector, privateJobType, jobType,
+          jobIcon: this.excelValue(row, ['JobIcon']) || 'bi-globe', sector, privateJobType, jobType,
           totalPosts: Number.isInteger(totalPosts) && totalPosts > 0 ? totalPosts : null,
           experience: this.excelValue(row, ['Experience type', 'Experience']), description: this.excelValue(row, ['Description', 'JobDescription']),
           otherLink: this.excelValue(row, ['Official application URL', 'ApplyOfficialLink']), applyPdfLink: this.excelValue(row, ['PDF URL', 'ApplyPdfLink']),

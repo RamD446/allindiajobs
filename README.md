@@ -12,6 +12,22 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+Category filters use `/jobcategories/<category>` URLs, such as
+`/jobcategories/government-jobs` and `/jobcategories/walk-ins`. Searches use the
+`q` query parameter and can be combined with a category. The Top 6 jobs appear
+only on the unfiltered home page. Older `?category=government` filter links
+remain supported.
+
+The menu expands Government jobs into Current jobs, Upcoming jobs, Results, and
+Syllabus. Private jobs expand into job types, Walk-in/Non-walk-in hiring types,
+and Fresher/Experienced options. Each option opens its own category URL; private
+options exclude government listings. The drawer scrolls to keep all links
+accessible on mobile.
+
+Job sharing includes the title, job-details link, available application/walk-in
+dates, and a message encouraging sharing with job seekers. Browsers without
+native sharing copy the complete message to the clipboard instead.
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:

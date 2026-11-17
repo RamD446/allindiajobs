@@ -81,16 +81,15 @@
         <label><span>Company *</span><input [(ngModel)]="draft.company" name="company" required></label>
         <label><span>Total posts</span><input type="number" [(ngModel)]="draft.totalPosts" name="totalPosts" min="1" step="1" placeholder="Number of vacancies"></label>
         <fieldset class="editor-choice-group"><legend>Sector</legend><div class="editor-choice-options"><label class="editor-choice-option" [class.selected]="draft.sector === 'Government'"><input type="radio" name="sector" value="Government" [(ngModel)]="draft.sector" (ngModelChange)="onSectorChange()"><span>Government</span></label><label class="editor-choice-option" [class.selected]="draft.sector === 'Private'"><input type="radio" name="sector" value="Private" [(ngModel)]="draft.sector" (ngModelChange)="onSectorChange()"><span>Private</span></label></div></fieldset>
-        <fieldset class="editor-choice-group editor-wide"><legend>Job type</legend><div class="editor-choice-options"><label *ngFor="let type of (draft.sector === 'Government' ? governmentJobTypes : privateJobTypes)" class="editor-choice-option" [class.selected]="draft.jobType === type"><input type="radio" name="jobType" [value]="type" [(ngModel)]="draft.jobType" (ngModelChange)="onGovernmentTypeChange()"><span>{{ type === 'Government Jobs' ? 'Jobs' : type }}</span></label></div></fieldset>
-        <ng-container *ngIf="draft.sector === 'Government'; else privateFields">
+        <fieldset class="editor-choice-group editor-wide"><legend>Job type</legend><div class="editor-choice-options"><label *ngFor="let type of (draft.sector === 'Government' ? governmentJobTypes : privateJobTypes)" class="editor-choice-option" [class.selected]="draft.jobType === type"><input type="radio" name="jobType" [value]="type" [(ngModel)]="draft.jobType" (ngModelChange)="onGovernmentTypeChange()"><span>{{ type === 'Government Jobs' ? 'Current jobs' : type === 'Upcoming Jobs' ? 'Upcoming jobs' : type }}</span></label></div></fieldset>
+        <ng-container *ngIf="draft.sector === 'Government'">
           <label *ngIf="draft.jobType === 'Government Jobs'"><span>Last date to apply</span><input type="date" [(ngModel)]="draft.lastDateToApply" name="lastDateToApply"></label>
         </ng-container>
-        <ng-template #privateFields>
+        <ng-container *ngIf="draft.sector === 'Private'">
           <fieldset class="editor-choice-group"><legend>Private hiring type</legend><div class="editor-choice-options"><label *ngFor="let type of privateHiringTypes" class="editor-choice-option" [class.selected]="draft.privateJobType === type"><input type="radio" name="privateJobType" [value]="type" [(ngModel)]="draft.privateJobType" (ngModelChange)="onPrivateHiringChange()"><span>{{ type }}</span></label></div></fieldset>
           <label *ngIf="draft.privateJobType === 'Walk-in'"><span>Walk-in date</span><input type="date" [(ngModel)]="draft.walkInDate" name="walkInDate"></label>
-        </ng-template>
+        </ng-container>
         <fieldset class="experience-picker editor-wide"><legend>Experience type</legend><label><input type="checkbox" [checked]="isExperienceSelected('Freshers')" (change)="toggleExperience('Freshers', $any($event.target).checked)"> Fresher</label><label><input type="checkbox" [checked]="isExperienceSelected('Experienced')" (change)="toggleExperience('Experienced', $any($event.target).checked)"> Experienced</label></fieldset>
-        <label><span>Company image URL</span><input type="url" [(ngModel)]="draft.companyImage" name="companyImage"></label>
         <label><span>Official application URL</span><input type="url" [(ngModel)]="draft.otherLink" name="otherLink"></label>
         <label><span>PDF URL</span><input type="url" [(ngModel)]="draft.applyPdfLink" name="applyPdfLink"></label>
         <label><span>Created by</span><input [(ngModel)]="draft.createdBy" name="createdBy"></label>

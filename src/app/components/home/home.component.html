@@ -10,7 +10,7 @@
   <section *ngIf="!loading && !error" class="portal-content" aria-label="Browse jobs">
     <div class="browse-layout">
       <section class="jobs-column">
-        <section class="top-jobs-section" *ngIf="topJobs.length" aria-label="Selected jobs">
+        <section class="top-jobs-section" *ngIf="topJobs.length && filter === 'All jobs' && !appliedQuery" aria-label="Selected jobs">
           <div class="top-jobs-grid"><a class="top-job-link" *ngFor="let job of topJobs; let index = index" [ngClass]="'top-job-tone-' + (index % 6)" [routerLink]="jobLink(job)"><strong>{{ job.title || 'Untitled opportunity' }}</strong></a></div>
         </section>
 
@@ -28,6 +28,7 @@
         </form>
 
         <div class="jobs-toolbar"><span>Sorted by newest: {{ listingHeading }}</span></div>
+        <p *ngIf="shareMessage" role="status" aria-live="polite">{{ shareMessage }}</p>
 
         <div *ngIf="!filteredJobs.length" class="state-panel"><strong>No matching jobs yet.</strong><span>Try another category or search term.</span></div>
 

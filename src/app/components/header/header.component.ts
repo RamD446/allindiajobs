@@ -4,6 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../../config/firebase.config';
+import {
+  CATEGORY_ROUTE_PREFIX, GOVERNMENT_JOB_FILTERS, PRIVATE_JOB_FILTERS,
+  PRIVATE_HIRING_FILTERS, PRIVATE_EXPERIENCE_FILTERS
+} from '../../models/job.model';
 
 @Component({
   selector: 'app-header',
@@ -21,14 +25,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userEmail = '';
   profileOpen = false;
   private stopAuth: (() => void) | null = null;
+  readonly categoryRoutePrefix = CATEGORY_ROUTE_PREFIX;
 
-  readonly categories = [
-    { label: 'All jobs', slug: 'all' },
-    { label: 'Government jobs', slug: 'government' },
-    { label: 'Walk-ins', slug: 'walk-ins' },
-    { label: 'Freshers', slug: 'freshers' },
-    { label: 'Experienced', slug: 'experienced' }
-  ];
+  governmentOpen = false;
+  privateOpen = false;
+  readonly governmentJobFilters = GOVERNMENT_JOB_FILTERS;
+  readonly privateJobFilters = PRIVATE_JOB_FILTERS;
+  readonly privateHiringFilters = PRIVATE_HIRING_FILTERS;
+  readonly privateExperienceFilters = PRIVATE_EXPERIENCE_FILTERS;
 
   constructor(private router: Router, private cdr: ChangeDetectorRef, private hostElement: ElementRef<HTMLElement>) {}
 

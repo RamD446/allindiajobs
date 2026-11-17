@@ -6,7 +6,7 @@ export interface Job {
   companyImage?: string;
   jobIcon?: string;
   sector?: 'Government' | 'Private';
-  privateJobType?: 'Walk-in' | 'Non-walk-in';
+  privateJobType?: 'Walk-in' | 'Non-walk-in' | null;
   jobType?: string;
   experience?: string;
   totalPosts?: number | null;
@@ -42,7 +42,7 @@ export const DEFAULT_JOB_CATEGORIES = [
 ] as const;
 
 // Job Types for Private Jobs with Walk-In Drive
-export const PRIVATE_JOB_TYPES = [
+export const PRIVATE_JOB_TYPES: string[] = [
   'IT Jobs',
   'Non-IT Jobs',
   'Pharma Jobs',
@@ -50,7 +50,9 @@ export const PRIVATE_JOB_TYPES = [
   'Pharmaceutical Jobs',
   'Bank Jobs',
   'Other'
-] as const;
+];
+
+export const GOVERNMENT_JOB_TYPES = ['Government Jobs', 'Upcoming Jobs', 'Results', 'Syllabus'];
 
 export type JobCategory = typeof DEFAULT_JOB_CATEGORIES[number];
 
@@ -79,7 +81,7 @@ export interface CompanyImage {
   updatedDate?: string;
 }
 
-export const CATEGORY_ROUTE_PREFIX = 'job-category';
+export const CATEGORY_ROUTE_PREFIX = 'jobcategories';
 
 export const CATEGORY_ROUTE_SLUGS: Record<string, string> = {
   'All': 'all',
@@ -137,3 +139,44 @@ export function getCategoryLabelFromSlug(slug: string): string | null {
 export function getCategoryDisplayLabel(category: string): string {
   return CATEGORY_DISPLAY_LABELS[category] || category;
 }
+
+export interface JobFilterCategory {
+  label: string;
+  slug: string;
+  sector: 'Government' | 'Private';
+  jobType?: string;
+  privateJobType?: 'Walk-in' | 'Non-walk-in';
+  experience?: string;
+}
+
+export const GOVERNMENT_JOB_FILTERS: JobFilterCategory[] = GOVERNMENT_JOB_TYPES.map((jobType) => ({
+  label: jobType === 'Government Jobs' ? 'Current jobs' : jobType === 'Upcoming Jobs' ? 'Upcoming jobs' : jobType,
+  slug: jobType === 'Government Jobs' ? 'current-jobs' : getCategoryRouteSlug(jobType),
+  sector: 'Government',
+  jobType
+}));
+
+export const PRIVATE_JOB_FILTERS: JobFilterCategory[] = PRIVATE_JOB_TYPES.map((jobType) => ({
+  label: jobType,
+  slug: getCategoryRouteSlug(jobType),
+  sector: 'Private',
+  jobType
+}));
+
+export const PRIVATE_HIRING_FILTERS: JobFilterCategory[] = [
+  { label: 'Walk-in', slug: 'private-walk-ins', sector: 'Private', privateJobType: 'Walk-in' },
+  { label: 'Non-walk-in', slug: 'non-walk-in', sector: 'Private', privateJobType: 'Non-walk-in' }
+];
+
+export const PRIVATE_EXPERIENCE_FILTERS: JobFilterCategory[] = [
+  { label: 'Fresher', slug: 'private-freshers', sector: 'Private', experience: 'Fresher' },
+  { label: 'Experienced', slug: 'private-experienced', sector: 'Private', experience: 'Experienced' }
+];
+
+export const JOB_FILTER_CATEGORIES: JobFilterCategory[] = [
+  { label: 'Private jobs', slug: 'private-jobs', sector: 'Private' },
+  ...GOVERNMENT_JOB_FILTERS,
+  ...PRIVATE_JOB_FILTERS,
+  ...PRIVATE_HIRING_FILTERS,
+  ...PRIVATE_EXPERIENCE_FILTERS
+];

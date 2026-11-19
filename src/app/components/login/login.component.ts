@@ -32,7 +32,7 @@ function emptyDraft(): Job {
     id: '', title: '', company: '', companyImage: '', jobIcon: 'bi-globe', sector: 'Government',
     privateJobType: null, jobType: 'Government Jobs', experience: '', totalPosts: null, fullInformationTableFormat: '',
     fullJobInformation: '', walkInDrive: false, walkInDate: '', lastDateToApply: '', description: '',
-    otherLink: '', applyPdfLink: '', youtubeUrl: '', createdBy: DEFAULT_CREATED_BY, createdDate: ''
+    companyOfficialUrl: '', otherLink: '', applyPdfLink: '', youtubeUrl: '', createdBy: DEFAULT_CREATED_BY, createdDate: ''
   };
 }
 
@@ -70,6 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   editingId: string | null = null;
   formOpen = false;
   saving = false;
+  companySearchOpen = false;
   importing = false;
   notice = '';
   noticeType: 'success' | 'error' | 'info' = 'info';
@@ -126,6 +127,36 @@ export class LoginComponent implements OnInit, OnDestroy {
   get availableTopJobs(): Job[] {
     const selectedIds = new Set(this.selectedTopJobs.map((job) => job.id));
     return this.jobs.filter((job) => !selectedIds.has(job.id));
+  }
+
+  get companyOptions(): string[] {
+    const companyNames = this.careerLinks.map((link) => link.companyName.trim()).filter(Boolean);
+    if (this.editingId && this.draft.company.trim()) companyNames.push(this.draft.company.trim());
+    return [...new Set(companyNames)]
+      .sort((first, second) => first.localeCompare(second));
+  }
+
+  get filteredCompanyOptions(): string[] {
+    const query = this.draft.company.trim().toLocaleLowerCase();
+    return this.companyOptions.filter((companyName) => companyName.toLocaleLowerCase().includes(query));
+  }
+
+  selectCompany(companyName: string): void {
+    this.draft.company = companyName;
+    this.draft.companyOfficialUrl = this.careerLinks.find((link) =>
+      link.companyName.trim().toLocaleLowerCase() === companyName.trim().toLocaleLowerCase()
+    )?.officialUrl.trim() || '';
+    this.companySearchOpen = false;
+  }
+
+  onCompanyInput(event: Event): void {
+    this.companySearchOpen = true;
+    const target = event.currentTarget;
+    if (!(target instanceof HTMLInputElement)) return;
+    const companyName = target.value.trim().toLocaleLowerCase();
+    this.draft.companyOfficialUrl = this.careerLinks.find((link) =>
+      link.companyName.trim().toLocaleLowerCase() === companyName
+    )?.officialUrl.trim() || '';
   }
 
   get selectedTopJobs(): Job[] {
@@ -569,8 +600,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         'Private hiring type': sector === 'Private' ? privateJobType : '',
         'Walk-in date': sector === 'Private' && privateJobType === 'Walk-in' ? job.walkInDate || '' : '',
         'Experience type': job.experience || '',
-        'Company image URL': job.companyImage || '', 'Official application URL': job.otherLink || '',
-        'PDF URL': job.applyPdfLink || '', 'YouTube URL': job.youtubeUrl || '', 'Created by': job.createdBy || '',
+        'Company image URL': job.companyImage || '', 'Official URL': job.companyOfficialUrl || '',
+        'Apply URL': job.otherLink || '', 'PDF URL': job.applyPdfLink || '', 'YouTube URL': job.youtubeUrl || '', 'Created by': job.createdBy || '',
         'Job icon': job.jobIcon || 'bi-globe', Description: job.description || '',
         'Job information rows': job.fullInformationTableFormat || '', 'Full notification': job.fullJobInformation || ''
       };
@@ -578,7 +609,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows, { header: [
       'Job title', 'Company', 'Sector', 'Job type', 'Last date to apply', 'Private hiring type',
-      'Walk-in date', 'Experience type', 'Company image URL', 'Official application URL',
+      'Walk-in date', 'Experience type', 'Company image URL', 'Official URL', 'Apply URL',
       'PDF URL', 'YouTube URL', 'Created by', 'Total posts', 'Job icon', 'Description', 'Job information rows', 'Full notification'
     ] }), 'Jobs');
     XLSX.writeFile(workbook, `freejob-jobs-${new Date().toISOString().slice(0, 10)}.xls`, { bookType: 'xls' });
@@ -619,7 +650,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           jobIcon: this.excelValue(row, ['JobIcon']) || 'bi-globe', sector, privateJobType, jobType,
           totalPosts: Number.isInteger(totalPosts) && totalPosts > 0 ? totalPosts : null,
           experience: this.excelValue(row, ['Experience type', 'Experience']), description: this.excelValue(row, ['Description', 'JobDescription']),
-          otherLink: this.excelValue(row, ['Official application URL', 'ApplyOfficialLink']), applyPdfLink: this.excelValue(row, ['PDF URL', 'ApplyPdfLink']),
+          companyOfficialUrl: this.excelValue(row, ['Official URL', 'Company Official URL', 'CompanyOfficialURL']),
+          otherLink: this.excelValue(row, ['Apply URL', 'Official application URL', 'ApplyOfficialLink']), applyPdfLink: this.excelValue(row, ['PDF URL', 'ApplyPdfLink']),
           fullInformationTableFormat: this.excelValue(row, ['Job information rows', 'FullInformationImagesHtml', 'FullInformationTableFormat']),
           fullJobInformation: this.excelValue(row, ['Full notification', 'FullJobInformationHtml', 'FullJobInformation']),
           walkInDate: sector === 'Private' && privateJobType === 'Walk-in' ? this.excelValue(row, ['Walk-in date']) : '',

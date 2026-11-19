@@ -103,6 +103,10 @@
 .editor-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0,1fr)); }
 .editor-grid .editor-wide { grid-column: 1 / -1; }
 .editor-grid textarea { line-height: 1.6; resize: vertical; }
+.editor-grid .company-suggestions { background: #fff; border: 1px solid #d9e0e7; display: grid; max-height: 160px; overflow-y: auto; }
+.editor-grid .company-suggestion { background: #fff; border: 0; border-bottom: 1px solid #edf0f3; border-radius: 0; color: #202a34; cursor: pointer; font-size: 11px; min-height: 36px; padding: 8px 10px; text-align: left; width: 100%; }
+.editor-grid .company-suggestion:hover, .editor-grid .company-suggestion:focus { background: #edf4fa; color: #16466b; outline: 0; }
+.editor-grid .company-no-results { color: #687581; font-size: 11px; margin: 0; padding: 8px 10px; }
 .experience-picker, .job-icon-picker { border: 0; margin: 0; min-width: 0; padding: 0; }
 .experience-picker legend, .job-icon-picker legend { margin-bottom: 8px; }
 .experience-picker label { align-items: center; display: inline-flex; gap: 6px; margin-right: 14px; }

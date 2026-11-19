@@ -61,6 +61,37 @@ describe('LoginComponent job editor', () => {
     expect(element.querySelectorAll('input[name="privateJobType"]').length).toBe(0);
   });
 
+  it('filters visible career company suggestions and preserves unlisted names when editing', async () => {
+    const fixture = await createEditor();
+    const component = fixture.componentInstance;
+    component.careerLinks = [
+      { id: 'career-1', companyName: 'Example Company', officialUrl: 'https://example.test', sector: 'Private' },
+      { id: 'career-2', companyName: 'Example Company', officialUrl: 'https://example.test/jobs', sector: 'Private' },
+      { id: 'career-3', companyName: 'Other Company', officialUrl: 'https://other.test', sector: 'Private' }
+    ];
+    fixture.detectChanges();
+
+    const companyInput = fixture.nativeElement.querySelector('input[name="company"]') as HTMLInputElement;
+    companyInput.dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    expect([...fixture.nativeElement.querySelectorAll('.company-suggestion')].map((option: Element) => option.textContent?.trim()))
+      .toEqual(['Example Company', 'Other Company']);
+
+    companyInput.value = 'Other';
+    companyInput.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    expect([...fixture.nativeElement.querySelectorAll('.company-suggestion')].map((option: Element) => option.textContent?.trim()))
+      .toEqual(['Other Company']);
+    (fixture.nativeElement.querySelector('.company-suggestion') as HTMLButtonElement).click();
+    expect(component.draft.company).toBe('Other Company');
+    expect(component.draft.companyOfficialUrl).toBe('https://other.test');
+    expect(component.companySearchOpen).toBe(false);
+
+    component.startEdit({ ...component.draft, id: 'legacy-job', company: 'Legacy Company' });
+    expect(component.companyOptions).toContain('Legacy Company');
+    expect(component.draft.company).toBe('Legacy Company');
+  });
+
   it('offers upcoming government jobs and preserves them when editing', async () => {
     const fixture = await createEditor();
     const element: HTMLElement = fixture.nativeElement;
@@ -108,6 +139,25 @@ describe('LoginComponent job editor', () => {
 
     expect(save).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
       createdBy: 'Custom publisher'
+    }));
+  });
+
+  it('saves the official, apply, and PDF URLs with the job', async () => {
+    const fixture = await createEditor();
+    const component = fixture.componentInstance;
+    component.draft.title = 'New role';
+    component.draft.company = 'Employer';
+    component.draft.companyOfficialUrl = 'https://employer.test/careers';
+    component.draft.otherLink = 'https://employer.test/apply';
+    component.draft.applyPdfLink = 'https://employer.test/notice.pdf';
+    const save = vi.spyOn(database, 'set');
+
+    await component.saveJob();
+
+    expect(save).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
+      companyOfficialUrl: 'https://employer.test/careers',
+      otherLink: 'https://employer.test/apply',
+      applyPdfLink: 'https://employer.test/notice.pdf'
     }));
   });
 

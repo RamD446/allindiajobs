@@ -16,6 +16,7 @@ export interface Job {
   walkInDate?: string;
   lastDateToApply?: string;
   description: string;
+  companyOfficialUrl?: string;
   otherLink?: string;
   applyPdfLink?: string;
   youtubeUrl?: string;

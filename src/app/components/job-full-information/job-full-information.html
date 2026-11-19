@@ -18,18 +18,22 @@
       <section class="detail-section" *ngIf="detailRows.length"><p class="eyebrow">AT A GLANCE</p><h2>Job information</h2><table class="info-table" aria-label="Job information"><tbody><tr *ngFor="let row of detailRows"><th scope="row">{{ row[0] }}</th><td>{{ row[1] }}</td></tr></tbody></table></section>
       <h2 class="notification-heading" *ngIf="readAlsoJob as latestJob">Read also: <a [routerLink]="jobLink(latestJob)">{{ latestJob.title }}</a></h2>
       <section class="detail-section" *ngIf="currentJob.fullJobInformation"><p class="eyebrow">MORE INFORMATION</p><p class="rich-text">{{ plainText(currentJob.fullJobInformation) }}</p></section>
+      <section class="important-links-section" *ngIf="currentJob.companyOfficialUrl || currentJob.otherLink || currentJob.applyPdfLink">
+        <table class="info-table important-links-table" aria-label="Important links">
+          <thead><tr><th colspan="2">IMPORTANT LINKS</th></tr><tr><th scope="col">Label</th><th scope="col">Click</th></tr></thead>
+          <tbody>
+            <tr *ngIf="currentJob.companyOfficialUrl"><th scope="row">Official URL</th><td><a [href]="currentJob.companyOfficialUrl" target="_blank" rel="noopener noreferrer">Click here</a></td></tr>
+            <tr *ngIf="currentJob.otherLink"><th scope="row">Apply URL</th><td><a [href]="currentJob.otherLink" target="_blank" rel="noopener noreferrer">Click here</a></td></tr>
+            <tr *ngIf="currentJob.applyPdfLink"><th scope="row">PDF URL</th><td><a [href]="currentJob.applyPdfLink" target="_blank" rel="noopener noreferrer">Click here</a></td></tr>
+          </tbody>
+        </table>
+      </section>
       <section class="detail-section" *ngIf="currentJob.youtubeUrl">
         <h2>Job video</h2>
         <iframe *ngIf="videoUrl as video; else invalidVideo" class="job-video" [src]="video" [title]="'Video: ' + currentJob.title" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         <p *ngIf="videoWatchUrl" class="video-help">Video not playing? <a [href]="videoWatchUrl" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>. If you are using the VS Code preview, open this page in Chrome or Edge.</p>
         <ng-template #invalidVideo><p role="status">This job's video link is invalid. Please contact the publisher.</p></ng-template>
       </section>
-
-      <div class="detail-action-links" *ngIf="currentJob.otherLink || currentJob.applyPdfLink">
-        <a *ngIf="currentJob.otherLink" class="apply-button" [href]="currentJob.otherLink" target="_blank" rel="noreferrer">Apply on official site <span>↗</span></a>
-        <a *ngIf="currentJob.applyPdfLink" class="pdf-link" [href]="currentJob.applyPdfLink" target="_blank" rel="noreferrer">View official PDF <span>↗</span></a>
-      </div>
-
       <section class="detail-section popular-companies" *ngIf="popularCompanies.length"><p class="eyebrow">EXPLORE EMPLOYERS</p><h2>Popular companies</h2><div class="company-chips"><button *ngFor="let company of popularCompanies" class="company-chip" type="button" (click)="filterByCompany(company)">{{ company }}</button></div></section>
 
       <section class="comments-section"><div class="comments-title"><div><p class="eyebrow">JOIN THE CONVERSATION</p><h2>Comments <span>{{ comments.length }}</span></h2></div></div>

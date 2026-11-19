@@ -47,6 +47,34 @@ describe('Job detail video', () => {
     expect(element.querySelector('.notification-heading')).toBeNull();
   });
 
+  it('renders all three important links below the full information', () => {
+    const fixture = TestBed.createComponent(JobFullInformation);
+    const component = fixture.componentInstance;
+    component.loading = false;
+    component.job = {
+      id: 'links-job', title: 'Analyst', company: 'Bank', description: '', createdDate: '',
+      fullJobInformation: 'More details',
+      companyOfficialUrl: 'https://bank.test/careers',
+      otherLink: 'https://bank.test/apply',
+      applyPdfLink: 'https://bank.test/notice.pdf'
+    };
+    fixture.detectChanges();
+
+    const element: HTMLElement = fixture.nativeElement;
+    const moreInformation = [...element.querySelectorAll('.detail-section')]
+      .find((section) => section.textContent?.includes('MORE INFORMATION'));
+    const linksSection = element.querySelector('.important-links-section');
+    expect(moreInformation?.nextElementSibling).toBe(linksSection);
+    const table = element.querySelector('.important-links-table');
+    expect(table?.querySelector('thead tr:first-child th')?.textContent?.trim()).toBe('IMPORTANT LINKS');
+    expect([...table!.querySelectorAll('thead tr:nth-child(2) th')].map((cell) => cell.textContent?.trim()))
+      .toEqual(['Label', 'Click']);
+    expect([...table!.querySelectorAll('tbody th')].map((cell) => cell.textContent?.trim()))
+      .toEqual(['Official URL', 'Apply URL', 'PDF URL']);
+    expect([...table!.querySelectorAll('tbody a')].map((link) => link.getAttribute('href')))
+      .toEqual(['https://bank.test/careers', 'https://bank.test/apply', 'https://bank.test/notice.pdf']);
+  });
+
   it('renders the saved video and removes the player when no video is set', () => {
     const fixture = TestBed.createComponent(JobFullInformation);
     const component = fixture.componentInstance;

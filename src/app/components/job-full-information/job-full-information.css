@@ -29,6 +29,9 @@
 .detail-facts div { align-items: baseline; display: flex; gap: 4px; }
 .detail-facts span, .detail-facts strong { color: #687581; font-size: 9px; font-weight: 400; line-height: 1.35; }
 .detail-section { border-bottom: 1px solid #d9e0e7; padding: 27px 0; }
+.important-links-section { border-bottom: 1px solid #d9e0e7; padding: 20px 0; }
+.important-links-table { margin: 0; }
+.important-links-table a { color: #1565c0; font-weight: 650; }
 .job-video { aspect-ratio: 16 / 9; border: 0; border-radius: 5px; display: block; margin-top: 16px; width: 100%; }
 .video-help { color: #687581; font-size: 11px; line-height: 1.6; margin: 10px 0 0; }
 .video-help a { color: #1565c0; }
@@ -42,6 +45,7 @@
 .info-table th, .info-table td { border: 1px solid #d6e0e8; font-size: 11px; overflow-wrap: anywhere; padding: 10px 12px; text-align: left; vertical-align: top; }
 .info-table th { background: #eef4f8; color: #435b6e; font-weight: 650; width: 34%; }
 .detail-action-links { align-items: center; border-top: 1px solid #d9e0e7; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0 4px; padding-top: 18px; }
+.important-links-section .detail-action-links { border-top: 0; justify-content: flex-start; margin: 0; padding-top: 8px; }
 .apply-button, .pdf-link, .primary-button { align-items: center; background: #c85131; border: 0; border-radius: 3px; color: #fff; cursor: pointer; display: inline-flex; font-size: 11px; font-weight: 650; gap: 12px; justify-content: center; min-height: 40px; padding: 0 16px; text-decoration: none; }
 .pdf-link { background: #1c6797; }
 .company-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }

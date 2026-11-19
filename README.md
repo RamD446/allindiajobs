@@ -12,6 +12,10 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+The default page title is "Free Job Information | All Latest Jobs". The search
+description, social sharing metadata, and website structured data use the same
+branding; the structured search URL uses the homepage `q` query parameter.
+
 Category filters use `/jobcategories/<category>` URLs, such as
 `/jobcategories/government-jobs` and `/jobcategories/walk-ins`. Searches use the
 `q` query parameter and can be combined with a category. The Top 6 jobs appear
@@ -27,6 +31,7 @@ exclude government listings. Each option opens its own category URL.
 The Private jobs menus are retained as commented template code; their existing
 category URLs still work. Official Career Links and footer Publisher sign in
 remain available. The drawer scrolls to keep all links accessible on mobile.
+The header stays at the top of the viewport when scrolling in either direction.
 Internal footer links also scroll to the top, including links to the current page.
 
 The publisher dashboard shows 50 published jobs per page, with Previous/Next

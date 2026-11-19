@@ -1,5 +1,5 @@
-:host { display: block; position: relative; z-index: 20; }
-.site-header { background: #1565c0; box-shadow: 0 3px 12px rgba(14,37,59,.2); color: #fff; position: sticky; top: 0; }
+:host { display: block; position: sticky; top: 0; z-index: 20; }
+.site-header { background: #1565c0; box-shadow: 0 3px 12px rgba(14,37,59,.2); color: #fff; }
 .site-header-main { align-items: center; display: flex; height: 56px; justify-content: space-between; margin: 0 auto; max-width: 1180px; padding: 0 28px; }
 .header-brand-group, .header-actions, .brand { align-items: center; display: flex; gap: 10px; }
 .brand { color: #fff; text-decoration: none; }

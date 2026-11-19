@@ -35,7 +35,7 @@ describe('Footer navigation', () => {
       link.click();
       await fixture.whenStable();
       expect(router.url).toBe(link.getAttribute('href'));
-      expect(scroll).toHaveBeenCalledWith({ top: 0, behavior: 'auto' });
+      expect(scroll).toHaveBeenCalledWith({ top: 0, behavior: 'instant' });
     }
   });
 

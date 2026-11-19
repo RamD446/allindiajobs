@@ -46,7 +46,7 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   scrollToTop(event: MouseEvent): void {
     if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   async installApp(): Promise<void> {

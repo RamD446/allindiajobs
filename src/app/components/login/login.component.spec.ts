@@ -61,6 +61,26 @@ describe('LoginComponent job editor', () => {
     expect(element.querySelectorAll('input[name="privateJobType"]').length).toBe(0);
   });
 
+  it('uses the rich-text editor for full notification', async () => {
+    const fixture = await createEditor();
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector('app-tiptap-editor[name="fullJobInformation"]')).not.toBeNull();
+    expect(element.querySelector('textarea[name="fullJobInformation"]')).toBeNull();
+  });
+
+  it('does not open the image picker when clicking the notification editor', async () => {
+    const fixture = await createEditor();
+    const element: HTMLElement = fixture.nativeElement;
+    const imageInput = element.querySelector<HTMLInputElement>('app-tiptap-editor input[type="file"]')!;
+    const imageClick = vi.fn();
+    imageInput.addEventListener('click', imageClick);
+
+    element.querySelector<HTMLElement>('app-tiptap-editor .tiptap-editor')!.click();
+
+    expect(imageClick).not.toHaveBeenCalled();
+  });
+
   it('filters visible career company suggestions and preserves unlisted names when editing', async () => {
     const fixture = await createEditor();
     const component = fixture.componentInstance;

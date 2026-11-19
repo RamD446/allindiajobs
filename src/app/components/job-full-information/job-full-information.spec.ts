@@ -35,16 +35,33 @@ describe('Job detail video', () => {
     fixture.detectChanges();
     const heading = element.querySelector('.notification-heading');
     expect(heading?.textContent?.trim()).toBe('Read also: Latest opening');
+    expect(heading?.querySelector('a')?.textContent?.trim()).toBe('Read also: Latest opening');
     expect(heading?.querySelector('a')?.getAttribute('href')).toBe('/job/latest/latest-opening');
-    expect(heading?.nextElementSibling?.querySelector('.eyebrow')?.textContent).toBe('MORE INFORMATION');
+    expect(heading?.nextElementSibling?.querySelector('.eyebrow')?.textContent).toBe('MORE INFORMATION:');
     component.job.fullJobInformation = '';
     fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges();
-    expect(element.querySelector('.notification-heading a')?.textContent).toBe('Latest opening');
+    expect(element.querySelector('.notification-heading a')?.textContent).toBe('Read also: Latest opening');
     component.recentJobs = component.recentJobs.slice(0, 2);
     fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges();
     expect(element.querySelector('.notification-heading')).toBeNull();
+  });
+
+  it('renders formatted full job information', () => {
+    const fixture = TestBed.createComponent(JobFullInformation);
+    const component = fixture.componentInstance;
+    component.loading = false;
+    component.job = {
+      id: 'formatted-job', title: 'Analyst', company: 'Bank', description: '', createdDate: '',
+      fullJobInformation: '<p>Read the <strong>full notification</strong>.</p>'
+    };
+    fixture.detectChanges();
+
+    const notification = [...fixture.nativeElement.querySelectorAll('.detail-section')]
+      .find((section: Element) => section.querySelector('.eyebrow')?.textContent?.includes('MORE INFORMATION'))
+      ?.querySelector('.rich-text');
+    expect(notification.querySelector('strong')?.textContent).toBe('full notification');
   });
 
   it('renders all three important links below the full information', () => {
@@ -67,8 +84,7 @@ describe('Job detail video', () => {
     expect(moreInformation?.nextElementSibling).toBe(linksSection);
     const table = element.querySelector('.important-links-table');
     expect(table?.querySelector('thead tr:first-child th')?.textContent?.trim()).toBe('IMPORTANT LINKS');
-    expect([...table!.querySelectorAll('thead tr:nth-child(2) th')].map((cell) => cell.textContent?.trim()))
-      .toEqual(['Label', 'Click']);
+    expect(table?.querySelectorAll('thead tr').length).toBe(1);
     expect([...table!.querySelectorAll('tbody th')].map((cell) => cell.textContent?.trim()))
       .toEqual(['Official URL', 'Apply URL', 'PDF URL']);
     expect([...table!.querySelectorAll('tbody a')].map((link) => link.getAttribute('href')))

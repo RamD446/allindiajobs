@@ -106,7 +106,7 @@ export class TiptapEditorComponent implements ControlValueAccessor, AfterViewIni
     this.editor = new Editor({
       element: this.editorHost.nativeElement,
       extensions: [
-        StarterKit,
+        StarterKit.configure({ link: false, underline: false }),
         Underline,
         Link.configure({
           autolink: true,

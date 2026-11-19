@@ -7,6 +7,7 @@ import { onValue, push, ref, remove, set, update } from 'firebase/database';
 import * as XLSX from 'xlsx';
 import { auth, db } from '../../../config/firebase.config';
 import { GOVERNMENT_JOB_TYPES, Job, PRIVATE_JOB_TYPES } from '../../models/job.model';
+import { TiptapEditorComponent } from '../shared/tiptap-editor/tiptap-editor.component';
 import { youtubeEmbedUrl } from '../../utils/youtube';
 
 interface CareerLink {
@@ -39,7 +40,7 @@ function emptyDraft(): Job {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TiptapEditorComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

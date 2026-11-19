@@ -31,16 +31,19 @@
 .detail-section { border-bottom: 1px solid #d9e0e7; padding: 27px 0; }
 .important-links-section { border-bottom: 1px solid #d9e0e7; padding: 20px 0; }
 .important-links-table { margin: 0; }
+.important-links-table thead th { background: #1565c0; color: #fff; text-align: center; }
 .important-links-table a { color: #1565c0; font-weight: 650; }
 .job-video { aspect-ratio: 16 / 9; border: 0; border-radius: 5px; display: block; margin-top: 16px; width: 100%; }
 .video-help { color: #687581; font-size: 11px; line-height: 1.6; margin: 10px 0 0; }
 .video-help a { color: #1565c0; }
 .eyebrow { color: #687581; font-size: 9px; font-weight: 750; letter-spacing: 1.2px; margin: 0 0 8px; }
 .detail-section h2, .comments-title h2, .related-sidebar h2 { font: 400 22px/1.2 Georgia, 'Times New Roman', serif; margin: 0; }
-.notification-heading { color: #1565c0; font: 400 16px/1.2 Georgia, 'Times New Roman', serif; margin: 20px 0 0; overflow-wrap: anywhere; }
-.notification-heading a { color: inherit; text-decoration: none; }
+.notification-heading { color: #8c2443; font: 400 16px/1.2 Georgia, 'Times New Roman', serif; margin: 20px 0 0; overflow-wrap: anywhere; }
+.notification-heading a { background: linear-gradient(110deg, #fff1d6, #ffe4ed); border: 1px solid #f3c3b4; border-left: 4px solid #d94f70; border-radius: 5px; color: inherit; display: block; padding: 14px 16px; text-decoration: none; }
 .notification-heading a:focus-visible { text-decoration: underline; }
 .rich-text { color: #4e5b51; font-size: 12px; line-height: 1.85; margin: 14px 0 0; overflow-wrap: anywhere; white-space: pre-line; }
+.rich-text p { margin: 0 0 8px; }
+.rich-text p:last-child { margin-bottom: 0; }
 .info-table { border-collapse: collapse; margin: 17px 0 0; table-layout: fixed; width: 100%; }
 .info-table th, .info-table td { border: 1px solid #d6e0e8; font-size: 11px; overflow-wrap: anywhere; padding: 10px 12px; text-align: left; vertical-align: top; }
 .info-table th { background: #eef4f8; color: #435b6e; font-weight: 650; width: 34%; }

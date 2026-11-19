@@ -14,13 +14,13 @@
       </header>
       <p *ngIf="shareMessage" role="status" aria-live="polite">{{ shareMessage }}</p>
 
-      <section class="detail-section"><p class="eyebrow">THE OPPORTUNITY</p><h2>About this role</h2><p class="rich-text">{{ plainText(currentJob.description || '') || 'No description has been provided for this listing.' }}</p></section>
-      <section class="detail-section" *ngIf="detailRows.length"><p class="eyebrow">AT A GLANCE</p><h2>Job information</h2><table class="info-table" aria-label="Job information"><tbody><tr *ngFor="let row of detailRows"><th scope="row">{{ row[0] }}</th><td>{{ row[1] }}</td></tr></tbody></table></section>
-      <h2 class="notification-heading" *ngIf="readAlsoJob as latestJob">Read also: <a [routerLink]="jobLink(latestJob)">{{ latestJob.title }}</a></h2>
-      <section class="detail-section" *ngIf="currentJob.fullJobInformation"><p class="eyebrow">MORE INFORMATION</p><p class="rich-text">{{ plainText(currentJob.fullJobInformation) }}</p></section>
+      <section class="detail-section"><p class="eyebrow">THE OPPORTUNITY :</p><p class="rich-text">{{ plainText(currentJob.description || '') || 'No description has been provided for this listing.' }}</p></section>
+      <section class="detail-section" *ngIf="detailRows.length"><p class="eyebrow">AT A Important JOB GLANCE</p><table class="info-table" aria-label="Job information"><tbody><tr *ngFor="let row of detailRows"><th scope="row">{{ row[0] }}</th><td>{{ row[1] }}</td></tr></tbody></table></section>
+      <h2 class="notification-heading" *ngIf="readAlsoJob as latestJob"><a [routerLink]="jobLink(latestJob)">Read also: {{ latestJob.title }}</a></h2>
+      <section class="detail-section" *ngIf="currentJob.fullJobInformation"><p class="eyebrow">MORE INFORMATION:</p><div class="rich-text" [innerHTML]="currentJob.fullJobInformation"></div></section>
       <section class="important-links-section" *ngIf="currentJob.companyOfficialUrl || currentJob.otherLink || currentJob.applyPdfLink">
         <table class="info-table important-links-table" aria-label="Important links">
-          <thead><tr><th colspan="2">IMPORTANT LINKS</th></tr><tr><th scope="col">Label</th><th scope="col">Click</th></tr></thead>
+          <thead><tr><th colspan="2">IMPORTANT LINKS</th></tr></thead>
           <tbody>
             <tr *ngIf="currentJob.companyOfficialUrl"><th scope="row">Official URL</th><td><a [href]="currentJob.companyOfficialUrl" target="_blank" rel="noopener noreferrer">Click here</a></td></tr>
             <tr *ngIf="currentJob.otherLink"><th scope="row">Apply URL</th><td><a [href]="currentJob.otherLink" target="_blank" rel="noopener noreferrer">Click here</a></td></tr>

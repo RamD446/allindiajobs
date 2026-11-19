@@ -27,6 +27,7 @@
 .top-job-tone-4 { background: #ffe58f; border-color: #e8c94f; }
 .top-job-tone-5 { background: #a9e8dd; border-color: #71cbbd; }
 .top-job-link strong { color: #202a34; font-size: 11px; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+.top-job-link strong .bi-fire { color: #b53c1c; margin-right: 5px; }
 .top-job-link:hover strong { text-decoration: underline; text-underline-offset: 2px; }
 .jobs-toolbar { align-items: center; color: #687581; display: flex; font-size: 10px; justify-content: space-between; min-height: 48px; }
 .job-table-scroll { overflow-x: auto; }

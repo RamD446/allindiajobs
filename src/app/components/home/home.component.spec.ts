@@ -77,6 +77,27 @@ describe('Home category routes', () => {
     }
   });
 
+  it('shows a fire icon, title and available post count in each Top 6 card', async () => {
+    const harness = await RouterTestingHarness.create();
+    const component = await harness.navigateByUrl('/', HomeComponent);
+    component.loading = false;
+    component.topJobs = [200, 1, undefined, 0, 50, 1000].map((totalPosts, index) => ({
+      ...governmentJob, id: `featured-${index + 1}`, title: `Featured job ${index + 1}`, totalPosts
+    }));
+    harness.routeDebugElement?.injector.get(ChangeDetectorRef).markForCheck();
+    harness.detectChanges();
+
+    const cards = [...harness.routeNativeElement!.querySelectorAll<HTMLAnchorElement>('.top-job-link')];
+    expect(cards).toHaveLength(6);
+    cards.forEach((card, index) => {
+      expect(card.querySelector('.bi-fire')?.getAttribute('aria-hidden')).toBe('true');
+      expect(card.querySelector('strong')?.textContent?.trim()).toBe(`Featured job ${index + 1}`);
+      expect(card.getAttribute('href')).toBe(`/job/featured-${index + 1}/featured-job-${index + 1}`);
+    });
+    expect(cards.map((card) => card.querySelector('.job-post-count')?.textContent?.trim()))
+      .toEqual(['200 posts', '1 post', undefined, undefined, '50 posts', '1000 posts']);
+  });
+
   it('filters government types and private type, hiring and experience links independently', async () => {
     const harness = await RouterTestingHarness.create();
     const jobs: Job[] = [

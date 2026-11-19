@@ -21,6 +21,7 @@ Category filters use `/jobcategories/<category>` URLs, such as
 `q` query parameter and can be combined with a category. The Top 6 jobs appear
 only on the unfiltered home page. Older `?category=government` filter links
 remain supported.
+Each Top 6 card shows a fire icon, the job title, and the post count when provided.
 
 The header menu and footer Quick links show All latest notifications, an
 expandable All government jobs group (Current jobs, Upcoming jobs, Results,

@@ -11,7 +11,7 @@
     <div class="browse-layout">
       <section class="jobs-column">
         <section class="top-jobs-section" *ngIf="topJobs.length && filter === 'All jobs' && !appliedQuery" aria-label="Selected jobs">
-          <div class="top-jobs-grid"><a class="top-job-link" *ngFor="let job of topJobs; let index = index" [ngClass]="'top-job-tone-' + (index % 6)" [routerLink]="jobLink(job)"><strong>{{ job.title || 'Untitled opportunity' }}</strong></a></div>
+          <div class="top-jobs-grid"><a class="top-job-link" *ngFor="let job of topJobs; let index = index" [ngClass]="'top-job-tone-' + (index % 6)" [routerLink]="jobLink(job)"><strong><i class="bi bi-fire" aria-hidden="true"></i>{{ job.title || 'Untitled opportunity' }}</strong><span *ngIf="job.totalPosts" class="job-post-count">{{ job.totalPosts }} {{ job.totalPosts === 1 ? 'post' : 'posts' }}</span></a></div>
         </section>
 
         <a class="whatsapp-follow-card" href="https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p" target="_blank" rel="noreferrer">

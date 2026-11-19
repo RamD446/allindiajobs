@@ -27,6 +27,10 @@ accessible on mobile.
 Footer Quick links include the same category options in expandable Government
 and Private groups, alongside all jobs, walk-in drives, and official career links.
 
+The publisher dashboard shows 50 published jobs per page, with Previous/Next
+controls. Search and job-type changes return to the first page. Export XLS
+continues to export all jobs, not just the visible page.
+
 Job sharing includes the title, job-details link, available application/walk-in
 dates, and a message encouraging sharing with job seekers. Browsers without
 native sharing copy the complete message to the clipboard instead.

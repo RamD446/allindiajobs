@@ -1,10 +1,10 @@
 <main class="admin-page" *ngIf="!authLoading && user; else loginView">
   <section class="admin-wrap">
-    <header class="admin-heading"><div><p class="eyebrow">PUBLISHER WORKSPACE:</p><p>Signed in as <strong>{{ user.email }}</strong></p></div><button class="secondary-button" type="button" (click)="logout()">Sign out</button></header>
+    <header class="admin-heading"><div><p class="eyebrow">PUBLISHER WORKSPACE:</p><p [title]="user.email || ''">Signed in as <strong>{{ user.email }}</strong></p></div><button class="secondary-button" type="button" (click)="logout()">Sign out</button></header>
     <nav class="admin-tabs" aria-label="Dashboard sections"><button type="button" [class.active]="activeTab === 'jobs'" [attr.aria-current]="activeTab === 'jobs' ? 'page' : null" (click)="activeTab = 'jobs'">Jobs</button><button type="button" [class.active]="activeTab === 'topJobs'" [attr.aria-current]="activeTab === 'topJobs' ? 'page' : null" (click)="activeTab = 'topJobs'">Top 6 Jobs</button><button type="button" [class.active]="activeTab === 'careerLinks'" [attr.aria-current]="activeTab === 'careerLinks' ? 'page' : null" (click)="activeTab = 'careerLinks'">Official Career Links</button></nav>
     <ng-container *ngIf="activeTab === 'jobs'">
     <div class="admin-summary"><strong>{{ jobs.length }}</strong><span>published listings</span><i></i><span>Manage the live freejob-info feed</span></div>
-    <div class="admin-toolbar"><div class="admin-controls"><label class="visually-hidden" for="admin-search">Search jobs</label><input id="admin-search" [(ngModel)]="search" placeholder="Search title or company"><label class="visually-hidden" for="admin-type">Filter by job type</label><select id="admin-type" [(ngModel)]="filter"><option>All job types</option><option *ngFor="let type of jobTypes">{{ type }}</option></select></div><div class="admin-actions"><label class="secondary-button import-button"><span *ngIf="importing" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>{{ importing ? 'Importing...' : 'Import XLS' }}<input type="file" accept=".xls,.xlsx" (change)="importJobs($event)" [disabled]="importing"></label><button class="secondary-button" type="button" (click)="exportJobs()">Export XLS</button><button class="primary-button" type="button" (click)="startCreate()">+ Create job</button></div></div>
+    <div class="admin-toolbar"><div class="admin-controls"><label class="visually-hidden" for="admin-search">Search jobs</label><input id="admin-search" [(ngModel)]="search" (ngModelChange)="page = 1" placeholder="Search title or company"><label class="visually-hidden" for="admin-type">Filter by job type</label><select id="admin-type" [(ngModel)]="filter" (ngModelChange)="page = 1"><option>All job types</option><option *ngFor="let type of jobTypes">{{ type }}</option></select></div><div class="admin-actions"><label class="secondary-button import-button"><span *ngIf="importing" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>{{ importing ? 'Importing...' : 'Import XLS' }}<input type="file" accept=".xls,.xlsx" (change)="importJobs($event)" [disabled]="importing"></label><button class="secondary-button" type="button" (click)="exportJobs()">Export XLS</button><button class="primary-button" type="button" (click)="startCreate()">+ Create job</button></div></div>
     </ng-container>
     <div *ngIf="notice" class="toast show admin-toast" [ngClass]="'text-bg-' + (noticeType === 'success' ? 'success' : noticeType === 'error' ? 'danger' : 'primary')" role="status" aria-live="polite" aria-atomic="true">
       <div class="toast-header"><i class="bi me-2" [ngClass]="noticeType === 'success' ? 'bi-check-circle-fill' : noticeType === 'error' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill'"></i><strong class="me-auto">{{ noticeType === 'success' ? 'Success' : noticeType === 'error' ? 'Error' : 'Working' }}</strong><button type="button" class="btn-close" [class.btn-close-white]="noticeType !== 'info'" aria-label="Dismiss" (click)="dismissNotice()"></button></div>
@@ -12,15 +12,20 @@
     </div>
 
     <ng-container *ngIf="activeTab === 'jobs'; else careerLinksView">
-    <div class="admin-table-heading"><h2>Published jobs</h2><span>{{ filteredJobs.length }} shown</span></div>
+    <div class="admin-table-heading"><h2>Published jobs</h2><span>{{ visibleJobs.length }} of {{ filteredJobs.length }} shown</span></div>
     <div class="admin-job-list" *ngIf="!isLoading && filteredJobs.length; else noJobs">
-      <article class="admin-job-row" *ngFor="let job of filteredJobs">
+      <article class="admin-job-row" *ngFor="let job of visibleJobs">
         <div class="admin-job-badge" aria-hidden="true"><img *ngIf="imageSource(job.companyImage) as image; else jobIcon" [src]="image" [alt]="job.company"><ng-template #jobIcon><i *ngIf="job.jobIcon; else fallbackInitial" class="bi" [ngClass]="job.jobIcon"></i><ng-template #fallbackInitial>{{ companyInitial(job) }}</ng-template></ng-template></div>
         <div class="admin-job-info"><strong>{{ job.title }}</strong><span>{{ job.company }} <i></i> {{ job.jobType || 'Opportunity' }}</span></div>
         <time>{{ job.createdDate | date:'dd MMM yyyy' }}</time>
         <div class="admin-job-actions"><button class="text-action" type="button" (click)="startEdit(job)">Edit</button><button class="text-action danger-action" type="button" (click)="requestDelete(job)">Delete</button></div>
       </article>
     </div>
+    <nav *ngIf="!isLoading && pageCount > 1" class="admin-pagination" aria-label="Published job pages">
+      <button class="secondary-button" type="button" [disabled]="page === 1" (click)="setPage(page - 1)">Previous</button>
+      <span aria-live="polite">Page {{ page }} of {{ pageCount }}</span>
+      <button class="secondary-button" type="button" [disabled]="page === pageCount" (click)="setPage(page + 1)">Next</button>
+    </nav>
     <ng-template #noJobs><div *ngIf="isLoading; else emptyJobs" class="portal-loading-state" role="status" aria-live="polite"><span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span><span class="visually-hidden">Loading...</span><span>Loading jobs...</span></div><ng-template #emptyJobs><div class="state-panel">No jobs match this view.</div></ng-template></ng-template>
     </ng-container>
     <ng-template #careerLinksView>

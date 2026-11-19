@@ -23,11 +23,12 @@
 .login-note { color: #687581; font-size: 9px; margin: -5px 0 0; text-align: center; }
 .form-error { color: #a33c29; font-size: 10px; margin: -7px 0 0; overflow-wrap: anywhere; }
 .admin-wrap { margin: 0 auto; max-width: 1180px; min-height: calc(100vh - 138px); padding: 42px 28px 65px; }
-.admin-heading { align-items: center; display: flex; justify-content: space-between; }
-.admin-heading > div { align-items: baseline; display: flex; flex-wrap: wrap; gap: 4px 12px; min-width: 0; }
+.admin-heading { align-items: center; display: flex; gap: 12px; justify-content: space-between; }
+.admin-heading > div { align-items: baseline; display: flex; flex: 1; flex-wrap: wrap; gap: 4px 12px; min-width: 0; }
+.admin-heading > button { flex-shrink: 0; white-space: nowrap; }
 .admin-heading .eyebrow { color: #c85131; margin: 0; }
 .admin-heading h1 { font: 400 33px Georgia, 'Times New Roman', serif; margin: 0; }
-.admin-heading p:last-child { color: #687581; font-size: 10px; margin: 0; }
+.admin-heading p:last-child { color: #687581; font-size: 10px; margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .admin-heading p strong { color: #202a34; font-weight: 650; }
 .admin-tabs { border-bottom: 1px solid #d9e0e7; display: flex; gap: 20px; margin-top: 24px; }
 .admin-tabs button { background: transparent; border: 0; border-bottom: 2px solid transparent; color: #687581; cursor: pointer; font-size: 11px; font-weight: 650; padding: 11px 2px; }
@@ -64,13 +65,16 @@
 .top-jobs-admin-list { background: #fff; border-top: 1px solid #d9e0e7; margin-top: 22px; max-width: 720px; }
 .top-job-number { align-items: center; background: #e9eee4; border-radius: 3px; color: #16466b; display: flex; flex: 0 0 28px; font-size: 10px; font-weight: 700; height: 28px; justify-content: center; }
 .admin-job-list { background: #fff; border-top: 1px solid #d9e0e7; }
+.admin-pagination { align-items: center; display: flex; gap: 8px; justify-content: space-between; padding: 18px 0; }
+.admin-pagination span { color: #687581; font-size: 10px; }
+.admin-pagination button:disabled { color: #9ba39c; cursor: default; }
 .admin-job-row { align-items: center; border-bottom: 1px solid #d9e0e7; display: flex; gap: 12px; min-height: 68px; padding: 11px 8px; }
 .admin-job-badge { align-items: center; background: #e4ecdf; border: 1px solid #d5e0d1; border-radius: 5px; color: #16466b; display: flex; flex: 0 0 42px; font: 20px Georgia, 'Times New Roman', serif; height: 42px; justify-content: center; overflow: hidden; text-transform: uppercase; }
 .admin-job-badge img { height: 100%; object-fit: contain; width: 100%; }
 .admin-job-info { display: grid; flex: 1; gap: 5px; min-width: 0; }
 .admin-job-info strong { color: #202a34; font: 400 13px Georgia, 'Times New Roman', serif; overflow-wrap: anywhere; }
 .admin-job-info a { color: #16466b; font-size: 10px; overflow-wrap: anywhere; width: fit-content; }
-.admin-job-info > span { align-items: center; color: #687581; display: flex; flex-wrap: wrap; font-size: 9px; gap: 7px; }
+.admin-job-info > span { align-items: center; color: #687581; display: flex; flex-wrap: wrap; font-size: 9px; gap: 7px; overflow-wrap: anywhere; }
 .admin-job-info i { background: #a6b0a7; border-radius: 50%; height: 3px; width: 3px; }
 .admin-job-row time { color: #687581; font-size: 9px; white-space: nowrap; }
 .admin-job-actions { display: flex; gap: 11px; }
@@ -131,6 +135,8 @@
   .login-intro h1 { font-size: 48px; }
   .login-form { padding: 22px 18px; }
   .admin-wrap { padding: 30px 16px 45px; }
+  .admin-heading > div { display: grid; }
+  .admin-heading > button, .admin-pagination button { min-height: 44px; }
   .admin-heading h1 { font-size: 27px; }
   .admin-summary { align-items: flex-start; flex-wrap: wrap; gap: 5px 10px; }
   .admin-summary > i { display: none; }

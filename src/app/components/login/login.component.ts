@@ -66,6 +66,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   deleting = false;
   search = '';
   filter = 'All job types';
+  page = 1;
+  readonly pageSize = 50;
   draft = emptyDraft();
   titleError = false;
   editingId: string | null = null;
@@ -123,6 +125,20 @@ export class LoginComponent implements OnInit, OnDestroy {
       const matchesType = this.filter === 'All job types' || job.jobType === this.filter;
       return matchesType && (!query || `${job.title} ${job.company}`.toLowerCase().includes(query));
     });
+  }
+
+  get pageCount(): number {
+    return Math.max(1, Math.ceil(this.filteredJobs.length / this.pageSize));
+  }
+
+  get visibleJobs(): Job[] {
+    const start = (this.page - 1) * this.pageSize;
+    return this.filteredJobs.slice(start, start + this.pageSize);
+  }
+
+  setPage(page: number): void {
+    this.page = Math.min(Math.max(1, page), this.pageCount);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get availableTopJobs(): Job[] {
@@ -195,6 +211,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       const data = snapshot.val() as Record<string, Omit<Job, 'id'>> | null;
       this.jobs = data ? Object.entries(data).map(([id, item]) => ({ id, ...item })) : [];
       this.jobs.sort((first, second) => this.time(second.createdDate) - this.time(first.createdDate));
+      this.page = Math.min(this.page, this.pageCount);
       this.isLoading = false;
       this.cdr.detectChanges();
     }, () => {
@@ -571,15 +588,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     const job = this.pendingDeleteJob;
     if (!job || this.deleting) return;
     const previousJobs = this.jobs;
+    const previousPage = this.page;
     this.deleting = true;
     this.pendingDeleteJob = null;
     this.jobs = this.jobs.filter((item) => item.id !== job.id);
+    this.page = Math.min(this.page, this.pageCount);
     this.showNotice('Deleting job...', 'info', false);
     try {
       await remove(ref(db, `jobs/${job.id}`));
       this.showNotice('Job deleted.', 'success');
     } catch {
       this.jobs = previousJobs;
+      this.page = Math.min(previousPage, this.pageCount);
       this.showNotice('Unable to delete this job. Check database permissions.', 'error');
     } finally {
       this.deleting = false;

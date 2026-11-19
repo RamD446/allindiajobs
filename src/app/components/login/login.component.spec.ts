@@ -42,6 +42,99 @@ describe('LoginComponent job editor', () => {
     return fixture;
   }
 
+  async function createJobList(count: number) {
+    const fixture = await createEditor();
+    fixture.componentInstance.closeForm();
+    fixture.componentInstance.jobs = Array.from({ length: count }, (_, index) => ({
+      id: `job-${index + 1}`, title: `Role ${index + 1}`, company: 'Employer',
+      description: '', createdDate: '2026-01-01', jobType: index < 50 ? 'Government Jobs' : 'IT Jobs'
+    }));
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  it('paginates published jobs in groups of 50 with bounded navigation', async () => {
+    vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    const fixture = await createJobList(101);
+    const element: HTMLElement = fixture.nativeElement;
+    const previous = element.querySelector<HTMLButtonElement>('.admin-pagination button:first-child')!;
+    const next = element.querySelector<HTMLButtonElement>('.admin-pagination button:last-child')!;
+    expect(element.querySelectorAll('.admin-job-row')).toHaveLength(50);
+    expect(previous.disabled).toBe(true);
+    expect(next.disabled).toBe(false);
+
+    next.click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('.admin-job-row')).toHaveLength(50);
+    expect(element.querySelector('.admin-job-info strong')?.textContent).toBe('Role 51');
+
+    next.click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('.admin-job-row')).toHaveLength(1);
+    expect(element.querySelector('.admin-job-info strong')?.textContent).toBe('Role 101');
+    expect(element.querySelector('.admin-pagination span')?.textContent).toBe('Page 3 of 3');
+    expect(next.disabled).toBe(true);
+    expect(previous.disabled).toBe(false);
+
+    previous.click();
+    fixture.detectChanges();
+    expect(element.querySelector('.admin-job-info strong')?.textContent).toBe('Role 51');
+  });
+
+  it('resets pagination when searching or filtering and handles 50 or zero matches', async () => {
+    const fixture = await createJobList(101);
+    const component = fixture.componentInstance;
+    const element: HTMLElement = fixture.nativeElement;
+    const search = element.querySelector<HTMLInputElement>('#admin-search')!;
+    const filter = element.querySelector<HTMLSelectElement>('#admin-type')!;
+    component.page = 3;
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges();
+
+    search.value = 'Role 101';
+    search.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(component.page).toBe(1);
+    expect(element.querySelectorAll('.admin-job-row')).toHaveLength(1);
+    expect(element.querySelector('.admin-pagination')).toBeNull();
+
+    search.value = '';
+    search.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    component.page = 2;
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges();
+    filter.value = 'Government Jobs';
+    filter.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(component.page).toBe(1);
+    expect(element.querySelectorAll('.admin-job-row')).toHaveLength(50);
+    expect(element.querySelector('.admin-pagination')).toBeNull();
+
+    search.value = 'No matching role';
+    search.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(element.querySelectorAll('.admin-job-row')).toHaveLength(0);
+    expect(element.querySelector('.admin-pagination')).toBeNull();
+    expect(element.querySelector('.state-panel')?.textContent).toBe('No jobs match this view.');
+  });
+
+  it.each([false, true])('keeps a valid page when the last job is deleted (failure: %s)', async (fails) => {
+    const fixture = await createJobList(51);
+    const component = fixture.componentInstance;
+    component.page = 2;
+    if (fails) vi.spyOn(database, 'remove').mockRejectedValueOnce(new Error('Permission denied'));
+    component.requestDelete(component.jobs[50]);
+
+    await component.confirmDelete();
+    fixture.detectChanges();
+
+    expect(component.page).toBe(fails ? 2 : 1);
+    expect(fixture.nativeElement.querySelectorAll('.admin-job-row')).toHaveLength(fails ? 1 : 50);
+    expect(component.noticeType).toBe(fails ? 'error' : 'success');
+  });
+
   it('only shows private hiring choices for the Private sector', async () => {
     const fixture = await createEditor();
     const element: HTMLElement = fixture.nativeElement;

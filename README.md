@@ -18,14 +18,16 @@ Category filters use `/jobcategories/<category>` URLs, such as
 only on the unfiltered home page. Older `?category=government` filter links
 remain supported.
 
-The menu expands Government jobs into Current jobs, Upcoming jobs, Results, and
-Syllabus. Private jobs expand into job types, Walk-in/Non-walk-in hiring types,
-and Fresher/Experienced options. Each option opens its own category URL; private
-options exclude government listings. The drawer scrolls to keep all links
-accessible on mobile.
-
-Footer Quick links include the same category options in expandable Government
-and Private groups, alongside all jobs, walk-in drives, and official career links.
+The header menu and footer Quick links show All latest notifications, an
+expandable All government jobs group (Current jobs, Upcoming jobs, Results,
+Syllabus), an expandable Fresher & experienced jobs group, and All walk-in jobs.
+The experience group offers Fresher, Experienced, and Fresher & Experienced;
+the last option requires both experience types. Experience options continue to
+exclude government listings. Each option opens its own category URL.
+The Private jobs menus are retained as commented template code; their existing
+category URLs still work. Official Career Links and footer Publisher sign in
+remain available. The drawer scrolls to keep all links accessible on mobile.
+Internal footer links also scroll to the top, including links to the current page.
 
 The publisher dashboard shows 50 published jobs per page, with Previous/Next
 controls. Search and job-type changes return to the first page. Export XLS

@@ -108,4 +108,27 @@ describe('Home category routes', () => {
       expect(component.filteredJobs.map((job) => job.id), slug).toEqual([...ids]);
     }
   });
+
+  it('requires both experience types for the combined category while keeping individual filters inclusive', async () => {
+    const harness = await RouterTestingHarness.create();
+    const jobs: Job[] = [
+      privateJob,
+      { ...privateJob, id: 'experienced', experience: 'Experienced' },
+      { ...privateJob, id: 'both', experience: 'Freshers, Experienced' },
+      { ...privateJob, id: 'both-singular', experience: 'fresher & experienced' },
+      { ...privateJob, id: 'no-experience', experience: '' },
+      { ...governmentJob, experience: 'Freshers, Experienced' }
+    ];
+    for (const [slug, ids] of [
+      ['private-freshers-experienced', ['both', 'both-singular']],
+      ['private-freshers', ['private', 'both', 'both-singular']],
+      ['private-experienced', ['experienced', 'both', 'both-singular']]
+    ] as const) {
+      const component = await harness.navigateByUrl(`/jobcategories/${slug}`, HomeComponent);
+      component.jobs = jobs;
+      harness.routeDebugElement?.injector.get(ChangeDetectorRef).markForCheck();
+      harness.detectChanges();
+      expect(component.filteredJobs.map((job) => job.id), slug).toEqual([...ids]);
+    }
+  });
 });

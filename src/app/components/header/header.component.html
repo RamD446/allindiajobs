@@ -36,11 +36,12 @@
   <aside class="category-drawer" [class.open]="categoriesOpen" [attr.aria-hidden]="!categoriesOpen">
     <div class="category-drawer-header"><strong>Free job information</strong><button class="header-icon-button" type="button" (click)="closeMenus()" aria-label="Close categories"><i class="bi bi-x-lg"></i></button></div>
     <nav aria-label="Browse jobs and links">
-      <a routerLink="/" (click)="closeMenus()"><span class="category-group-name"><i class="bi bi-grid" aria-hidden="true"></i>All jobs</span><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
-      <button class="category-group-toggle" type="button" [attr.aria-expanded]="governmentOpen" aria-controls="government-job-menu" (click)="governmentOpen = !governmentOpen"><span class="category-group-name"><i class="bi bi-bank" aria-hidden="true"></i>Government jobs</span><i class="bi category-expand-icon" [ngClass]="governmentOpen ? 'bi-dash-lg' : 'bi-plus-lg'" aria-hidden="true"></i></button>
+      <a routerLink="/" (click)="closeMenus()"><span class="category-group-name"><i class="bi bi-grid" aria-hidden="true"></i>All latest notifications</span><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
+      <button class="category-group-toggle" type="button" [attr.aria-expanded]="governmentOpen" aria-controls="government-job-menu" (click)="governmentOpen = !governmentOpen"><span class="category-group-name"><i class="bi bi-bank" aria-hidden="true"></i>All government jobs</span><i class="bi category-expand-icon" [ngClass]="governmentOpen ? 'bi-dash-lg' : 'bi-plus-lg'" aria-hidden="true"></i></button>
       <div id="government-job-menu" class="category-submenu" *ngIf="governmentOpen">
         <a *ngFor="let category of governmentJobFilters" [routerLink]="['/', categoryRoutePrefix, category.slug]" (click)="closeMenus()">{{ category.label }}</a>
       </div>
+      <!--
       <button class="category-group-toggle" type="button" [attr.aria-expanded]="privateOpen" aria-controls="private-job-menu" (click)="privateOpen = !privateOpen"><span class="category-group-name"><i class="bi bi-briefcase" aria-hidden="true"></i>Private jobs</span><i class="bi category-expand-icon" [ngClass]="privateOpen ? 'bi-dash-lg' : 'bi-plus-lg'" aria-hidden="true"></i></button>
       <div id="private-job-menu" class="category-submenu" *ngIf="privateOpen">
         <a [routerLink]="['/', categoryRoutePrefix, 'private-jobs']" (click)="closeMenus()">All private jobs</a>
@@ -48,6 +49,12 @@
         <a *ngFor="let category of privateHiringFilters" [routerLink]="['/', categoryRoutePrefix, category.slug]" (click)="closeMenus()">{{ category.label }}</a>
         <a *ngFor="let category of privateExperienceFilters" [routerLink]="['/', categoryRoutePrefix, category.slug]" (click)="closeMenus()">{{ category.label }}</a>
       </div>
+      -->
+      <button class="category-group-toggle" type="button" [attr.aria-expanded]="experienceOpen" aria-controls="experience-job-menu" (click)="experienceOpen = !experienceOpen"><span class="category-group-name"><i class="bi bi-people" aria-hidden="true"></i>Fresher &amp; experienced jobs</span><i class="bi category-expand-icon" [ngClass]="experienceOpen ? 'bi-dash-lg' : 'bi-plus-lg'" aria-hidden="true"></i></button>
+      <div id="experience-job-menu" class="category-submenu" *ngIf="experienceOpen">
+        <a *ngFor="let category of privateExperienceFilters" [routerLink]="['/', categoryRoutePrefix, category.slug]" (click)="closeMenus()">{{ category.label }}</a>
+      </div>
+      <a [routerLink]="['/', categoryRoutePrefix, 'walk-ins']" (click)="closeMenus()"><span class="category-group-name"><i class="bi bi-briefcase" aria-hidden="true"></i>All walk-in jobs</span><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
       <a routerLink="/official-career-links" (click)="closeMenus()"><span class="category-group-name"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>Official Career Links</span><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
     </nav>
   </aside>

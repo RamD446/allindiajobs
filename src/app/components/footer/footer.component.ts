@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CATEGORY_ROUTE_PREFIX, GOVERNMENT_JOB_FILTERS, JOB_FILTER_CATEGORIES } from '../../models/job.model';
+import { CATEGORY_ROUTE_PREFIX, GOVERNMENT_JOB_FILTERS, JOB_FILTER_CATEGORIES, PRIVATE_EXPERIENCE_FILTERS } from '../../models/job.model';
 
 interface InstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -18,6 +18,7 @@ interface InstallPromptEvent extends Event {
 export class FooterComponent implements OnInit, OnDestroy {
   readonly categoryRoutePrefix = CATEGORY_ROUTE_PREFIX;
   readonly governmentJobFilters = GOVERNMENT_JOB_FILTERS;
+  readonly privateExperienceFilters = PRIVATE_EXPERIENCE_FILTERS;
   readonly privateJobFilters = JOB_FILTER_CATEGORIES.filter((category) => category.sector === 'Private');
   readonly whatsappUrl = 'https://whatsapp.com/channel/0029VbCLJWjCRs1nIKjUlh3p';
   installPrompt: InstallPromptEvent | null = null;
@@ -41,6 +42,11 @@ export class FooterComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     window.removeEventListener('beforeinstallprompt', this.captureInstallPrompt);
     window.removeEventListener('appinstalled', this.markInstalled);
+  }
+
+  scrollToTop(event: MouseEvent): void {
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
   async installApp(): Promise<void> {

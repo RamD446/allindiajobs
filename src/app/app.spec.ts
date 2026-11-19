@@ -34,7 +34,7 @@ describe('App', () => {
     const header: HeaderComponent = headerElement.componentInstance;
     header.categoriesOpen = true;
     header.governmentOpen = true;
-    header.privateOpen = true;
+    header.experienceOpen = true;
     headerElement.injector.get(ChangeDetectorRef).markForCheck();
     fixture.detectChanges();
 
@@ -45,5 +45,11 @@ describe('App', () => {
       .map((link) => link.getAttribute('href'));
     expect(menuLinks.length).toBeGreaterThan(2);
     expect(footerLinks).toEqual(expect.arrayContaining(menuLinks));
+    const footerGroups = [...compiled.querySelectorAll('.footer-category-group')];
+    expect(footerGroups.map((group) => group.querySelector('summary span')?.textContent))
+      .toEqual(['All government jobs', 'Fresher & experienced jobs']);
+    expect(footerGroups.map((group) => group.querySelectorAll('a').length)).toEqual([4, 3]);
+    expect(compiled.querySelector('.footer-quick-links > a')?.textContent).toBe('All latest notifications');
+    expect(compiled.querySelector('.footer-quick-links a[href="/jobcategories/walk-ins"]')?.textContent).toBe('All walk-in jobs');
   });
 });

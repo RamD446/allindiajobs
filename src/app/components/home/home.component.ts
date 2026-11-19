@@ -200,7 +200,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         const hiringType = job.privateJobType || (job.walkInDrive || job.jobType === 'Walk-ins' ? 'Walk-in' : null);
         if (hiringType !== category.privateJobType) return false;
       }
-      return !category.experience || (job.experience || '').toLowerCase().includes(category.experience.toLowerCase());
+      return !category.experience || category.experience.split(',').every((experience) =>
+        (job.experience || '').toLowerCase().includes(experience.trim().toLowerCase())
+      );
     }
     if (this.filter === 'All jobs') return true;
     if (this.filter === 'Government Jobs') return job.sector === 'Government' || job.jobType === 'Government Jobs';

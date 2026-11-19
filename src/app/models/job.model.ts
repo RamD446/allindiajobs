@@ -172,7 +172,8 @@ export const PRIVATE_HIRING_FILTERS: JobFilterCategory[] = [
 
 export const PRIVATE_EXPERIENCE_FILTERS: JobFilterCategory[] = [
   { label: 'Fresher', slug: 'private-freshers', sector: 'Private', experience: 'Fresher' },
-  { label: 'Experienced', slug: 'private-experienced', sector: 'Private', experience: 'Experienced' }
+  { label: 'Experienced', slug: 'private-experienced', sector: 'Private', experience: 'Experienced' },
+  { label: 'Fresher & Experienced', slug: 'private-freshers-experienced', sector: 'Private', experience: 'Fresher, Experienced' }
 ];
 
 export const JOB_FILTER_CATEGORIES: JobFilterCategory[] = [

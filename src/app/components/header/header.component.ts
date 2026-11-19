@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   governmentOpen = false;
   privateOpen = false;
+  experienceOpen = false;
   readonly governmentJobFilters = GOVERNMENT_JOB_FILTERS;
   readonly privateJobFilters = PRIVATE_JOB_FILTERS;
   readonly privateHiringFilters = PRIVATE_HIRING_FILTERS;
